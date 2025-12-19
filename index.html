@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA LinkedIn Studio | Analitica</title>
+    <title>IA LinkedIn Studio Pro | Analitica</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; }
@@ -24,17 +24,17 @@
 <body>
 
 <div class="container">
-    <h1>IA LinkedIn Studio 🤖</h1>
-    <textarea id="postText" placeholder="Toca GENERAR para crear contenido..."></textarea>
+    <h1>IA LinkedIn Business Studio 🤖</h1>
+    <textarea id="postText" placeholder="Toca GENERAR para crear contenido de 20 líneas..."></textarea>
     
     <div class="img-preview">
-        <div id="loader"><i class="fas fa-brain fa-spin"></i> IA PINTANDO...</div>
+        <div id="loader"><i class="fas fa-microchip fa-spin"></i> IA GENERANDO IMAGEN...</div>
         <img id="postImage">
     </div>
 
     <button class="btn-gen" onclick="generarTodo()">1. GENERAR POST E IMAGEN IA</button>
     <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>2. PUBLICAR EN LINKEDIN</button>
-    <div id="status">Versión Final Coherente</div>
+    <div id="status">v15.0 - Motor Estable</div>
 </div>
 
 <script>
@@ -46,44 +46,44 @@
         const img = document.getElementById('postImage');
         const btnPub = document.getElementById('btnPub');
 
-        const noticias = [
+        const contenidos = [
             {
-                prompt: "cybersecurity_digital_shield_with_glowing_lines_neon_blue_artificial_intelligence",
-                post: "🛡️ SEGURIDAD DIGITAL: El impacto de la IA en 2025\n\nEste análisis de 20 líneas revela cómo las empresas están blindando sus datos mediante algoritmos predictivos.\n\nBeneficios Directos:\n1. Detección de intrusiones en tiempo real.\n2. Respuesta automática a brechas de datos.\n3. Mayor confianza para el usuario final.\n\n#IA #CyberSecurity #Tech #Analitica"
+                prompt: "Professional 3D render of a futuristic cyber security shield, glowing neon circuits, artificial intelligence defense concept, 4k high resolution",
+                post: "🛡️ ÚLTIMA HORA: La IA redefine la Ciberseguridad en 2025\n\nLas empresas están adoptando modelos predictivos para blindar sus activos más críticos. Esta transformación no solo protege los datos, sino que garantiza la continuidad del negocio en un entorno hostil.\n\nBeneficios Directos:\n1. Detección de amenazas en milisegundos mediante redes neuronales.\n2. Respuesta automática ante intentos de brecha de seguridad.\n3. Blindaje absoluto para el usuario final y sus transacciones.\n\nAportes al Mercado:\n• Reducción del 40% en incidentes de robo de identidad.\n• Confianza total en el manejo de datos en la nube.\n\n#IA #CyberSecurity #NoticiasTech #Analitica #Empresas"
             },
             {
-                prompt: "futuristic_robotic_hand_collaborating_with_human_at_modern_office_digital_productivity",
-                post: "🚀 PRODUCTIVIDAD IA: La nueva ventaja competitiva\n\nOptimizar procesos ya no es opcional. La IA permite escalar operaciones reduciendo la carga administrativa.\n\nVentajas Clave:\n1. Automatización de reportes complejos.\n2. Mejora del 30% en eficiencia laboral.\n3. Análisis de mercado instantáneo.\n\n#IA #Productivity #Business #Innovation"
+                prompt: "Modern office workspace with a friendly robot assistant collaborating with a human professional, digital productivity data visualization, cinematic lighting",
+                post: "🚀 PRODUCTIVIDAD Y BENEFICIOS: La era de la IA Colaborativa\n\nOptimizar procesos es ahora el motor de crecimiento para las empresas líderes. La integración de asistentes inteligentes permite al talento humano enfocarse en lo que realmente importa: la estrategia.\n\nVentajas Clave:\n1. Automatización de reportes complejos y análisis masivos.\n2. Mejora del 35% en la eficiencia de flujos de trabajo internos.\n3. Escalabilidad sin aumentar los costos operativos.\n\nImpacto en el Usuario:\n• Experiencias personalizadas y fluidas en servicios digitales.\n• Mayor tiempo para la innovación y la creatividad estratégica.\n\n#IA #Productivity #BusinessGrowth #Innovation #Analitica #FutureOfWork"
             }
         ];
 
-        const sel = noticias[Math.floor(Math.random() * noticias.length)];
+        const sel = contenidos[Math.floor(Math.random() * contenidos.length)];
         document.getElementById('postText').value = sel.post;
         
-        // Reset Visual
+        // Reset visual y de botones
         img.style.display = "none";
         loader.style.display = "block";
         btnPub.disabled = true;
-        status.innerText = "IA procesando imagen coherente...";
+        status.innerText = "La IA está procesando la imagen...";
 
         const seed = Math.floor(Math.random() * 1000000);
-        // Motor de IA Real Pollinations
-        const finalUrl = `https://pollinations.ai/p/${sel.prompt}?width=1000&height=600&seed=${seed}&nologo=true`;
+        // Nuevo motor estable: Image-Generator-AI
+        const finalUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(sel.prompt)}?width=1024&height=1024&seed=${seed}&nologo=true`;
 
-        // INYECCIÓN DIRECTA: El navegador no lo bloquea como descarga
+        // Carga forzada para evitar bloqueos de red
         img.src = finalUrl;
         
         img.onload = function() {
             loader.style.display = "none";
             img.style.display = "block";
             btnPub.disabled = false;
-            status.innerText = "✓ Contenido e Imagen de IA Listos.";
+            status.innerText = "✓ Publicación e Imagen de IA listas.";
             status.style.color = "#58a6ff";
         };
 
         img.onerror = function() {
-            status.innerText = "El servidor de IA está saturado. Toca GENERAR de nuevo.";
-            loader.style.display = "none";
+            status.innerText = "Servidor ocupado. Reintentando automáticamente...";
+            setTimeout(generarTodo, 2000); // Reintento automático inteligente
         };
     }
 
@@ -104,7 +104,7 @@
             });
             if(res.ok) {
                 status.innerText = "✅ PUBLICADO EXITOSAMENTE";
-                btn.innerText = "ENVIADO";
+                btn.innerText = "PUBLICADO";
             }
         } catch (e) {
             status.innerText = "❌ Error de conexión con Make.";
