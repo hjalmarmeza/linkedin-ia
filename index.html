@@ -1,110 +1,344 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA Deep Insight Pro</title>
+    <title>IA Deep Insight Pro - Fixed</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; }
-        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; padding: 15px; margin: 0; }
-        .container { background: var(--card); padding: 20px; border-radius: 12px; width: 100%; max-width: 500px; border: 1px solid #30363d; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { font-size: 1.1rem; color: var(--accent); text-align: center; margin-bottom: 20px; }
-        textarea { width: 100%; height: 380px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 12px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; box-sizing: border-box; margin-bottom: 10px; }
-        .img-preview { width: 100%; min-height: 280px; background: #000; border-radius: 8px; margin-bottom: 15px; border: 1px solid #444; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
-        #postImage { width: 100%; height: auto; display: none; }
-        #loader { color: var(--accent); font-weight: bold; text-align: center; display: none; }
-        button { width: 100%; padding: 16px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; font-size: 14px; }
-        .btn-gen { background: #238636; color: white; }
-        .btn-pub { background: #1f6feb; color: white; }
-        .btn-pub:disabled { opacity: 0.5; cursor: not-allowed; }
-        #status { font-size: 12px; text-align: center; color: #8b949e; margin-top: 10px; }
+        :root { 
+            --accent: #58a6ff; 
+            --bg: #0d1117; 
+            --card: #161b22; 
+            --success: #238636;
+            --primary: #1f6feb;
+            --error: #da3633;
+        }
+        body { 
+            background: var(--bg); 
+            color: white; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px; 
+            margin: 0; 
+        }
+        .container { 
+            background: var(--card); 
+            padding: 30px; 
+            border-radius: 16px; 
+            width: 100%; 
+            max-width: 600px; 
+            border: 1px solid #30363d; 
+            box-shadow: 0 16px 48px rgba(0,0,0,0.6); 
+        }
+        h1 { 
+            font-size: 1.4rem; 
+            color: var(--accent); 
+            text-align: center; 
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        textarea { 
+            width: 100%; 
+            height: 300px; 
+            background: var(--bg); 
+            color: #e6edf3; 
+            border: 1px solid #30363d; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            line-height: 1.6; 
+            resize: vertical; 
+            box-sizing: border-box; 
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+        .img-preview { 
+            width: 100%; 
+            min-height: 300px; 
+            background: #000; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            border: 2px solid #30363d; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+            position: relative; 
+        }
+        #postImage { 
+            width: 100%; 
+            height: auto; 
+            display: none; 
+        }
+        #loader { 
+            color: var(--accent); 
+            font-weight: 600; 
+            text-align: center; 
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        #loader i {
+            font-size: 2.5rem;
+        }
+        button { 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 8px; 
+            border: none; 
+            font-weight: 600; 
+            cursor: pointer; 
+            margin-bottom: 12px; 
+            font-size: 15px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .btn-gen { 
+            background: var(--success); 
+            color: white; 
+        }
+        .btn-pub { 
+            background: var(--primary); 
+            color: white; 
+        }
+        button:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            transform: none !important;
+        }
+        #status { 
+            font-size: 13px; 
+            text-align: center; 
+            color: #8b949e; 
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            min-height: 20px;
+        }
+        #status.success {
+            background: rgba(35, 134, 54, 0.15);
+            color: #3fb950;
+        }
+        #status.error {
+            background: rgba(218, 54, 51, 0.15);
+            color: #f85149;
+        }
+        #status.info {
+            background: rgba(88, 166, 255, 0.15);
+            color: var(--accent);
+        }
+        .url-debug {
+            background: var(--bg);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #8b949e;
+            word-break: break-all;
+            margin-top: 10px;
+            border: 1px solid #30363d;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>IA LinkedIn Deep Insight 🤖</h1>
-    <textarea id="postText" placeholder="Toca GENERAR para crear contenido de alto impacto..."></textarea>
+    <h1>
+        <i class="fas fa-robot"></i>
+        LinkedIn IA Auto-Poster
+    </h1>
+    
+    <textarea id="postText" placeholder="Presiona GENERAR para crear contenido de alto impacto con IA..."></textarea>
     
     <div class="img-preview">
-        <div id="loader"><i class="fas fa-atom fa-spin"></i> IA PINTANDO...</div>
-        <img id="postImage">
+        <div id="loader">
+            <i class="fas fa-atom fa-spin"></i>
+            <span>IA generando imagen...</span>
+        </div>
+        <img id="postImage" alt="Preview">
     </div>
 
-    <button class="btn-gen" onclick="generarPropuesta()">1. GENERAR POST E IMAGEN IA</button>
-    <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>2. PUBLICAR EN LINKEDIN</button>
-    <div id="status">v18.0 - Cero Procesamiento Local</div>
+    <button class="btn-gen" onclick="generarPropuesta()">
+        <i class="fas fa-magic"></i>
+        GENERAR POST E IMAGEN
+    </button>
+    
+    <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>
+        <i class="fab fa-linkedin"></i>
+        PUBLICAR EN LINKEDIN
+    </button>
+    
+    <div id="status">Listo para generar contenido</div>
+    
+    <div id="urlDebug" class="url-debug" style="display:none;">
+        URL enviada: <span id="urlValue"></span>
+    </div>
 </div>
 
 <script>
     const WEBHOOK_URL = "https://hook.eu2.make.com/hiurq1grt6euyiw1tdlkcw5rst9uxuuo";
-    let urlParaMake = ""; // Guardaremos aquí la URL pura de la IA
+    let imageUrl = "";
 
-    const baseNoticias = [
+    const contenidos = [
         { 
-            t: "IA AGÉNTICA: EL FIN DE LOS COPILOTOS", 
-            p: "autonomous_ai_agents_working_in_futuristic_digital_landscape_hyper_realistic_cinematic_4k",
-            d: "Estamos ante el inicio de los agentes capaces de ejecutar procesos completos sin supervisión humana constante."
+            titulo: "IA AGÉNTICA: El Futuro de la Automatización",
+            prompt: "autonomous_ai_agents_digital_network_futuristic_technology_hyperrealistic_4k",
+            contexto: "Los agentes de IA autónomos están revolucionando procesos empresariales complejos sin supervisión constante."
         },
         { 
-            t: "CIUDADES INTELIGENTES Y GEMELOS DIGITALES", 
-            p: "smart_city_digital_twin_with_glowing_data_points_neural_networks_high_detail",
-            d: "La integración de simulaciones en tiempo real con IA permite a las empresas probar estrategias en entornos virtuales."
+            titulo: "CIUDADES INTELIGENTES Y GEMELOS DIGITALES",
+            prompt: "smart_city_digital_twin_glowing_data_neural_networks_cinematic_lighting",
+            contexto: "La simulación en tiempo real permite probar estrategias urbanas en entornos virtuales antes de implementarlas."
+        },
+        { 
+            titulo: "BLOCKCHAIN EMPRESARIAL: Más Allá de las Criptomonedas",
+            prompt: "enterprise_blockchain_distributed_ledger_corporate_technology_modern_design",
+            contexto: "Las empresas están adoptando blockchain para trazabilidad, contratos inteligentes y cadenas de suministro transparentes."
+        },
+        { 
+            titulo: "COMPUTACIÓN CUÁNTICA: El Salto Exponencial",
+            prompt: "quantum_computing_qubits_superposition_futuristic_lab_photorealistic",
+            contexto: "La computación cuántica promete resolver problemas de optimización imposibles para computadoras clásicas."
         }
     ];
 
     function generarPropuesta() {
-        const info = baseNoticias[Math.floor(Math.random() * baseNoticias.length)];
+        const info = contenidos[Math.floor(Math.random() * contenidos.length)];
         const loader = document.getElementById('loader');
         const img = document.getElementById('postImage');
         const btnPub = document.getElementById('btnPub');
+        const status = document.getElementById('status');
+        const urlDebug = document.getElementById('urlDebug');
+        const urlValue = document.getElementById('urlValue');
 
-        // Texto de alto impacto (20 líneas)
-        document.getElementById('postText').value = `🔥 ANÁLISIS DE VANGUARDIA: ${info.t}\n\nLa evolución tecnológica actual está marcando un punto de inflexión. ${info.d}\n\n🔹 BENEFICIOS CLAVE:\n1. Eficiencia Exponencial: Automatización de flujos lógicos complejos.\n2. Seguridad Predictiva: Blindaje de activos mediante redes neuronales.\n3. Crecimiento Orgánico: Escalabilidad total sin aumento de costos.\n\nEn conclusión, el futuro pertenece a quienes se atreven a innovar hoy.\n\n#IA #Innovation #FutureTech #Analitica #DigitalTransformation`;
+        // Generar texto optimizado para LinkedIn
+        const texto = `🔥 ${info.titulo.toUpperCase()}
 
+${info.contexto}
+
+📊 IMPACTO CLAVE:
+
+• Eficiencia Operativa: Automatización de procesos críticos
+• Reducción de Costos: Hasta 40% en operaciones tradicionales  
+• Escalabilidad: Crecimiento sin límites de infraestructura
+• Ventaja Competitiva: Innovación que marca la diferencia
+
+💡 CONCLUSIÓN:
+El futuro no espera. Las organizaciones que adopten estas tecnologías hoy liderarán sus industrias mañana.
+
+¿Está tu empresa preparada para el cambio?
+
+#Innovación #Tecnología #IA #TransformaciónDigital #Futuro #Liderazgo`;
+
+        document.getElementById('postText').value = texto;
+
+        // Resetear UI
         img.style.display = "none";
-        loader.style.display = "block";
+        loader.style.display = "flex";
         btnPub.disabled = true;
+        status.className = "info";
+        status.textContent = "Generando contenido...";
+        urlDebug.style.display = "none";
 
-        const seed = Math.floor(Math.random() * 999999);
-        // Creamos la URL pero NO la descargamos con funciones de datos
-        urlParaMake = `https://image.pollinations.ai/prompt/${encodeURIComponent(info.p)}?width=1024&height=512&seed=${seed}&nologo=true`;
+        // Generar URL de imagen con parámetros optimizados
+        const seed = Date.now();
+        const width = 1200;
+        const height = 630; // Proporción ideal para LinkedIn
+        
+        imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(info.prompt)}?width=${width}&height=${height}&seed=${seed}&nologo=true&enhance=true`;
 
-        // Simplemente la mostramos. El navegador solo la "dibuja", no la convierte
-        img.src = urlParaMake;
+        // Mostrar URL para debugging
+        urlValue.textContent = imageUrl;
+        
+        // Precargar imagen
         img.onload = () => {
             loader.style.display = "none";
             img.style.display = "block";
             btnPub.disabled = false;
-            document.getElementById('status').innerText = "✓ Post e Imagen listos.";
+            status.className = "success";
+            status.textContent = "✓ Contenido listo para publicar";
+            urlDebug.style.display = "block";
         };
+
+        img.onerror = () => {
+            loader.style.display = "none";
+            status.className = "error";
+            status.textContent = "✗ Error al cargar la imagen. Intenta de nuevo.";
+            btnPub.disabled = false; // Permitir publicar solo el texto
+        };
+
+        img.src = imageUrl;
     }
 
     async function publicar() {
         const btn = document.getElementById('btnPub');
         const status = document.getElementById('status');
-        btn.disabled = true;
-        status.innerText = "Enviando URL directa a LinkedIn...";
+        const texto = document.getElementById('postText').value;
 
-        // Enviamos la URL original del motor de IA, no el código del navegador
+        btn.disabled = true;
+        status.className = "info";
+        status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando en LinkedIn...';
+
+        // Payload limpio con URL directa
         const payload = {
-            mensaje: document.getElementById('postText').value,
-            url_imagen: urlParaMake 
+            mensaje: texto,
+            url_imagen: imageUrl // URL directa sin conversión
         };
 
+        console.log('Enviando a Make:', payload);
+
         try {
-            const res = await fetch(WEBHOOK_URL, {
+            const response = await fetch(WEBHOOK_URL, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(payload)
             });
-            if(res.ok) status.innerText = "✅ PUBLICADO EXITOSAMENTE";
-        } catch (e) {
-            status.innerText = "❌ Error de conexión.";
+
+            if (response.ok) {
+                status.className = "success";
+                status.innerHTML = '✓ ¡Publicado exitosamente en LinkedIn!';
+                
+                // Limpiar después de 3 segundos
+                setTimeout(() => {
+                    document.getElementById('postText').value = '';
+                    document.getElementById('postImage').style.display = 'none';
+                    document.getElementById('urlDebug').style.display = 'none';
+                    status.className = "";
+                    status.textContent = 'Listo para generar nuevo contenido';
+                    imageUrl = "";
+                }, 3000);
+            } else {
+                throw new Error(`HTTP ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            status.className = "error";
+            status.textContent = `✗ Error al publicar: ${error.message}`;
             btn.disabled = false;
         }
     }
+
+    // Generar contenido inicial automáticamente
+    window.addEventListener('load', () => {
+        setTimeout(generarPropuesta, 500);
+    });
 </script>
 </body>
 </html>
