@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA Deep Insight Pro v23.0</title>
+    <title>IA Deep Insight Pro v23.1</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --text-muted: #8b949e; }
@@ -17,8 +17,6 @@
         select, button { border-radius: 8px; font-weight: 600; font-size: 13px; }
         select { background: var(--bg); color: white; border: 1px solid #30363d; padding: 10px; flex: 1; }
         .linkedin-preview { background: white; color: rgba(0,0,0,0.9); padding: 15px; border-radius: 8px; margin-top: 20px; font-family: sans-serif; display: none; border: 1px solid #ddd; }
-        .user-info { display: flex; gap: 10px; margin-bottom: 10px; }
-        .user-circle { width: 40px; height: 40px; background: #ddd; border-radius: 50%; }
         .post-content { font-size: 14px; line-height: 1.4; white-space: pre-wrap; color: #333; }
         textarea { width: 100%; height: 400px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; box-sizing: border-box; }
         .img-preview { width: 100%; min-height: 250px; background: #000; border-radius: 12px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #444; }
@@ -26,29 +24,28 @@
         .btn-gen { background: var(--success); color: white; width: 100%; height: 50px; }
         .btn-img { background: #8957e5; color: white; width: 100%; height: 50px; margin-top: 10px; }
         .btn-pub { background: var(--primary); color: white; width: 100%; height: 50px; margin-top: 10px; }
-        .stats-bar { display: flex; justify-content: space-around; margin-top: 20px; border-top: 1px solid #30363d; padding-top: 15px; color: var(--text-muted); font-size: 12px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="news-badge"><i class="fas fa-bolt"></i> TENDENCIAS HOY</div>
-    <div id="newsTopic" class="news-title">Cargando noticias de última hora...</div>
+    <div class="news-badge"><i class="fas fa-bolt"></i> TENDENCIAS REALES</div>
+    <div id="newsTopic" class="news-title">Cargando última noticia tecnológica...</div>
 
     <div class="grid-main">
         <div class="edit-zone">
             <div class="control-row">
                 <select id="toneSelect">
-                    <option value="inspirador">Tono: Inspirador</option>
-                    <option value="técnico">Tono: Técnico</option>
-                    <option value="crítico">Tono: Crítico</option>
+                    <option value="Inspirador">Redacción: Inspiradora</option>
+                    <option value="Técnico">Redacción: Técnica</option>
+                    <option value="Crítico">Redacción: Crítica</option>
                 </select>
                 <select id="formatSelect">
-                    <option value="list">Modo: Listado</option>
-                    <option value="story">Modo: Storytelling</option>
+                    <option value="list">Formato: Listado</option>
+                    <option value="story">Formato: Narrativo</option>
                 </select>
             </div>
-            <textarea id="postText" placeholder="El análisis se generará aquí..."></textarea>
+            <textarea id="postText" placeholder="El análisis aparecerá aquí..."></textarea>
             <div id="lineCount" style="font-size:10px; text-align:right; color:var(--text-muted)">Líneas: 0 / 20-25</div>
         </div>
 
@@ -58,27 +55,19 @@
                 <img id="postImg">
             </div>
             <select id="styleSelect" style="width:100%; margin-bottom:10px;">
-                <option value="photorealistic">Estilo: Fotorrealista</option>
-                <option value="cyberpunk">Estilo: Cyberpunk</option>
-                <option value="minimalist">Estilo: Minimalista</option>
+                <option value="photorealistic">Visual: Fotorrealista</option>
+                <option value="cyberpunk">Visual: Cyberpunk</option>
+                <option value="minimalist">Visual: Minimalista</option>
             </select>
-            <button class="btn-gen" onclick="generarAnalisis()"><i class="fas fa-file-alt"></i> GENERAR ANÁLISIS</button>
+            <button class="btn-gen" onclick="generarAnalisis()"><i class="fas fa-file-alt"></i> GENERAR TEXTO</button>
             <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-image"></i> GENERAR IMAGEN</button>
-            <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR AHORA</button>
+            <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
         </div>
     </div>
 
     <div id="preview" class="linkedin-preview">
-        <div class="user-info">
-            <div class="user-circle"></div>
-            <div><strong>Tu Perfil</strong><br><small>Analista de Innovación</small></div>
-        </div>
-        <div id="previewText" class="post-content"></div>
-    </div>
-
-    <div class="stats-bar">
-        <span><i class="fas fa-chart-line"></i> Posts: <span id="statCount">0</span></span>
-        <span><i class="fas fa-heart"></i> Favoritos: <span id="statFav">0</span></span>
+        <strong>Vista Previa LinkedIn:</strong>
+        <div id="previewText" class="post-content" style="margin-top:10px;"></div>
     </div>
 </div>
 
@@ -94,7 +83,7 @@
             const data = await res.json();
             if(data.articles && data.articles[0]) {
                 lastNewsTitle = data.articles[0].title;
-                document.getElementById('newsTopic').innerText = "NOTICIA: " + lastNewsTitle;
+                document.getElementById('newsTopic').innerText = "ÚLTIMA NOTICIA: " + lastNewsTitle;
             }
         } catch(e) {
             document.getElementById('newsTopic').innerText = "TEMA: Tendencias en IA Agéntica";
@@ -105,26 +94,42 @@
         const tone = document.getElementById('toneSelect').value;
         const format = document.getElementById('formatSelect').value;
         
-        let body = format === 'list' ? 
-            "🔹 PUNTOS CLAVE DE IMPACTO:\n• Optimización de procesos críticos\n• Reducción drástica de fricción operativa\n• Seguridad predictiva avanzada\n• Escalabilidad sin límites técnicos" :
-            "Imagina un futuro donde la tecnología no solo responde, sino que anticipa. La noticia sobre " + lastNewsTitle + " es el primer paso hacia una integración total entre lógica y ejecución.";
+        let intro = format === 'list' ? 
+            "¿Cómo impacta esto en la eficiencia operativa?" : 
+            "Imaginen que la noticia sobre " + lastNewsTitle + " es solo la punta del iceberg.";
 
-        let text = `🚀 ANÁLISIS ESTRATÉGICO (${tone.toUpperCase()}): ${lastNewsTitle.toUpperCase()}\n\n` +
-            `¿Cómo redefine este avance nuestra visión para el 2026?\n\n${body}\n\n` +
-            `La transformación digital ha dejado de ser una opción de infraestructura para convertirse en la ventaja competitiva definitiva.\n\n` +
-            `Al observar el ecosistema actual, entendemos que el valor real reside en la capacidad de adaptar estas innovaciones a flujos de trabajo humanos.\n\n` +
-            `En conclusión, el éxito en la era de la IA no vendrá de la herramienta, sino de la visión estratégica que guíe su implementación.\n\n` +
-            `Este cambio es profundo, necesario y, sobre todo, una oportunidad para quienes decidan liderar hoy.\n\n` +
-            `#IA #TechNews #Innovacion #Liderazgo #Analitica #Estrategia #Futuro #Negocios`;
+        let body = [
+            `🚀 ANÁLISIS ESTRATÉGICO: ${lastNewsTitle.toUpperCase()}`, // Título limpio sin el estilo
+            "",
+            intro,
+            "",
+            "El panorama actual nos obliga a cuestionar si nuestras estructuras están preparadas para esta velocidad de cambio.",
+            "Bajo un enfoque " + tone.toLowerCase() + ", esta evolución no es solo técnica, es cultural.",
+            "",
+            "🔹 PUNTOS CLAVE DE VALOR:",
+            "• Optimización de procesos críticos mediante lógica predictiva.",
+            "• Reducción de la fricción operativa en entornos de alta demanda.",
+            "• Fortalecimiento de la seguridad mediante modelos neuronales.",
+            "• Capacidad de respuesta inmediata ante variables imprevistas.",
+            "",
+            "Este avance redefine lo que entendemos por ventaja competitiva en el sector.",
+            "Al observar el mercado, queda claro que la tecnología es solo el habilitador.",
+            "El éxito reside en el talento humano capaz de orquestar estos sistemas.",
+            "",
+            "En conclusión, el futuro pertenece a quienes se atrevan a integrar estas innovaciones hoy mismo.",
+            "¿Cuál es tu visión estratégica sobre este desarrollo?",
+            "",
+            "#IA #TechNews #Innovacion #Liderazgo #Analitica #Estrategia #Negocios #Futuro" // Máximo 8 hashtags
+        ];
 
-        document.getElementById('postText').value = text;
-        document.getElementById('previewText').innerText = text;
+        const finalContent = body.join("\n");
+        document.getElementById('postText').value = finalContent;
+        document.getElementById('previewText').innerText = finalContent;
         document.getElementById('preview').style.display = "block";
         document.getElementById('btnImg').disabled = false;
         
-        const lines = text.split('\n').filter(l => l.trim() !== "").length;
+        const lines = finalContent.split('\n').filter(l => l.trim() !== "").length;
         document.getElementById('lineCount').innerText = "Líneas: " + lines;
-        localStorage.setItem('lastPost', text);
     }
 
     function generarImagen() {
@@ -155,13 +160,8 @@
                     url_imagen: currentImage
                 })
             });
-            if(res.ok) {
-                alert("Análisis enviado a LinkedIn con éxito");
-                let count = parseInt(localStorage.getItem('postCount') || 0) + 1;
-                localStorage.setItem('postCount', count);
-                document.getElementById('statCount').innerText = count;
-            }
-        } catch(e) { alert("Error al conectar con el flujo"); }
+            if(res.ok) alert("✓ Publicado en LinkedIn");
+        } catch(e) { alert("Error de conexión"); }
         document.getElementById('btnPub').disabled = false;
     }
 
