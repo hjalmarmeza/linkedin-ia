@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IA Deep Insight Studio v27.0</title>
+    <title>IA Deep Insight Pro v27.1</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
@@ -11,36 +11,39 @@
         body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
         .container { background: var(--card); padding: 15px; border-radius: 12px; width: 100%; max-width: 500px; border: 1px solid #30363d; }
         
-        .header-status { font-size: 11px; font-weight: bold; color: var(--accent); margin-bottom: 10px; display: flex; justify-content: space-between; }
-        .input-manual { width: 100%; background: #000; color: var(--accent); border: 1px solid #444; padding: 10px; border-radius: 6px; font-size: 12px; margin-bottom: 12px; }
+        /* Semáforo de noticias */
+        .header-status { font-size: 11px; font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding: 8px; border-radius: 6px; border: 1px solid #333; }
+        .status-red { color: var(--danger); }
+        .status-blue { color: var(--accent); }
 
+        .input-manual { width: 100%; background: #000; color: var(--accent); border: 1px solid #444; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; }
         .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        select { background: var(--bg); color: white; border: 1px solid #30363d; padding: 12px; border-radius: 6px; font-size: 13px; width: 100%; }
+        select { background: var(--bg); color: white; border: 1px solid #30363d; padding: 12px; border-radius: 8px; font-size: 13px; width: 100%; }
 
-        textarea { width: 100%; height: 350px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 12px; border-radius: 8px; font-size: 13.5px; line-height: 1.5; resize: none; margin-bottom: 12px; }
+        textarea { width: 100%; height: 350px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; margin-bottom: 12px; }
         
-        .img-preview { width: 100%; height: 220px; background: #000; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #30363d; }
+        .img-preview { width: 100%; height: 220px; background: #000; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #30363d; }
         #postImg { width: 100%; height: 100%; object-fit: cover; display: none; }
 
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { height: 50px; border-radius: 8px; border: none; font-weight: bold; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: white; }
+        button { height: 50px; border-radius: 8px; border: none; font-weight: bold; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: white; }
         .btn-gen { background: var(--success); }
         .btn-img { background: #8957e5; }
         .btn-clear { background: #30363d; border: 1px solid var(--danger); color: var(--danger); }
         .btn-pub { background: var(--primary); }
-        
+        button:disabled { opacity: 0.3; }
         #status { font-size: 12px; text-align: center; color: #8b949e; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header-status">
+    <div id="engineBox" class="header-status status-red">
         <span><i class="fas fa-rss"></i> NEWS ENGINE ACTIVE</span>
         <span id="newsSource">ESPERANDO TEMA</span>
     </div>
 
-    <input type="text" id="manualTopic" class="input-manual" placeholder="Escribe un tema o deja vacío para noticias...">
+    <input type="text" id="manualTopic" class="input-manual" placeholder="Opcional: Escribe un tema propio aquí...">
 
     <div class="controls-grid">
         <select id="toneSelect">
@@ -54,7 +57,7 @@
         </select>
     </div>
 
-    <textarea id="postText" placeholder="Paso 1: Toca GENERAR ANÁLISIS DINÁMICO..."></textarea>
+    <textarea id="postText" placeholder="Paso 1: Espera al tema en celeste y genera..."></textarea>
     
     <div class="img-preview">
         <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-2x" style="color:var(--accent)"></i></div>
@@ -62,13 +65,13 @@
     </div>
 
     <div class="action-grid">
-        <button class="btn-gen" onclick="generarDinamico()"><i class="fas fa-brain"></i> GENERAR ANÁLISIS</button>
-        <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-magic"></i> GENERAR IMAGEN</button>
-        <button class="btn-clear" onclick="limpiar()"><i class="fas fa-eraser"></i> LIMPIAR</button>
+        <button id="btnGen" class="btn-gen" onclick="generarAnalisis()" disabled><i class="fas fa-brain"></i> GENERAR</button>
+        <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-magic"></i> IMAGEN</button>
+        <button class="btn-clear" onclick="limpiarYPonerRojo()"><i class="fas fa-eraser"></i> LIMPIAR</button>
         <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
     </div>
     
-    <div id="status">Generación v27.0 Dinámica</div>
+    <div id="status">Esperando conexión de noticias...</div>
 </div>
 
 <script>
@@ -78,75 +81,75 @@
     let activeTopic = "";
     let finalImageUrl = "";
 
-    async function obtenerNoticia() {
+    // Función principal para obtener noticia y gestionar colores
+    async function fetchFreshNews() {
+        const engineBox = document.getElementById('engineBox');
+        const newsSource = document.getElementById('newsSource');
+        const btnGen = document.getElementById('btnGen');
+
+        // Paso Rojo: Iniciando carga
+        engineBox.className = "header-status status-red";
+        newsSource.innerText = "ESPERANDO TEMA";
+        btnGen.disabled = true;
+
         try {
-            const res = await fetch(`https://newsapi.org/v2/everything?q=Artificial+Intelligence+Business&language=es&sortBy=publishedAt&pageSize=10&apiKey=${NEWS_API_KEY}`);
+            const res = await fetch(`https://newsapi.org/v2/everything?q=AI+Business+Innovation&language=es&sortBy=publishedAt&pageSize=15&apiKey=${NEWS_API_KEY}`);
             const data = await res.json();
-            return data.articles[Math.floor(Math.random() * data.articles.length)].title;
-        } catch(e) { return "Innovación en Inteligencia Artificial y Negocios"; }
+            if(data.articles && data.articles.length > 0) {
+                activeTopic = data.articles[Math.floor(Math.random() * data.articles.length)].title;
+                
+                // Paso Celeste: Carga exitosa
+                engineBox.className = "header-status status-blue";
+                newsSource.innerText = "TEMA: " + activeTopic.substring(0, 20).toUpperCase() + "...";
+                btnGen.disabled = false;
+                document.getElementById('status').innerText = "Noticia recibida. Listo para generar.";
+            } else { throw new Error(); }
+        } catch(e) {
+            // Backup por si falla la API
+            activeTopic = "Tendencias en IA y Transformación Digital 2025";
+            engineBox.className = "header-status status-blue";
+            newsSource.innerText = "TEMA CARGADO";
+            btnGen.disabled = false;
+        }
     }
 
-    async function generarDinamico() {
-        const status = document.getElementById('status');
+    async function generarAnalisis() {
         const manual = document.getElementById('manualTopic').value;
-        status.innerText = "Pensando análisis original...";
-
-        // Determinar tema: Manual o Noticia
-        activeTopic = manual || await obtenerNoticia();
-        document.getElementById('newsSource').innerText = activeTopic.substring(0, 20) + "...";
+        if(manual) activeTopic = manual;
 
         const tone = document.getElementById('toneSelect').value;
         const format = document.getElementById('formatSelect').value;
 
-        // Diccionarios lógicos para evitar repetición
-        const perspectives = [
-            "Desde la óptica del rendimiento financiero, este avance cambia las reglas de inversión.",
-            "Si analizamos el impacto humano, la tecnología se posiciona como el gran habilitador del talento.",
-            "Estructuralmente, estamos viendo una transición hacia flujos de trabajo 100% integrados."
-        ];
-
-        const bullets = [
-            "• Reducción exponencial de la carga operativa.",
-            "• Toma de decisiones basada en datos sintéticos en tiempo real.",
-            "• Blindaje de procesos críticos mediante lógica autónoma.",
-            "• Escalabilidad de infraestructura sin fricción técnica.",
-            "• Identificación de patrones invisibles para el análisis tradicional."
-        ];
-
-        let intro = format === 'list' ? "¿Qué implicaciones estratégicas conlleva este desarrollo?" : "Imaginen un ecosistema donde la lógica y la ejecución no tienen intermediarios.";
-
-        // Construcción del post (20-25 líneas garantizadas)
+        // Lógica de construcción dinámica de 20-25 líneas
         const content = [
-            `🚀 PERSPECTIVA DINÁMICA: ${activeTopic.toUpperCase()}`,
+            `🚀 ANÁLISIS DINÁMICO: ${activeTopic.toUpperCase()}`,
             "",
-            intro,
+            format === 'list' ? "¿Qué impacto estratégico proyecta este avance?" : "Vivimos en una era donde la noticia de hoy redefine el plan de mañana.",
             "",
-            "La noticia sobre este avance nos obliga a replantear la solidez de nuestras estrategias actuales.",
-            "Bajo un enfoque " + tone.toLowerCase() + ", queda claro que no estamos ante una simple mejora de software.",
+            "La velocidad de esta innovación nos obliga a replantear la resiliencia de nuestras estructuras.",
+            "Bajo un enfoque " + tone.toLowerCase() + ", queda claro que la IA no es un accesorio, sino el nuevo núcleo operativo.",
             "",
-            perspectives[Math.floor(Math.random() * perspectives.length)],
+            "🔹 PILARES DE VALOR IDENTIFICADOS:",
+            "• Optimización masiva de flujos de trabajo críticos.",
+            "• Reducción de sesgos en el análisis de grandes volúmenes de datos.",
+            "• Fortalecimiento del blindaje digital ante nuevas amenazas.",
+            "• Escalabilidad de infraestructura sin aumentar la fricción técnica.",
+            "• Democratización de capacidades cognitivas de alto nivel.",
             "",
-            "🔹 PILARES DE TRANSFORMACIÓN:",
-            bullets[0],
-            bullets[1],
-            bullets[2],
-            bullets[3],
-            bullets[4],
+            "Al observar el panorama, entendemos que la tecnología es solo el punto de partida.",
+            "El éxito real reside en el criterio humano capaz de orquestar estos sistemas.",
+            "Integrar estas herramientas hoy permite construir la solidez necesaria para la próxima década.",
+            "Aquellas organizaciones que ignoren esta evolución cederán su posición de liderazgo.",
             "",
-            "La ventaja competitiva en esta era no reside en poseer la herramienta, sino en la capacidad de orquestarla.",
-            "El éxito real vendrá de las organizaciones que logren fusionar el juicio humano con estas capacidades autónomas.",
-            "Es el momento de dejar de ser espectadores y comenzar a liderar el despliegue de soluciones inteligentes.",
-            "No se trata de rapidez, sino de precisión en la implementación táctica.",
+            "En conclusión, el futuro pertenece a quienes se atrevan a liderar con inteligencia hoy.",
+            "¿Cuál es tu postura estratégica frente a esta aceleración?",
             "",
-            "En conclusión, el futuro es de quienes integren esta visión hoy mismo.",
-            "¿Cómo planeas adaptar esta tendencia en tu flujo de trabajo?",
-            "",
-            "#IA #Innovacion #Futuro #DigitalStrategy #Tech #Analitica #Liderazgo #Estrategia"
+            "#IA #Innovation #Future #Liderazgo #Estrategia #Analitica #Negocios #Tech"
         ];
 
         document.getElementById('postText').value = content.join("\n");
         document.getElementById('btnImg').disabled = false;
-        status.innerText = "✓ Análisis 100% dinámico generado.";
+        document.getElementById('status').innerText = "✓ Análisis generado. Paso 2: Imagen.";
     }
 
     function generarImagen() {
@@ -156,25 +159,26 @@
         loader.style.display = "block";
         
         const seed = Date.now();
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic high tech") }?width=1200&height=630&seed=${seed}&nologo=true`;
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " cinematic futuristic tech 4k")}?width=1200&height=630&seed=${seed}&nologo=true`;
         
         img.src = finalImageUrl;
         img.onload = () => {
             loader.style.display = "none";
             img.style.display = "block";
             document.getElementById('btnPub').disabled = false;
-            document.getElementById('status').innerText = "✓ Imagen coherente lista.";
+            document.getElementById('status').innerText = "✓ Visual listo para publicar.";
         };
     }
 
-    function limpiar() {
+    function limpiarYPonerRojo() {
+        // Limpiar todo y disparar nueva búsqueda
         document.getElementById('postText').value = "";
         document.getElementById('postImg').style.display = "none";
         document.getElementById('manualTopic').value = "";
         document.getElementById('btnImg').disabled = true;
         document.getElementById('btnPub').disabled = true;
-        document.getElementById('status').innerText = "Pizarra limpia.";
-        activeTopic = "";
+        document.getElementById('status').innerText = "Limpiando pizarra y buscando nuevo tema...";
+        fetchFreshNews(); 
     }
 
     async function publicar() {
@@ -190,14 +194,15 @@
                     url_imagen: finalImageUrl
                 })
             });
-            if(res.ok) {
-                document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
-            }
+            if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
         } catch(e) { 
-            alert("Error de conexión"); 
+            alert("Error al publicar"); 
             btn.disabled = false;
         }
     }
+
+    // Inicio automático
+    window.onload = fetchFreshNews;
 </script>
 </body>
 </html>
