@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IA Strategic Studio v32.0</title>
+    <title>IA Strategic Studio v33.0</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
@@ -15,85 +15,104 @@
         .status-blue { color: var(--accent); background: rgba(88, 166, 255, 0.1); border-color: var(--accent); }
         .input-manual { width: 100%; background: #000; color: var(--accent); border: 1px solid #444; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; font-style: italic; }
         textarea { width: 100%; height: 380px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: none; margin-bottom: 12px; }
-        .img-preview { width: 100%; height: 230px; background: #000; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #30363d; position: relative; }
+        .img-preview { width: 100%; height: 230px; background: #000; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid #30363d; position: relative; }
         #postImg { width: 100%; height: 100%; object-fit: cover; display: none; }
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { height: 50px; border-radius: 8px; border: none; font-weight: bold; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; transition: 0.2s; }
+        button { height: 50px; border-radius: 8px; border: none; font-weight: bold; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; transition: 0.2s; }
         .btn-gen { background: var(--success); }
         .btn-img { background: #8957e5; }
         .btn-clear { background: #30363d; border: 1px solid var(--danger); color: var(--danger); }
         .btn-pub { background: var(--primary); }
-        button:disabled { opacity: 0.2; pointer-events: none; }
-        #status { font-size: 11px; text-align: center; color: #8b949e; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        button:disabled { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+        #status { font-size: 10px; text-align: center; color: #8b949e; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 <div class="container">
     <div id="engineBox" class="header-status status-red">
-        <span><i class="fas fa-bolt"></i> AI REAL-TIME ENGINE</span>
-        <span id="newsSource">SIN CONEXIÓN</span>
+        <span><i class="fas fa-shield-alt"></i> MULTI-SOURCE ENGINE</span>
+        <span id="newsSource">STANDBY</span>
     </div>
-    <input type="text" id="manualTopic" class="input-manual" placeholder="Tópico personalizado (opcional)...">
-    <textarea id="postText" placeholder="Esperando actualización de tema..."></textarea>
+    <input type="text" id="manualTopic" class="input-manual" placeholder="Escribe un tema si deseas saltar la IA...">
+    <textarea id="postText" placeholder="Esperando combustible de noticias..."></textarea>
     <div class="img-preview">
         <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-3x"></i></div>
         <img id="postImg">
     </div>
     <div class="action-grid">
-        <button id="btnGen" class="btn-gen" onclick="generarAnalisis()" disabled><i class="fas fa-brain"></i> GENERAR</button>
+        <button id="btnGen" class="btn-gen" onclick="generarAnalisis()" disabled><i class="fas fa-brain"></i> BUSCANDO...</button>
         <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-magic"></i> IMAGEN</button>
         <button class="btn-clear" onclick="limpiarYRefrescar()"><i class="fas fa-eraser"></i> LIMPIAR</button>
         <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
     </div>
-    <div id="status">v32.0 - Sincronización Forzada</div>
+    <div id="status">v33.0 - Redundancia Cuádruple</div>
 </div>
 
 <script>
-    const NEWS_API_KEY = "7b6710d7c32347a6b2810545dc5307a6b2810545dc530";
+    // Configuración de Llaves
+    const API_KEYS = {
+        newsapi: "7b6710d7c32347a6b2810545dc5307a6b2810545dc530",
+        gnews: "b97f9baa6fcb9856ef2f803fd3e68c7a",
+        currents: "2MPkzgzuySxwVFTooMFaC0HcOkl3yjwdKnfN3cPbVEUG9VDJ",
+        mediastack: "21db872475f860207b63b3472f30588a"
+    };
     const WEBHOOK_URL = "https://hook.eu2.make.com/6bbwbx4zr42kwe88t5ggvu9hbb9vyh7g";
     
     let activeTopic = "";
     let finalImageUrl = "";
-    const searchTerms = ["AI Business ROI", "Automation Strategy", "Cybersecurity AI", "Cloud Innovation", "Data Analytics Enterprise"];
-    let termIndex = 0;
+    const searchTerms = ["IA empresarial", "Automatización", "Ciberseguridad", "Cloud", "Data Science"];
+    let apiRotationIndex = 0;
 
-    async function fetchNews() {
+    async function fetchNewsInCascade() {
         const engineBox = document.getElementById('engineBox');
         const newsSource = document.getElementById('newsSource');
         const btnGen = document.getElementById('btnGen');
 
-        // Reset visual y lógico inmediato
-        activeTopic = "";
+        activeTopic = ""; 
         engineBox.className = "header-status status-red";
-        newsSource.innerText = "SOLICITANDO...";
         btnGen.disabled = true;
+        btnGen.innerHTML = '<i class="fas fa-sync fa-spin"></i> BUSCANDO...';
 
-        const currentTerm = searchTerms[termIndex];
-        termIndex = (termIndex + 1) % searchTerms.length;
-        
-        // Cache Buster: Evita que el navegador use noticias viejas
-        const uniqueId = Date.now() + Math.random();
+        const query = searchTerms[Math.floor(Math.random() * searchTerms.length)];
+        const order = ["newsapi", "gnews", "currents", "mediastack"];
 
-        try {
-            const response = await fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(currentTerm)}&language=es&sortBy=publishedAt&pageSize=15&apiKey=${NEWS_API_KEY}&v=${uniqueId}`);
-            const data = await response.json();
-            
-            if(data.articles && data.articles.length > 0) {
-                // Selección aleatoria para evitar el mismo titular
-                const randomIndex = Math.floor(Math.random() * data.articles.length);
-                activeTopic = data.articles[randomIndex].title;
+        // Intento en Cascada
+        for (let apiName of order) {
+            try {
+                newsSource.innerText = `PROBANDO ${apiName.toUpperCase()}...`;
+                let url = "";
+                if(apiName === "newsapi") url = `https://newsapi.org/v2/everything?q=${query}&language=es&pageSize=5&apiKey=${API_KEYS.newsapi}&cb=${Date.now()}`;
+                if(apiName === "gnews") url = `https://gnews.io/api/v4/search?q=${query}&lang=es&max=5&apikey=${API_KEYS.gnews}`;
+                if(apiName === "currents") url = `https://api.currentsapi.services/v1/search?keywords=${query}&language=es&apiKey=${API_KEYS.currents}`;
+                if(apiName === "mediastack") url = `http://api.mediastack.com/v1/news?access_key=${API_KEYS.mediastack}&keywords=${query}&languages=es`;
+
+                const res = await fetch(url);
+                const data = await res.json();
                 
-                engineBox.className = "header-status status-blue";
-                newsSource.innerText = "TEMA: " + activeTopic.substring(0, 18).toUpperCase();
-                btnGen.disabled = false;
-                document.getElementById('status').innerText = "✓ TEMA ACTUALIZADO CON ÉXITO";
-            } else { throw new Error(); }
-        } catch(e) {
-            activeTopic = "Estrategias de Adaptación Tecnológica 2026";
-            engineBox.className = "header-status status-blue";
-            newsSource.innerText = "TEMA MANUAL";
-            btnGen.disabled = false;
+                let title = "";
+                if(apiName === "newsapi") title = data.articles[0].title;
+                if(apiName === "gnews") title = data.articles[0].title;
+                if(apiName === "currents") title = data.news[0].title;
+                if(apiName === "mediastack") title = data.data[0].title;
+
+                if(title) {
+                    activeTopic = title;
+                    engineBox.className = "header-status status-blue";
+                    newsSource.innerText = "TEMA: " + activeTopic.substring(0, 15).toUpperCase();
+                    btnGen.disabled = false;
+                    btnGen.innerHTML = '<i class="fas fa-brain"></i> GENERAR';
+                    document.getElementById('status').innerText = `FUENTE: ${apiName.toUpperCase()} CONECTADA`;
+                    return; 
+                }
+            } catch(e) { console.log(`${apiName} falló, saltando...`); }
         }
+        
+        // Fail-safe si todas fallan
+        activeTopic = "Liderazgo y Estrategia en la Era de la IA 2026";
+        engineBox.className = "header-status status-blue";
+        newsSource.innerText = "MODO AUTÓNOMO";
+        btnGen.disabled = false;
+        btnGen.innerHTML = '<i class="fas fa-brain"></i> GENERAR';
     }
 
     function generarAnalisis() {
@@ -105,48 +124,43 @@
             "",
             "La noticia sobre este avance representa un punto de inflexión en la manera en que entendemos la arquitectura operativa moderna.",
             "",
-            "Bajo un enfoque narrativo y puramente estratégico, observamos que la integración de estas soluciones no es solo un reto técnico, sino una transformación cultural profunda que redefine la eficiencia competitiva.",
+            "Bajo un enfoque estratégico, observamos que la integración de estas soluciones no es solo un reto técnico, sino una transformación cultural profunda que redefine la eficiencia competitiva.",
             "",
-            "Desde la perspectiva de la operatividad corporativa, estos modelos permiten una orquestación de recursos que elimina la fricción en procesos de alta complejidad estructural, permitiendo que el liderazgo se centre en la visión de largo plazo.",
+            "Desde la perspectiva de la operatividad, estos modelos permiten una orquestación de recursos que elimina la fricción en procesos de alta complejidad, permitiendo que el liderazgo se centre en la visión de largo plazo.",
             "",
             "🔹 DIMENSIONES DE IMPACTO ESTRATÉGICO:",
-            "• Redefinición de flujos mediante automatización inteligente de alto nivel.",
-            "• Toma de decisiones basada en síntesis de datos en tiempo real y sin sesgos.",
-            "• Fortalecimiento de la seguridad con protocolos autónomos resilientes.",
-            "• Escalabilidad de modelos hacia entornos de demanda digital volátil.",
-            "• Optimización del ROI tecnológico mediante implementación de IA aplicada.",
+            "• Redefinición de flujos mediante automatización inteligente.",
+            "• Toma de decisiones basada en síntesis de datos en tiempo real.",
+            "• Fortalecimiento de la seguridad con protocolos autónomos.",
+            "• Escalabilidad de modelos hacia entornos de demanda volátil.",
+            "• Optimización del ROI tecnológico mediante IA aplicada.",
             "",
-            "El éxito no reside en la adopción masiva, sino en el criterio estratégico para alinear estas herramientas con la visión a largo plazo de la organización.",
-            "Las compañías que logren equilibrar el juicio humano con la potencia del procesamiento cognitivo serán las que lideren la próxima década del mercado global.",
+            "El éxito no reside en la adopción masiva, sino en el criterio estratégico para alinear estas herramientas con la visión a largo plazo.",
+            "Las compañías que logren equilibrar el juicio humano con la potencia del procesamiento cognitivo serán las que lideren la próxima década.",
             "",
-            "En conclusión, nos encontramos ante una oportunidad sin precedentes para reconstruir la resiliencia corporativa desde la innovación pura.",
-            "La tecnología es el catalizador, pero la ejecución estratégica es la que determinará quiénes logran consolidar una ventaja competitiva sostenible.",
+            "En conclusión, nos encontramos ante una oportunidad sin precedentes para reconstruir la resiliencia corporativa desde la innovación.",
+            "La tecnología es el catalizador, pero la ejecución estratégica determinará quiénes consolidan una ventaja competitiva sostenible.",
             "",
-            "#IA #Estrategia #Innovacion #Liderazgo #Negocios #Analitica #Futuro #Automation"
+            "#IA #Estrategia #Innovacion #Liderazgo #Negocios #Analitica #Futuro"
         ];
         
         document.getElementById('postText').value = content.join("\n");
         document.getElementById('btnImg').disabled = false;
-        document.getElementById('status').innerText = "✓ ANÁLISIS GENERADO DESDE CERO";
+        document.getElementById('status').innerText = "✓ ANÁLISIS ESTRATÉGICO LISTO";
     }
 
     function generarImagen() {
         const loader = document.getElementById('loader');
         const img = document.getElementById('postImg');
-        const btnPub = document.getElementById('btnPub');
-        
         img.style.display = "none";
         loader.style.display = "block";
-        
         const seed = Date.now();
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " 3d business tech render")}?width=1200&height=630&seed=${seed}&nologo=true`;
-        
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic business render 4k")}?width=1200&height=630&seed=${seed}&nologo=true`;
         img.src = finalImageUrl;
         img.onload = () => {
             loader.style.display = "none";
             img.style.display = "block";
-            btnPub.disabled = false;
-            document.getElementById('status').innerText = "✓ IMAGEN SINCRONIZADA";
+            document.getElementById('btnPub').disabled = false;
         };
     }
 
@@ -156,31 +170,25 @@
         document.getElementById('manualTopic').value = "";
         document.getElementById('btnImg').disabled = true;
         document.getElementById('btnPub').disabled = true;
-        document.getElementById('status').innerText = "REFRESCANDO MOTOR DE NOTICIAS...";
-        fetchNews(); // Forzar petición fresca
+        document.getElementById('status').innerText = "VACIANDO PIZARRA Y REFRESCANDO FUENTES...";
+        fetchNewsInCascade(); 
     }
 
     async function publicar() {
         const btn = document.getElementById('btnPub');
         btn.disabled = true;
-        document.getElementById('status').innerText = "ENVIANDO A LINKEDIN...";
+        document.getElementById('status').innerText = "PUBLICANDO...";
         try {
             const res = await fetch(WEBHOOK_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    mensaje: document.getElementById('postText').value,
-                    url_imagen: finalImageUrl
-                })
+                body: JSON.stringify({ mensaje: document.getElementById('postText').value, url_imagen: finalImageUrl })
             });
-            if(res.ok) document.getElementById('status').innerText = "✅ POST PUBLICADO";
-        } catch(e) { 
-            alert("Error de red"); 
-            btn.disabled = false;
-        }
+            if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
+        } catch(e) { alert("Error de red"); btn.disabled = false; }
     }
     
-    window.onload = fetchNews;
+    window.onload = fetchNewsInCascade;
 </script>
 </body>
 </html>
