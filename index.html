@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IA Deep Insight Pro v27.1</title>
+    <title>IA Strategic Insight v28.0</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
@@ -11,67 +11,55 @@
         body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
         .container { background: var(--card); padding: 15px; border-radius: 12px; width: 100%; max-width: 500px; border: 1px solid #30363d; }
         
-        /* Semáforo de noticias */
-        .header-status { font-size: 11px; font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding: 8px; border-radius: 6px; border: 1px solid #333; }
-        .status-red { color: var(--danger); }
-        .status-blue { color: var(--accent); }
+        .header-status { font-size: 11px; font-weight: bold; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 8px; border: 1px solid #333; transition: 0.3s; }
+        .status-red { color: var(--danger); background: rgba(248, 81, 73, 0.1); border-color: var(--danger); }
+        .status-blue { color: var(--accent); background: rgba(88, 166, 255, 0.1); border-color: var(--accent); }
 
-        .input-manual { width: 100%; background: #000; color: var(--accent); border: 1px solid #444; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; }
-        .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        select { background: var(--bg); color: white; border: 1px solid #30363d; padding: 12px; border-radius: 8px; font-size: 13px; width: 100%; }
+        .input-manual { width: 100%; background: #000; color: var(--accent); border: 1px solid #444; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; font-style: italic; }
 
-        textarea { width: 100%; height: 350px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; margin-bottom: 12px; }
+        textarea { width: 100%; height: 380px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: none; margin-bottom: 12px; }
         
-        .img-preview { width: 100%; height: 220px; background: #000; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #30363d; }
+        .img-preview { width: 100%; height: 230px; background: #000; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #30363d; position: relative; }
         #postImg { width: 100%; height: 100%; object-fit: cover; display: none; }
+        #loader { color: var(--accent); }
 
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { height: 50px; border-radius: 8px; border: none; font-weight: bold; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: white; }
+        button { height: 50px; border-radius: 8px; border: none; font-weight: bold; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; transition: 0.2s; }
         .btn-gen { background: var(--success); }
         .btn-img { background: #8957e5; }
         .btn-clear { background: #30363d; border: 1px solid var(--danger); color: var(--danger); }
         .btn-pub { background: var(--primary); }
-        button:disabled { opacity: 0.3; }
-        #status { font-size: 12px; text-align: center; color: #8b949e; margin-top: 15px; }
+        button:active { transform: scale(0.96); }
+        button:disabled { opacity: 0.2; filter: grayscale(1); }
+        
+        #status { font-size: 11px; text-align: center; color: #8b949e; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="engineBox" class="header-status status-red">
-        <span><i class="fas fa-rss"></i> NEWS ENGINE ACTIVE</span>
-        <span id="newsSource">ESPERANDO TEMA</span>
+        <span><i class="fas fa-microchip"></i> STRATEGIC ENGINE</span>
+        <span id="newsSource">ESPERANDO TEMA...</span>
     </div>
 
-    <input type="text" id="manualTopic" class="input-manual" placeholder="Opcional: Escribe un tema propio aquí...">
+    <input type="text" id="manualTopic" class="input-manual" placeholder="Tópico personalizado (opcional)...">
 
-    <div class="controls-grid">
-        <select id="toneSelect">
-            <option value="Inspirador">Análisis: Inspirador</option>
-            <option value="Tecnológico">Análisis: Tecnológico</option>
-            <option value="Estratégico">Análisis: Estratégico</option>
-        </select>
-        <select id="formatSelect">
-            <option value="list">Formato: Listado</option>
-            <option value="story">Formato: Narrativo</option>
-        </select>
-    </div>
-
-    <textarea id="postText" placeholder="Paso 1: Espera al tema en celeste y genera..."></textarea>
+    <textarea id="postText" placeholder="El análisis estratégico aparecerá aquí una vez que el motor esté en celeste..."></textarea>
     
     <div class="img-preview">
-        <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-2x" style="color:var(--accent)"></i></div>
+        <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-3x"></i></div>
         <img id="postImg">
     </div>
 
     <div class="action-grid">
         <button id="btnGen" class="btn-gen" onclick="generarAnalisis()" disabled><i class="fas fa-brain"></i> GENERAR</button>
         <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-magic"></i> IMAGEN</button>
-        <button class="btn-clear" onclick="limpiarYPonerRojo()"><i class="fas fa-eraser"></i> LIMPIAR</button>
+        <button class="btn-clear" onclick="limpiarYRefrescar()"><i class="fas fa-eraser"></i> LIMPIAR</button>
         <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
     </div>
     
-    <div id="status">Esperando conexión de noticias...</div>
+    <div id="status">v28.0 - Análisis Estratégico Fijo</div>
 </div>
 
 <script>
@@ -80,76 +68,76 @@
     
     let activeTopic = "";
     let finalImageUrl = "";
+    const keywords = ["Artificial Intelligence Business", "Cybersecurity Strategy", "Digital Transformation", "Cloud Computing Innovation", "Data Science Trends", "Fintech Evolution"];
+    let kwIndex = 0;
 
-    // Función principal para obtener noticia y gestionar colores
-    async function fetchFreshNews() {
+    async function fetchNews() {
         const engineBox = document.getElementById('engineBox');
         const newsSource = document.getElementById('newsSource');
         const btnGen = document.getElementById('btnGen');
 
-        // Paso Rojo: Iniciando carga
         engineBox.className = "header-status status-red";
-        newsSource.innerText = "ESPERANDO TEMA";
+        newsSource.innerText = "REFRESCANDO...";
         btnGen.disabled = true;
 
+        const currentKW = keywords[kwIndex];
+        kwIndex = (kwIndex + 1) % keywords.length;
+
         try {
-            const res = await fetch(`https://newsapi.org/v2/everything?q=AI+Business+Innovation&language=es&sortBy=publishedAt&pageSize=15&apiKey=${NEWS_API_KEY}`);
+            const res = await fetch(`https://newsapi.org/v2/everything?q=${currentKW}&language=es&sortBy=publishedAt&pageSize=10&apiKey=${NEWS_API_KEY}`);
             const data = await res.json();
             if(data.articles && data.articles.length > 0) {
                 activeTopic = data.articles[Math.floor(Math.random() * data.articles.length)].title;
-                
-                // Paso Celeste: Carga exitosa
                 engineBox.className = "header-status status-blue";
-                newsSource.innerText = "TEMA: " + activeTopic.substring(0, 20).toUpperCase() + "...";
+                newsSource.innerText = "TEMA: " + activeTopic.substring(0, 20).toUpperCase();
                 btnGen.disabled = false;
-                document.getElementById('status').innerText = "Noticia recibida. Listo para generar.";
             } else { throw new Error(); }
         } catch(e) {
-            // Backup por si falla la API
-            activeTopic = "Tendencias en IA y Transformación Digital 2025";
+            activeTopic = "Tendencias en Liderazgo Tecnológico y Estrategia 2025";
             engineBox.className = "header-status status-blue";
-            newsSource.innerText = "TEMA CARGADO";
+            newsSource.innerText = "MODO RESPALDO";
             btnGen.disabled = false;
         }
     }
 
-    async function generarAnalisis() {
+    function generarAnalisis() {
         const manual = document.getElementById('manualTopic').value;
         if(manual) activeTopic = manual;
 
-        const tone = document.getElementById('toneSelect').value;
-        const format = document.getElementById('formatSelect').value;
+        const intros = [
+            "La noticia de este avance no es solo un titular; es una señal clara de la transformación estructural que estamos viviendo.",
+            "Observar la evolución de este sector nos permite anticipar cómo se reconfigurarán las ventajas competitivas en el corto plazo.",
+            "Cuando analizamos la profundidad de esta innovación, queda claro que la adaptación ya no es opcional, sino un requisito de supervivencia."
+        ];
 
-        // Lógica de construcción dinámica de 20-25 líneas
         const content = [
-            `🚀 ANÁLISIS DINÁMICO: ${activeTopic.toUpperCase()}`,
+            `🚀 ANÁLISIS ESTRATÉGICO: ${activeTopic.toUpperCase()}`,
             "",
-            format === 'list' ? "¿Qué impacto estratégico proyecta este avance?" : "Vivimos en una era donde la noticia de hoy redefine el plan de mañana.",
+            intros[Math.floor(Math.random() * intros.length)],
             "",
-            "La velocidad de esta innovación nos obliga a replantear la resiliencia de nuestras estructuras.",
-            "Bajo un enfoque " + tone.toLowerCase() + ", queda claro que la IA no es un accesorio, sino el nuevo núcleo operativo.",
+            "Bajo un enfoque puramente estratégico, este desarrollo demuestra que la integración de sistemas autónomos está redefiniendo los márgenes de eficiencia operativa.",
             "",
-            "🔹 PILARES DE VALOR IDENTIFICADOS:",
-            "• Optimización masiva de flujos de trabajo críticos.",
-            "• Reducción de sesgos en el análisis de grandes volúmenes de datos.",
-            "• Fortalecimiento del blindaje digital ante nuevas amenazas.",
-            "• Escalabilidad de infraestructura sin aumentar la fricción técnica.",
-            "• Democratización de capacidades cognitivas de alto nivel.",
+            "Desde la perspectiva del liderazgo digital, nos encontramos ante un cambio de paradigma donde la tecnología deja de ser un habilitador para convertirse en el núcleo de la toma de decisiones corporativas.",
             "",
-            "Al observar el panorama, entendemos que la tecnología es solo el punto de partida.",
-            "El éxito real reside en el criterio humano capaz de orquestar estos sistemas.",
-            "Integrar estas herramientas hoy permite construir la solidez necesaria para la próxima década.",
-            "Aquellas organizaciones que ignoren esta evolución cederán su posición de liderazgo.",
+            "🔹 IMPACTOS CLAVE EN EL MODELO DE NEGOCIO:",
+            "• Optimización de la arquitectura de datos para respuestas predictivas.",
+            "• Reducción de la fricción en procesos de alta complejidad logística.",
+            "• Fortalecimiento de la seguridad mediante protocolos neuronales activos.",
+            "• Capacidad de escalabilidad sin precedentes en entornos de demanda volátil.",
+            "• Democratización de la inteligencia estratégica en todos los niveles de la organización.",
             "",
-            "En conclusión, el futuro pertenece a quienes se atrevan a liderar con inteligencia hoy.",
-            "¿Cuál es tu postura estratégica frente a esta aceleración?",
+            "El éxito en la implementación de estas herramientas no reside en la velocidad, sino en la precisión con la que se alineen con los objetivos de largo plazo.",
+            "Aquellas organizaciones que logren orquestar el juicio humano con estas capacidades analíticas serán las que dominen el ecosistema global.",
             "",
-            "#IA #Innovation #Future #Liderazgo #Estrategia #Analitica #Negocios #Tech"
+            "Al final, la tecnología es el punto de partida, pero la visión estratégica es el factor diferenciador que separa el crecimiento sostenible del ruido tecnológico momentáneo.",
+            "La construcción de una infraestructura resiliente comienza hoy con la comprensión profunda de estos cambios.",
+            "",
+            "#IA #Estrategia #Innovacion #Liderazgo #Negocios #Analitica #Futuro #Tech"
         ];
 
         document.getElementById('postText').value = content.join("\n");
         document.getElementById('btnImg').disabled = false;
-        document.getElementById('status').innerText = "✓ Análisis generado. Paso 2: Imagen.";
+        document.getElementById('status').innerText = "✓ ANÁLISIS GENERADO";
     }
 
     function generarImagen() {
@@ -159,32 +147,30 @@
         loader.style.display = "block";
         
         const seed = Date.now();
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " cinematic futuristic tech 4k")}?width=1200&height=630&seed=${seed}&nologo=true`;
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " cinematic corporate tech landscape ultra realistic")}?width=1200&height=630&seed=${seed}&nologo=true`;
         
         img.src = finalImageUrl;
         img.onload = () => {
             loader.style.display = "none";
             img.style.display = "block";
             document.getElementById('btnPub').disabled = false;
-            document.getElementById('status').innerText = "✓ Visual listo para publicar.";
         };
     }
 
-    function limpiarYPonerRojo() {
-        // Limpiar todo y disparar nueva búsqueda
+    function limpiarYRefrescar() {
         document.getElementById('postText').value = "";
         document.getElementById('postImg').style.display = "none";
         document.getElementById('manualTopic').value = "";
         document.getElementById('btnImg').disabled = true;
         document.getElementById('btnPub').disabled = true;
-        document.getElementById('status').innerText = "Limpiando pizarra y buscando nuevo tema...";
-        fetchFreshNews(); 
+        document.getElementById('status').innerText = "SOLICITANDO NUEVO TEMA...";
+        fetchNews();
     }
 
     async function publicar() {
         const btn = document.getElementById('btnPub');
         btn.disabled = true;
-        document.getElementById('status').innerText = "Publicando...";
+        document.getElementById('status').innerText = "PUBLICANDO...";
         try {
             const res = await fetch(WEBHOOK_URL, {
                 method: 'POST',
@@ -194,15 +180,14 @@
                     url_imagen: finalImageUrl
                 })
             });
-            if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
+            if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EN LINKEDIN";
         } catch(e) { 
-            alert("Error al publicar"); 
+            alert("Error al enviar"); 
             btn.disabled = false;
         }
     }
 
-    // Inicio automático
-    window.onload = fetchFreshNews;
+    window.onload = fetchNews;
 </script>
 </body>
 </html>
