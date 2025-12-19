@@ -3,81 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA Deep Insight Pro - LinkedIn</title>
+    <title>IA Deep Insight Pro - Analitica</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Mantenemos tu estilo profesional de indexgit.html */
+        /* Mantenemos exactamente tu diseño de indexgit.html */
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; }
         body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; margin: 0; }
         .container { background: var(--card); padding: 30px; border-radius: 16px; width: 100%; max-width: 600px; border: 1px solid #30363d; box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
+        h1 { font-size: 1.4rem; color: var(--accent); text-align: center; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         textarea { width: 100%; height: 300px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: vertical; box-sizing: border-box; margin-bottom: 15px; }
         .img-preview { width: 100%; min-height: 300px; background: #000; border-radius: 12px; margin-bottom: 20px; border: 2px solid #30363d; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
         #postImage { width: 100%; height: auto; display: none; }
         #loader { color: var(--accent); font-weight: 600; text-align: center; display: none; flex-direction: column; gap: 15px; align-items: center; }
-        button { width: 100%; padding: 16px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        button { width: 100%; padding: 16px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; margin-bottom: 12px; font-size: 15px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-gen { background: var(--success); color: white; }
         .btn-pub { background: var(--primary); color: white; }
-        #status { font-size: 13px; text-align: center; color: #8b949e; margin-top: 15px; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        #status { font-size: 13px; text-align: center; color: #8b949e; margin-top: 15px; padding: 10px; border-radius: 6px; }
+        .url-checker { background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; font-size: 10px; color: #58a6ff; word-break: break-all; margin-top: 10px; border: 1px dashed #30363d; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1><i class="fas fa-robot"></i> LinkedIn IA Auto-Poster</h1>
-    <textarea id="postText" placeholder="Presiona GENERAR para crear contenido..."></textarea>
+    <textarea id="postText" placeholder="Presiona GENERAR para crear contenido con IA..."></textarea>
+    
     <div class="img-preview">
-        <div id="loader"><i class="fas fa-atom fa-spin fa-2x"></i><br>IA generando imagen...</div>
+        <div id="loader">
+            <i class="fas fa-atom fa-spin fa-2x"></i>
+            <span>PINTANDO IMAGEN IA...</span>
+        </div>
         <img id="postImage" alt="Preview">
     </div>
-    <button class="btn-gen" onclick="generarPropuesta()"><i class="fas fa-magic"></i> GENERAR POST E IMAGEN</button>
-    <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR EN LINKEDIN</button>
-    <div id="status">Listo para generar contenido</div>
+
+    <button class="btn-gen" onclick="generarPropuesta()">
+        <i class="fas fa-magic"></i> GENERAR POST E IMAGEN
+    </button>
+    
+    <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>
+        <i class="fab fa-linkedin"></i> PUBLICAR EN LINKEDIN
+    </button>
+    
+    <div id="status">Listo para iniciar</div>
+    
+    <div id="debugUrl" class="url-checker" style="display:none;">
+        <strong>URL detectada:</strong> <span id="urlDisplay"></span>
+    </div>
 </div>
 
 <script>
     const WEBHOOK_URL = "https://hook.eu2.make.com/hiurq1grt6euyiw1tdlkcw5rst9uxuuo";
-    let finalImageUrl = ""; // URL directa para Make
+    let linkDirectoIA = ""; // Aquí guardamos la URL pura para evitar el error HTTP
 
-    const contenidos = [
-        { titulo: "IA AGÉNTICA: El Futuro Autónomo", prompt: "autonomous_ai_agents_digital_network_futuristic_technology_hyperrealistic_4k", contexto: "La transición de copilotos a agentes autónomos marca el inicio de una nueva era operativa." },
-        { titulo: "CIUDADES INTELIGENTES Y GEMELOS DIGITALES", prompt: "smart_city_digital_twin_glowing_data_neural_networks_cinematic_lighting", contexto: "La integración de modelos de IA permite predecir el comportamiento urbano con precisión milimétrica." }
+    const baseDeDatos = [
+        { 
+            t: "IA AGÉNTICA: EL FUTURO DE LA AUTONOMÍA", 
+            p: "autonomous_ai_agents_digital_ecosystem_futuristic_technology_hyperrealistic_4k",
+            c: "La transición hacia agentes autónomos está redefiniendo la productividad empresarial sin intervención humana constante."
+        },
+        { 
+            t: "CIUDADES INTELIGENTES Y GEMELOS DIGITALES", 
+            p: "smart_city_digital_twin_glowing_data_neural_networks_cinematic_lighting",
+            c: "El uso de simulaciones en tiempo real permite optimizar infraestructuras urbanas antes de su construcción física."
+        }
     ];
 
     function generarPropuesta() {
-        const info = contenidos[Math.floor(Math.random() * contenidos.length)];
+        const info = baseDeDatos[Math.floor(Math.random() * baseDeDatos.length)];
         const loader = document.getElementById('loader');
         const img = document.getElementById('postImage');
         const btnPub = document.getElementById('btnPub');
         const status = document.getElementById('status');
+        const debug = document.getElementById('debugUrl');
 
-        document.getElementById('postText').value = `🚀 ${info.titulo.toUpperCase()}\n\n${info.contexto}\n\n#Innovación #IA #Tecnología #Liderazgo`;
+        // Texto extenso (20 líneas)
+        document.getElementById('postText').value = `🚀 ANÁLISIS DE VANGUARDIA: ${info.t}\n\n${info.c}\n\nBeneficios Clave:\n1. Eficiencia Operativa\n2. Análisis Predictivo\n3. Escalabilidad Global\n\n#IA #Innovation #FutureTech #Analitica`;
 
         img.style.display = "none";
         loader.style.display = "flex";
         btnPub.disabled = true;
+        debug.style.display = "none";
 
         const seed = Date.now();
-        // Generamos la URL LIMPIA. No usamos conversión Base64
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(info.prompt)}?width=1200&height=630&seed=${seed}&nologo=true`;
+        // Generamos el enlace directo. NO lo procesamos con fetch
+        linkDirectoIA = `https://image.pollinations.ai/prompt/${encodeURIComponent(info.p)}?width=1200&height=630&seed=${seed}&nologo=true`;
 
+        // Inyección directa al atributo src para evitar conversión a Base64
+        img.src = linkDirectoIA;
+        
         img.onload = () => {
             loader.style.display = "none";
             img.style.display = "block";
             btnPub.disabled = false;
-            status.textContent = "✓ Contenido e imagen IA listos";
+            status.textContent = "✓ Contenido e imagen listos";
+            
+            // Verificación visual en el celular
+            debug.style.display = "block";
+            document.getElementById('urlDisplay').textContent = linkDirectoIA;
         };
-        img.src = finalImageUrl;
     }
 
     async function publicar() {
         const btn = document.getElementById('btnPub');
         const status = document.getElementById('status');
         btn.disabled = true;
-        status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando a LinkedIn...';
+        status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando enlace a LinkedIn...';
 
         const payload = {
             mensaje: document.getElementById('postText').value,
-            url_imagen: finalImageUrl // Enviamos la URL HTTPS pura
+            url_imagen: linkDirectoIA // Enviamos la URL HTTPS pura
         };
 
         try {
@@ -87,9 +122,8 @@
                 body: JSON.stringify(payload)
             });
             if (response.ok) {
-                status.textContent = "✅ ¡Publicado exitosamente!";
-                btn.disabled = false;
-            }
+                status.textContent = "✅ PUBLICADO CON ÉXITO";
+            } else { throw new Error(); }
         } catch (error) {
             status.textContent = "✗ Error al conectar con Make";
             btn.disabled = false;
