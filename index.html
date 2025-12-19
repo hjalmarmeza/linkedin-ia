@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IA Strategic Studio v35.0</title>
+    <title>IA Strategic Studio v36.0</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
@@ -30,11 +30,11 @@
 <body>
 <div class="container">
     <div id="engineBox" class="header-status status-red">
-        <span><i class="fas fa-satellite-dish"></i> <span id="apiLabel">BUSCANDO...</span></span>
+        <span><i class="fas fa-link"></i> <span id="apiLabel">CONECTANDO...</span></span>
         <span id="newsSource">STANDBY</span>
     </div>
     <input type="text" id="manualTopic" class="input-manual" placeholder="Tema personalizado (prioridad alta)...">
-    <textarea id="postText" placeholder="Esperando combustible de noticias frescas..."></textarea>
+    <textarea id="postText" placeholder="El sistema está saltando bloqueos de seguridad para traer noticias frescas..."></textarea>
     <div class="img-preview">
         <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-3x"></i></div>
         <img id="postImg">
@@ -45,7 +45,7 @@
         <button class="btn-clear" onclick="limpiarYRefrescar()"><i class="fas fa-eraser"></i> LIMPIAR</button>
         <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
     </div>
-    <div id="status">v35.0 - Análisis Estratégico Real</div>
+    <div id="status">v36.0 - Túnel de Datos Activo</div>
 </div>
 
 <script>
@@ -59,8 +59,7 @@
     
     let activeTopic = "";
     let finalImageUrl = "";
-    let currentTermIndex = 0;
-    const searchTerms = ["Inteligencia Artificial Negocios", "Automatización Industrial", "Ciberseguridad Corporativa", "Transformación Digital ROI", "Innovación Tecnológica 2026"];
+    const searchTerms = ["IA estratégica", "automatización empresarial", "ciberseguridad corporativa", "ROI de IA"];
 
     async function fetchNewsInCascade() {
         const engineBox = document.getElementById('engineBox');
@@ -73,25 +72,25 @@
         btnGen.disabled = true;
         btnGen.innerHTML = '<i class="fas fa-sync fa-spin"></i> BUSCANDO...';
 
-        // Rotar el término de búsqueda para forzar noticias nuevas
-        const query = searchTerms[currentTermIndex];
-        currentTermIndex = (currentTermIndex + 1) % searchTerms.length;
-
+        const query = searchTerms[Math.floor(Math.random() * searchTerms.length)];
         const order = ["newsapi", "gnews", "currents", "mediastack"];
-        
+        const proxy = "https://api.allorigins.win/get?url="; // Proxy para saltar CORS
+
         for (let apiName of order) {
             try {
-                apiLabel.innerText = `PROBANDO ${apiName.toUpperCase()}...`;
-                let url = "";
+                apiLabel.innerText = `SALTANDO BLOQUEO ${apiName.toUpperCase()}...`;
+                let baseUrl = "";
                 const cb = Date.now();
 
-                if(apiName === "newsapi") url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=es&sortBy=publishedAt&pageSize=10&apiKey=${API_KEYS.newsapi}&v=${cb}`;
-                if(apiName === "gnews") url = `https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=es&max=5&apikey=${API_KEYS.gnews}&v=${cb}`;
-                if(apiName === "currents") url = `https://api.currentsapi.services/v1/search?keywords=${encodeURIComponent(query)}&language=es&apiKey=${API_KEYS.currents}&v=${cb}`;
-                if(apiName === "mediastack") url = `http://api.mediastack.com/v1/news?access_key=${API_KEYS.mediastack}&keywords=${encodeURIComponent(query)}&languages=es&v=${cb}`;
+                if(apiName === "newsapi") baseUrl = `https://newsapi.org/v2/everything?q=${query}&language=es&sortBy=publishedAt&pageSize=5&apiKey=${API_KEYS.newsapi}`;
+                if(apiName === "gnews") baseUrl = `https://gnews.io/api/v4/search?q=${query}&lang=es&max=5&apikey=${API_KEYS.gnews}`;
+                if(apiName === "currents") baseUrl = `https://api.currentsapi.services/v1/search?keywords=${query}&language=es&apiKey=${API_KEYS.currents}`;
+                if(apiName === "mediastack") baseUrl = `http://api.mediastack.com/v1/news?access_key=${API_KEYS.mediastack}&keywords=${query}&languages=es`;
 
-                const res = await fetch(url);
-                const data = await res.json();
+                // Petición a través del Proxy
+                const res = await fetch(`${proxy}${encodeURIComponent(baseUrl + '&nocache=' + cb)}`);
+                const proxyData = await res.json();
+                const data = JSON.parse(proxyData.contents); // Extraer contenido del proxy
                 
                 let title = "";
                 if(apiName === "newsapi" && data.articles?.length) title = data.articles[0].title;
@@ -99,28 +98,23 @@
                 if(apiName === "currents" && data.news?.length) title = data.news[0].title;
                 if(apiName === "mediastack" && data.data?.length) title = data.data[0].title;
 
-                if(title && title !== activeTopic) {
+                if(title) {
                     activeTopic = title;
                     engineBox.className = "header-status status-blue";
-                    apiLabel.innerText = `FUENTE: [${apiName.toUpperCase()}]`;
+                    apiLabel.innerText = `CONECTADO: [${apiName.toUpperCase()}]`;
                     newsSource.innerText = activeTopic.substring(0, 20).toUpperCase() + "...";
                     btnGen.disabled = false;
                     btnGen.innerHTML = '<i class="fas fa-brain"></i> GENERAR';
                     return; 
                 }
-            } catch(e) { console.log(`${apiName} falló.`); }
+            } catch(e) { console.log(`${apiName} bloqueada o sin datos.`); }
         }
         
-        // Modo Autónomo Variable
-        const fallbacks = [
-            "Estrategia de Implementación de Agentes de IA en 2026",
-            "El Retorno de Inversión en Ciberseguridad Autónoma",
-            "Nuevos Paradigmas en la Automatización de Flujos Corporativos"
-        ];
-        activeTopic = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+        // Modo Autónomo Variable (Si el proxy también falla)
+        activeTopic = "Tendencias en la Orquestación de Agentes de IA 2026";
         engineBox.className = "header-status status-blue";
         apiLabel.innerText = "FUENTE: [AUTÓNOMO]";
-        newsSource.innerText = "TEMA ESTRATÉGICO";
+        newsSource.innerText = "TEMA DE RESPALDO";
         btnGen.disabled = false;
         btnGen.innerHTML = '<i class="fas fa-brain"></i> GENERAR';
     }
@@ -130,28 +124,28 @@
         if(manual.trim() !== "") activeTopic = manual;
 
         const content = [
-            `🚀 PERSPECTIVA: ${activeTopic.toUpperCase()}`,
+            `🚀 ${activeTopic.toUpperCase()}`,
             "",
-            "La noticia sobre este avance representa un punto de inflexión estratégico en la arquitectura operativa moderna.",
+            "Este avance representa un punto de inflexión estratégico en la arquitectura operativa moderna.",
             "",
-            "Desde un enfoque de liderazgo, este desarrollo no es solo una mejora tecnológica; es una reconfiguración de la eficiencia competitiva.",
+            "Bajo un enfoque narrativo y puramente estratégico, observamos que la integración de estas soluciones no es solo un reto técnico, sino una transformación cultural profunda que redefine la eficiencia competitiva.",
             "",
-            "Al analizar la integración de estas soluciones, observamos que el valor real reside en la orquestación de recursos, eliminando la fricción operativa para centrarse en la visión de largo plazo.",
+            "Desde la perspectiva de la operatividad, estos modelos permiten una orquestación de recursos que elimina la fricción en procesos de alta complejidad, permitiendo que el liderazgo se centre en la visión de largo plazo.",
             "",
-            "🔹 IMPACTO EN EL MODELO DE NEGOCIO:",
-            "• Redefinición de flujos mediante automatización inteligente de alto nivel.",
-            "• Toma de decisiones basada en la síntesis de datos en tiempo real.",
-            "• Fortalecimiento de la seguridad con protocolos autónomos resilientes.",
-            "• Escalabilidad acelerada en entornos de demanda digital volátil.",
-            "• Optimización del ROI mediante la implementación de IA aplicada.",
+            "🔹 DIMENSIONES DE IMPACTO ESTRATÉGICO:",
+            "• Redefinición de flujos mediante automatización inteligente.",
+            "• Toma de decisiones basada en síntesis de datos en tiempo real.",
+            "• Fortalecimiento de la seguridad con protocolos autónomos.",
+            "• Escalabilidad de modelos hacia entornos de demanda volátil.",
+            "• Optimización del ROI tecnológico mediante IA aplicada.",
             "",
-            "El éxito no reside en la adopción pasiva, sino en la capacidad estratégica para alinear estas herramientas con los objetivos corporativos.",
-            "Las organizaciones que logren equilibrar el juicio humano con la potencia del procesamiento cognitivo serán las que lideren el mercado global.",
+            "El éxito no reside en la adopción masiva, sino en el criterio estratégico para alinear estas herramientas con la visión a largo plazo.",
+            "Las compañías que logren equilibrar el juicio humano con la potencia del procesamiento cognitivo serán las que lideren la próxima década.",
             "",
-            "En conclusión, nos encontramos ante una oportunidad sin precedentes para reconstruir la resiliencia desde la innovación.",
+            "En conclusión, nos encontramos ante una oportunidad sin precedentes para reconstruir la resiliencia corporativa desde la innovación pura.",
             "La tecnología es el catalizador, pero la ejecución estratégica determinará quiénes consolidan una ventaja competitiva sostenible.",
             "",
-            "#IA #Estrategia #Innovacion #Liderazgo #Negocios #Analitica #Futuro #Automation"
+            "#IA #Estrategia #Innovacion #Liderazgo #Negocios #Analitica #Futuro"
         ];
         
         document.getElementById('postText').value = content.join("\n");
@@ -165,7 +159,7 @@
         img.style.display = "none";
         loader.style.display = "block";
         const seed = Date.now();
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " professional business technology render high resolution")}?width=1200&height=630&seed=${seed}&nologo=true`;
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic corporate render")}?width=1200&height=630&seed=${seed}&nologo=true`;
         img.src = finalImageUrl;
         img.onload = () => {
             loader.style.display = "none";
@@ -180,14 +174,14 @@
         document.getElementById('manualTopic').value = "";
         document.getElementById('btnImg').disabled = true;
         document.getElementById('btnPub').disabled = true;
-        document.getElementById('status').innerText = "BUSCANDO NUEVO ENFOQUE...";
+        document.getElementById('status').innerText = "VACIANDO Y REGENERANDO TÚNEL...";
         fetchNewsInCascade(); 
     }
 
     async function publicar() {
         const btn = document.getElementById('btnPub');
         btn.disabled = true;
-        document.getElementById('status').innerText = "ENVIANDO A LINKEDIN...";
+        document.getElementById('status').innerText = "PUBLICANDO...";
         try {
             const res = await fetch(WEBHOOK_URL, {
                 method: 'POST',
@@ -195,7 +189,7 @@
                 body: JSON.stringify({ mensaje: document.getElementById('postText').value, url_imagen: finalImageUrl })
             });
             if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
-        } catch(e) { alert("Error"); btn.disabled = false; }
+        } catch(e) { alert("Error de red"); btn.disabled = false; }
     }
     
     window.onload = fetchNewsInCascade;
