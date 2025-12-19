@@ -3,86 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA LinkedIn Studio Pro</title>
+    <title>IA Deep Insight Pro - LinkedIn</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; }
-        body { background: var(--bg); color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background: var(--card); padding: 30px; border-radius: 16px; width: 100%; max-width: 550px; border: 1px solid #30363d; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        textarea { width: 100%; height: 350px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: none; box-sizing: border-box; }
-        .img-preview { width: 100%; min-height: 250px; background: #000; border-radius: 12px; margin: 20px 0; border: 1px solid #444; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        #postImage { width: 100%; display: none; }
-        button { width: 100%; padding: 16px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; font-size: 15px; }
-        .btn-gen { background: #238636; color: white; }
-        .btn-pub { background: #1f6feb; color: white; }
+        :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; }
+        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; margin: 0; }
+        .container { background: var(--card); padding: 30px; border-radius: 16px; width: 100%; max-width: 600px; border: 1px solid #30363d; box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
+        h1 { font-size: 1.4rem; color: var(--accent); text-align: center; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        textarea { width: 100%; height: 350px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: vertical; box-sizing: border-box; margin-bottom: 15px; }
+        .img-preview { width: 100%; min-height: 300px; background: #000; border-radius: 12px; margin-bottom: 20px; border: 2px solid #30363d; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        #postImage { width: 100%; height: auto; display: none; }
+        #loader { color: var(--accent); font-weight: 600; text-align: center; display: none; flex-direction: column; gap: 15px; align-items: center; }
+        button { width: 100%; padding: 16px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; margin-bottom: 12px; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-gen { background: var(--success); color: white; }
+        .btn-pub { background: var(--primary); color: white; }
         button:disabled { opacity: 0.5; cursor: not-allowed; }
-        #status { font-size: 12px; text-align: center; color: #8b949e; margin-top: 10px; }
+        #status { font-size: 13px; text-align: center; color: #8b949e; margin-top: 15px; }
+        .url-debug { background: var(--bg); padding: 10px; border-radius: 6px; font-size: 11px; color: #58a6ff; word-break: break-all; margin-top: 10px; border: 1px solid #30363d; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 style="text-align:center; color:var(--accent)">IA Deep Insight Studio 🤖</h2>
-    <textarea id="postText" placeholder="Haz clic en generar..."></textarea>
-    
+    <h1><i class="fas fa-robot"></i> LinkedIn IA Studio</h1>
+    <textarea id="postText" placeholder="Presiona GENERAR para crear contenido de alto impacto..."></textarea>
     <div class="img-preview">
-        <span id="loader">Esperando IA...</span>
-        <img id="postImage">
+        <div id="loader"><i class="fas fa-atom fa-spin fa-2x"></i><br>IA generando imagen...</div>
+        <img id="postImage" alt="Preview">
     </div>
-
-    <button class="btn-gen" onclick="generar()">1. GENERAR POST E IMAGEN IA</button>
-    <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>2. PUBLICAR EN LINKEDIN</button>
-    <div id="status">v19.0 - Enlace Directo Garantizado</div>
+    <button class="btn-gen" onclick="generarPropuesta()"><i class="fas fa-magic"></i> GENERAR ANÁLISIS E IMAGEN</button>
+    <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR EN LINKEDIN</button>
+    <div id="status">Listo para iniciar</div>
+    <div id="debug" class="url-debug" style="display:none;">URL: <span id="urlVal"></span></div>
 </div>
 
 <script>
-    const WEBHOOK_URL = "https://hook.eu2.make.com/hiurq1grt6euyiw1tdlkcw5rst9uxuuo";
-    let globalImageUrl = ""; // Guardaremos solo el texto de la URL
+    // URL DE TU NUEVO WEBHOOK
+    const WEBHOOK_URL = "https://hook.eu2.make.com/57vo60yn9bbyi8967vil52v9fpq67h5e";
+    let finalImageUrl = "";
 
-    const temas = [
-        { t: "IA AGÉNTICA: EL FUTURO AUTÓNOMO", p: "autonomous_ai_agents_futuristic_digital_landscape_cinematic_4k", c: "La transición de copilotos a agentes autónomos redefine la operatividad empresarial." },
-        { t: "CIUDADES INTELIGENTES Y GEMELOS DIGITALES", p: "smart_city_digital_twin_neural_network_glowing_data_high_detail", c: "Simulaciones en tiempo real permiten optimizar infraestructuras antes de su construcción." }
+    const contenidos = [
+        { titulo: "IA AGÉNTICA: LA REVOLUCIÓN DE LA AUTONOMÍA", prompt: "autonomous_ai_agents_digital_network_futuristic_technology_hyperrealistic_4k", contexto: "Estamos ante el fin de los copilotos y el inicio de los agentes capaces de ejecutar procesos completos sin supervisión humana constante." },
+        { titulo: "CIUDADES INTELIGENTES Y GEMELOS DIGITALES", prompt: "smart_city_digital_twin_glowing_data_neural_networks_cinematic_lighting", contexto: "La integración de simulaciones en tiempo real con IA permite a las empresas probar estrategias urbanas antes de aplicarlas." }
     ];
 
-    function generar() {
-        const info = temas[Math.floor(Math.random() * temas.length)];
-        const seed = Date.now();
-        
-        // 1. Generar texto
-        document.getElementById('postText').value = `🚀 ${info.t}\n\n${info.c}\n\n#IA #Innovation #Future #Analitica`;
-        
-        // 2. Definir URL pura (esto es lo que LinkedIn necesita)
-        globalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(info.p)}?width=1200&height=630&seed=${seed}&nologo=true`;
-        
-        // 3. Mostrar visualmente (sin procesar datos internos)
+    function generarPropuesta() {
+        const info = contenidos[Math.floor(Math.random() * contenidos.length)];
+        const loader = document.getElementById('loader');
         const img = document.getElementById('postImage');
-        document.getElementById('loader').style.display = "none";
-        img.src = globalImageUrl;
-        img.style.display = "block";
-        document.getElementById('btnPub').disabled = false;
-        document.getElementById('status').innerText = "✓ Contenido listo.";
+        const btnPub = document.getElementById('btnPub');
+        const status = document.getElementById('status');
+
+        document.getElementById('postText').value = `🚀 ${info.titulo}\n\n${info.contexto}\n\n#Innovación #IA #Tecnología #Futuro`;
+
+        img.style.display = "none";
+        loader.style.display = "flex";
+        btnPub.disabled = true;
+
+        const seed = Date.now();
+        // Generamos la URL directa compatible con LinkedIn
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(info.prompt)}?width=1200&height=630&seed=${seed}&nologo=true`;
+
+        img.onload = () => {
+            loader.style.display = "none";
+            img.style.display = "block";
+            btnPub.disabled = false;
+            status.textContent = "✓ Contenido e imagen listos";
+            document.getElementById('debug').style.display = "block";
+            document.getElementById('urlVal').textContent = finalImageUrl;
+        };
+        img.src = finalImageUrl;
     }
 
     async function publicar() {
         const btn = document.getElementById('btnPub');
+        const status = document.getElementById('status');
         btn.disabled = true;
-        document.getElementById('status').innerText = "Enviando enlace directo...";
+        status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
 
-        // Enviamos la URL como texto plano para evitar el error de LinkedIn
         const payload = {
             mensaje: document.getElementById('postText').value,
-            url_imagen: globalImageUrl 
+            url_imagen: finalImageUrl // Enviamos la URL pura para evitar error HTTP en Make
         };
 
         try {
-            const res = await fetch(WEBHOOK_URL, {
+            const response = await fetch(WEBHOOK_URL, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
-        } catch (e) {
-            document.getElementById('status').innerText = "❌ Error de conexión.";
+            if (response.ok) {
+                status.textContent = "✅ PUBLICADO EXITOSAMENTE";
+                btn.disabled = false;
+            }
+        } catch (error) {
+            status.textContent = "❌ Error de conexión";
             btn.disabled = false;
         }
     }
