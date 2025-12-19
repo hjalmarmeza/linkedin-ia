@@ -3,116 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA Deep Insight Pro - LinkedIn</title>
+    <title>IA Deep Insight Pro v22.0</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; }
-        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; margin: 0; }
-        .container { background: var(--card); padding: 30px; border-radius: 16px; width: 100%; max-width: 600px; border: 1px solid #30363d; box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
-        h1 { font-size: 1.4rem; color: var(--accent); text-align: center; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        textarea { width: 100%; height: 350px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: vertical; box-sizing: border-box; margin-bottom: 12px; }
-        .img-preview { width: 100%; min-height: 300px; background: #000; border-radius: 12px; margin-bottom: 20px; border: 2px solid #30363d; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
-        #postImage { width: 100%; height: auto; display: none; }
-        #loader { color: var(--accent); font-weight: 600; text-align: center; display: none; flex-direction: column; gap: 15px; align-items: center; }
-        button { width: 100%; padding: 16px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; margin-bottom: 12px; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-gen { background: var(--success); color: white; }
-        .btn-pub { background: var(--primary); color: white; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        #status { font-size: 13px; text-align: center; color: #8b949e; margin-top: 15px; }
+        :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --warning: #d29922; }
+        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .container { background: var(--card); padding: 30px; border-radius: 16px; width: 100%; max-width: 700px; border: 1px solid #30363d; box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
+        h1 { font-size: 1.5rem; color: var(--accent); text-align: center; margin-bottom: 20px; }
+        
+        .controls { display: flex; gap: 10px; margin-bottom: 15px; }
+        select, .prompt-input { background: var(--bg); color: white; border: 1px solid #30363d; padding: 10px; border-radius: 6px; flex: 1; font-size: 13px; }
+        
+        textarea { width: 100%; height: 400px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; box-sizing: border-box; }
+        
+        .counter { font-size: 12px; color: #8b949e; text-align: right; margin: 5px 0 15px 0; }
+        .counter.valid { color: var(--success); font-weight: bold; }
+
+        .img-preview { width: 100%; min-height: 250px; background: #000; border-radius: 12px; margin-bottom: 15px; border: 1px solid #444; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #postImage { width: 100%; display: none; }
+        #loader { color: var(--accent); display: none; text-align: center; flex-direction: column; gap: 10px; }
+
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { padding: 14px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-analysis { background: #8957e5; color: white; }
+        .btn-image { background: var(--success); color: white; }
+        .btn-pub { background: var(--primary); color: white; grid-column: span 2; margin-top: 5px; }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+        
+        #status { font-size: 12px; text-align: center; color: #8b949e; margin-top: 15px; font-style: italic; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1><i class="fas fa-robot"></i> LinkedIn IA Auto-Poster</h1>
-    <textarea id="postText" placeholder="Toca GENERAR para crear un análisis disruptivo..."></textarea>
+    <h1><i class="fas fa-brain"></i> IA Deep Insight v22.0</h1>
     
-    <div class="img-preview">
-        <div id="loader">
-            <i class="fas fa-atom fa-spin fa-2x"></i>
-            <span>IA GENERANDO VISUAL...</span>
-        </div>
-        <img id="postImage" alt="Preview">
+    <div class="controls">
+        <select id="toneSelect">
+            <option value="Inspirador">Tono: Inspirador</option>
+            <option value="Técnico">Tono: Técnico</option>
+            <option value="Crítico">Tono: Crítico</option>
+        </select>
+        <input type="text" id="customPrompt" class="prompt-input" placeholder="Opcional: Ajustar prompt de imagen...">
     </div>
 
-    <button class="btn-gen" onclick="generarPropuesta()">
-        <i class="fas fa-magic"></i> 1. GENERAR ANÁLISIS E IMAGEN
-    </button>
+    <textarea id="postText" oninput="updateCounter()" placeholder="1. Genera tu análisis..."></textarea>
+    <div id="lineCounter" class="counter">Líneas: 0 / 20-25</div>
     
-    <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>
-        <i class="fab fa-linkedin"></i> 2. PUBLICAR EN LINKEDIN
-    </button>
-    
-    <div id="status">Esperando inicio...</div>
+    <div class="img-preview">
+        <div id="loader"><i class="fas fa-magic fa-spin fa-2x"></i><br>PINTANDO...</div>
+        <img id="postImage">
+    </div>
+
+    <div class="btn-grid">
+        <button class="btn-analysis" onclick="generarAnalisis()">
+            <i class="fas fa-file-alt"></i> GENERAR ANÁLISIS
+        </button>
+        <button id="btnImg" class="btn-image" onclick="generarImagen()" disabled>
+            <i class="fas fa-image"></i> NUEVA IMAGEN
+        </button>
+        <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>
+            <i class="fab fa-linkedin"></i> PUBLICAR EN LINKEDIN
+        </button>
+    </div>
+    <div id="status">Cargando historial local...</div>
 </div>
 
 <script>
-    // URL ACTUALIZADA SEGÚN TU SOLICITUD
     const WEBHOOK_URL = "https://hook.eu2.make.com/npbtxec20xxq92ef67qxijvvc4hl5kud";
+    let activePrompt = "";
     let finalImageUrl = "";
 
-    const baseNoticias = [
-        { 
-            t: "IA AGÉNTICA: MÁS ALLÁ DE LOS CHATS", 
-            p: "autonomous_ai_agents_working_in_futuristic_digital_landscape_hyper_realistic_cinematic_4k",
-            d: "La transición de copilotos a agentes autónomos marca el inicio de una nueva era en la productividad empresarial sin intervención constante."
-        },
-        { 
-            t: "CIUDADES INTELIGENTES Y GEMELOS DIGITALES", 
-            p: "smart_city_digital_twin_glowing_data_neural_networks_cinematic_lighting",
-            d: "El uso de simulaciones en tiempo real permite optimizar infraestructuras urbanas y servicios públicos con precisión milimétrica."
-        }
+    const templates = [
+        { t: "Soberanía de Datos", p: "digital_sovereignty_encryption_shield_cybersecurity_neon", c: "La propiedad de los datos es el activo más valioso de 2025." },
+        { t: "IA Agéntica", p: "autonomous_ai_agents_robotic_network_futuristic", c: "Los agentes autónomos están eliminando la fricción operativa." }
     ];
 
-    function generarPropuesta() {
-        const info = baseNoticias[Math.floor(Math.random() * baseNoticias.length)];
+    // Cargar historial al iniciar
+    window.onload = () => {
+        const saved = localStorage.getItem('lastPost');
+        if(saved) {
+            document.getElementById('postText').value = saved;
+            updateCounter();
+            document.getElementById('status').innerText = "Último post recuperado.";
+        } else {
+            document.getElementById('status').innerText = "Listo para iniciar.";
+        }
+    };
+
+    function updateCounter() {
+        const text = document.getElementById('postText').value;
+        const lines = text.split('\n').filter(l => l.trim() !== "").length;
+        const counter = document.getElementById('lineCounter');
+        counter.innerText = `Líneas: ${lines} / 20-25`;
+        counter.className = (lines >= 20 && lines <= 25) ? "counter valid" : "counter";
+        
+        // Auto-guardado
+        localStorage.setItem('lastPost', text);
+    }
+
+    function generarAnalisis() {
+        const info = templates[Math.floor(Math.random() * templates.length)];
+        const tono = document.getElementById('toneSelect').value;
+        activePrompt = info.p;
+        document.getElementById('customPrompt').value = info.p.replace(/_/g, " ");
+
+        // Lógica de generación dinámica (22 líneas promedio)
+        let analisis = [
+            `🚀 PERSPECTIVA: ${info.t.toUpperCase()} (${tono})`,
+            "",
+            "¿Estamos realmente comprendiendo la magnitud del cambio actual?",
+            info.c,
+            "",
+            "Desde un ángulo " + tono.toLowerCase() + ", el despliegue de estos sistemas no es solo una mejora de software, sino una reconfiguración de la ventaja competitiva.",
+            "",
+            "🔹 PUNTOS DE IMPACTO:",
+            "1. Agilidad Estructural: Reducción de tiempos de respuesta en un 60%.",
+            "2. Gestión de Riesgos: Identificación de fallos antes de su ejecución.",
+            "3. Integración Humana: La tecnología trabaja para nosotros, no al revés.",
+            "4. Futuro Escalable: Crecimiento sin límites técnicos tradicionales.",
+            "",
+            "🔹 BENEFICIOS PARA LA RED:",
+            "• Acceso inmediato a flujos de trabajo inteligentes.",
+            "• Mayor transparencia en el manejo de procesos críticos.",
+            "• Seguridad reforzada por modelos de aprendizaje continuo.",
+            "",
+            "En resumen, ignorar esta evolución es ceder el liderazgo del mañana. El momento de actuar es ahora.",
+            "",
+            "#IA #Estrategia #Innovacion #Futuro #Tech #Analytics #Management #Analitica"
+        ];
+
+        document.getElementById('postText').value = analisis.join("\n");
+        document.getElementById('btnImg').disabled = false;
+        updateCounter();
+        document.getElementById('status').innerText = "Análisis generado. Paso 2: Imagen.";
+    }
+
+    function generarImagen() {
         const loader = document.getElementById('loader');
         const img = document.getElementById('postImage');
         const btnPub = document.getElementById('btnPub');
-        const status = document.getElementById('status');
-
-        document.getElementById('postText').value = `🚀 ANÁLISIS DISRUPTIVO: ${info.t}\n\n${info.d}\n\n🔹 IMPACTO ESTRATÉGICO:\n1. Eficiencia Operativa\n2. Análisis Predictivo\n3. Escalabilidad Total\n\n#IA #Innovation #FutureTech #Analitica`;
+        const customP = document.getElementById('customPrompt').value;
 
         img.style.display = "none";
         loader.style.display = "flex";
         btnPub.disabled = true;
 
         const seed = Date.now();
-        // URL DIRECTA para que LinkedIn descargue el archivo sin errores
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(info.p)}?width=1200&height=630&seed=${seed}&nologo=true`;
+        const promptFinal = encodeURIComponent(customP || activePrompt);
+        finalImageUrl = `https://image.pollinations.ai/prompt/${promptFinal}?width=1200&height=630&seed=${seed}&nologo=true`;
 
-        img.src = finalImageUrl;
         img.onload = () => {
             loader.style.display = "none";
             img.style.display = "block";
             btnPub.disabled = false;
-            status.textContent = "✓ Post e Imagen IA real listos.";
+            document.getElementById('status').innerText = "Imagen lista. ¿Publicamos?";
         };
+        img.src = finalImageUrl;
     }
 
     async function publicar() {
         const btn = document.getElementById('btnPub');
-        const status = document.getElementById('status');
         btn.disabled = true;
-        status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
-
-        const payload = {
-            mensaje: document.getElementById('postText').value,
-            url_imagen: finalImageUrl 
-        };
+        document.getElementById('status').innerText = "Publicando...";
 
         try {
-            const response = await fetch(WEBHOOK_URL, {
+            const res = await fetch(WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({
+                    mensaje: document.getElementById('postText').value,
+                    url_imagen: finalImageUrl
+                })
             });
-            if (response.ok) {
-                status.textContent = "✅ PUBLICADO EXITOSAMENTE";
-                btn.disabled = false;
-            } else { throw new Error(); }
-        } catch (error) {
-            status.textContent = "❌ Error de conexión con Make.";
+            if(res.ok) {
+                document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
+                localStorage.removeItem('lastPost');
+            }
+        } catch (e) {
+            document.getElementById('status').innerText = "❌ Error en el envío.";
             btn.disabled = false;
         }
     }
