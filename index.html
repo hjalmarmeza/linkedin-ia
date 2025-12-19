@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analitica IA Studio</title>
+    <style>
+        :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; }
+        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; padding: 15px; margin: 0; }
+        .container { background: var(--card); padding: 20px; border-radius: 12px; width: 100%; max-width: 500px; border: 1px solid #30363d; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { font-size: 1.2rem; color: var(--accent); text-align: center; margin-bottom: 20px; }
+        textarea { width: 100%; height: 300px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 12px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; box-sizing: border-box; margin-bottom: 10px; }
+        .img-preview { width: 100%; min-height: 250px; background: #000; border-radius: 8px; margin-bottom: 15px; border: 1px solid #444; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        #postImage { width: 100%; height: auto; display: none; }
+        #loader { color: var(--accent); font-weight: bold; display: none; }
+        button { width: 100%; padding: 16px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; font-size: 14px; transition: 0.3s; }
+        .btn-gen { background: #238636; color: white; }
+        .btn-gen:active { transform: scale(0.98); }
+        .btn-pub { background: #1f6feb; color: white; }
+        .btn-pub:disabled { opacity: 0.5; cursor: not-allowed; }
+        #status { font-size: 12px; text-align: center; color: #8b949e; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+    <h1>IA Business Studio 🤖</h1>
+    <textarea id="postText" placeholder="Toca en GENERAR para crear contenido de 20 líneas..."></textarea>
+    
+    <div class="img-preview">
+        <div id="loader">IA GENERANDO IMAGEN...</div>
+        <img id="postImage">
+    </div>
+
+
+    <button class="btn-gen" onclick="generarTodo()">1. GENERAR POST E IMAGEN IA</button>
+    <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>2. PUBLICAR EN LINKEDIN</button>
+    <div id="status">Listo para usar desde móvil</div>
+</div>
+
+
+<script>
+    // URL Webhook actualizada
+    const WEBHOOK_URL = "https://hook.eu2.make.com/hiurq1grt6euyiw1tdlkcw5rst9uxuuo";
+
+
+    async function generarTodo() {
+        const status = document.getElementById('status');
+        const loader = document.getElementById('loader');
+        const img = document.getElementById('postImage');
+        const btnPub = document.getElementById('btnPub');
+
+
+        // Contenido de 20 líneas con noticias y beneficios
+        const texto = `🚀 IA ESTRATÉGICA 2025: Noticias y Análisis\n\n` +
+            `La Inteligencia Artificial ha dejado de ser una promesa para convertirse en el pilar operativo de las empresas competitivas. Este mes, la adopción de modelos generativos ha crecido un 45% en sectores de análisis de datos.\n\n` +
+            `Beneficios Clave para Empresas:\n` +
+            `1. Automatización de toma de decisiones en tiempo real.\n` +
+            `2. Reducción de costos operativos mediante IA aplicada.\n` +
+            `3. Mejora del 60% en la precisión de pronósticos de mercado.\n\n` +
+            `Aportes para los Usuarios:\n` +
+            `• Herramientas de asistencia que eliminan tareas repetitivas.\n` +
+            `• Mayor seguridad y blindaje de datos personales.\n` +
+            `• Interfaces más intuitivas basadas en lenguaje natural.\n\n` +
+            `En conclusión, la IA no solo optimiza, sino que redefine el valor del talento humano en la era digital.\n\n` +
+            `#IA #Innovation #Technology #Analytics #FutureOfWork #DigitalTransformation`;
+
+
+        document.getElementById('postText').value = texto;
+        
+        // Generar Imagen IA Real (Pollinations sin costo)
+        loader.style.display = "block";
+        img.style.display = "none";
+        status.innerText = "Conectando con motor de IA...";
+
+
+        const seed = Math.floor(Math.random() * 1000000);
+        const prompt = "futuristic_artificial_intelligence_concept_cybersecurity_business_analytics_neon_professional_4k";
+        const iaUrl = `https://pollinations.ai/p/${prompt}?width=1000&height=600&seed=${seed}&model=flux&nologo=true`;
+
+
+        // Precarga para asegurar que la imagen existe antes de mostrarla
+        const tempImg = new Image();
+        tempImg.onload = () => {
+            img.src = iaUrl;
+            img.style.display = "block";
+            loader.style.display = "none";
+            btnPub.disabled = false;
+            status.innerText = "✓ Imagen de IA creada exitosamente.";
+        };
+        tempImg.onerror = () => {
+            status.innerText = "Error en motor de IA. Reintentando...";
+            generarTodo();
+        };
+        tempImg.src = iaUrl;
+    }
+
+
+    async function publicar() {
+        const btn = document.getElementById('btnPub');
+        const status = document.getElementById('status');
+        btn.disabled = true;
+        status.innerText = "Enviando a LinkedIn...";
+
+
+        const data = {
+            mensaje: document.getElementById('postText').value,
+            url_imagen: document.getElementById('postImage').src
+        };
+
+
+        try {
+            const res = await fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            if(res.ok) {
+                status.innerText = "✅ POST PUBLICADO CON ÉXITO";
+                btn.innerText = "PUBLICADO";
+            }
+        } catch (e) {
+            status.innerText = "❌ Error de conexión con Make.";
+            btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
