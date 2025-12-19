@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA LinkedIn | Deep Insight</title>
+    <title>IA Deep Insight Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; }
-        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; padding: 10px; margin: 0; }
-        .container { background: var(--card); padding: 20px; border-radius: 12px; width: 100%; max-width: 550px; border: 1px solid #30363d; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; padding: 15px; margin: 0; }
+        .container { background: var(--card); padding: 20px; border-radius: 12px; width: 100%; max-width: 500px; border: 1px solid #30363d; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         h1 { font-size: 1.1rem; color: var(--accent); text-align: center; margin-bottom: 20px; }
-        textarea { width: 100%; height: 380px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: none; box-sizing: border-box; margin-bottom: 12px; }
+        textarea { width: 100%; height: 380px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 12px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; box-sizing: border-box; margin-bottom: 10px; }
         .img-preview { width: 100%; min-height: 280px; background: #000; border-radius: 8px; margin-bottom: 15px; border: 1px solid #444; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
         #postImage { width: 100%; height: auto; display: none; }
         #loader { color: var(--accent); font-weight: bold; text-align: center; display: none; }
@@ -23,72 +24,60 @@
 <body>
 
 <div class="container">
-    <h1>IA DEEP INSIGHT STUDIO 🤖</h1>
-    <textarea id="postText" placeholder="Toca en GENERAR para crear contenido de alto impacto..."></textarea>
+    <h1>IA LinkedIn Deep Insight 🤖</h1>
+    <textarea id="postText" placeholder="Toca GENERAR para crear contenido de alto impacto..."></textarea>
     
     <div class="img-preview">
-        <div id="loader">GENERANDO IMAGEN IA...</div>
+        <div id="loader"><i class="fas fa-atom fa-spin"></i> IA PINTANDO...</div>
         <img id="postImage">
     </div>
 
-    <button class="btn-gen" onclick="generarTodo()">1. GENERAR POST E IMAGEN IA</button>
+    <button class="btn-gen" onclick="generarPropuesta()">1. GENERAR POST E IMAGEN IA</button>
     <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>2. PUBLICAR EN LINKEDIN</button>
-    <div id="status">Listo para usar</div>
+    <div id="status">v18.0 - Cero Procesamiento Local</div>
 </div>
 
 <script>
     const WEBHOOK_URL = "https://hook.eu2.make.com/hiurq1grt6euyiw1tdlkcw5rst9uxuuo";
+    let urlParaMake = ""; // Guardaremos aquí la URL pura de la IA
 
-    const temasImpacto = [
-        {
-            t: "IA AGÉNTICA: LA REVOLUCIÓN DE LA AUTONOMÍA",
+    const baseNoticias = [
+        { 
+            t: "IA AGÉNTICA: EL FIN DE LOS COPILOTOS", 
             p: "autonomous_ai_agents_working_in_futuristic_digital_landscape_hyper_realistic_cinematic_4k",
-            d: "Estamos ante el fin de los copilotos y el inicio de los agentes capaces de ejecutar procesos completos sin supervisión humana constante."
+            d: "Estamos ante el inicio de los agentes capaces de ejecutar procesos completos sin supervisión humana constante."
         },
-        {
-            t: "SOBERANÍA DE DATOS Y ÉTICA EN 2025",
-            p: "cyber_security_shield_made_of_glowing_gold_data_particles_neon_blue_background_professional",
-            d: "El valor real hoy no es el algoritmo, sino la propiedad y el control ético de la información que lo alimenta."
+        { 
+            t: "CIUDADES INTELIGENTES Y GEMELOS DIGITALES", 
+            p: "smart_city_digital_twin_with_glowing_data_points_neural_networks_high_detail",
+            d: "La integración de simulaciones en tiempo real con IA permite a las empresas probar estrategias en entornos virtuales."
         }
     ];
 
-    function generarTodo() {
-        const sel = temasImpacto[Math.floor(Math.random() * temasImpacto.length)];
-        const status = document.getElementById('status');
+    function generarPropuesta() {
+        const info = baseNoticias[Math.floor(Math.random() * baseNoticias.length)];
         const loader = document.getElementById('loader');
         const img = document.getElementById('postImage');
         const btnPub = document.getElementById('btnPub');
 
-        // Texto de 20 líneas profesional
-        const texto = `🔥 ANÁLISIS DE VANGUARDIA: ${sel.t}\n\n` +
-            `La evolución tecnológica actual está marcando un punto de inflexión. ${sel.d}\n\n` +
-            `🔹 BENEFICIOS CLAVE PARA EL SECTOR:\n` +
-            `1. Eficiencia Exponencial: Automatización de flujos lógicos complejos.\n` +
-            `2. Seguridad Predictiva: Blindaje de activos mediante redes neuronales.\n` +
-            `3. Crecimiento Orgánico: Escalabilidad total sin aumento de costos fijos.\n\n` +
-            `Aportes para Usuarios:\n` +
-            `• Democratización del acceso a herramientas de alta especialización.\n` +
-            `• Mayor transparencia en el uso de datos personales.\n` +
-            `• Simplificación radical de la interacción humano-máquina.\n\n` +
-            `El futuro pertenece a quienes se atrevan a innovar hoy.\n\n` +
-            `#IA #AgentalAI #Innovation #DigitalTransformation #Analitica #Tech2025`;
+        // Texto de alto impacto (20 líneas)
+        document.getElementById('postText').value = `🔥 ANÁLISIS DE VANGUARDIA: ${info.t}\n\nLa evolución tecnológica actual está marcando un punto de inflexión. ${info.d}\n\n🔹 BENEFICIOS CLAVE:\n1. Eficiencia Exponencial: Automatización de flujos lógicos complejos.\n2. Seguridad Predictiva: Blindaje de activos mediante redes neuronales.\n3. Crecimiento Orgánico: Escalabilidad total sin aumento de costos.\n\nEn conclusión, el futuro pertenece a quienes se atreven a innovar hoy.\n\n#IA #Innovation #FutureTech #Analitica #DigitalTransformation`;
 
-        document.getElementById('postText').value = texto;
-        
         img.style.display = "none";
         loader.style.display = "block";
         btnPub.disabled = true;
 
         const seed = Math.floor(Math.random() * 999999);
-        // Enviamos una URL LIMPIA que LinkedIn pueda descargar
-        const finalImgUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(sel.p)}?width=1024&height=512&seed=${seed}&nologo=true`;
+        // Creamos la URL pero NO la descargamos con funciones de datos
+        urlParaMake = `https://image.pollinations.ai/prompt/${encodeURIComponent(info.p)}?width=1024&height=512&seed=${seed}&nologo=true`;
 
-        img.src = finalImgUrl;
+        // Simplemente la mostramos. El navegador solo la "dibuja", no la convierte
+        img.src = urlParaMake;
         img.onload = () => {
             loader.style.display = "none";
             img.style.display = "block";
             btnPub.disabled = false;
-            status.innerText = "✓ Post e Imagen IA real listos.";
+            document.getElementById('status').innerText = "✓ Post e Imagen listos.";
         };
     }
 
@@ -96,11 +85,12 @@
         const btn = document.getElementById('btnPub');
         const status = document.getElementById('status');
         btn.disabled = true;
-        status.innerText = "Transmitiendo a LinkedIn...";
+        status.innerText = "Enviando URL directa a LinkedIn...";
 
+        // Enviamos la URL original del motor de IA, no el código del navegador
         const payload = {
             mensaje: document.getElementById('postText').value,
-            url_imagen: document.getElementById('postImage').src
+            url_imagen: urlParaMake 
         };
 
         try {
@@ -109,7 +99,7 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             });
-            if(res.ok) status.innerText = "✅ PUBLICADO CON ÉXITO";
+            if(res.ok) status.innerText = "✅ PUBLICADO EXITOSAMENTE";
         } catch (e) {
             status.innerText = "❌ Error de conexión.";
             btn.disabled = false;
