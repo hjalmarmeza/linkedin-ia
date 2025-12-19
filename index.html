@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analitica IA Studio | Base64 Edition</title>
+    <title>IA LinkedIn Studio | Analitica</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; }
         body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; padding: 10px; margin: 0; }
         .container { background: var(--card); padding: 20px; border-radius: 12px; width: 100%; max-width: 500px; border: 1px solid #30363d; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { font-size: 1.2rem; color: var(--accent); text-align: center; margin-bottom: 20px; }
+        h1 { font-size: 1.1rem; color: var(--accent); text-align: center; margin-bottom: 15px; }
         textarea { width: 100%; height: 380px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 12px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; box-sizing: border-box; margin-bottom: 10px; }
         .img-preview { width: 100%; min-height: 280px; background: #000; border-radius: 8px; margin-bottom: 15px; border: 1px solid #444; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
         #postImage { width: 100%; height: auto; display: none; }
-        #loader { color: var(--accent); font-weight: bold; text-align: center; display: none; flex-direction: column; gap: 10px; }
+        #loader { color: var(--accent); font-weight: bold; text-align: center; display: none; }
         button { width: 100%; padding: 16px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; font-size: 14px; }
         .btn-gen { background: #238636; color: white; }
         .btn-pub { background: #1f6feb; color: white; }
@@ -24,26 +24,23 @@
 <body>
 
 <div class="container">
-    <h1>IA News Studio (Base64) 🤖</h1>
-    <textarea id="postText" placeholder="Toca en GENERAR..."></textarea>
+    <h1>IA LinkedIn Studio 🤖</h1>
+    <textarea id="postText" placeholder="Toca GENERAR para crear contenido..."></textarea>
     
     <div class="img-preview">
-        <div id="loader">
-            <i class="fas fa-robot fa-spin fa-2x"></i>
-            <div>IA CREANDO IMAGEN COHERENTE...</div>
-        </div>
+        <div id="loader"><i class="fas fa-brain fa-spin"></i> IA PINTANDO...</div>
         <img id="postImage">
     </div>
 
     <button class="btn-gen" onclick="generarTodo()">1. GENERAR POST E IMAGEN IA</button>
     <button id="btnPub" class="btn-pub" onclick="publicar()" disabled>2. PUBLICAR EN LINKEDIN</button>
-    <div id="status">Optimizado para evitar errores de red</div>
+    <div id="status">Versión Final Coherente</div>
 </div>
 
 <script>
     const WEBHOOK_URL = "https://hook.eu2.make.com/hiurq1grt6euyiw1tdlkcw5rst9uxuuo";
 
-    async function generarTodo() {
+    function generarTodo() {
         const status = document.getElementById('status');
         const loader = document.getElementById('loader');
         const img = document.getElementById('postImage');
@@ -51,54 +48,50 @@
 
         const noticias = [
             {
-                tema: "cybersecurity artificial intelligence digital shield protection technology neon blue",
-                post: "🛡️ NOTICIAS IA: El Escudo Digital de 2025\n\nLa seguridad empresarial ha dado un salto cuántico gracias a la IA. Hoy, la protección de datos no es reactiva, es predictiva.\n\nBeneficios para Empresas:\n1. Detección de intrusiones en milisegundos.\n2. Respuesta automatizada ante brechas de seguridad.\n3. Reducción drástica de costos por incidentes digitales.\n\nAportes para los Usuarios:\n• Blindaje automático de identidad y contraseñas.\n• Filtros inteligentes contra phishing y fraudes bancarios.\n• Navegación privada reforzada por redes neuronales.\n\nÚltima Noticia: Los nuevos modelos de defensa han neutralizado un 45% más de amenazas este trimestre.\n\n#Ciberseguridad #IA #Proteccion #Tech2025 #Analitica #Empresas"
+                prompt: "cybersecurity_digital_shield_with_glowing_lines_neon_blue_artificial_intelligence",
+                post: "🛡️ SEGURIDAD DIGITAL: El impacto de la IA en 2025\n\nEste análisis de 20 líneas revela cómo las empresas están blindando sus datos mediante algoritmos predictivos.\n\nBeneficios Directos:\n1. Detección de intrusiones en tiempo real.\n2. Respuesta automática a brechas de datos.\n3. Mayor confianza para el usuario final.\n\n#IA #CyberSecurity #Tech #Analitica"
             },
             {
-                tema: "robotic arm human hand collaboration futuristic office business analytics productivity",
-                post: "🚀 IA Y PRODUCTIVIDAD: La nueva era del talento humano\n\nLa IA no viene a reemplazar, viene a potenciar nuestra capacidad creativa y operativa. Los beneficios son visibles en todos los niveles de la organización.\n\nVentajas Estratégicas:\n1. Automatización de reportes complejos al instante.\n2. Análisis de mercado con precisión del 95%.\n3. Optimización del tiempo laboral en tareas de alto valor.\n\nAportes para el Usuario:\n• Asistentes digitales que eliminan la carga administrativa.\n• Personalización total de herramientas de trabajo.\n• Mejora en la toma de decisiones informadas.\n\nNoticias: La implementación de IA colaborativa ha incrementado la rentabilidad en un 30% en empresas del sector tecnológico.\n\n#IA #Productividad #Innovacion #FuturoDelTrabajo #Analitica #Negocios"
+                prompt: "futuristic_robotic_hand_collaborating_with_human_at_modern_office_digital_productivity",
+                post: "🚀 PRODUCTIVIDAD IA: La nueva ventaja competitiva\n\nOptimizar procesos ya no es opcional. La IA permite escalar operaciones reduciendo la carga administrativa.\n\nVentajas Clave:\n1. Automatización de reportes complejos.\n2. Mejora del 30% en eficiencia laboral.\n3. Análisis de mercado instantáneo.\n\n#IA #Productivity #Business #Innovation"
             }
         ];
 
         const sel = noticias[Math.floor(Math.random() * noticias.length)];
         document.getElementById('postText').value = sel.post;
         
+        // Reset Visual
         img.style.display = "none";
-        loader.style.display = "flex";
+        loader.style.display = "block";
         btnPub.disabled = true;
-        status.innerText = "La IA está procesando el contexto visual...";
+        status.innerText = "IA procesando imagen coherente...";
 
         const seed = Math.floor(Math.random() * 1000000);
-        const iaUrl = `https://pollinations.ai/p/${encodeURIComponent(sel.tema)}?width=1000&height=500&seed=${seed}&model=flux&nologo=true`;
+        // Motor de IA Real Pollinations
+        const finalUrl = `https://pollinations.ai/p/${sel.prompt}?width=1000&height=600&seed=${seed}&nologo=true`;
 
-        // TECNICA BASE64 / BLOB PARA EVITAR BLOQUEO DE RED
-        try {
-            const response = await fetch(iaUrl);
-            const blob = await response.blob();
-            const objectURL = URL.createObjectURL(blob);
-            
-            img.src = objectURL;
-            img.onload = () => {
-                loader.style.display = "none";
-                img.style.display = "block";
-                btnPub.disabled = false;
-                status.innerText = "✓ Imagen de IA Coherente Generada.";
-                status.style.color = "#58a6ff";
-            };
-            
-            // Guardamos la URL original para enviarla a Make
-            img.dataset.originalUrl = iaUrl;
-        } catch (e) {
-            status.innerText = "Error de red. Toca GENERAR nuevamente.";
+        // INYECCIÓN DIRECTA: El navegador no lo bloquea como descarga
+        img.src = finalUrl;
+        
+        img.onload = function() {
             loader.style.display = "none";
-        }
+            img.style.display = "block";
+            btnPub.disabled = false;
+            status.innerText = "✓ Contenido e Imagen de IA Listos.";
+            status.style.color = "#58a6ff";
+        };
+
+        img.onerror = function() {
+            status.innerText = "El servidor de IA está saturado. Toca GENERAR de nuevo.";
+            loader.style.display = "none";
+        };
     }
 
     async function publicar() {
         const btn = document.getElementById('btnPub');
         const status = document.getElementById('status');
         btn.disabled = true;
-        status.innerText = "Publicando...";
+        status.innerText = "Enviando a LinkedIn...";
 
         try {
             const res = await fetch(WEBHOOK_URL, {
@@ -106,7 +99,7 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     mensaje: document.getElementById('postText').value,
-                    url_imagen: document.getElementById('postImage').dataset.originalUrl
+                    url_imagen: document.getElementById('postImage').src
                 })
             });
             if(res.ok) {
@@ -114,7 +107,7 @@
                 btn.innerText = "ENVIADO";
             }
         } catch (e) {
-            status.innerText = "❌ Error al conectar con Make.";
+            status.innerText = "❌ Error de conexión con Make.";
             btn.disabled = false;
         }
     }
