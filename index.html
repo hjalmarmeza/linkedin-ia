@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA Deep Insight Pro v23.2</title>
+    <title>IA Deep Insight Pro v23.3</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --text-muted: #8b949e; }
@@ -30,7 +30,7 @@
 
 <div class="container">
     <div class="news-badge"><i class="fas fa-bolt"></i> TENDENCIAS REALES</div>
-    <div id="newsTopic" class="news-title">Inicializando sistema...</div>
+    <div id="newsTopic" class="news-title">Sistema listo para analizar</div>
 
     <div class="grid-main">
         <div class="edit-zone">
@@ -77,32 +77,34 @@
     let currentImage = "";
     let lastNewsTitle = "Evolución de la Inteligencia Artificial Agéntica";
 
-    // Función de carga con tiempo límite para evitar bloqueos
-    async function fetchNews() {
-        const statusDisplay = document.getElementById('newsTopic');
-        statusDisplay.innerText = "Buscando noticias de hoy...";
-        
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
+    // Respaldo de temas para cuando la API no responde
+    const backupTopics = [
+        "El impacto de la IA Agéntica en la autonomía empresarial",
+        "Gemelos Digitales: La revolución de las ciudades inteligentes",
+        "Ética y Soberanía de Datos en la era de la IA Generativa",
+        "Computación Cuántica y el futuro de la ciberseguridad"
+    ];
 
+    async function fetchNews() {
         try {
-            const res = await fetch(`https://newsapi.org/v2/everything?q=Artificial+Intelligence+Business&language=es&sortBy=publishedAt&pageSize=1&apiKey=${NEWS_API_KEY}`, { signal: controller.signal });
+            const res = await fetch(`https://newsapi.org/v2/everything?q=Artificial+Intelligence+Business&language=es&sortBy=publishedAt&pageSize=5&apiKey=${NEWS_API_KEY}`);
             const data = await res.json();
-            if(data.articles && data.articles[0]) {
-                lastNewsTitle = data.articles[0].title;
-                statusDisplay.innerText = "ÚLTIMA NOTICIA: " + lastNewsTitle;
-            } else {
-                throw new Error('No articles');
+            if(data.articles && data.articles.length > 0) {
+                // Elegir una noticia aleatoria de las 5 recibidas para variar
+                const randomNews = data.articles[Math.floor(Math.random() * data.articles.length)];
+                lastNewsTitle = randomNews.title;
+                document.getElementById('newsTopic').innerText = "ÚLTIMA NOTICIA: " + lastNewsTitle;
             }
         } catch(e) {
-            console.log("Usando tema de respaldo debido a límites de API o CORS.");
-            statusDisplay.innerText = "TEMA: Innovación y Liderazgo en IA 2025";
-        } finally {
-            clearTimeout(timeoutId);
+            lastNewsTitle = backupTopics[Math.floor(Math.random() * backupTopics.length)];
+            document.getElementById('newsTopic').innerText = "TEMA: " + lastNewsTitle;
         }
     }
 
     function generarAnalisis() {
+        // Cada vez que presionas el botón, intentamos traer noticia nueva o cambiar tema
+        fetchNews(); 
+        
         const tone = document.getElementById('toneSelect').value;
         const format = document.getElementById('formatSelect').value;
         
@@ -150,12 +152,12 @@
         const loader = document.getElementById('loader');
         const img = document.getElementById('postImg');
         const style = document.getElementById('styleSelect').value;
-        const status = document.getElementById('newsTopic');
 
         img.style.display = "none";
         loader.style.display = "flex";
         
         const seed = Date.now();
+        // Usamos el título actual para que la imagen siempre coincida con el texto
         currentImage = `https://image.pollinations.ai/prompt/${encodeURIComponent(lastNewsTitle + " " + style)}?width=1200&height=630&seed=${seed}&nologo=true`;
         
         img.src = currentImage;
@@ -183,8 +185,8 @@
         btn.disabled = false;
     }
 
-    // Iniciar carga de noticias al abrir
-    window.addEventListener('DOMContentLoaded', fetchNews);
+    // Cargar noticias iniciales
+    window.onload = fetchNews;
 </script>
 </body>
 </html>
