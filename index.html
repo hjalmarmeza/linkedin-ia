@@ -2,64 +2,72 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA Deep Insight Pro v24.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IA LinkedIn Studio Pro</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
-        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; padding: 15px; margin: 0; }
-        .container { background: var(--card); padding: 25px; border-radius: 16px; width: 100%; max-width: 800px; border: 1px solid #30363d; box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
-        .news-badge { background: #f85149; color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
-        .news-title { font-size: 14px; color: var(--accent); margin-bottom: 15px; font-weight: bold; min-height: 40px; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
-        .control-row { display: flex; gap: 10px; margin-bottom: 15px; }
-        select, button { border-radius: 8px; font-weight: 600; font-size: 13px; transition: 0.2s; }
-        select { background: var(--bg); color: white; border: 1px solid #30363d; padding: 10px; flex: 1; }
-        textarea { width: 100%; height: 380px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 13px; line-height: 1.5; resize: none; box-sizing: border-box; }
-        .img-preview { width: 100%; min-height: 250px; background: #000; border-radius: 12px; margin: 15px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #444; }
-        #postImg { width: 100%; display: none; }
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn-gen { background: var(--success); color: white; height: 50px; }
-        .btn-img { background: #8957e5; color: white; height: 50px; }
-        .btn-clear { background: #30363d; color: #f85149; border: 1px solid #f85149; height: 50px; }
-        .btn-pub { background: var(--primary); color: white; height: 55px; width: 100%; margin-top: 10px; font-size: 15px; }
-        button:active { transform: scale(0.98); }
+        * { box-sizing: border-box; }
+        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .container { background: var(--card); padding: 15px; border-radius: 12px; width: 100%; max-width: 500px; border: 1px solid #30363d; }
+        
+        .news-header { background: #f85149; color: white; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-bottom: 5px; display: inline-block; }
+        .news-title { font-size: 13px; color: var(--accent); margin-bottom: 15px; font-weight: bold; line-height: 1.3; min-height: 35px; }
+
+        /* Controles parejos en celular */
+        .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        select { background: var(--bg); color: white; border: 1px solid #30363d; padding: 12px; border-radius: 6px; font-size: 13px; width: 100%; }
+
+        textarea { width: 100%; height: 300px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 12px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; margin-bottom: 12px; }
+        
+        .img-preview { width: 100%; height: 220px; background: #000; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #30363d; }
+        #postImg { width: 100%; height: 100%; object-fit: cover; display: none; }
+
+        /* Botones simétricos */
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { height: 50px; border-radius: 8px; border: none; font-weight: bold; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; color: white; }
+        .btn-gen { background: var(--success); }
+        .btn-img { background: #8957e5; }
+        .btn-clear { background: #30363d; border: 1px solid var(--danger); color: var(--danger); }
+        .btn-pub { background: var(--primary); }
         button:disabled { opacity: 0.3; }
-        #status { font-size: 12px; text-align: center; color: #8b949e; margin-top: 15px; font-style: italic; }
+
+        #status { font-size: 12px; text-align: center; color: #8b949e; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="news-badge"><i class="fas fa-bolt"></i> TENDENCIAS REALES</div>
-    <div id="newsTopic" class="news-title">Esperando nueva generación...</div>
+    <div class="news-header">TENDENCIA IA</div>
+    <div id="newsTopic" class="news-title">Listo para generar contenido...</div>
 
-    <div class="control-row">
+    <div class="controls-grid">
         <select id="toneSelect">
-            <option value="Inspirador">Redacción: Inspiradora</option>
-            <option value="Técnico">Redacción: Técnica</option>
-            <option value="Crítico">Redacción: Crítica</option>
+            <option value="Inspiradora">Tono: Inspirador</option>
+            <option value="Técnica">Tono: Técnico</option>
+            <option value="Crítica">Tono: Crítico</option>
         </select>
         <select id="formatSelect">
-            <option value="list">Formato: Listado</option>
-            <option value="story">Formato: Narrativo</option>
+            <option value="list">Modo: Listado</option>
+            <option value="story">Modo: Narrativo</option>
         </select>
     </div>
 
-    <textarea id="postText" placeholder="Paso 1: Presiona GENERAR TEXTO..."></textarea>
+    <textarea id="postText" placeholder="Paso 1: Toca GENERAR TEXTO..."></textarea>
     
     <div class="img-preview">
-        <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-2x"></i></div>
+        <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-2x" style="color:var(--accent)"></i></div>
         <img id="postImg">
     </div>
 
-    <div class="btn-grid">
-        <button class="btn-gen" onclick="generarAnalisis()"><i class="fas fa-file-alt"></i> GENERAR TEXTO</button>
-        <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-image"></i> GENERAR IMAGEN</button>
-        <button class="btn-clear" onclick="limpiarTodo()"><i class="fas fa-eraser"></i> LIMPIAR PIZARRA</button>
-        <button id="btnPub" class="btn-pub" onclick="publicar()" disabled style="grid-column: span 1;"><i class="fab fa-linkedin"></i> PUBLICAR</button>
+    <div class="action-grid">
+        <button class="btn-gen" onclick="generarAnalisis()"><i class="fas fa-file-alt"></i> TEXTO</button>
+        <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-image"></i> IMAGEN</button>
+        <button class="btn-clear" onclick="limpiarTodo()"><i class="fas fa-eraser"></i> LIMPIAR</button>
+        <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
     </div>
     
-    <div id="status">v24.0 - IA Dinámica Lista</div>
+    <div id="status">Esperando comandos...</div>
 </div>
 
 <script>
@@ -68,101 +76,100 @@
     
     let currentTopic = "";
     let finalImageUrl = "";
-    let newsPool = [
-        "Impacto de la IA Agéntica en Procesos Corporativos",
-        "Gemelos Digitales y la Eficiencia Operativa 4.0",
-        "Seguridad Predictiva en Entornos Cloud Híbridos",
-        "Democratización de la Analítica de Datos con IA"
+    let backupIndex = 0;
+    const backupTopics = [
+        "IA Agéntica: El fin de los copilotos convencionales",
+        "Gemelos Digitales y la eficiencia operativa en 2025",
+        "Soberanía de Datos: El nuevo activo estratégico",
+        "Ciberseguridad Predictiva con Redes Neuronales"
     ];
 
-    // Cargar noticias al inicio para tener variedad
-    async function loadNews() {
+    async function generarAnalisis() {
+        const status = document.getElementById('status');
+        const newsTitle = document.getElementById('newsTopic');
+        status.innerText = "Buscando noticias frescas...";
+
+        // Intentar obtener noticia, pero sin bloquear el proceso si falla (CORS Fix)
         try {
-            const res = await fetch(`https://newsapi.org/v2/everything?q=Artificial+Intelligence+Business&language=es&sortBy=publishedAt&pageSize=10&apiKey=${NEWS_API_KEY}`);
+            const res = await fetch(`https://newsapi.org/v2/everything?q=AI+Business&language=es&pageSize=5&apiKey=${NEWS_API_KEY}`);
             const data = await res.json();
             if(data.articles && data.articles.length > 0) {
-                newsPool = data.articles.map(a => a.title);
-            }
-        } catch(e) { console.log("Usando pool de respaldo."); }
-    }
+                currentTopic = data.articles[Math.floor(Math.random() * data.articles.length)].title;
+            } else { throw new Error(); }
+        } catch(e) {
+            // Rotar temas de respaldo para que nunca sea el mismo
+            currentTopic = backupTopics[backupIndex];
+            backupIndex = (backupIndex + 1) % backupTopics.length;
+        }
 
-    function generarAnalisis() {
-        // Seleccionar un tema nuevo aleatorio cada vez
-        currentTopic = newsPool[Math.floor(Math.random() * newsPool.length)];
+        newsTitle.innerText = "ANÁLISIS: " + currentTopic;
         const tone = document.getElementById('toneSelect').value;
         const format = document.getElementById('formatSelect').value;
         
-        document.getElementById('newsTopic').innerText = "TEMA ACTUAL: " + currentTopic;
+        let intro = format === 'list' ? "¿Cómo impacta esto en la eficiencia?" : "Imaginen un mundo donde la tecnología anticipa cada decisión.";
 
-        let intro = format === 'list' ? 
-            "¿Cómo influye este avance en la ventaja competitiva?" : 
-            "Imaginen que lo que hoy es tendencia mañana será la base de nuestra operatividad.";
-
-        let body = [
-            `🚀 ANÁLISIS ESTRATÉGICO: ${currentTopic.toUpperCase()}`,
+        const body = [
+            `🚀 ANÁLISIS: ${currentTopic.toUpperCase()}`,
             "",
             intro,
             "",
-            "La realidad tecnológica nos exige una adaptación constante para no perder relevancia en el ecosistema digital.",
-            "Desde una perspectiva " + tone.toLowerCase() + ", esta evolución subraya que el liderazgo hoy es inseparable de la analítica avanzada.",
+            "La realidad actual nos obliga a cuestionar si nuestras estructuras están listas.",
+            "Bajo un enfoque " + tone.toLowerCase() + ", esta evolución no es solo técnica.",
             "",
             "🔹 PUNTOS CLAVE DE VALOR:",
-            "• Optimización de procesos críticos mediante lógica predictiva.",
-            "• Reducción de la fricción operativa en entornos de alta demanda.",
-            "• Fortalecimiento de la seguridad mediante protocolos neuronales.",
-            "• Capacidad de respuesta inmediata ante variables del mercado.",
-            "• Escalabilidad de soluciones basadas en aprendizaje continuo.",
+            "• Optimización profunda mediante lógica predictiva.",
+            "• Reducción de la fricción en entornos de alta demanda.",
+            "• Fortalecimiento de la seguridad con IA autónoma.",
+            "• Capacidad de respuesta inmediata ante el mercado.",
+            "• Escalabilidad de soluciones basadas en datos.",
             "",
-            "Al observar el panorama global, queda claro que la tecnología es solo el punto de partida.",
-            "El éxito real reside en la visión humana capaz de dirigir estos sistemas hacia resultados concretos.",
-            "Integrar estas herramientas hoy permite construir las bases de la solidez empresarial para la próxima década.",
+            "Al observar el panorama, queda claro que la tecnología es el punto de partida.",
+            "El éxito real reside en el talento humano capaz de orquestar estos sistemas.",
+            "Integrar estas herramientas permite construir una solidez empresarial única.",
             "",
-            "En conclusión, el cambio es inevitable; el liderazgo, opcional.",
-            "¿Qué impacto proyectas tú para este desarrollo en tu sector?",
+            "En conclusión, el cambio es inevitable; el liderazgo es opcional.",
+            "¿Qué impacto proyectas tú para este desarrollo en tu industria?",
             "",
-            "#IA #Innovation #Future #Liderazgo #Analitica #Estrategia #Negocios #Tech"
+            "#IA #Innovacion #Futuro #Analitica #Estrategia #Negocios #Tech #Liderazgo"
         ];
 
         document.getElementById('postText').value = body.join("\n");
         document.getElementById('btnImg').disabled = false;
-        document.getElementById('status').innerText = "✓ Análisis nuevo generado.";
+        status.innerText = "✓ Nuevo post generado.";
     }
 
     function generarImagen() {
         const loader = document.getElementById('loader');
         const img = document.getElementById('postImg');
-        const style = document.getElementById('styleSelect')?.value || "photorealistic";
-
         img.style.display = "none";
         loader.style.display = "block";
         
         const seed = Date.now();
-        // Genera imagen basada en el tema ACTUAL
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(currentTopic + " " + style)}?width=1200&height=630&seed=${seed}&nologo=true`;
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(currentTopic)}?width=1200&height=630&seed=${seed}&nologo=true`;
         
         img.src = finalImageUrl;
         img.onload = () => {
             loader.style.display = "none";
             img.style.display = "block";
             document.getElementById('btnPub').disabled = false;
-            document.getElementById('status').innerText = "✓ Imagen coherente con el post lista.";
+            document.getElementById('status').innerText = "✓ Imagen lista para publicar.";
         };
     }
 
     function limpiarTodo() {
         document.getElementById('postText').value = "";
         document.getElementById('postImg').style.display = "none";
-        document.getElementById('newsTopic').innerText = "Pizarra limpia";
+        document.getElementById('newsTopic').innerText = "Listo para iniciar...";
         document.getElementById('btnImg').disabled = true;
         document.getElementById('btnPub').disabled = true;
-        document.getElementById('status').innerText = "Esperando nueva generación...";
-        finalImageUrl = "";
+        document.getElementById('status').innerText = "Pizarra limpia.";
+        currentTopic = "";
     }
 
     async function publicar() {
         const btn = document.getElementById('btnPub');
         btn.disabled = true;
-        document.getElementById('status').innerText = "Publicando...";
+        document.getElementById('status').innerText = "Enviando a LinkedIn...";
 
         try {
             const res = await fetch(WEBHOOK_URL, {
@@ -173,12 +180,14 @@
                     url_imagen: finalImageUrl
                 })
             });
-            if(res.ok) alert("¡Publicado exitosamente!");
-        } catch(e) { alert("Error de conexión"); }
-        btn.disabled = false;
+            if(res.ok) {
+                document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
+            }
+        } catch(e) { 
+            alert("Error de conexión"); 
+            btn.disabled = false;
+        }
     }
-
-    window.onload = loadNews;
 </script>
 </body>
 </html>
