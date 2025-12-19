@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA Deep Insight Pro v23.1</title>
+    <title>IA Deep Insight Pro v23.2</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --text-muted: #8b949e; }
-        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; padding: 20px; margin: 0; }
+        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; display: flex; justify-content: center; padding: 15px; margin: 0; }
         .container { background: var(--card); padding: 25px; border-radius: 16px; width: 100%; max-width: 800px; border: 1px solid #30363d; box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
         .grid-main { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media (max-width: 768px) { .grid-main { grid-template-columns: 1fr; } }
         .news-badge { background: #f85149; color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
-        .news-title { font-size: 14px; color: var(--accent); margin-bottom: 15px; font-weight: bold; }
+        .news-title { font-size: 14px; color: var(--accent); margin-bottom: 15px; font-weight: bold; min-height: 20px; }
         .control-row { display: flex; gap: 10px; margin-bottom: 15px; }
         select, button { border-radius: 8px; font-weight: 600; font-size: 13px; }
         select { background: var(--bg); color: white; border: 1px solid #30363d; padding: 10px; flex: 1; }
         .linkedin-preview { background: white; color: rgba(0,0,0,0.9); padding: 15px; border-radius: 8px; margin-top: 20px; font-family: sans-serif; display: none; border: 1px solid #ddd; }
         .post-content { font-size: 14px; line-height: 1.4; white-space: pre-wrap; color: #333; }
-        textarea { width: 100%; height: 400px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.5; resize: none; box-sizing: border-box; }
+        textarea { width: 100%; height: 380px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 13px; line-height: 1.5; resize: none; box-sizing: border-box; }
         .img-preview { width: 100%; min-height: 250px; background: #000; border-radius: 12px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #444; }
         #postImg { width: 100%; display: none; }
         .btn-gen { background: var(--success); color: white; width: 100%; height: 50px; }
@@ -30,7 +30,7 @@
 
 <div class="container">
     <div class="news-badge"><i class="fas fa-bolt"></i> TENDENCIAS REALES</div>
-    <div id="newsTopic" class="news-title">Cargando última noticia tecnológica...</div>
+    <div id="newsTopic" class="news-title">Inicializando sistema...</div>
 
     <div class="grid-main">
         <div class="edit-zone">
@@ -46,7 +46,7 @@
                 </select>
             </div>
             <textarea id="postText" placeholder="El análisis aparecerá aquí..."></textarea>
-            <div id="lineCount" style="font-size:10px; text-align:right; color:var(--text-muted)">Líneas: 0 / 20-25</div>
+            <div id="lineCount" style="font-size:10px; text-align:right; color:var(--text-muted); margin-top:5px;">Líneas: 0 / 20-25</div>
         </div>
 
         <div class="visual-zone">
@@ -75,18 +75,30 @@
     const NEWS_API_KEY = "7b6710d7c32347a6b2810545dc5307a6b2810545dc530";
     const WEBHOOK_URL = "https://hook.eu2.make.com/6bbwbx4zr42kwe88t5ggvu9hbb9vyh7g";
     let currentImage = "";
-    let lastNewsTitle = "Evolución de la IA Autónoma";
+    let lastNewsTitle = "Evolución de la Inteligencia Artificial Agéntica";
 
+    // Función de carga con tiempo límite para evitar bloqueos
     async function fetchNews() {
+        const statusDisplay = document.getElementById('newsTopic');
+        statusDisplay.innerText = "Buscando noticias de hoy...";
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
+
         try {
-            const res = await fetch(`https://newsapi.org/v2/everything?q=Artificial+Intelligence+Business&language=es&sortBy=publishedAt&pageSize=1&apiKey=${NEWS_API_KEY}`);
+            const res = await fetch(`https://newsapi.org/v2/everything?q=Artificial+Intelligence+Business&language=es&sortBy=publishedAt&pageSize=1&apiKey=${NEWS_API_KEY}`, { signal: controller.signal });
             const data = await res.json();
             if(data.articles && data.articles[0]) {
                 lastNewsTitle = data.articles[0].title;
-                document.getElementById('newsTopic').innerText = "ÚLTIMA NOTICIA: " + lastNewsTitle;
+                statusDisplay.innerText = "ÚLTIMA NOTICIA: " + lastNewsTitle;
+            } else {
+                throw new Error('No articles');
             }
         } catch(e) {
-            document.getElementById('newsTopic').innerText = "TEMA: Tendencias en IA Agéntica";
+            console.log("Usando tema de respaldo debido a límites de API o CORS.");
+            statusDisplay.innerText = "TEMA: Innovación y Liderazgo en IA 2025";
+        } finally {
+            clearTimeout(timeoutId);
         }
     }
 
@@ -95,31 +107,33 @@
         const format = document.getElementById('formatSelect').value;
         
         let intro = format === 'list' ? 
-            "¿Cómo impacta esto en la eficiencia operativa?" : 
+            "¿Cómo impacta este avance en la eficiencia operativa?" : 
             "Imaginen que la noticia sobre " + lastNewsTitle + " es solo la punta del iceberg.";
 
         let body = [
-            `🚀 ANÁLISIS ESTRATÉGICO: ${lastNewsTitle.toUpperCase()}`, // Título limpio sin el estilo
+            `🚀 ANÁLISIS ESTRATÉGICO: ${lastNewsTitle.toUpperCase()}`,
             "",
             intro,
             "",
-            "El panorama actual nos obliga a cuestionar si nuestras estructuras están preparadas para esta velocidad de cambio.",
-            "Bajo un enfoque " + tone.toLowerCase() + ", esta evolución no es solo técnica, es cultural.",
+            "El panorama tecnológico actual nos obliga a cuestionar si nuestras estructuras corporativas están preparadas para esta velocidad de cambio.",
+            "Bajo un enfoque " + tone.toLowerCase() + ", esta evolución demuestra que el éxito no es solo técnico, sino profundamente estratégico.",
             "",
             "🔹 PUNTOS CLAVE DE VALOR:",
-            "• Optimización de procesos críticos mediante lógica predictiva.",
-            "• Reducción de la fricción operativa en entornos de alta demanda.",
-            "• Fortalecimiento de la seguridad mediante modelos neuronales.",
-            "• Capacidad de respuesta inmediata ante variables imprevistas.",
+            "• Optimización de procesos críticos mediante lógica predictiva autónoma.",
+            "• Reducción de la fricción operativa en entornos de alta demanda digital.",
+            "• Fortalecimiento de la seguridad mediante modelos neuronales avanzados.",
+            "• Capacidad de respuesta inmediata ante variables imprevistas del mercado.",
+            "• Democratización de herramientas de alto nivel para equipos operativos.",
             "",
-            "Este avance redefine lo que entendemos por ventaja competitiva en el sector.",
-            "Al observar el mercado, queda claro que la tecnología es solo el habilitador.",
-            "El éxito reside en el talento humano capaz de orquestar estos sistemas.",
+            "Este avance redefine lo que entendemos por ventaja competitiva en el sector tecnológico.",
+            "Al observar el mercado global, queda claro que la tecnología es solo el habilitador.",
+            "El éxito real reside en el talento humano capaz de orquestar estos sistemas con criterio.",
+            "No se trata de sustituir el juicio humano, sino de potenciarlo a una escala sin precedentes.",
             "",
             "En conclusión, el futuro pertenece a quienes se atrevan a integrar estas innovaciones hoy mismo.",
             "¿Cuál es tu visión estratégica sobre este desarrollo?",
             "",
-            "#IA #TechNews #Innovacion #Liderazgo #Analitica #Estrategia #Negocios #Futuro" // Máximo 8 hashtags
+            "#IA #TechNews #Innovacion #Liderazgo #Analitica #Estrategia #Negocios #Futuro"
         ];
 
         const finalContent = body.join("\n");
@@ -136,11 +150,14 @@
         const loader = document.getElementById('loader');
         const img = document.getElementById('postImg');
         const style = document.getElementById('styleSelect').value;
+        const status = document.getElementById('newsTopic');
+
         img.style.display = "none";
-        loader.style.display = "block";
+        loader.style.display = "flex";
         
         const seed = Date.now();
         currentImage = `https://image.pollinations.ai/prompt/${encodeURIComponent(lastNewsTitle + " " + style)}?width=1200&height=630&seed=${seed}&nologo=true`;
+        
         img.src = currentImage;
         img.onload = () => {
             loader.style.display = "none";
@@ -150,7 +167,8 @@
     }
 
     async function publicar() {
-        document.getElementById('btnPub').disabled = true;
+        const btn = document.getElementById('btnPub');
+        btn.disabled = true;
         try {
             const res = await fetch(WEBHOOK_URL, {
                 method: 'POST',
@@ -160,12 +178,13 @@
                     url_imagen: currentImage
                 })
             });
-            if(res.ok) alert("✓ Publicado en LinkedIn");
-        } catch(e) { alert("Error de conexión"); }
-        document.getElementById('btnPub').disabled = false;
+            if(res.ok) alert("✓ Publicado exitosamente");
+        } catch(e) { alert("Error de conexión con Make"); }
+        btn.disabled = false;
     }
 
-    fetchNews();
+    // Iniciar carga de noticias al abrir
+    window.addEventListener('DOMContentLoaded', fetchNews);
 </script>
 </body>
 </html>
