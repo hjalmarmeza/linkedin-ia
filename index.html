@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LinkedinMatic v41.37</title>
+    <title>LinkedinMatic v41.38</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
         body { background-color: #050505; color: #e0e0e0; font-family: 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
         .cyber-card { background: rgba(10, 10, 10, 0.98); border: 1px solid #222; border-top: 3px solid #00f2ff; }
         .mobile-btn { height: 50px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; border: 1px solid #00f2ff; color: #00f2ff; font-size: 0.7rem; border-radius: 10px; font-weight: bold; background: rgba(0, 242, 255, 0.05); }
+        .mobile-btn:active { background: #00f2ff; color: #000; transform: scale(0.95); }
         .publish-btn { background: #00f2ff; color: #000; border: none; font-size: 1rem; box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
         .post-input { background: #000; border: 1px solid #333; color: #fff; line-height: 1.6; font-size: 14px; width: 100%; border-radius: 10px; padding: 15px; white-space: pre-wrap; }
     </style>
@@ -19,7 +20,7 @@
         <div class="flex justify-between items-center p-4 cyber-card rounded-2xl mt-2">
             <div>
                 <h1 class="text-xl font-bold font-['Orbitron'] text-white">LINKEDIN<span class="text-cyan-400">MATIC</span></h1>
-                <p class="text-[9px] text-gray-500 tracking-[2px]">ESTÁNDAR 20 LÍNEAS v41.37</p>
+                <p class="text-[9px] text-gray-500 tracking-[2px]">FIX BOTONES v41.38</p>
             </div>
         </div>
 
@@ -41,26 +42,43 @@
     </div>
 
     <script>
-        // SI CREAS UN ESCENARIO NUEVO, PEGA LA URL AQUÍ
         const WEBHOOK_PUB = "https://hook.eu2.make.com/80rpa5t48aqprpltnwhrood646g91c63";
 
-        const narrativas = [{
-            t: "IA: EL MOTOR DEL APORTE SOCIAL Y LA EFICIENCIA",
-            c: "La Inteligencia Artificial está redefiniendo nuestro aporte a la sociedad al resolver problemas complejos.\nAl democratizar el acceso a soluciones avanzadas, creamos un entorno equitativo donde el conocimiento fluye libre.\nLa ejecución de tareas críticas ahora está al alcance de todos, impulsando un crecimiento colectivo sin precedentes.\nEl impacto social se manifiesta cuando la tecnología elimina barreras para el desarrollo de nuevas ideas locales.\nAlgoritmos éticos ayudan a identificar áreas de mejora en servicios básicos como salud y educación pública.\nLa IA actúa como un puente entre la necesidad y la solución, optimizando la entrega de valor en cada interacción.\nNo es solo automatización, sino una evolución en la colaboración profunda entre humanos y máquinas modernas.\nCada avance en procesamiento se traduce en una respuesta ágil ante desafíos humanitarios y climáticos urgentes.\nLa transparencia en modelos predictivos asegura que el progreso tecnológico sea auditado y beneficie a todos.\nConstruimos una base sólida para que las futuras generaciones hereden un sistema más justo y digitalizado.\nLa tecnología es el pilar fundamental que sostiene la nueva arquitectura de bienestar que diseñamos hoy.\nOptimizar procesos mediante IA reduce la desigualdad y permite que los recursos lleguen con precisión total.\nLa agilidad operativa en la gestión de datos es la clave para una gobernanza que prioriza el impacto real.\nEl beneficio se extiende a cada ciudadano que interactúa con plataformas diseñadas para simplificar su vida.\nLa IA es el corazón de una transformación integral que valora la eficacia por encima de lo tradicional.\nCada segundo ganado es un segundo invertido en el fortalecimiento del tejido social contemporáneo real.\nReescribimos el contrato social mediante la eficiencia operativa que la computación avanzada nos proporciona.\nLa visión de una sociedad conectada se materializa cuando el talento humano se libera de la carga operativa.",
-            tags: "#IA #Sociedad #Eficiencia #Tecnologia #Productividad #Futuro #Innovacion #Estrategia",
-            p: "Professional modern business environment, vibrant corporate colors, cinematic photography, high-end"
-        }];
+        const narrativas = [
+            {
+                t: "IA: EL MOTOR DEL APORTE SOCIAL Y LA EFICIENCIA",
+                c: "La Inteligencia Artificial está redefiniendo nuestro aporte a la sociedad al resolver problemas complejos.\nAl democratizar el acceso a soluciones avanzadas, creamos un entorno equitativo donde el conocimiento fluye libre.\nLa ejecución de tareas críticas ahora está al alcance de todos, impulsando un crecimiento colectivo sin precedentes.\nEl impacto social se manifiesta cuando la tecnología elimina barreras para el desarrollo de nuevas ideas locales.\nAlgoritmos éticos ayudan a identificar áreas de mejora en servicios básicos como salud y educación pública.\nLa IA actúa como un puente entre la necesidad y la solución, optimizando la entrega de valor en cada interacción.\nNo es solo automatización, sino una evolución en la colaboración profunda entre humanos y máquinas modernas.\nCada avance en procesamiento se traduce en una respuesta ágil ante desafíos humanitarios y climáticos urgentes.\nLa transparencia en modelos predictivos asegura que el progreso tecnológico sea auditado y beneficie a todos.\nConstruimos una base sólida para que las futuras generaciones hereden un sistema más justo y digitalizado.\nLa tecnología es el pilar fundamental que sostiene la nueva arquitectura de bienestar que diseñamos hoy.\nOptimizar procesos mediante IA reduce la desigualdad y permite que los recursos lleguen con precisión total.\nLa agilidad operativa en la gestión de datos es la clave para una gobernanza que prioriza el impacto real.\nEl beneficio se extiende a cada ciudadano que interactúa con plataformas inteligentes diseñadas para simplificar su vida.\nLa IA es el corazón de una transformación integral que valora la eficacia por encima de lo tradicional.\nCada segundo ganado es un segundo invertido en el fortalecimiento del tejido social contemporáneo real.\nReescribimos el contrato social mediante la eficiencia operativa que la computación avanzada nos proporciona.\nLa visión de una sociedad conectada se materializa cuando el talento humano se libera de la carga operativa.",
+                p: "Professional modern business environment, vibrant corporate colors, high-end photography"
+            },
+            {
+                t: "BENEFICIO AL USUARIO Y AHORRO DE TIEMPO REAL",
+                c: "La verdadera revolución de la IA se mide en los minutos que devuelve a cada usuario en su jornada diaria.\nAl automatizar procesos repetitivos, permitimos que el talento humano se enfoque en la estrategia y la creatividad.\nEl ahorro de tiempo no es solo una métrica de eficiencia, es una mejora directa en la calidad de vida profesional.\nPlataformas inteligentes aprenden de nuestros hábitos para anticipar necesidades y simplificar flujos de trabajo.\nLa reducción de errores manuales garantiza una entrega de resultados impecable en fracciones del tiempo habitual.\nEstamos ante una herramienta que democratiza la productividad de alto nivel para cualquier tipo de usuario.\nLa integración de asistentes virtuales avanzados elimina los cuellos de botella en la comunicación corporativa.\nCada tarea delegada a la IA representa una oportunidad para innovar en áreas que requieren empatía humana.\nLa velocidad de respuesta se convierte en una ventaja competitiva que beneficia tanto a la empresa como al cliente.\nOptimizar la agenda mediante algoritmos predictivos asegura un equilibrio entre rendimiento y descanso necesario.\nLa tecnología actúa como un multiplicador de capacidades, elevando el estándar de lo que un individuo puede lograr.\nEl acceso instantáneo a análisis de datos complejos permite tomar decisiones informadas sin esperas prolongadas.\nEstamos redefiniendo el concepto de jornada laboral gracias a la agilidad que la inteligencia artificial aporta.\nEl beneficio es tangible: procesos más limpios, usuarios más satisfechos y una operatividad sin precedentes.\nLa IA se integra de forma invisible para potenciar cada interacción, ahorrando recursos valiosos en el proceso.\nLa moneda más valiosa hoy es el tiempo, y estas soluciones están diseñadas para maximizar su rendimiento.\nRecuperar horas de gestión administrativa significa ganar horas de impacto real en los objetivos del negocio.\nLa evolución digital nos permite alcanzar metas ambiciosas con un esfuerzo operativo significativamente menor."
+            }
+        ];
 
-        function update() {
-            const data = narrativas[0];
-            // Construcción de 20 líneas totales: 1 Título + 18 Cuerpo + 1 Tags
-            document.getElementById('postText').value = `🚀 ${data.t}\n${data.c}\n${data.tags}`;
-            
-            const url = `https://pollinations.ai/p/${encodeURIComponent(data.p)}?width=1080&height=600&seed=${Date.now()}&nologo=true`;
+        let postIdx = 0;
+
+        function updatePost() {
+            const data = narrativas[postIdx];
+            const tags = "#IA #Sociedad #Eficiencia #Tecnologia #Productividad #Futuro #Innovacion #Estrategia";
+            document.getElementById('postText').value = `🚀 ${data.t}\n${data.c}\n${tags}`;
+            postIdx = (postIdx + 1) % narrativas.length;
+        }
+
+        function updateImg() {
+            const data = narrativas[Math.floor(Math.random() * narrativas.length)];
+            const loader = document.getElementById('imgLoader');
             const img = document.getElementById('imgPreview');
+            const url = `https://pollinations.ai/p/${encodeURIComponent(data.p || "corporate professional vibrant style")}?width=1080&height=600&seed=${Date.now()}&nologo=true`;
+            
+            img.classList.replace('opacity-100', 'opacity-0');
+            loader.style.display = "block";
             img.src = url;
             img.dataset.url = url;
-            img.onload = () => { img.classList.replace('opacity-0', 'opacity-100'); document.getElementById('imgLoader').style.display = "none"; };
+            img.onload = () => { 
+                img.classList.replace('opacity-0', 'opacity-100'); 
+                loader.style.display = "none"; 
+            };
         }
 
         async function publicar() {
@@ -69,29 +87,25 @@
                 "post": document.getElementById('postText').value,
                 "Url_imagen": document.getElementById('imgPreview').dataset.url
             };
-
             btn.innerText = "ENVIANDO...";
             btn.disabled = true;
-
             try {
                 await fetch(WEBHOOK_PUB, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                alert("✓ ENVIADO: 20 líneas exactas procesadas.");
-            } catch (e) {
-                alert("Error de envío.");
-            } finally {
-                btn.innerText = "PUBLICAR AHORA";
-                btn.disabled = false;
-            }
+                alert("✓ ENVIADO: 20 líneas exactas.");
+            } catch (e) { alert("Error de envío."); }
+            finally { btn.innerText = "PUBLICAR AHORA"; btn.disabled = false; }
         }
 
-        document.getElementById('btnNewPost').onclick = update;
-        document.getElementById('btnNewImg').onclick = update;
+        document.getElementById('btnNewPost').onclick = updatePost;
+        document.getElementById('btnNewImg').onclick = updateImg;
         document.getElementById('btnPub').onclick = publicar;
-        window.onload = update;
+        
+        // Inicialización
+        window.onload = () => { updatePost(); updateImg(); };
     </script>
 </body>
 </html>
