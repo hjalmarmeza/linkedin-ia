@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LinkedinMatic v41.16</title>
+    <title>LinkedinMatic v41.17</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
@@ -21,9 +21,9 @@
         <div class="flex justify-between items-center p-4 cyber-card rounded-2xl mt-2">
             <div>
                 <h1 class="text-xl font-bold font-['Orbitron'] text-white">LINKEDIN<span class="text-cyan-400">MATIC</span></h1>
-                <p class="text-[9px] text-gray-500 tracking-[2px]">IMPACTO CORPORATIVO v41.16</p>
+                <p class="text-[9px] text-gray-500 tracking-[2px]">CORPORATE DYNAMIC v41.17</p>
             </div>
-            <div class="text-[10px] text-cyan-400 font-bold px-2 py-1 border border-cyan-900 rounded">FIX-URL</div>
+            <div class="text-[10px] text-cyan-400 font-bold px-2 py-1 border border-cyan-900 rounded">HTTPS-READY</div>
         </div>
 
         <div class="p-4 cyber-card rounded-2xl">
@@ -35,35 +35,35 @@
 
         <div class="cyber-card rounded-2xl overflow-hidden relative min-h-[220px] flex items-center justify-center bg-[#111]">
             <img id="imgPreview" src="" class="w-full h-full object-cover transition-opacity duration-500 opacity-0">
-            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">CREANDO IMAGEN...</div>
+            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">GENERANDO VISUAL...</div>
         </div>
 
         <div class="cyber-card rounded-2xl p-2">
-            <textarea id="postText" rows="18" class="post-input border-none focus:ring-0" placeholder="Escribiendo narrativa..."></textarea>
+            <textarea id="postText" rows="16" class="post-input border-none focus:ring-0" placeholder="Escribiendo impacto..."></textarea>
         </div>
 
-        <button id="btnPub" class="mobile-btn publish-btn w-full">PUBLICAR AHORA</button>
+        <button id="btnPub" class="mobile-btn publish-btn w-full">PUBLICAR EN LINKEDIN</button>
     </div>
 
     <script>
-        // URL ACTUALIZADA SEGÚN TU ÚLTIMO MENSAJE
+        // URL DE TU WEBHOOK (Verificada en image_28f92a.png)
         const WEBHOOK_PUB = "https://hook.eu2.make.com/6bbwbx4zr42kwe88t5ggvu9hbb9vyh7g";
 
         const enfoquesNarrativos = [
             { 
-                titulo: "AGENTES AUTÓNOMOS Y EL FIN DE LA MICROGESTIÓN", 
-                prompt: "Professional modern business office, people collaborating with holographic digital assistants, vibrant warm lighting, high-end corporate photography, 8k",
+                titulo: "LA ERA DE LOS AGENTES AUTÓNOMOS", 
+                prompt: "Professional modern business office, high-tech boardroom, vibrant colors, cyan accents, realistic 8k, cinematic lighting",
                 texto: "Estamos cruzando la frontera de la IA asistencial hacia la IA agéntica. Ya no se trata de herramientas que responden preguntas, sino de entidades capaces de razonar, planificar y ejecutar tareas complejas de forma autónoma. Esta evolución promete devolvernos cientos de horas al delegar procesos completos, permitiéndonos enfocarnos en la visión y no en la microgestión. La eficiencia acaba de dar un salto de gigante."
             },
             { 
-                titulo: "IA SOBERANA: SEGURIDAD Y CONTROL TOTAL", 
-                prompt: "Sleek futuristic data center, glowing cyan and amber fiber optics, corporate security aesthetic, professional sharp focus, cinematic lighting",
+                titulo: "IA SOBERANA: SEGURIDAD Y PODER", 
+                prompt: "Futuristic server infrastructure, glowing fiber optics, professional corporate security concept, high-end photography, vibrant colors",
                 texto: "La soberanía digital es el tema central de este año. La IA soberana no solo busca eficiencia, sino independencia y seguridad. Al procesar datos en infraestructuras propias y locales, garantizamos que el valor intelectual y la privacidad de los usuarios se mantengan bajo control absoluto. Es la respuesta necesaria ante un mundo cada vez más dependiente de grandes nubes externas."
             },
             { 
-                titulo: "RAZONAMIENTO AVANZADO PARA PROBLEMAS COMPLEJOS", 
-                prompt: "Professional close-up of a high-tech glass screen with complex data visualizations, vibrant colors, executive boardroom background, 8k resolution",
-                texto: "La llegada de modelos centrados en el razonamiento lógico está redefiniendo lo que esperamos de la tecnología. A diferencia de las respuestas rápidas, estos sistemas dedican tiempo a computar el mejor camino para resolver problemas científicos y técnicos de alta complejidad. El beneficio para la sociedad es inmenso: desde el descubrimiento acelerado de fármacos hasta la resolución de retos matemáticos."
+                titulo: "SOSTENIBILIDAD Y TECNOLOGÍA VERDE", 
+                prompt: "Modern architecture with integrated tech, lush vertical gardens, professional photography, natural light, vibrant colors",
+                texto: "El impacto de la IA no es solo digital, es ambiental. Estamos viendo cómo los algoritmos optimizan el consumo de energía en redes eléctricas globales y diseñan materiales más eficientes para baterías. La paradoja es fascinante: usamos una tecnología que consume energía para salvar los recursos del planeta. La eficiencia energética impulsada por IA es el pilar que hará viable nuestro futuro colectivo."
             }
         ];
 
@@ -73,9 +73,9 @@
             const data = enfoquesNarrativos[indexActual];
             let post = `🚀 ${data.titulo}\n\n`;
             post += `${data.texto}\n\n`;
-            post += `Esta transformación redefine no solo cómo trabajamos, sino cómo interactuamos con el mundo. El valor real surge cuando la potencia tecnológica se alinea con las necesidades humanas, creando un ecosistema de bienestar compartido.\n\n`;
-            post += `La pregunta es qué seremos capaces de lograr nosotros con el tiempo y la capacidad que la IA nos está devolviendo hoy mismo.\n\n`;
-            post += `#InteligenciaArtificial #Innovacion #Eficiencia #Tecnologia #Productividad #Liderazgo #IA`;
+            post += `Esta transformación redefine cómo trabajamos e interactuamos con el mundo. El valor real surge cuando la potencia tecnológica se alinea con las necesidades humanas, creando bienestar compartido.\n\n`;
+            post += `¿Qué seremos capaces de lograr con el tiempo que la IA nos está devolviendo hoy mismo?\n\n`;
+            post += `#IA #Innovacion #Futuro #Eficiencia #Tecnologia #Productividad #ImpactoSocial`;
 
             document.getElementById('postText').value = post;
             generarImagen(data.prompt);
@@ -85,48 +85,52 @@
         function generarImagen(temaPrompt) {
             const img = document.getElementById('imgPreview');
             const loader = document.getElementById('imgLoader');
-            const seed = Math.floor(Math.random() * 1000000);
+            const seed = Date.now() + Math.floor(Math.random() * 999999);
             
-            const finalPrompt = `${temaPrompt}, corporate style, vibrant color palette, high-end photography, cinematic lighting, 8k`;
+            const finalPrompt = `${temaPrompt}, corporate professional style, vibrant colors, high-end photography, 8k`;
             const url = `https://pollinations.ai/p/${encodeURIComponent(finalPrompt)}?width=1080&height=600&seed=${seed}&nologo=true`;
             
-            img.classList.replace('opacity-100', 'opacity-0');
+            img.classList.remove('opacity-100');
+            img.classList.add('opacity-0');
             loader.style.display = "block";
 
             img.src = url;
-            img.dataset.url = url;
+            img.dataset.url = url; // Aquí se guarda la URL HTTPS limpia
             img.onload = () => {
-                img.classList.replace('opacity-0', 'opacity-100');
+                img.classList.remove('opacity-0');
+                img.classList.add('opacity-100');
                 loader.style.display = "none";
             };
         }
 
         async function publicar() {
             const btn = document.getElementById('btnPub');
-            const payload = {
-                post: document.getElementById('postText').value,
-                image_url: document.getElementById('imgPreview').dataset.url
-            };
+            const postContent = document.getElementById('postText').value;
+            const imageUrl = document.getElementById('imgPreview').dataset.url;
 
             btn.innerText = "ENVIANDO...";
             btn.disabled = true;
 
             try {
-                // He añadido 'no-cors' por si el webhook tiene restricciones de origen, 
-                // aunque lo ideal es que Make lo reciba como POST normal.
-                const res = await fetch(WEBHOOK_PUB, {
+                // Enviamos los datos como un objeto JSON plano
+                const response = await fetch(WEBHOOK_PUB, {
                     method: 'POST',
-                    mode: 'no-cors', 
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        post: postContent,
+                        image_url: imageUrl
+                    })
                 });
-                
-                // Con no-cors no podemos leer la respuesta, pero el envío se realiza.
-                alert("✓ PROCESO INICIADO: Revisa tu escenario de Make");
-            } catch(e) {
-                alert("Error al conectar con Make. Revisa si el escenario está ON.");
+
+                if (response.ok || response.status === 0) {
+                    alert("✓ DATOS ENVIADOS CORRECTAMENTE A MAKE");
+                } else {
+                    throw new Error();
+                }
+            } catch (e) {
+                alert("Error de conexión. Verifica que el escenario de Make esté en ON.");
             } finally {
-                btn.innerText = "PUBLICAR AHORA";
+                btn.innerText = "PUBLICAR EN LINKEDIN";
                 btn.disabled = false;
             }
         }
@@ -134,7 +138,7 @@
         document.getElementById('btnNewPost').onclick = generarNarrativa;
         document.getElementById('btnNewImg').onclick = () => {
             const titulo = document.getElementById('postText').value.split('\n')[0];
-            generarImagen(titulo + " professional corporate setting vibrant colors");
+            generarImagen(titulo + " professional business vibrant lighting");
         };
         document.getElementById('btnPub').onclick = publicar;
 
