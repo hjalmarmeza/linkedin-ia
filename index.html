@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IA Strategic Studio v41.0</title>
+    <title>IA Strategic Studio v41.1</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
@@ -14,7 +14,7 @@
         .status-red { color: var(--danger); background: rgba(248, 81, 73, 0.1); border-color: var(--danger); }
         .status-blue { color: var(--accent); background: rgba(88, 166, 255, 0.1); border-color: var(--accent); }
         .input-manual { width: 100%; background: #000; color: var(--accent); border: 1px solid #444; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; font-style: italic; }
-        textarea { width: 100%; height: 420px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 13px; line-height: 1.6; resize: none; margin-bottom: 12px; }
+        textarea { width: 100%; height: 420px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: none; margin-bottom: 12px; }
         .img-preview { width: 100%; height: 230px; background: #000; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid #30363d; overflow: hidden; }
         #postImg { width: 100%; height: 100%; object-fit: cover; display: none; }
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -30,11 +30,11 @@
 <body>
 <div class="container">
     <div id="engineBox" class="header-status status-red">
-        <span><i class="fas fa-satellite"></i> <span id="apiLabel">ESPERANDO SEÑAL</span></span>
-        <span id="newsSource">OFFLINE</span>
+        <span><i class="fas fa-satellite-dish"></i> <span id="apiLabel">MODO INTELIGENTE</span></span>
+        <span id="newsSource">ESPERANDO</span>
     </div>
-    <input type="text" id="manualTopic" class="input-manual" placeholder="Tema para Make (ej: IA Ética)...">
-    <textarea id="postText" placeholder="Presiona LIMPIAR para solicitar noticia a Make..."></textarea>
+    <input type="text" id="manualTopic" class="input-manual" placeholder="Tópico para Make (Opcional)...">
+    <textarea id="postText" placeholder="Presiona LIMPIAR para que Make busque una noticia fresca..."></textarea>
     <div class="img-preview">
         <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-3x"></i></div>
         <img id="postImg">
@@ -45,11 +45,11 @@
         <button class="btn-clear" onclick="buscarNoticiaEnMake()"><i class="fas fa-eraser"></i> LIMPIAR</button>
         <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
     </div>
-    <div id="status">v41.0 - Make Intelligence Activa</div>
+    <div id="status">v41.1 - Strategic Make Sync</div>
 </div>
 
 <script>
-    // Configuración Bi-Escenario
+    // URL de tu nuevo Webhook de Búsqueda
     const SEARCH_WEBHOOK_URL = "https://hook.eu2.make.com/6co1n3k568x7chpw5j45dihghj3yr963";
     const PUBLISH_WEBHOOK_URL = "https://hook.eu2.make.com/6bbwbx4zr42kwe88t5ggvu9hbb9vyh7g";
     
@@ -63,7 +63,6 @@
         const btnGen = document.getElementById('btnGen');
         const manual = document.getElementById('manualTopic').value;
 
-        // Estado inicial de búsqueda
         activeTopic = "";
         postText.value = "Solicitando tendencia actual a Make...";
         engineBox.className = "header-status status-red";
@@ -71,58 +70,65 @@
         btnGen.disabled = true;
 
         try {
+            // Petición a Make
             const response = await fetch(SEARCH_WEBHOOK_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ query: manual || "IA estratégica y ética" })
+                body: JSON.stringify({ query: manual || "IA ética corporativa" })
             });
+            
             const data = await response.json();
 
+            // Si Make responde con el título
             if(data.titulo) {
                 activeTopic = data.titulo;
                 postText.value = "✓ NOTICIA RECIBIDA: Lista para análisis de Ética y Eficiencia";
                 engineBox.className = "header-status status-blue";
-                apiLabel.innerText = "NOTICIA LISTA";
+                apiLabel.innerText = "SISTEMA LISTO";
+                document.getElementById('newsSource').innerText = "CONECTADO";
                 btnGen.disabled = false;
-            } else { throw new Error(); }
+            } else {
+                throw new Error("Respuesta vacía");
+            }
         } catch(e) {
-            postText.value = "Error al conectar con Make. Asegúrate de que el escenario de búsqueda esté en ON.";
-            apiLabel.innerText = "FALLO CONEXIÓN";
+            postText.value = "Error al conectar con Make. Revisa que el escenario esté en ON y que el Webhook Response esté configurado correctamente.";
+            apiLabel.innerText = "FALLO DE RED";
         }
     }
 
     function generarAnalisis() {
         const topicSource = activeTopic;
-        const verbs = ["Orquestación", "Evolución", "Gobernanza", "Sincronía", "Integridad"];
+        const verbs = ["Gobernanza", "Evolución", "Sincronía", "Integridad", "Disrupción"];
         const verb = verbs[Math.floor(Math.random() * verbs.length)];
         
+        // Reescritura Estratégica del Título
         const cleanTitle = topicSource.replace(/la |el |de |en |que /gi, "").trim();
-        const rewrittenTitle = `🚀 ${verb}: El impacto estratégico de ${cleanTitle}`;
+        const rewrittenTitle = `🚀 ${verb}: Redefiniendo el impacto de ${cleanTitle}`;
         
         const content = [
             rewrittenTitle.toUpperCase(),
             "",
-            "Más allá del avance técnico, nos encontramos en una frontera donde la eficiencia ya no puede ser el único KPI. El liderazgo moderno se mide por la capacidad de integrar potencia algorítmica con un marco ético innegociable.",
+            "Más allá de la adopción tecnológica acelerada, el verdadero liderazgo hoy reside en la capacidad de orquestar sistemas donde la eficiencia y la ética no sean objetivos contrapuestos, sino una sola estrategia.",
             "",
-            `Al analizar ${topicSource.toLowerCase()}, queda claro que la optimización operativa es el gran motor de nuestra era. Sin embargo, no debemos sacrificar la transparencia que sostiene la confianza corporativa.`,
+            `Al analizar la tendencia sobre ${topicSource.toLowerCase()}, queda en evidencia que la optimización operativa es el gran motor de nuestra era. Sin embargo, no debe comprometer la transparencia que sostiene la confianza corporativa.`,
             "",
-            "La verdadera eficiencia no es solo velocidad; es la sostenibilidad de un sistema que respeta la integridad humana. La automatización sin ética es una deuda técnica que ninguna organización puede permitirse hoy.",
+            "La eficiencia real no es solo velocidad de procesamiento; es la sostenibilidad de un ecosistema que respeta la privacidad y la integridad humana. Automatizar sin un marco ético es crear una deuda técnica y moral inasumible.",
             "",
-            "🔹 PILARES ÉTICO-EFICIENTES:",
-            "• Sincronía entre rendimiento y responsabilidad algorítmica.",
-            "• Eliminación de sesgos en la síntesis de datos estratégicos.",
-            "• Blindaje ético como ventaja competitiva de mercado.",
-            "• Optimización de recursos bajo gobernanza humana.",
-            "• Escalabilidad resiliente que protege el propósito corporativo.",
+            "🔹 PILARES DEL LIDERAZGO RESPONSABLE:",
+            "• Sincronía entre alto rendimiento y protocolos éticos activos.",
+            "• Eliminación proactiva de sesgos en la toma de decisiones algorítmica.",
+            "• Transparencia total como motor de ventaja competitiva sostenible.",
+            "• Optimización de recursos bajo una gobernanza humana innegociable.",
+            "• Escalabilidad resiliente que protege el propósito de la organización.",
             "",
-            "En conclusión, el éxito real reside en la visión estratégica para orquestar un futuro donde la eficiencia y la ética se potencien mutuamente para construir una ventaja competitiva sostenible.",
+            "En conclusión, el éxito en la era de la inteligencia artificial pertenece a quienes logren transformar la potencia técnica en integridad estratégica, construyendo un futuro más eficiente y profundamente humano.",
             "",
             "#IA #Estrategia #EticaIA #Eficiencia #Liderazgo #Negocios #TechResponsable"
         ];
         
         document.getElementById('postText').value = content.join("\n");
         document.getElementById('btnImg').disabled = false;
-        document.getElementById('status').innerText = "✓ ANÁLISIS ESTRATÉGICO GENERADO";
+        document.getElementById('status').innerText = "✓ ANÁLISIS ESTRATÉGICO LISTO";
     }
 
     function generarImagen() {
@@ -131,7 +137,8 @@
         img.style.display = "none";
         loader.style.display = "block";
         const seed = Date.now();
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic business ethics and efficiency 3d render")}?width=1200&height=630&seed=${seed}&nologo=true`;
+        // Prompt mejorado para la temática
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic business balance ethics efficiency 3d isometric render")}?width=1200&height=630&seed=${seed}&nologo=true`;
         img.src = finalImageUrl;
         img.onload = () => {
             loader.style.display = "none";
@@ -151,7 +158,11 @@
                 body: JSON.stringify({ mensaje: document.getElementById('postText').value, url_imagen: finalImageUrl })
             });
             if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
-        } catch(e) { alert("Error"); btn.disabled = false; }
+        } catch(e) { 
+            alert("Error en publicación"); 
+            btn.disabled = false; 
+            document.getElementById('status').innerText = "ERROR EN ENVÍO";
+        }
     }
 </script>
 </body>
