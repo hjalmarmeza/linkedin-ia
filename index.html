@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LinkedinMatic v41.40</title>
+    <title>LinkedinMatic v41.42</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
@@ -20,7 +20,7 @@
         <div class="flex justify-between items-center p-4 cyber-card rounded-2xl mt-2">
             <div>
                 <h1 class="text-xl font-bold font-['Orbitron'] text-white">LINKEDIN<span class="text-cyan-400">MATIC</span></h1>
-                <p class="text-[9px] text-gray-500 tracking-[2px]">ESTRUCTURA JSON v41.40</p>
+                <p class="text-[9px] text-gray-500 tracking-[2px]">NUEVO WEBHOOK v41.42</p>
             </div>
         </div>
 
@@ -42,27 +42,28 @@
     </div>
 
     <script>
-        const WEBHOOK_PUB = "https://hook.eu2.make.com/80rpa5t48aqprpltnwhrood646g91c63";
+        // NUEVA URL WEBHOOK ACTUALIZADA
+        const WEBHOOK_PUB = "https://hook.eu2.make.com/l7s7fv2ldmbrwvmbmoqw74x2jx68w4ox";
 
         const narrativas = [
             {
                 t: "LA REVOLUCIÓN DE LA IA Y EL IMPACTO SOCIAL",
                 c: "La Inteligencia Artificial está redefiniendo nuestro aporte a la sociedad al resolver problemas complejos de forma inmediata.\nAl democratizar el acceso a soluciones avanzadas, creamos un entorno equitativo donde el conocimiento fluye libremente.\n\nBeneficios clave de esta era digital:\n• Optimización de recursos en servicios básicos como salud y educación pública.\n• Reducción de barreras económicas para el desarrollo de nuevas ideas locales.\n• Ejecución de tareas críticas con una precisión que impulsa el crecimiento colectivo.\n\nLa IA actúa como un puente entre la necesidad y la solución, optimizando la entrega de valor en cada interacción humana.\nNo es solo automatización, sino una evolución en la colaboración profunda entre el pensamiento humano y la máquina.\nCada avance en procesamiento se traduce en una respuesta ágil ante desafíos globales y climáticos urgentes hoy.\nEstamos construyendo una base sólida para que las futuras generaciones hereden un sistema más justo y transparente.\nLa tecnología es el pilar fundamental que sostiene la nueva arquitectura de bienestar que diseñamos en este siglo.",
-                p: "Futuristic artificial intelligence neural network, glowing cyan data flows, abstract digital brain, 8k cinematic lighting, no people"
+                p: "Futuristic artificial intelligence neural network, glowing cyan data flows, abstract digital brain, 8k cinematic lighting, sci-fi concept art, no people"
             }
         ];
 
-        function updatePost() {
+        function update() {
             const data = narrativas[0];
             const tags = "#IA #Sociedad #Eficiencia #Tecnologia #Productividad #Futuro #Innovacion #Estrategia";
+            // Estructura: Título + Cuerpo + Espacio + Tags
             document.getElementById('postText').value = `🚀 ${data.t}\n\n${data.c}\n\n\n${tags}`;
-        }
-
-        function updateImg() {
-            const data = narrativas[0];
-            const loader = document.getElementById('imgLoader');
-            const img = document.getElementById('imgPreview');
+            
             const url = `https://pollinations.ai/p/${encodeURIComponent(data.p)}?width=1080&height=600&seed=${Date.now()}&nologo=true`;
+            const img = document.getElementById('imgPreview');
+            const loader = document.getElementById('imgLoader');
+            img.classList.replace('opacity-100', 'opacity-0');
+            loader.style.display = "block";
             img.src = url;
             img.dataset.url = url;
             img.onload = () => { img.classList.replace('opacity-0', 'opacity-100'); loader.style.display = "none"; };
@@ -79,27 +80,24 @@
             btn.disabled = true;
 
             try {
-                // EL CAMBIO CLAVE: Quitamos 'no-cors' para que el navegador envíe el Content-Type correcto
                 await fetch(WEBHOOK_PUB, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json' 
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                alert("✓ ENVIADO: Ahora Make debería ver los campos lila.");
+                alert("✓ ENVIADO: Estilo futurista con viñetas aplicado.");
             } catch (e) {
-                alert("Error de envío. Revisa tu conexión.");
+                alert("Error de envío.");
             } finally {
                 btn.innerText = "PUBLICAR AHORA";
                 btn.disabled = false;
             }
         }
 
-        document.getElementById('btnNewPost').onclick = updatePost;
-        document.getElementById('btnNewImg').onclick = updateImg;
+        document.getElementById('btnNewPost').onclick = update;
+        document.getElementById('btnNewImg').onclick = update;
         document.getElementById('btnPub').onclick = publicar;
-        window.onload = () => { updatePost(); updateImg(); };
+        window.onload = update;
     </script>
 </body>
 </html>
