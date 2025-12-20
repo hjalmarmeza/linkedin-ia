@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LinkedinMatic v41.13</title>
+    <title>LinkedinMatic v41.14</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
@@ -21,9 +21,9 @@
         <div class="flex justify-between items-center p-4 cyber-card rounded-2xl mt-2">
             <div>
                 <h1 class="text-xl font-bold font-['Orbitron'] text-white">LINKEDIN<span class="text-cyan-400">MATIC</span></h1>
-                <p class="text-[9px] text-gray-500 tracking-[2px]">NARRATIVA DE IMPACTO v41.13</p>
+                <p class="text-[9px] text-gray-500 tracking-[2px]">ESTÉTICA MINIMALISTA v41.14</p>
             </div>
-            <div class="text-[10px] text-cyan-400 font-bold px-2 py-1 border border-cyan-900 rounded">TOP-TECH</div>
+            <div class="text-[10px] text-cyan-400 font-bold px-2 py-1 border border-cyan-900 rounded">LUX-TECH</div>
         </div>
 
         <div class="p-4 cyber-card rounded-2xl">
@@ -35,7 +35,7 @@
 
         <div class="cyber-card rounded-2xl overflow-hidden relative min-h-[200px] flex items-center justify-center bg-gray-900">
             <img id="imgPreview" src="" class="w-full h-full object-cover transition-opacity duration-500 opacity-0">
-            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">CREANDO VISUAL...</div>
+            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">MINIMALIST ART...</div>
         </div>
 
         <div class="cyber-card rounded-2xl p-2">
@@ -51,27 +51,27 @@
         const enfoquesNarrativos = [
             { 
                 titulo: "LA ERA DE LOS AGENTES AUTÓNOMOS: MÁS ALLÁ DEL CHAT", 
-                prompt: "Futuristic digital entities working autonomously, interconnected glowing nodes, sleek robotic hands typing on light, blue and amber tones",
+                prompt: "Minimalist professional vector art, single glowing blue line representing a neural pathway, clean white background, high-end corporate aesthetic",
                 texto: "Estamos cruzando la frontera de la IA asistencial hacia la IA agéntica. Ya no se trata de herramientas que responden preguntas, sino de entidades capaces de razonar, planificar y ejecutar tareas complejas de forma autónoma. Esta evolución promete devolvernos cientos de horas al delegar procesos completos, permitiéndonos enfocarnos en la visión y no en la microgestión. La eficiencia acaba de dar un salto de gigante."
             },
             { 
                 titulo: "IA SOBERANA: EL NUEVO PODER DE LAS NACIONES Y EMPRESAS", 
-                prompt: "Digital shield, flag made of binary code, futuristic server room with holographic protection, security and sovereignty concept",
+                prompt: "Professional minimalist 3D render, a single metallic shield icon, soft shadows, matte black and cyan palette, elegant lighting",
                 texto: "La soberanía digital es el tema central de este año. La IA soberana no solo busca eficiencia, sino independencia y seguridad. Al procesar datos en infraestructuras propias y locales, garantizamos que el valor intelectual y la privacidad de los usuarios se mantengan bajo control absoluto. Es la respuesta necesaria ante un mundo cada vez más dependiente de grandes nubes externas."
             },
             { 
                 titulo: "SISTEMAS DE RAZONAMIENTO: LA IA QUE 'PIENSA' ANTES DE HABLAR", 
-                prompt: "Complex human-like brain made of light circuits, deep thinking visualization, neural pathways glowing, dark background",
+                prompt: "Minimalist abstract concept of a brain, simple geometric shapes forming a complex network, deep navy blue and white, clean corporate design",
                 texto: "La llegada de modelos centrados en el razonamiento lógico está redefiniendo lo que esperamos de la tecnología. A diferencia de las respuestas rápidas, estos sistemas dedican tiempo a computar el mejor camino para resolver problemas científicos y técnicos de alta complejidad. El beneficio para la sociedad es inmenso: desde el descubrimiento acelerado de fármacos hasta la resolución de retos matemáticos que antes tomaban décadas."
             },
             { 
                 titulo: "SOSTENIBILIDAD DIGITAL: IA PARA UN PLANETA INTELIGENTE", 
-                prompt: "Lush green forest integrated with futuristic technology, glowing trees with fiber optics, clean energy concept",
+                prompt: "Professional minimalist illustration, a single green leaf made of digital circuits, pure white background, soft natural lighting, high-end design",
                 texto: "El impacto de la IA no es solo digital, es ambiental. Estamos viendo cómo los algoritmos optimizan el consumo de energía en redes eléctricas globales y diseñan materiales más eficientes para baterías. La paradoja es fascinante: usamos una tecnología que consume energía para salvar los recursos del planeta. La eficiencia energética impulsada por IA es el pilar que hará viable nuestro futuro colectivo."
             },
             { 
                 titulo: "DEMOCRATIZACIÓN DEL TIEMPO: LA IA COMO NIVELADOR SOCIAL", 
-                prompt: "People of diverse backgrounds using advanced technology in everyday life, bright optimistic atmosphere, golden hour",
+                prompt: "Minimalist luxury art, a single golden sand clock dissolving into digital pixels, matte background, professional studio lighting",
                 texto: "La mayor revolución de la IA es su capacidad para nivelar el campo de juego. Usuarios que antes carecían de conocimientos técnicos ahora pueden programar, diseñar o analizar datos complejos gracias a interfaces intuitivas. Este ahorro de tiempos y barreras de entrada está empoderando a una nueva clase de creadores y emprendedores, permitiendo que el talento brille sin importar los recursos técnicos previos."
             }
         ];
@@ -96,7 +96,9 @@
             const loader = document.getElementById('imgLoader');
             const seed = Date.now() + Math.floor(Math.random() * 1000000);
             
-            const url = `https://pollinations.ai/p/${encodeURIComponent(temaPrompt)}?width=1080&height=566&seed=${seed}&nologo=true&t=${Date.now()}`;
+            // Forzamos el estilo minimalista en cada prompt
+            const fullPrompt = `${temaPrompt}, minimalist, high-end professional aesthetic, clean design, studio lighting, 8k, elegant`;
+            const url = `https://pollinations.ai/p/${encodeURIComponent(fullPrompt)}?width=1080&height=566&seed=${seed}&nologo=true&t=${Date.now()}`;
             
             img.classList.remove('opacity-100');
             img.classList.add('opacity-0');
@@ -114,7 +116,7 @@
         function cambiarSoloImagen() {
             const currentText = document.getElementById('postText').value;
             const titulo = currentText.split('\n')[0].replace('🚀 ', '');
-            generarImagen(titulo + " futuristic cinematic conceptual art");
+            generarImagen(`Professional minimalist 3D abstract art of ${titulo}, corporate style, elegant`);
         }
 
         async function publicar() {
