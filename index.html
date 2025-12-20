@@ -3,76 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LinkedinMatic v41.25</title>
+    <title>LinkedinMatic v41.26</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
         body { background-color: #050505; color: #e0e0e0; font-family: 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
         .cyber-card { background: rgba(10, 10, 10, 0.98); border: 1px solid #222; border-top: 3px solid #00f2ff; }
         .mobile-btn { height: 50px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; border: 1px solid #00f2ff; color: #00f2ff; font-size: 0.7rem; border-radius: 10px; font-weight: bold; background: rgba(0, 242, 255, 0.05); }
-        .mobile-btn:active { background: #00f2ff; color: #000; transform: scale(0.95); }
         .publish-btn { background: #00f2ff; color: #000; border: none; font-size: 1rem; box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
-        .post-input { background: #000; border: 1px solid #333; color: #fff; line-height: 1.7; font-size: 15px; width: 100%; border-radius: 10px; padding: 15px; }
+        .post-input { background: #000; border: 1px solid #333; color: #fff; line-height: 1.6; font-size: 14px; width: 100%; border-radius: 10px; padding: 15px; white-space: pre-wrap; }
     </style>
 </head>
 <body class="p-2 bg-black">
     <div class="max-w-md mx-auto space-y-4 pb-12">
-        <div class="flex justify-between items-center p-4 cyber-card rounded-2xl mt-2">
-            <div>
-                <h1 class="text-xl font-bold font-['Orbitron'] text-white">LINKEDIN<span class="text-cyan-400">MATIC</span></h1>
-                <p class="text-[9px] text-gray-500 tracking-[2px]">ESTÁNDAR ACORDADO v41.25</p>
-            </div>
-        </div>
-
-        <div class="p-4 cyber-card rounded-2xl grid grid-cols-2 gap-4">
-            <button id="btnNewPost" class="mobile-btn">NUEVO POST</button>
+        <div class="p-4 cyber-card rounded-2xl grid grid-cols-2 gap-4 mt-4">
+            <button id="btnNewPost" class="mobile-btn">GENERAR POST</button>
             <button id="btnNewImg" class="mobile-btn">NUEVA IMAGEN</button>
         </div>
-
         <div class="cyber-card rounded-2xl overflow-hidden relative min-h-[220px] flex items-center justify-center bg-[#111]">
             <img id="imgPreview" src="" class="w-full h-full object-cover transition-opacity duration-500 opacity-0">
-            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">SISTEMA OK...</div>
+            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">PROCESANDO...</div>
         </div>
-
         <div class="cyber-card rounded-2xl p-2">
-            <textarea id="postText" rows="18" class="post-input border-none focus:ring-0"></textarea>
+            <textarea id="postText" rows="22" class="post-input border-none focus:ring-0" readonly></textarea>
         </div>
-
         <button id="btnPub" class="mobile-btn publish-btn w-full">PUBLICAR AHORA</button>
     </div>
 
     <script>
         const WEBHOOK_PUB = "https://hook.eu2.make.com/80rpa5t48aqprpltnwhrood646g91c63";
 
-        const contenidos = [
+        const narrativas = [
             {
-                t: "IA Y APORTE SOCIAL",
-                c: "La Inteligencia Artificial está redefiniendo nuestro aporte a la sociedad al resolver problemas complejos que antes tomaban años. Al democratizar el acceso a soluciones tecnológicas avanzadas, estamos creando un entorno más equitativo donde el conocimiento y la ejecución están al alcance de todos, impulsando un crecimiento colectivo sin precedentes.",
-                p: "Modern corporate people collaborating, vibrant office, high-end photography"
-            },
-            {
-                t: "BENEFICIOS PARA EL USUARIO",
-                c: "El beneficio real de la IA para el usuario final se traduce en una experiencia intuitiva y personalizada. Ya no se trata de entender la tecnología, sino de que la tecnología nos entienda a nosotros. Esto elimina barreras de entrada y permite que cualquier persona, sin importar su perfil técnico, pueda alcanzar resultados profesionales de alto nivel.",
-                p: "Professional user with high-tech mobile device, bright natural lighting, vibrant details"
-            },
-            {
-                t: "EFICIENCIA Y AHORRO DE TIEMPOS",
-                c: "La mayor moneda de cambio hoy es el tiempo, y la IA es la herramienta definitiva para recuperarlo. Al optimizar procesos y automatizar tareas repetitivas, logramos una eficiencia operativa que devuelve horas valiosas a las personas. Este ahorro de tiempo no solo mejora la productividad, sino que eleva la calidad de vida al permitirnos enfocarnos en lo que realmente importa.",
-                p: "Futuristic office environment, clock and data streams, vibrant cyan and corporate colors"
+                tema: "Impacto Social y Eficiencia",
+                texto: "La integración de la inteligencia artificial en el tejido social marca el inicio de una transformación profunda en la manera en que gestionamos el bienestar colectivo.\nNo se trata solo de algoritmos avanzados procesando datos a gran escala, sino de una herramienta que permite democratizar el acceso a servicios que antes eran inalcanzables.\nEl aporte social es inmenso cuando logramos que la tecnología identifique necesidades en tiempo real y optimice los recursos para llegar a los sectores más vulnerables.\nLa eficiencia operativa se convierte en el motor de este cambio, eliminando burocracias obsoletas que durante décadas frenaron el progreso de nuestras comunidades locales.\nAl reducir los errores humanos en procesos críticos, estamos construyendo una infraestructura más sólida y confiable para las generaciones que vienen detrás de nosotros.\nEl beneficio al usuario es directo: respuestas más rápidas, trámites simplificados y la sensación de que el sistema finalmente trabaja a favor de sus necesidades reales.\nEl ahorro en tiempos permite que el talento humano se desplace de las tareas mecánicas hacia el pensamiento creativo y la resolución de problemas humanitarios urgentes.\nEstamos ante una moneda de cambio nueva, donde la velocidad de procesamiento se traduce en vidas mejoradas y en una calidad de servicio que redefine lo público.\nCada implementación exitosa nos acerca a un ideal de productividad donde la máquina asume la carga pesada y el hombre recupera su capacidad de innovación.\nEste ecosistema digital no es una promesa futura, es una realidad latente que ya está optimizando la cadena de valor en cada rincón de nuestra interacción social.\nLa agilidad con la que hoy resolvemos conflictos operativos es el resultado de años de entrenamiento en modelos que entienden el contexto y la urgencia.\nNo podemos ignorar que la tecnología es un aliado estratégico para alcanzar los objetivos de sostenibilidad que el mundo nos demanda con tanta vehemencia hoy.\nEl ahorro de recursos energéticos y económicos es solo la superficie de lo que esta simbiosis entre humano e inteligencia artificial puede llegar a consolidar pronto.\nLa transparencia en la gestión de la información asegura que cada ciudadano sea parte de un proceso auditado y eficiente que genera confianza en las instituciones.\nOptimizar no es solo hacer más con menos, es encontrar el equilibrio exacto entre la automatización necesaria y la empatía que solo el ser humano aporta.\nLa arquitectura de estas soluciones está diseñada para escalar, permitiendo que un acierto local se convierta rápidamente en una solución global para millones.\nEstamos reescribiendo el contrato social a través de la eficiencia, asegurando que nadie se quede atrás en esta transición hacia la digitalización integral.\nEl tiempo recuperado es, en última instancia, la mayor riqueza que la inteligencia artificial está entregando a nuestra sociedad contemporánea de manera gratuita.\nCada segundo ahorrado en la nube se convierte en un segundo invertido en el desarrollo de ideas que cambiarán el rumbo de nuestra historia profesional activa.\nEs el momento de abrazar esta evolución como el pilar fundamental de una sociedad que valora la eficacia por encima de la tradición administrativa inerte.",
+                tags: "#IA #Sociedad #Eficiencia #Tecnologia #Productividad #Futuro #Innovacion #Estrategia",
+                prompt: "Professional business people in a high-tech city environment, vibrant sunset lighting, cinematic photography, high-end 8k"
             }
         ];
 
-        let idx = 0;
-
-        function update() {
-            const data = contenidos[idx];
-            let post = `🚀 ${data.t}\n\n`;
-            post += `${data.c}\n\n`;
-            post += `#IA #Eficiencia #Sociedad #Tecnologia #Productividad`;
-            
-            document.getElementById('postText').value = post;
-            
-            const url = `https://pollinations.ai/p/${encodeURIComponent(data.p + " professional vibrant style")}.png?width=1080&height=600&seed=${Date.now()}&nologo=true`;
+        function generar() {
+            const data = narrativas[0];
+            document.getElementById('postText').value = `${data.texto}\n\n${data.tags}`;
+            const url = `https://pollinations.ai/p/${encodeURIComponent(data.prompt)}?width=1080&height=600&seed=${Date.now()}&nologo=true`;
             const img = document.getElementById('imgPreview');
             const loader = document.getElementById('imgLoader');
             img.classList.replace('opacity-100', 'opacity-0');
@@ -80,8 +53,6 @@
             img.src = url;
             img.dataset.url = url;
             img.onload = () => { img.classList.replace('opacity-0', 'opacity-100'); loader.style.display = "none"; };
-            
-            idx = (idx + 1) % contenidos.length;
         }
 
         async function publicar() {
@@ -98,19 +69,15 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                alert("✓ ENVIADO: Campos 'post' y 'Url_imagen' transmitidos.");
-            } catch (e) {
-                alert("Error de conexión.");
-            } finally {
-                btn.innerText = "PUBLICAR AHORA";
-                btn.disabled = false;
-            }
+                alert("✓ ENVIADO: 20 líneas, 8 tags, sin CTA.");
+            } catch (e) { alert("Error de conexión."); }
+            finally { btn.innerText = "PUBLICAR AHORA"; btn.disabled = false; }
         }
 
-        document.getElementById('btnNewPost').onclick = update;
-        document.getElementById('btnNewImg').onclick = update;
+        document.getElementById('btnNewPost').onclick = generar;
+        document.getElementById('btnNewImg').onclick = generar;
         document.getElementById('btnPub').onclick = publicar;
-        window.onload = update;
+        window.onload = generar;
     </script>
 </body>
 </html>
