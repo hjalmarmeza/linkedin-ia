@@ -3,49 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LinkedinMatic v41.26</title>
+    <title>LinkedinMatic v41.33</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
         body { background-color: #050505; color: #e0e0e0; font-family: 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
         .cyber-card { background: rgba(10, 10, 10, 0.98); border: 1px solid #222; border-top: 3px solid #00f2ff; }
         .mobile-btn { height: 50px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; border: 1px solid #00f2ff; color: #00f2ff; font-size: 0.7rem; border-radius: 10px; font-weight: bold; background: rgba(0, 242, 255, 0.05); }
+        .mobile-btn:active { background: #00f2ff; color: #000; transform: scale(0.95); }
         .publish-btn { background: #00f2ff; color: #000; border: none; font-size: 1rem; box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
         .post-input { background: #000; border: 1px solid #333; color: #fff; line-height: 1.6; font-size: 14px; width: 100%; border-radius: 10px; padding: 15px; white-space: pre-wrap; }
     </style>
 </head>
 <body class="p-2 bg-black">
     <div class="max-w-md mx-auto space-y-4 pb-12">
-        <div class="p-4 cyber-card rounded-2xl grid grid-cols-2 gap-4 mt-4">
-            <button id="btnNewPost" class="mobile-btn">GENERAR POST</button>
-            <button id="btnNewImg" class="mobile-btn">NUEVA IMAGEN</button>
+        <div class="flex justify-between items-center p-4 cyber-card rounded-2xl mt-2">
+            <div>
+                <h1 class="text-xl font-bold font-['Orbitron'] text-white">LINKEDIN<span class="text-cyan-400">MATIC</span></h1>
+                <p class="text-[9px] text-gray-500 tracking-[2px]">ESTÁNDAR FINAL v41.33</p>
+            </div>
         </div>
+
+        <div class="p-4 cyber-card rounded-2xl grid grid-cols-2 gap-4">
+            <button id="btnNewPost" class="mobile-btn">GENERAR CONTENIDO</button>
+            <button id="btnNewImg" class="mobile-btn">CAMBIAR IMAGEN</button>
+        </div>
+
         <div class="cyber-card rounded-2xl overflow-hidden relative min-h-[220px] flex items-center justify-center bg-[#111]">
             <img id="imgPreview" src="" class="w-full h-full object-cover transition-opacity duration-500 opacity-0">
-            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">PROCESANDO...</div>
+            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">SISTEMA OK...</div>
         </div>
+
         <div class="cyber-card rounded-2xl p-2">
             <textarea id="postText" rows="22" class="post-input border-none focus:ring-0" readonly></textarea>
         </div>
+
         <button id="btnPub" class="mobile-btn publish-btn w-full">PUBLICAR AHORA</button>
     </div>
 
     <script>
+        // WEBHOOK ACTUALIZADO (image_368e25.png)
         const WEBHOOK_PUB = "https://hook.eu2.make.com/80rpa5t48aqprpltnwhrood646g91c63";
 
         const narrativas = [
             {
-                tema: "Impacto Social y Eficiencia",
-                texto: "La integración de la inteligencia artificial en el tejido social marca el inicio de una transformación profunda en la manera en que gestionamos el bienestar colectivo.\nNo se trata solo de algoritmos avanzados procesando datos a gran escala, sino de una herramienta que permite democratizar el acceso a servicios que antes eran inalcanzables.\nEl aporte social es inmenso cuando logramos que la tecnología identifique necesidades en tiempo real y optimice los recursos para llegar a los sectores más vulnerables.\nLa eficiencia operativa se convierte en el motor de este cambio, eliminando burocracias obsoletas que durante décadas frenaron el progreso de nuestras comunidades locales.\nAl reducir los errores humanos en procesos críticos, estamos construyendo una infraestructura más sólida y confiable para las generaciones que vienen detrás de nosotros.\nEl beneficio al usuario es directo: respuestas más rápidas, trámites simplificados y la sensación de que el sistema finalmente trabaja a favor de sus necesidades reales.\nEl ahorro en tiempos permite que el talento humano se desplace de las tareas mecánicas hacia el pensamiento creativo y la resolución de problemas humanitarios urgentes.\nEstamos ante una moneda de cambio nueva, donde la velocidad de procesamiento se traduce en vidas mejoradas y en una calidad de servicio que redefine lo público.\nCada implementación exitosa nos acerca a un ideal de productividad donde la máquina asume la carga pesada y el hombre recupera su capacidad de innovación.\nEste ecosistema digital no es una promesa futura, es una realidad latente que ya está optimizando la cadena de valor en cada rincón de nuestra interacción social.\nLa agilidad con la que hoy resolvemos conflictos operativos es el resultado de años de entrenamiento en modelos que entienden el contexto y la urgencia.\nNo podemos ignorar que la tecnología es un aliado estratégico para alcanzar los objetivos de sostenibilidad que el mundo nos demanda con tanta vehemencia hoy.\nEl ahorro de recursos energéticos y económicos es solo la superficie de lo que esta simbiosis entre humano e inteligencia artificial puede llegar a consolidar pronto.\nLa transparencia en la gestión de la información asegura que cada ciudadano sea parte de un proceso auditado y eficiente que genera confianza en las instituciones.\nOptimizar no es solo hacer más con menos, es encontrar el equilibrio exacto entre la automatización necesaria y la empatía que solo el ser humano aporta.\nLa arquitectura de estas soluciones está diseñada para escalar, permitiendo que un acierto local se convierta rápidamente en una solución global para millones.\nEstamos reescribiendo el contrato social a través de la eficiencia, asegurando que nadie se quede atrás en esta transición hacia la digitalización integral.\nEl tiempo recuperado es, en última instancia, la mayor riqueza que la inteligencia artificial está entregando a nuestra sociedad contemporánea de manera gratuita.\nCada segundo ahorrado en la nube se convierte en un segundo invertido en el desarrollo de ideas que cambiarán el rumbo de nuestra historia profesional activa.\nEs el momento de abrazar esta evolución como el pilar fundamental de una sociedad que valora la eficacia por encima de la tradición administrativa inerte.",
+                t: "IA Y APORTE SOCIAL",
+                c: "La Inteligencia Artificial está redefiniendo nuestro aporte a la sociedad al resolver problemas complejos que antes tomaban años.\nAl democratizar el acceso a soluciones tecnológicas avanzadas, estamos creando un entorno más equitativo donde el conocimiento fluye libre.\nLa ejecución de tareas críticas ahora está al alcance de todos, impulsando un crecimiento colectivo sin precedentes en nuestra historia.\nEl impacto social se manifiesta cuando la tecnología elimina barreras geográficas y económicas para el desarrollo de nuevas ideas locales.\nEstamos presenciando cómo algoritmos éticos ayudan a identificar áreas de mejora en servicios básicos como salud y educación pública.\nLa IA actúa como un puente entre la necesidad humana y la solución técnica, optimizando la entrega de valor en cada interacción social.\nNo se trata solo de automatización, sino de una evolución en la forma en que entendemos la colaboración entre humanos y máquinas.\nCada avance en procesamiento de datos se traduce en una respuesta más ágil ante desafíos humanitarios y climáticos urgentes hoy.\nLa transparencia en los modelos predictivos asegura que el progreso tecnológico sea auditado y beneficie a la mayoría de la población.\nEstamos construyendo una base sólida para que las futuras generaciones hereden un sistema más justo, eficiente y altamente digitalizado.\nLa tecnología es el pilar fundamental que sostiene la nueva arquitectura de bienestar social que estamos diseñando en este siglo.\nOptimizar procesos públicos mediante IA reduce la desigualdad y permite que los recursos lleguen con precisión quirúrgica donde se necesitan.\nLa agilidad operativa en la gestión de datos es la clave para una gobernanza moderna que prioriza el impacto real sobre la burocracia.\nEl beneficio se extiende a cada ciudadano que interactúa con plataformas inteligentes diseñadas para simplificar su vida cotidiana de forma segura.\nLa IA no es una herramienta aislada, es el corazón de una transformación integral que valora la eficacia por encima de lo tradicional.\nCada segundo que ganamos gracias a la inteligencia artificial es un segundo invertido en el fortalecimiento del tejido social contemporáneo.\nEstamos reescribiendo el contrato social a través de la eficiencia operativa que solo la computación avanzada puede proporcionarnos ahora.\nLa visión de una sociedad conectada se materializa cuando el talento humano se libera de la carga operativa gracias a la IA.\nEs nuestra responsabilidad asegurar que esta potencia tecnológica se mantenga alineada con los valores fundamentales de la dignidad humana.\nEste ecosistema digital es el legado de una era que decidió apostar por la innovación consciente para el bienestar de todos.",
                 tags: "#IA #Sociedad #Eficiencia #Tecnologia #Productividad #Futuro #Innovacion #Estrategia",
-                prompt: "Professional business people in a high-tech city environment, vibrant sunset lighting, cinematic photography, high-end 8k"
+                p: "Modern corporate office, vibrant lighting, people collaborating with holograms, high-end photography"
             }
         ];
 
-        function generar() {
-            const data = narrativas[0];
-            document.getElementById('postText').value = `${data.texto}\n\n${data.tags}`;
-            const url = `https://pollinations.ai/p/${encodeURIComponent(data.prompt)}?width=1080&height=600&seed=${Date.now()}&nologo=true`;
+        let idx = 0;
+
+        function update() {
+            const data = narrativas[idx];
+            document.getElementById('postText').value = `${data.c}\n\n${data.tags}`;
+            
+            const url = `https://pollinations.ai/p/${encodeURIComponent(data.p + " vibrant style")}.png?width=1080&height=600&seed=${Date.now()}&nologo=true`;
             const img = document.getElementById('imgPreview');
             const loader = document.getElementById('imgLoader');
             img.classList.replace('opacity-100', 'opacity-0');
@@ -61,23 +76,31 @@
                 "post": document.getElementById('postText').value,
                 "Url_imagen": document.getElementById('imgPreview').dataset.url
             };
+
             btn.innerText = "ENVIANDO...";
             btn.disabled = true;
+
             try {
+                // Envío optimizado para evitar paquetes vacíos (image_37238e.png)
                 await fetch(WEBHOOK_PUB, {
                     method: 'POST',
+                    mode: 'no-cors', // Evita bloqueos CORS del navegador
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                alert("✓ ENVIADO: 20 líneas, 8 tags, sin CTA.");
-            } catch (e) { alert("Error de conexión."); }
-            finally { btn.innerText = "PUBLICAR AHORA"; btn.disabled = false; }
+                alert("✓ PROCESO INICIADO: Revisa el Paquete 1 en tu Webhook de Make.");
+            } catch (e) {
+                alert("Error de conexión con el Webhook.");
+            } finally {
+                btn.innerText = "PUBLICAR AHORA";
+                btn.disabled = false;
+            }
         }
 
-        document.getElementById('btnNewPost').onclick = generar;
-        document.getElementById('btnNewImg').onclick = generar;
+        document.getElementById('btnNewPost').onclick = update;
+        document.getElementById('btnNewImg').onclick = update;
         document.getElementById('btnPub').onclick = publicar;
-        window.onload = generar;
+        window.onload = update;
     </script>
 </body>
 </html>
