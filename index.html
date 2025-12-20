@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LinkedinMatic v41.35</title>
+    <title>LinkedinMatic v41.37</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
         body { background-color: #050505; color: #e0e0e0; font-family: 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
         .cyber-card { background: rgba(10, 10, 10, 0.98); border: 1px solid #222; border-top: 3px solid #00f2ff; }
         .mobile-btn { height: 50px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; border: 1px solid #00f2ff; color: #00f2ff; font-size: 0.7rem; border-radius: 10px; font-weight: bold; background: rgba(0, 242, 255, 0.05); }
-        .mobile-btn:active { background: #00f2ff; color: #000; transform: scale(0.95); }
         .publish-btn { background: #00f2ff; color: #000; border: none; font-size: 1rem; box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
         .post-input { background: #000; border: 1px solid #333; color: #fff; line-height: 1.6; font-size: 14px; width: 100%; border-radius: 10px; padding: 15px; white-space: pre-wrap; }
     </style>
@@ -20,18 +19,18 @@
         <div class="flex justify-between items-center p-4 cyber-card rounded-2xl mt-2">
             <div>
                 <h1 class="text-xl font-bold font-['Orbitron'] text-white">LINKEDIN<span class="text-cyan-400">MATIC</span></h1>
-                <p class="text-[9px] text-gray-500 tracking-[2px]">SISTEMA INTEGRAL v41.35</p>
+                <p class="text-[9px] text-gray-500 tracking-[2px]">ESTÁNDAR 20 LÍNEAS v41.37</p>
             </div>
         </div>
 
         <div class="p-4 cyber-card rounded-2xl grid grid-cols-2 gap-4">
-            <button id="btnNewPost" class="mobile-btn">GENERAR CONTENIDO</button>
+            <button id="btnNewPost" class="mobile-btn">NUEVA NARRATIVA</button>
             <button id="btnNewImg" class="mobile-btn">NUEVA IMAGEN</button>
         </div>
 
         <div class="cyber-card rounded-2xl overflow-hidden relative min-h-[220px] flex items-center justify-center bg-[#111]">
             <img id="imgPreview" src="" class="w-full h-full object-cover transition-opacity duration-500 opacity-0">
-            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">SISTEMA LISTO...</div>
+            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">SISTEMA OK...</div>
         </div>
 
         <div class="cyber-card rounded-2xl p-2">
@@ -42,28 +41,26 @@
     </div>
 
     <script>
+        // SI CREAS UN ESCENARIO NUEVO, PEGA LA URL AQUÍ
         const WEBHOOK_PUB = "https://hook.eu2.make.com/80rpa5t48aqprpltnwhrood646g91c63";
 
-        const narrativas = [
-            {
-                t: "IA Y APORTE SOCIAL",
-                c: "La Inteligencia Artificial está redefiniendo nuestro aporte a la sociedad al resolver problemas complejos que antes tomaban años.\nAl democratizar el acceso a soluciones tecnológicas avanzadas, estamos creando un entorno más equitativo donde el conocimiento fluye libre.\nLa ejecución de tareas críticas ahora está al alcance de todos, impulsando un crecimiento colectivo sin precedentes en nuestra historia.\nEl impacto social se manifiesta cuando la tecnología elimina barreras geográficas y económicas para el desarrollo de nuevas ideas locales.\nEstamos presenciando cómo algoritmos éticos ayudan a identificar áreas de mejora en servicios básicos como salud y educación pública.\nLa IA actúa como un puente entre la necesidad humana y la solución técnica, optimizando la entrega de valor en cada interacción social.\nNo se trata solo de automatización, sino de una evolución en la forma en que entendemos la colaboración entre humanos y máquinas.\nCada avance en procesamiento de datos se traduce en una respuesta más ágil ante desafíos humanitarios y climáticos urgentes hoy.\nLa transparencia en los modelos predictivos asegura que el progreso tecnológico sea auditado y beneficie a la mayoría de la población.\nEstamos construyendo una base sólida para que las futuras generaciones hereden un sistema más justo, eficiente y altamente digitalizado.\nLa tecnología es el pilar fundamental que sostiene la nueva arquitectura de bienestar social que estamos diseñando en este siglo.\nOptimizar procesos públicos mediante IA reduce la desigualdad y permite que los recursos lleguen con precisión quirúrgica donde se necesitan.\nLa agilidad operativa en la gestión de datos es la clave para una gobernanza moderna que prioriza el impacto real sobre la burocracia.\nEl beneficio se extiende a cada ciudadano que interactúa con plataformas inteligentes diseñadas para simplificar su vida cotidiana de forma segura.\nLa IA no es una herramienta aislada, es el corazón de una transformación integral que valora la eficacia por encima de lo tradicional.\nCada segundo que ganamos gracias a la inteligencia artificial es un segundo invertido en el fortalecimiento del tejido social contemporáneo.\nEstamos reescribiendo el contrato social a través de la eficiencia operativa que solo la computación avanzada puede proporcionarnos ahora.\nLa visión de una sociedad conectada se materializa cuando el talento humano se libera de la carga operativa gracias a la IA.\nEs nuestra responsabilidad asegurar que esta potencia tecnológica se mantenga alineada con los valores fundamentales de la dignidad humana.\nEste ecosistema digital es el legado de una era que decidió apostar por la innovación consciente para el bienestar de todos.",
-                tags: "#IA #Sociedad #Eficiencia #Tecnologia #Productividad #Futuro #Innovacion #Estrategia",
-                p: "Professional modern business environment, vibrant corporate colors, cinematic lighting, 8k"
-            }
-        ];
+        const narrativas = [{
+            t: "IA: EL MOTOR DEL APORTE SOCIAL Y LA EFICIENCIA",
+            c: "La Inteligencia Artificial está redefiniendo nuestro aporte a la sociedad al resolver problemas complejos.\nAl democratizar el acceso a soluciones avanzadas, creamos un entorno equitativo donde el conocimiento fluye libre.\nLa ejecución de tareas críticas ahora está al alcance de todos, impulsando un crecimiento colectivo sin precedentes.\nEl impacto social se manifiesta cuando la tecnología elimina barreras para el desarrollo de nuevas ideas locales.\nAlgoritmos éticos ayudan a identificar áreas de mejora en servicios básicos como salud y educación pública.\nLa IA actúa como un puente entre la necesidad y la solución, optimizando la entrega de valor en cada interacción.\nNo es solo automatización, sino una evolución en la colaboración profunda entre humanos y máquinas modernas.\nCada avance en procesamiento se traduce en una respuesta ágil ante desafíos humanitarios y climáticos urgentes.\nLa transparencia en modelos predictivos asegura que el progreso tecnológico sea auditado y beneficie a todos.\nConstruimos una base sólida para que las futuras generaciones hereden un sistema más justo y digitalizado.\nLa tecnología es el pilar fundamental que sostiene la nueva arquitectura de bienestar que diseñamos hoy.\nOptimizar procesos mediante IA reduce la desigualdad y permite que los recursos lleguen con precisión total.\nLa agilidad operativa en la gestión de datos es la clave para una gobernanza que prioriza el impacto real.\nEl beneficio se extiende a cada ciudadano que interactúa con plataformas diseñadas para simplificar su vida.\nLa IA es el corazón de una transformación integral que valora la eficacia por encima de lo tradicional.\nCada segundo ganado es un segundo invertido en el fortalecimiento del tejido social contemporáneo real.\nReescribimos el contrato social mediante la eficiencia operativa que la computación avanzada nos proporciona.\nLa visión de una sociedad conectada se materializa cuando el talento humano se libera de la carga operativa.",
+            tags: "#IA #Sociedad #Eficiencia #Tecnologia #Productividad #Futuro #Innovacion #Estrategia",
+            p: "Professional modern business environment, vibrant corporate colors, cinematic photography, high-end"
+        }];
 
         function update() {
             const data = narrativas[0];
-            document.getElementById('postText').value = `${data.c}\n\n${data.tags}`;
-            const url = `https://pollinations.ai/p/${encodeURIComponent(data.p + " vibrant high-end photography")}.png?width=1080&height=600&seed=${Date.now()}&nologo=true`;
+            // Construcción de 20 líneas totales: 1 Título + 18 Cuerpo + 1 Tags
+            document.getElementById('postText').value = `🚀 ${data.t}\n${data.c}\n${data.tags}`;
+            
+            const url = `https://pollinations.ai/p/${encodeURIComponent(data.p)}?width=1080&height=600&seed=${Date.now()}&nologo=true`;
             const img = document.getElementById('imgPreview');
-            const loader = document.getElementById('imgLoader');
-            img.classList.replace('opacity-100', 'opacity-0');
-            loader.style.display = "block";
             img.src = url;
             img.dataset.url = url;
-            img.onload = () => { img.classList.replace('opacity-0', 'opacity-100'); loader.style.display = "none"; };
+            img.onload = () => { img.classList.replace('opacity-0', 'opacity-100'); document.getElementById('imgLoader').style.display = "none"; };
         }
 
         async function publicar() {
@@ -77,15 +74,14 @@
             btn.disabled = true;
 
             try {
-                // Envío directo con JSON para que Make detecte los campos post y Url_imagen
                 await fetch(WEBHOOK_PUB, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                alert("✓ ENVIADO: Verifica que los campos lila aparezcan en Make.");
+                alert("✓ ENVIADO: 20 líneas exactas procesadas.");
             } catch (e) {
-                alert("Error de conexión con el Webhook.");
+                alert("Error de envío.");
             } finally {
                 btn.innerText = "PUBLICAR AHORA";
                 btn.disabled = false;
