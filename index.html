@@ -1,49 +1,172 @@
-function generarAnalisis() {
-    const topicSource = activeTopic;
-    const verbs = ["Gobernanza", "Evolución", "Sincronía", "Integridad", "Disrupción"];
-    const verb = verbs[Math.floor(Math.random() * verbs.length)];
-    
-    // Selección de enfoque aleatorio para evitar repetición de cuerpo
-    const enfoques = [
-        {
-            intro: "Nos encontramos en una frontera donde la eficiencia ya no es suficiente. El liderazgo moderno exige integrar potencia técnica con un marco ético innegociable.",
-            cuerpo: `Al analizar ${topicSource.toLowerCase()}, queda claro que la transparencia es el nuevo KPI de valor corporativo. No podemos permitir que la automatización opaque la responsabilidad humana.`,
-            conclusion: "La verdadera ventaja competitiva reside en la confianza que generamos al ser tecnológicamente íntegros."
-        },
-        {
-            intro: "La aceleración digital ha cambiado las reglas del juego. Hoy, la agilidad debe ir de la mano con una gobernanza algorítmica robusta.",
-            cuerpo: `El impacto de ${topicSource.toLowerCase()} nos obliga a repensar cómo orquestamos nuestros recursos. La optimización sin propósito es simplemente ruido operativo.`,
-            conclusion: "El éxito pertenece a quienes transforman datos en decisiones éticas y escalables."
-        },
-        {
-            intro: "Estamos presenciando una disrupción sin precedentes. El desafío no es solo adoptar la IA, sino liderar su implementación con integridad.",
-            cuerpo: `Lo que vemos en ${topicSource.toLowerCase()} es un llamado a la acción. La sostenibilidad de nuestros ecosistemas depende de un equilibrio real entre rendimiento y valores.`,
-            conclusion: "Construir un futuro eficiente requiere una visión humana innegociable en cada línea de código."
-        }
-    ];
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IA Strategic Studio v41.2</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
+        * { box-sizing: border-box; }
+        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .container { background: var(--card); padding: 15px; border-radius: 12px; width: 100%; max-width: 500px; border: 1px solid #30363d; }
+        .header-status { font-size: 11px; font-weight: bold; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 8px; border: 1px solid #333; }
+        .status-red { color: var(--danger); background: rgba(248, 81, 73, 0.1); border-color: var(--danger); }
+        .status-blue { color: var(--accent); background: rgba(88, 166, 255, 0.1); border-color: var(--accent); }
+        .input-manual { width: 100%; background: #000; color: var(--accent); border: 1px solid #444; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; font-style: italic; }
+        textarea { width: 100%; height: 420px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: none; margin-bottom: 12px; }
+        .img-preview { width: 100%; height: 230px; background: #000; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid #30363d; overflow: hidden; }
+        #postImg { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { height: 50px; border-radius: 8px; border: none; font-weight: bold; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; transition: 0.2s; }
+        .btn-gen { background: var(--success); }
+        .btn-img { background: #8957e5; }
+        .btn-clear { background: #30363d; border: 1px solid var(--danger); color: var(--danger); }
+        .btn-pub { background: var(--primary); }
+        button:disabled { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+        #status { font-size: 10px; text-align: center; color: #8b949e; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="engineBox" class="header-status status-red">
+        <span><i class="fas fa-microchip"></i> <span id="apiLabel">ESPERANDO SEÑAL</span></span>
+        <span id="newsSource">OFFLINE</span>
+    </div>
+    <input type="text" id="manualTopic" class="input-manual" placeholder="Escribe un tema (ej: Sostenibilidad)...">
+    <textarea id="postText" placeholder="1. Presiona LIMPIAR para recibir noticias fresca de Make..."></textarea>
+    <div class="img-preview">
+        <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-3x"></i></div>
+        <img id="postImg">
+    </div>
+    <div class="action-grid">
+        <button id="btnGen" class="btn-gen" onclick="generarAnalisis()" disabled><i class="fas fa-brain"></i> GENERAR</button>
+        <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-magic"></i> IMAGEN</button>
+        <button class="btn-clear" onclick="buscarNoticiaEnMake()"><i class="fas fa-eraser"></i> LIMPIAR</button>
+        <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
+    </div>
+    <div id="status">SISTEMA ESTRATÉGICO v41.2</div>
+</div>
 
-    const randomEnfoque = enfoques[Math.floor(Math.random() * enfoques.length)];
-    const cleanTitle = topicSource.replace(/la |el |de |en |que /gi, "").trim();
+<script>
+    const SEARCH_WEBHOOK_URL = "https://hook.eu2.make.com/6co1n3k568x7chpw5j45dihghj3yr963";
+    const PUBLISH_WEBHOOK_URL = "https://hook.eu2.make.com/6bbwbx4zr42kwe88t5ggvu9hbb9vyh7g";
     
-    const content = [
-        `🚀 ${verb.toUpperCase()}: REDEFINIENDO EL IMPACTO DE ${cleanTitle.toUpperCase()}`,
-        "",
-        randomEnfoque.intro,
-        "",
-        randomEnfoque.cuerpo,
-        "",
-        "🔹 PILARES ESTRATÉGICOS:",
-        "• Sincronía entre rendimiento y protocolos éticos.",
-        "• Eliminación de sesgos en decisiones críticas.",
-        "• Transparencia total como motor de mercado.",
-        "• Gobernanza humana en sistemas automatizados.",
-        "",
-        randomEnfoque.conclusion,
-        "",
-        "#IA #Estrategia #Liderazgo #EticaIA #Eficiencia #FuturoDelTrabajo"
-    ];
-    
-    document.getElementById('postText').value = content.join("\n");
-    document.getElementById('btnImg').disabled = false;
-    document.getElementById('status').innerText = "✓ ANÁLISIS DINÁMICO GENERADO";
-}
+    let activeTopic = "";
+    let finalImageUrl = "";
+
+    async function buscarNoticiaEnMake() {
+        const engineBox = document.getElementById('engineBox');
+        const apiLabel = document.getElementById('apiLabel');
+        const postText = document.getElementById('postText');
+        const btnGen = document.getElementById('btnGen');
+        const manual = document.getElementById('manualTopic').value;
+
+        activeTopic = "";
+        postText.value = "Solicitando noticia a Make...";
+        engineBox.className = "header-status status-red";
+        apiLabel.innerText = "BUSCANDO...";
+        btnGen.disabled = true;
+
+        try {
+            const response = await fetch(SEARCH_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ query: manual || "Tecnología y Estrategia" })
+            });
+            const data = await response.json();
+
+            if(data.titulo) {
+                activeTopic = data.titulo;
+                postText.value = "✓ NOTICIA RECIBIDA. Lista para procesar.";
+                engineBox.className = "header-status status-blue";
+                apiLabel.innerText = "LISTO";
+                document.getElementById('newsSource').innerText = "ONLINE";
+                btnGen.disabled = false;
+            } else { throw new Error(); }
+        } catch(e) {
+            postText.value = "Error: Verifica que el escenario de Make esté en ON.";
+            apiLabel.innerText = "ERROR RED";
+        }
+    }
+
+    function generarAnalisis() {
+        const topicSource = activeTopic;
+        const verbs = ["Gobernanza", "Sincronía", "Integridad", "Disrupción", "Visión"];
+        const verb = verbs[Math.floor(Math.random() * verbs.length)];
+        
+        const enfoques = [
+            {
+                intro: "La eficiencia técnica por sí sola ha dejado de ser una ventaja competitiva única.",
+                cuerpo: `Al observar la tendencia sobre ${topicSource.toLowerCase()}, queda claro que la transparencia es el nuevo motor de valor.`,
+                concl: "El liderazgo moderno exige decisiones íntegras y escalables."
+            },
+            {
+                intro: "Nos encontramos en un punto de inflexión donde la agilidad debe equilibrarse con la ética.",
+                cuerpo: `El impacto de ${topicSource.toLowerCase()} nos obliga a cuestionar cómo orquestamos la inteligencia en la empresa.`,
+                concl: "La optimización sin un propósito claro es simplemente ruido operativo."
+            },
+            {
+                intro: "La automatización acelerada requiere una gobernanza humana más fuerte que nunca.",
+                cuerpo: `Analizar ${topicSource.toLowerCase()} nos permite ver la importancia de un marco de responsabilidad activa.`,
+                concl: "El éxito pertenece a quienes protegen la integridad de sus procesos."
+            }
+        ];
+
+        const enf = enfoques[Math.floor(Math.random() * enfoques.length)];
+        const cleanTitle = topicSource.replace(/la |el |de |en |que /gi, "").trim();
+        
+        const content = [
+            `🚀 ${verb.toUpperCase()}: REDEFINIENDO EL IMPACTO DE ${cleanTitle.toUpperCase()}`,
+            "",
+            enf.intro,
+            "",
+            enf.cuerpo,
+            "",
+            "🔹 PILARES CLAVE:",
+            "• Equilibrio entre rendimiento y ética.",
+            "• Eliminación de sesgos algorítmicos.",
+            "• Transparencia como activo de mercado.",
+            "• Gobernanza proactiva.",
+            "",
+            enf.concl,
+            "",
+            "#IA #Estrategia #Liderazgo #Negocios #Tech"
+        ];
+        
+        document.getElementById('postText').value = content.join("\n");
+        document.getElementById('btnImg').disabled = false;
+        document.getElementById('status').innerText = "POST GENERADO";
+    }
+
+    function generarImagen() {
+        const loader = document.getElementById('loader');
+        const img = document.getElementById('postImg');
+        img.style.display = "none";
+        loader.style.display = "block";
+        const seed = Date.now();
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic business digital ethics cinematic 3d render")}?width=1200&height=630&seed=${seed}&nologo=true`;
+        img.src = finalImageUrl;
+        img.onload = () => {
+            loader.style.display = "none";
+            img.style.display = "block";
+            document.getElementById('btnPub').disabled = false;
+        };
+    }
+
+    async function publicar() {
+        const btn = document.getElementById('btnPub');
+        btn.disabled = true;
+        document.getElementById('status').innerText = "PUBLICANDO...";
+        try {
+            const res = await fetch(PUBLISH_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ mensaje: document.getElementById('postText').value, url_imagen: finalImageUrl })
+            });
+            if(res.ok) document.getElementById('status').innerText = "✅ ENVIADO A LINKEDIN";
+        } catch(e) { alert("Error"); btn.disabled = false; }
+    }
+</script>
+</body>
+</html>
