@@ -3,174 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linkedin Automatic v41.6</title>
+    <title>Linkedin Automatic v41.7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;500&display=swap');
-        
-        body {
-            background-color: #050505;
-            color: #e0e0e0;
-            font-family: 'Roboto Mono', monospace;
-        }
-        .glass-panel {
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid #333;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-        }
-        .header-status { border-left: 4px solid #00f2ff; }
-        .status-blue { border-color: #00f2ff; color: #00f2ff; text-shadow: 0 0 10px #00f2ff66; }
-        .status-red { border-color: #ff0055; color: #ff0055; }
-        .cyber-button {
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-family: 'Orbitron', sans-serif;
-        }
-        .cyber-button:hover:not(:disabled) {
-            background: #00f2ff;
-            color: #000;
-            box-shadow: 0 0 15px #00f2ff;
-        }
-        .input-field {
-            background: #111;
-            border: 1px solid #444;
-            color: #00f2ff;
-            padding: 10px;
-        }
+        body { background-color: #050505; color: #e0e0e0; font-family: 'Roboto Mono', monospace; }
+        .glass-panel { background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(10px); border: 1px solid #333; }
+        .cyber-button { transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; font-family: 'Orbitron', sans-serif; border: 1px solid #00f2ff; color: #00f2ff; }
+        .cyber-button:hover:not(:disabled) { background: #00f2ff; color: #000; box-shadow: 0 0 15px #00f2ff; }
+        .input-field { background: #111; border: 1px solid #444; color: #00f2ff; padding: 10px; width: 100%; }
+        .post-area { line-height: 1.6; font-size: 0.9rem; border-left: 2px solid #00f2ff; padding-left: 15px; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <div class="max-w-5xl mx-auto glass-panel p-6 rounded-xl">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div class="max-w-6xl mx-auto glass-panel p-6 rounded-xl">
+        <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
             <div>
-                <h1 class="text-3xl font-bold font-['Orbitron'] text-white">IA STRATEGIC STUDIO <span class="text-cyan-400">v41.6</span></h1>
-                <p class="text-xs text-gray-500 uppercase">Gestión de Contenido Estratégico & LinkedIn Pub</p>
+                <h1 class="text-2xl font-bold font-['Orbitron'] text-white">LINKEDIN <span class="text-cyan-400">AUTOMATIC</span></h1>
+                <p class="text-[10px] text-gray-500">ESTUDIO ESTRATÉGICO DE ALTO IMPACTO</p>
             </div>
-            <div id="engineBox" class="header-status status-blue p-2 px-4 bg-gray-900 rounded shadow-inner">
-                <span class="text-xs block">SISTEMA</span>
-                <span id="apiLabel" class="font-bold">LISTO PARA CARGAR</span>
+            <div class="text-right">
+                <span id="statusLabel" class="text-cyan-400 text-xs font-bold">SISTEMA ONLINE</span>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="space-y-6">
+            <div class="space-y-4">
                 <div>
-                    <label class="block text-xs text-gray-400 mb-2 uppercase">1. Seleccionar Tema Estratégico (Foros/Estudios)</label>
-                    <select id="topicSelector" onchange="cargarTemaEstrategico()" class="w-full input-field rounded focus:outline-none focus:border-cyan-500">
-                        <option value="">-- ELIGE UNA LÍNEA DE INVESTIGACIÓN --</option>
-                        <option value="ia_etica">Gobernanza y Ética en IA</option>
-                        <option value="ia_futuro">Futuro de la AGI & Productividad</option>
-                        <option value="ia_foros">Tendencias de Foros Técnicos (Reddit/X)</option>
-                        <option value="ia_negocios">IA en Estrategia de Negocios</option>
-                        <option value="ia_ciencia">Estudios Científicos & Papers</option>
+                    <label class="block text-[10px] text-gray-400 mb-1 uppercase">Selección de Línea Estratégica</label>
+                    <select id="topicSelector" onchange="actualizarTodo()" class="input-field rounded mb-2">
+                        <option value="ia_liderazgo">Liderazgo y Gobernanza IA</option>
+                        <option value="ia_operaciones">Eficiencia Operativa y Automatización</option>
+                        <option value="ia_futuro">AGI y Fronteras de la Ciencia</option>
+                        <option value="ia_marketing">Hiper-personalización y Algoritmos</option>
+                        <option value="ia_talento">Gestión del Talento en la Era Digital</option>
                     </select>
                 </div>
 
+                <div class="flex gap-2">
+                    <button onclick="generarNuevoTexto()" class="cyber-button flex-1 py-2 text-xs rounded">Regenerar Post</button>
+                    <button onclick="generarNuevaImagen()" class="cyber-button flex-1 py-2 text-xs rounded">Nueva Imagen</button>
+                </div>
+
                 <div>
-                    <label class="block text-xs text-gray-400 mb-2 uppercase">2. Borrador del Post (LinkedIn)</label>
-                    <textarea id="postText" rows="12" class="w-full input-field rounded focus:outline-none text-sm leading-relaxed" placeholder="Elige un tema para generar el análisis..."></textarea>
+                    <label class="block text-[10px] text-gray-400 mb-1 uppercase">Editor de Post (Alta Densidad)</label>
+                    <textarea id="postText" rows="18" class="input-field rounded post-area text-gray-300" placeholder="Cargando análisis..."></textarea>
                 </div>
             </div>
 
-            <div class="space-y-6">
-                <div class="relative group">
-                    <label class="block text-xs text-gray-400 mb-2 uppercase">Vista Previa de Imagen Estratégica</label>
-                    <div class="aspect-video w-full overflow-hidden rounded-lg border border-gray-700 bg-gray-900">
-                        <img id="imgPreview" src="https://via.placeholder.com/800x400/111/444?text=ESPERANDO+TEMA" class="w-full h-full object-cover" data-url="">
-                    </div>
+            <div class="space-y-4 text-center">
+                <div class="aspect-video w-full overflow-hidden rounded-lg border border-gray-700 bg-black">
+                    <img id="imgPreview" src="" class="w-full h-full object-cover shadow-2xl">
                 </div>
-
-                <div class="flex flex-col gap-3">
-                    <button id="btnPub" onclick="publicarEnLinkedin()" disabled class="cyber-button w-full py-4 bg-transparent border-2 border-cyan-500 text-cyan-500 font-bold rounded-lg disabled:opacity-30 disabled:cursor-not-allowed">
-                        Publicar en LinkedIn
+                
+                <div class="p-4 bg-gray-900 rounded-lg border border-gray-800">
+                    <button id="btnPub" onclick="publicar()" class="cyber-button w-full py-4 text-lg font-bold rounded-lg bg-cyan-900/10">
+                        PUBLICAR EN LINKEDIN
                     </button>
-                    <div class="flex justify-between text-[10px] text-gray-600 uppercase">
-                        <span>Status: <span id="newsSource" class="text-gray-400 font-bold">ESPERANDO ACCIÓN</span></span>
-                        <span>Scenario: PUBLICACIÓN v41.6</span>
-                    </div>
+                    <p class="text-[9px] text-gray-500 mt-3 italic text-center">
+                        Envío directo a: https://hook.eu2.make.com/hiurq1grt6euyiw1tdlkcw5rst9uxuuo
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIGURACIÓN: Reemplaza con tu URL de Webhook del escenario de publicación
-        const PUBLISH_WEBHOOK_URL = "https://hook.eu2.make.com/6co1n3k568x7chpw5j45dihghj3yr963";
+        const WEBHOOK_PUB = "https://hook.eu2.make.com/hiurq1grt6euyiw1tdlkcw5rst9uxuuo";
 
-        // BASE DE DATOS DE TEMAS (Aquí gestionas lo que quieres postear)
-        const strategicTopics = {
-            "ia_etica": "VISIÓN: El despliegue de la IA exige un liderazgo que trascienda la mera adopción técnica. Al analizar la ética en sistemas generativos, queda claro que la transparencia es el activo más valioso.\n\n🔹 PILARES CLAVE:\n• Gobernanza de datos proactiva.\n• Transparencia algorítmica.\n• Auditoría humana continua.\n\n#IA #Ética #Liderazgo #Estrategia",
-            "ia_futuro": "ANÁLISIS: La carrera hacia la AGI no es solo técnica, es organizacional. Los estudios sugieren que la productividad se duplicará en sectores que logren sincronizar IA con talento humano.\n\n🔹 PUNTOS DE INFLEXIÓN:\n• Modelos de razonamiento avanzado.\n• Agentes autónomos de decisión.\n• Reducción de sesgos operativos.\n\n#AGI #FuturoDelTrabajo #Productividad #Tech",
-            "ia_foros": "TENDENCIA: Comentarios recientes en foros técnicos destacan el auge de los 'Small Language Models'. La eficiencia y la privacidad local están ganando la batalla a los modelos masivos de nube.\n\n🔹 LO QUE SE DICE:\n• Procesamiento On-Device.\n• Menor coste computacional.\n• Mayor soberanía de datos.\n\n#OpenSource #SLM #Innovación #RedditTech",
-            "ia_negocios": "ESTRATEGIA: La IA no es una herramienta, es un nuevo lenguaje de negocios. Las empresas que integran IA en su pipeline estratégico están superando la competencia en un 40%.\n\n🔹 EJES DE VALOR:\n• Optimización de KPIs mediante predicción.\n• Hiper-personalización de servicios.\n• Escalabilidad sin fricción.\n\n#Negocios #BusinessIntelligence #ROI #DataScience",
-            "ia_ciencia": "RESEARCH: Papers científicos de este mes validan que la arquitectura Transformer está evolucionando. Estamos viendo una transición hacia sistemas que aprenden con menos datos y más contexto.\n\n🔹 HALLAZGOS:\n• Aprendizaje context-aware.\n• Reducción de alucinaciones.\n• Eficiencia energética.\n\n#Investigación #AIResearch #Ciencia #DeepLearning"
+        // Estructuras de contenido para generar posts largos y variados
+        const dataMaster = {
+            ia_liderazgo: {
+                titulo: "EL IMPERATIVO DEL LIDERAZGO EN LA ERA DE LA IA GENERATIVA",
+                puntos: ["Gobernanza ética", "Transparencia algorítmica", "Mitigación de sesgos", "Responsabilidad ejecutiva"],
+                hashtags: "#Liderazgo #IA #Gobernanza #DigitalTransformation #Ethics #FutureOfWork #Management #Strategy"
+            },
+            ia_operaciones: {
+                titulo: "MAXIMIZANDO EL ROI MEDIANTE LA AUTOMATIZACIÓN INTELIGENTE",
+                puntos: ["Pipeline de datos", "Escalabilidad sin fricción", "Optimización de costos", "Agentes autónomos"],
+                hashtags: "#Operations #AI #ROI #Automation #BusinessIntelligence #Efficiency #TechStack #ProcessMining"
+            }
+            // ... se pueden añadir más estructuras aquí
         };
 
-        // FUNCIÓN: CARGAR TEMA Y GENERAR IMAGEN
-        function cargarTemaEstrategico() {
-            const selector = document.getElementById('topicSelector');
-            const postText = document.getElementById('postText');
-            const apiLabel = document.getElementById('apiLabel');
-            const newsSource = document.getElementById('newsSource');
-            const selectedKey = selector.value;
+        function generarNuevoTexto() {
+            const key = document.getElementById('topicSelector').value;
+            const data = dataMaster[key] || dataMaster.ia_liderazgo;
+            const randomID = Math.floor(Math.random() * 100);
+            
+            let texto = `🚀 ${data.titulo} (Análisis Estratégico #${randomID})\n\n`;
+            texto += `En el panorama actual, la integración de la Inteligencia Artificial ha dejado de ser una ventaja competitiva para convertirse en un requisito de supervivencia organizacional. No se trata simplemente de adoptar herramientas, sino de redefinir la arquitectura misma del valor empresarial.\n\n`;
+            texto += `A medida que avanzamos hacia modelos de razonamiento más profundos, los líderes deben enfocarse en:\n\n`;
+            data.puntos.forEach(p => texto += `✅ ${p}: Implementación estratégica para asegurar la integridad de los datos.\n`);
+            texto += `\nEl verdadero desafío radica en la sincronización entre la capacidad técnica y la visión humana. Las organizaciones que ignoren la profundidad de este cambio estructural quedarán obsoletas antes de que termine el ciclo fiscal actual.\n\n`;
+            texto += `La pregunta no es si la IA cambiará su industria, sino si usted estará al mando cuando suceda.\n\n`;
+            texto += `Reflexión del día: ¿Estamos construyendo sistemas o estamos diseñando el futuro?\n\n`;
+            texto += `${data.hashtags}`;
 
-            if (selectedKey && strategicTopics[selectedKey]) {
-                // 1. Cargamos el texto
-                postText.value = strategicTopics[selectedKey];
-                
-                // 2. Generamos imagen acorde al tema (Pollinations)
-                const imgElement = document.getElementById('imgPreview');
-                const prompt = `Futuristic technological concept, ${selector.options[selector.selectedIndex].text}, high resolution, cinematic lighting, professional cyber aesthetics`;
-                const imageUrl = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=800&height=400&seed=${Math.floor(Math.random()*1000)}`;
-                
-                imgElement.src = imageUrl;
-                imgElement.dataset.url = imageUrl; // Guardamos URL para enviar a Make
-
-                // 3. UI Status
-                apiLabel.innerText = "TEMA CARGADO";
-                newsSource.innerText = "CONTENIDO LISTO";
-                document.getElementById('btnPub').disabled = false;
-            }
+            document.getElementById('postText').value = texto;
         }
 
-        // FUNCIÓN: PUBLICAR EN LINKEDIN (Hacia Make: Webhook -> HTTP -> Cloudinary -> LinkedIn)
-        async function publicarEnLinkedin() {
-            const postContent = document.getElementById('postText').value;
-            const imageUrl = document.getElementById('imgPreview').dataset.url;
-            const btnPub = document.getElementById('btnPub');
-            const apiLabel = document.getElementById('apiLabel');
+        function generarNuevaImagen() {
+            const topic = document.getElementById('topicSelector').options[document.getElementById('topicSelector').selectedIndex].text;
+            const img = document.getElementById('imgPreview');
+            const seed = Math.floor(Math.random() * 9999);
+            const prompt = `Cyberpunk cinematic professional photography, ${topic}, futuristic clean laboratory, 8k, dramatic lighting, cyan and silver tones`;
+            
+            const url = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=1080&height=566&seed=${seed}`;
+            img.src = url;
+            img.dataset.url = url;
+        }
 
-            if(!postContent) return;
+        function actualizarTodo() {
+            generarNuevoTexto();
+            generarNuevaImagen();
+        }
 
-            btnPub.innerText = "ENVIANDO A MAKE...";
-            btnPub.disabled = true;
+        async function publicar() {
+            const btn = document.getElementById('btnPub');
+            const payload = {
+                post: document.getElementById('postText').value,
+                image_url: document.getElementById('imgPreview').dataset.url
+            };
+
+            btn.innerText = "PROCESANDO ENVÍO...";
+            btn.disabled = true;
 
             try {
-                const response = await fetch(PUBLISH_WEBHOOK_URL, {
+                const r = await fetch(WEBHOOK_PUB, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        post: postContent,      // Texto para LinkedIn
-                        image_url: imageUrl      // URL para el módulo HTTP de Make
-                    })
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
                 });
-
-                if (response.ok) {
-                    alert("✓ PROCESO INICIADO: Revisa tu LinkedIn en unos segundos.");
-                    btnPub.innerText = "PUBLICAR OTRO";
-                    apiLabel.innerText = "PUBLICADO";
-                } else {
-                    throw new Error();
+                if(r.ok) {
+                    alert("✓ POST ENVIADO A MAKE EXITOSAMENTE");
+                    btn.innerText = "PUBLICAR EN LINKEDIN";
                 }
-            } catch (error) {
-                alert("ERROR: No se pudo conectar con el escenario de publicación de Make.");
-                btnPub.innerText = "REINTENTAR";
-                btnPub.disabled = false;
+            } catch(e) {
+                alert("Error de conexión");
+                btn.innerText = "REINTENTAR";
+            } finally {
+                btn.disabled = false;
             }
         }
+
+        // Inicio automático
+        window.onload = actualizarTodo;
     </script>
 </body>
 </html>
