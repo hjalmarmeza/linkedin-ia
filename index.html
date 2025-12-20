@@ -2,175 +2,175 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IA Strategic Studio v41.3</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkedin Automatic v41.6</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
-        * { box-sizing: border-box; }
-        body { background: var(--bg); color: white; font-family: -apple-system, sans-serif; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        .container { background: var(--card); padding: 15px; border-radius: 12px; width: 100%; max-width: 500px; border: 1px solid #30363d; }
-        .header-status { font-size: 11px; font-weight: bold; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 8px; border: 1px solid #333; }
-        .status-red { color: var(--danger); background: rgba(248, 81, 73, 0.1); border-color: var(--danger); }
-        .status-blue { color: var(--accent); background: rgba(88, 166, 255, 0.1); border-color: var(--accent); }
-        .input-manual { width: 100%; background: #000; color: var(--accent); border: 1px solid #444; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; font-style: italic; }
-        textarea { width: 100%; height: 400px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: none; margin-bottom: 12px; }
-        .img-preview { width: 100%; height: 230px; background: #000; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid #30363d; overflow: hidden; }
-        #postImg { width: 100%; height: 100%; object-fit: cover; display: none; }
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        button { height: 50px; border-radius: 8px; border: none; font-weight: bold; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; transition: 0.2s; }
-        .btn-gen { background: var(--success); }
-        .btn-img { background: #8957e5; }
-        .btn-clear { background: #30363d; border: 1px solid var(--danger); color: var(--danger); }
-        .btn-pub { background: var(--primary); }
-        button:disabled { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
-        #status { font-size: 10px; text-align: center; color: #8b949e; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;500&display=swap');
+        
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            font-family: 'Roboto Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid #333;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+        .header-status { border-left: 4px solid #00f2ff; }
+        .status-blue { border-color: #00f2ff; color: #00f2ff; text-shadow: 0 0 10px #00f2ff66; }
+        .status-red { border-color: #ff0055; color: #ff0055; }
+        .cyber-button {
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .cyber-button:hover:not(:disabled) {
+            background: #00f2ff;
+            color: #000;
+            box-shadow: 0 0 15px #00f2ff;
+        }
+        .input-field {
+            background: #111;
+            border: 1px solid #444;
+            color: #00f2ff;
+            padding: 10px;
+        }
     </style>
 </head>
-<body>
-<div class="container">
-    <div id="engineBox" class="header-status status-red">
-        <span><i class="fas fa-robot"></i> <span id="apiLabel">FILTRO DE IA ACTIVO</span></span>
-        <span id="newsSource">OFFLINE</span>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto glass-panel p-6 rounded-xl">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-3xl font-bold font-['Orbitron'] text-white">IA STRATEGIC STUDIO <span class="text-cyan-400">v41.6</span></h1>
+                <p class="text-xs text-gray-500 uppercase">Gestión de Contenido Estratégico & LinkedIn Pub</p>
+            </div>
+            <div id="engineBox" class="header-status status-blue p-2 px-4 bg-gray-900 rounded shadow-inner">
+                <span class="text-xs block">SISTEMA</span>
+                <span id="apiLabel" class="font-bold">LISTO PARA CARGAR</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-2 uppercase">1. Seleccionar Tema Estratégico (Foros/Estudios)</label>
+                    <select id="topicSelector" onchange="cargarTemaEstrategico()" class="w-full input-field rounded focus:outline-none focus:border-cyan-500">
+                        <option value="">-- ELIGE UNA LÍNEA DE INVESTIGACIÓN --</option>
+                        <option value="ia_etica">Gobernanza y Ética en IA</option>
+                        <option value="ia_futuro">Futuro de la AGI & Productividad</option>
+                        <option value="ia_foros">Tendencias de Foros Técnicos (Reddit/X)</option>
+                        <option value="ia_negocios">IA en Estrategia de Negocios</option>
+                        <option value="ia_ciencia">Estudios Científicos & Papers</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-2 uppercase">2. Borrador del Post (LinkedIn)</label>
+                    <textarea id="postText" rows="12" class="w-full input-field rounded focus:outline-none text-sm leading-relaxed" placeholder="Elige un tema para generar el análisis..."></textarea>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="relative group">
+                    <label class="block text-xs text-gray-400 mb-2 uppercase">Vista Previa de Imagen Estratégica</label>
+                    <div class="aspect-video w-full overflow-hidden rounded-lg border border-gray-700 bg-gray-900">
+                        <img id="imgPreview" src="https://via.placeholder.com/800x400/111/444?text=ESPERANDO+TEMA" class="w-full h-full object-cover" data-url="">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <button id="btnPub" onclick="publicarEnLinkedin()" disabled class="cyber-button w-full py-4 bg-transparent border-2 border-cyan-500 text-cyan-500 font-bold rounded-lg disabled:opacity-30 disabled:cursor-not-allowed">
+                        Publicar en LinkedIn
+                    </button>
+                    <div class="flex justify-between text-[10px] text-gray-600 uppercase">
+                        <span>Status: <span id="newsSource" class="text-gray-400 font-bold">ESPERANDO ACCIÓN</span></span>
+                        <span>Scenario: PUBLICACIÓN v41.6</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <input type="text" id="manualTopic" class="input-manual" placeholder="Busca un tema de IA (ej: Agentes IA)...">
-    <textarea id="postText" placeholder="Presiona LIMPIAR para conectar con Make..."></textarea>
-    <div class="img-preview">
-        <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-3x"></i></div>
-        <img id="postImg">
-    </div>
-    <div class="action-grid">
-        <button id="btnGen" class="btn-gen" onclick="generarAnalisis()" disabled><i class="fas fa-brain"></i> GENERAR</button>
-        <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-magic"></i> IMAGEN</button>
-        <button class="btn-clear" onclick="buscarNoticiaEnMake()"><i class="fas fa-eraser"></i> LIMPIAR</button>
-        <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
-    </div>
-    <div id="status">ESTUDIO ESTRATÉGICO v41.3</div>
-</div>
 
-<script>
-    const SEARCH_WEBHOOK_URL = "https://hook.eu2.make.com/6co1n3k568x7chpw5j45dihghj3yr963";
-    const PUBLISH_WEBHOOK_URL = "https://hook.eu2.make.com/6bbwbx4zr42kwe88t5ggvu9hbb9vyh7g";
-    
-    let activeTopic = "";
-    let finalImageUrl = "";
+    <script>
+        // CONFIGURACIÓN: Reemplaza con tu URL de Webhook del escenario de publicación
+        const PUBLISH_WEBHOOK_URL = "https://hook.eu2.make.com/6co1n3k568x7chpw5j45dihghj3yr963";
 
-    async function buscarNoticiaEnMake() {
-        const engineBox = document.getElementById('engineBox');
-        const apiLabel = document.getElementById('apiLabel');
-        const postText = document.getElementById('postText');
-        const btnGen = document.getElementById('btnGen');
-        const manual = document.getElementById('manualTopic').value;
-
-        activeTopic = "";
-        postText.value = "Consultando fuente de noticias...";
-        engineBox.className = "header-status status-red";
-        apiLabel.innerText = "BUSCANDO...";
-        btnGen.disabled = true;
-
-        try {
-            const response = await fetch(SEARCH_WEBHOOK_URL, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ query: manual || "Inteligencia Artificial" })
-            });
-            const data = await response.json();
-
-            if(data.titulo) {
-                // Validación de temática
-                const esIA = data.titulo.toLowerCase().includes("ia") || data.titulo.toLowerCase().includes("inteligencia") || data.titulo.toLowerCase().includes("artificial");
-                
-                activeTopic = data.titulo;
-                
-                if(!esIA) {
-                    postText.value = "⚠️ AVISO: La noticia recibida no parece ser de IA:\n\n\"" + data.titulo + "\"\n\n¿Deseas analizarla de todos modos o prefieres buscar otro tema?";
-                    apiLabel.innerText = "TEMA NO RELACIONADO";
-                } else {
-                    postText.value = "✓ NOTICIA DE IA DETECTADA: Lista para análisis estratégico.";
-                    apiLabel.innerText = "IA DETECTADA";
-                }
-                
-                engineBox.className = "header-status status-blue";
-                document.getElementById('newsSource').innerText = "CONECTADO";
-                btnGen.disabled = false;
-            } else { throw new Error(); }
-        } catch(e) {
-            postText.value = "Error: Verifica tu escenario en Make.";
-            apiLabel.innerText = "ERROR RED";
-        }
-    }
-
-    function generarAnalisis() {
-        const topicSource = activeTopic;
-        const verbs = ["Gobernanza", "Sincronía", "Integridad", "Disrupción", "Visión"];
-        const verb = verbs[Math.floor(Math.random() * verbs.length)];
-        
-        const enfoques = [
-            {
-                intro: "El despliegue de la IA exige un liderazgo que trascienda la mera adopción técnica.",
-                cuerpo: `Al analizar ${topicSource.toLowerCase()}, queda claro que la ética es el activo más valioso de la era digital.`,
-                concl: "La verdadera ventaja nace de sistemas inteligentes auditables y humanos."
-            },
-            {
-                intro: "La agilidad algorítmica debe ser proporcional a nuestra responsabilidad ética.",
-                cuerpo: `Lo que vemos en ${topicSource.toLowerCase()} nos obliga a blindar la transparencia corporativa.`,
-                concl: "Eficiencia sin integridad es una deuda técnica que no podemos asumir."
-            }
-        ];
-
-        const enf = enfoques[Math.floor(Math.random() * enfoques.length)];
-        const cleanTitle = topicSource.replace(/la |el |de |en |que /gi, "").trim();
-        
-        const content = [
-            `🚀 ${verb.toUpperCase()}: ESTRATEGIA SOBRE ${cleanTitle.toUpperCase()}`,
-            "",
-            enf.intro,
-            "",
-            enf.cuerpo,
-            "",
-            "🔹 PILARES CLAVE:",
-            "• Sincronía técnica y ética.",
-            "• Gobernanza de datos proactiva.",
-            "• Transparencia algorítmica.",
-            "",
-            enf.concl,
-            "",
-            "#IA #Estrategia #Tech #Leadership #Etica"
-        ];
-        
-        document.getElementById('postText').value = content.join("\n");
-        document.getElementById('btnImg').disabled = false;
-        document.getElementById('status').innerText = "POST ESTRATÉGICO GENERADO";
-    }
-
-    function generarImagen() {
-        const loader = document.getElementById('loader');
-        const img = document.getElementById('postImg');
-        img.style.display = "none";
-        loader.style.display = "block";
-        const seed = Date.now();
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic 3d artificial intelligence ethics cinematic render")}?width=1200&height=630&seed=${seed}&nologo=true`;
-        img.src = finalImageUrl;
-        img.onload = () => {
-            loader.style.display = "none";
-            img.style.display = "block";
-            document.getElementById('btnPub').disabled = false;
+        // BASE DE DATOS DE TEMAS (Aquí gestionas lo que quieres postear)
+        const strategicTopics = {
+            "ia_etica": "VISIÓN: El despliegue de la IA exige un liderazgo que trascienda la mera adopción técnica. Al analizar la ética en sistemas generativos, queda claro que la transparencia es el activo más valioso.\n\n🔹 PILARES CLAVE:\n• Gobernanza de datos proactiva.\n• Transparencia algorítmica.\n• Auditoría humana continua.\n\n#IA #Ética #Liderazgo #Estrategia",
+            "ia_futuro": "ANÁLISIS: La carrera hacia la AGI no es solo técnica, es organizacional. Los estudios sugieren que la productividad se duplicará en sectores que logren sincronizar IA con talento humano.\n\n🔹 PUNTOS DE INFLEXIÓN:\n• Modelos de razonamiento avanzado.\n• Agentes autónomos de decisión.\n• Reducción de sesgos operativos.\n\n#AGI #FuturoDelTrabajo #Productividad #Tech",
+            "ia_foros": "TENDENCIA: Comentarios recientes en foros técnicos destacan el auge de los 'Small Language Models'. La eficiencia y la privacidad local están ganando la batalla a los modelos masivos de nube.\n\n🔹 LO QUE SE DICE:\n• Procesamiento On-Device.\n• Menor coste computacional.\n• Mayor soberanía de datos.\n\n#OpenSource #SLM #Innovación #RedditTech",
+            "ia_negocios": "ESTRATEGIA: La IA no es una herramienta, es un nuevo lenguaje de negocios. Las empresas que integran IA en su pipeline estratégico están superando la competencia en un 40%.\n\n🔹 EJES DE VALOR:\n• Optimización de KPIs mediante predicción.\n• Hiper-personalización de servicios.\n• Escalabilidad sin fricción.\n\n#Negocios #BusinessIntelligence #ROI #DataScience",
+            "ia_ciencia": "RESEARCH: Papers científicos de este mes validan que la arquitectura Transformer está evolucionando. Estamos viendo una transición hacia sistemas que aprenden con menos datos y más contexto.\n\n🔹 HALLAZGOS:\n• Aprendizaje context-aware.\n• Reducción de alucinaciones.\n• Eficiencia energética.\n\n#Investigación #AIResearch #Ciencia #DeepLearning"
         };
-    }
 
-    async function publicar() {
-        const btn = document.getElementById('btnPub');
-        btn.disabled = true;
-        document.getElementById('status').innerText = "ENVIANDO...";
-        try {
-            const res = await fetch(PUBLISH_WEBHOOK_URL, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ mensaje: document.getElementById('postText').value, url_imagen: finalImageUrl })
-            });
-            if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
-        } catch(e) { alert("Error"); btn.disabled = false; }
-    }
-</script>
+        // FUNCIÓN: CARGAR TEMA Y GENERAR IMAGEN
+        function cargarTemaEstrategico() {
+            const selector = document.getElementById('topicSelector');
+            const postText = document.getElementById('postText');
+            const apiLabel = document.getElementById('apiLabel');
+            const newsSource = document.getElementById('newsSource');
+            const selectedKey = selector.value;
+
+            if (selectedKey && strategicTopics[selectedKey]) {
+                // 1. Cargamos el texto
+                postText.value = strategicTopics[selectedKey];
+                
+                // 2. Generamos imagen acorde al tema (Pollinations)
+                const imgElement = document.getElementById('imgPreview');
+                const prompt = `Futuristic technological concept, ${selector.options[selector.selectedIndex].text}, high resolution, cinematic lighting, professional cyber aesthetics`;
+                const imageUrl = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=800&height=400&seed=${Math.floor(Math.random()*1000)}`;
+                
+                imgElement.src = imageUrl;
+                imgElement.dataset.url = imageUrl; // Guardamos URL para enviar a Make
+
+                // 3. UI Status
+                apiLabel.innerText = "TEMA CARGADO";
+                newsSource.innerText = "CONTENIDO LISTO";
+                document.getElementById('btnPub').disabled = false;
+            }
+        }
+
+        // FUNCIÓN: PUBLICAR EN LINKEDIN (Hacia Make: Webhook -> HTTP -> Cloudinary -> LinkedIn)
+        async function publicarEnLinkedin() {
+            const postContent = document.getElementById('postText').value;
+            const imageUrl = document.getElementById('imgPreview').dataset.url;
+            const btnPub = document.getElementById('btnPub');
+            const apiLabel = document.getElementById('apiLabel');
+
+            if(!postContent) return;
+
+            btnPub.innerText = "ENVIANDO A MAKE...";
+            btnPub.disabled = true;
+
+            try {
+                const response = await fetch(PUBLISH_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        post: postContent,      // Texto para LinkedIn
+                        image_url: imageUrl      // URL para el módulo HTTP de Make
+                    })
+                });
+
+                if (response.ok) {
+                    alert("✓ PROCESO INICIADO: Revisa tu LinkedIn en unos segundos.");
+                    btnPub.innerText = "PUBLICAR OTRO";
+                    apiLabel.innerText = "PUBLICADO";
+                } else {
+                    throw new Error();
+                }
+            } catch (error) {
+                alert("ERROR: No se pudo conectar con el escenario de publicación de Make.");
+                btnPub.innerText = "REINTENTAR";
+                btnPub.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>
