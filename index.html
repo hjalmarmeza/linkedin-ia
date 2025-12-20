@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IA Strategic Studio v40.0</title>
+    <title>IA Strategic Studio v41.0</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
@@ -30,138 +30,99 @@
 <body>
 <div class="container">
     <div id="engineBox" class="header-status status-red">
-        <span><i class="fas fa-shield-virus"></i> <span id="apiLabel">MODO RESILIENTE</span></span>
-        <span id="newsSource">ESPERANDO</span>
+        <span><i class="fas fa-satellite"></i> <span id="apiLabel">ESPERANDO SEÑAL</span></span>
+        <span id="newsSource">OFFLINE</span>
     </div>
-    <input type="text" id="manualTopic" class="input-manual" placeholder="Tema personalizado (Análisis Ético-Eficiente)...">
-    <textarea id="postText" placeholder="Optimizando túneles de datos..."></textarea>
+    <input type="text" id="manualTopic" class="input-manual" placeholder="Tema para Make (ej: IA Ética)...">
+    <textarea id="postText" placeholder="Presiona LIMPIAR para solicitar noticia a Make..."></textarea>
     <div class="img-preview">
         <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-3x"></i></div>
         <img id="postImg">
     </div>
     <div class="action-grid">
-        <button id="btnGen" class="btn-gen" onclick="generarAnalisis()" disabled><i class="fas fa-sync fa-spin"></i> BUSCANDO...</button>
+        <button id="btnGen" class="btn-gen" onclick="generarAnalisis()" disabled><i class="fas fa-brain"></i> GENERAR</button>
         <button id="btnImg" class="btn-img" onclick="generarImagen()" disabled><i class="fas fa-magic"></i> IMAGEN</button>
-        <button class="btn-clear" onclick="limpiarYRefrescar()"><i class="fas fa-eraser"></i> LIMPIAR</button>
+        <button class="btn-clear" onclick="buscarNoticiaEnMake()"><i class="fas fa-eraser"></i> LIMPIAR</button>
         <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
     </div>
-    <div id="status">v40.0 - Redundancia de Proxies Activa</div>
+    <div id="status">v41.0 - Make Intelligence Activa</div>
 </div>
 
 <script>
-    const API_KEYS = {
-        newsapi: "7b6710d7c32347a6b2810545dc5307a6b2810545dc530",
-        gnews: "b97f9baa6fcb9856ef2f803fd3e68c7a",
-        currents: "2MPkzgzuySxwVFTooMFaC0HcOkl3yjwdKnfN3cPbVEUG9VDJ",
-        mediastack: "21db872475f860207b63b3472f30588a"
-    };
-    const WEBHOOK_URL = "https://hook.eu2.make.com/6bbwbx4zr42kwe88t5ggvu9hbb9vyh7g";
+    // Configuración Bi-Escenario
+    const SEARCH_WEBHOOK_URL = "https://hook.eu2.make.com/6co1n3k568x7chpw5j45dihghj3yr963";
+    const PUBLISH_WEBHOOK_URL = "https://hook.eu2.make.com/6bbwbx4zr42kwe88t5ggvu9hbb9vyh7g";
     
     let activeTopic = "";
     let finalImageUrl = "";
-    const searchTerms = ["Inteligencia Artificial ética", "automatización responsable", "IA eficiencia operativa", "gobierno IA corporativa"];
 
-    async function fetchNewsInCascade() {
+    async function buscarNoticiaEnMake() {
         const engineBox = document.getElementById('engineBox');
-        const newsSource = document.getElementById('newsSource');
         const apiLabel = document.getElementById('apiLabel');
+        const postText = document.getElementById('postText');
         const btnGen = document.getElementById('btnGen');
+        const manual = document.getElementById('manualTopic').value;
 
-        activeTopic = ""; 
+        // Estado inicial de búsqueda
+        activeTopic = "";
+        postText.value = "Solicitando tendencia actual a Make...";
         engineBox.className = "header-status status-red";
+        apiLabel.innerText = "BUSCANDO NOTICIA...";
         btnGen.disabled = true;
-        btnGen.innerHTML = '<i class="fas fa-sync fa-spin"></i> BUSCANDO...';
 
-        const query = searchTerms[Math.floor(Math.random() * searchTerms.length)];
-        const order = ["newsapi", "gnews", "currents", "mediastack"];
-        const proxies = [
-            "https://api.allorigins.win/get?url=",
-            "https://api.corsproxy.io/?url="
-        ];
+        try {
+            const response = await fetch(SEARCH_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ query: manual || "IA estratégica y ética" })
+            });
+            const data = await response.json();
 
-        for (let i = 0; i < order.length; i++) {
-            let apiName = order[i];
-            let currentProxy = proxies[i % proxies.length]; // Alternar proxies
-            
-            try {
-                apiLabel.innerText = `PROBANDO ${apiName.toUpperCase()}...`;
-                let baseUrl = "";
-                const cb = Date.now();
-
-                if(apiName === "newsapi") baseUrl = `https://newsapi.org/v2/everything?q=${query}&language=es&sortBy=publishedAt&pageSize=5&apiKey=${API_KEYS.newsapi}`;
-                if(apiName === "gnews") baseUrl = `https://gnews.io/api/v4/search?q=${query}&lang=es&max=5&apikey=${API_KEYS.gnews}`;
-                if(apiName === "currents") baseUrl = `https://api.currentsapi.services/v1/search?keywords=${query}&language=es&apiKey=${API_KEYS.currents}`;
-                if(apiName === "mediastack") baseUrl = `http://api.mediastack.com/v1/news?access_key=${API_KEYS.mediastack}&keywords=${query}&languages=es`;
-
-                const res = await fetch(`${currentProxy}${encodeURIComponent(baseUrl + '&t=' + cb)}`);
-                const proxyData = await res.json();
-                
-                // Manejar diferentes estructuras de proxy
-                let rawContent = proxyData.contents ? JSON.parse(proxyData.contents) : proxyData;
-                let title = "";
-
-                if(apiName === "newsapi" && rawContent.articles?.length) title = rawContent.articles[0].title;
-                if(apiName === "gnews" && rawContent.articles?.length) title = rawContent.articles[0].title;
-                if(apiName === "currents" && rawContent.news?.length) title = rawContent.news[0].title;
-                if(apiName === "mediastack" && rawContent.data?.length) title = rawContent.data[0].title;
-
-                if(title) {
-                    activeTopic = title;
-                    engineBox.className = "header-status status-blue";
-                    apiLabel.innerText = `EXITO: [${apiName.toUpperCase()}]`;
-                    newsSource.innerText = activeTopic.substring(0, 20).toUpperCase() + "...";
-                    btnGen.disabled = false;
-                    btnGen.innerHTML = '<i class="fas fa-brain"></i> GENERAR';
-                    return; 
-                }
-                // Espera pequeña antes de saltar a la siguiente para evitar bloqueos
-                await new Promise(r => setTimeout(r, 1000));
-            } catch(e) { console.log(`${apiName} falló con proxy.`); }
+            if(data.titulo) {
+                activeTopic = data.titulo;
+                postText.value = "✓ NOTICIA RECIBIDA: Lista para análisis de Ética y Eficiencia";
+                engineBox.className = "header-status status-blue";
+                apiLabel.innerText = "NOTICIA LISTA";
+                btnGen.disabled = false;
+            } else { throw new Error(); }
+        } catch(e) {
+            postText.value = "Error al conectar con Make. Asegúrate de que el escenario de búsqueda esté en ON.";
+            apiLabel.innerText = "FALLO CONEXIÓN";
         }
-        
-        // Fail-safe si todas fallan realmente
-        activeTopic = "Soberanía Tecnológica y el Dilema de la Automatización Ética";
-        engineBox.className = "header-status status-blue";
-        apiLabel.innerText = "SISTEMA: [AUTÓNOMO]";
-        newsSource.innerText = "MODO RESPALDO";
-        btnGen.disabled = false;
-        btnGen.innerHTML = '<i class="fas fa-brain"></i> GENERAR';
     }
 
     function generarAnalisis() {
-        const manual = document.getElementById('manualTopic').value;
-        const base = manual.trim() !== "" ? manual : activeTopic;
-
-        // MOTOR DE REESCRITURA ESTRATÉGICA v40
-        const verbs = ["Gobernanza", "Sincronía", "Disrupción", "Ética", "Optimización"];
+        const topicSource = activeTopic;
+        const verbs = ["Orquestación", "Evolución", "Gobernanza", "Sincronía", "Integridad"];
         const verb = verbs[Math.floor(Math.random() * verbs.length)];
-        const cleanBase = base.replace(/la |el |de |en |que /gi, "").trim();
-        const rewrittenTitle = `🚀 ${verb}: El impacto invisible de ${cleanBase}`;
+        
+        const cleanTitle = topicSource.replace(/la |el |de |en |que /gi, "").trim();
+        const rewrittenTitle = `🚀 ${verb}: El impacto estratégico de ${cleanTitle}`;
         
         const content = [
             rewrittenTitle.toUpperCase(),
             "",
-            "En la frontera de la transformación digital, nos enfrentamos a una verdad ineludible: la eficiencia sin ética es una deuda técnica condenada al fracaso.",
+            "Más allá del avance técnico, nos encontramos en una frontera donde la eficiencia ya no puede ser el único KPI. El liderazgo moderno se mide por la capacidad de integrar potencia algorítmica con un marco ético innegociable.",
             "",
-            `Al analizar la evolución de ${base.toLowerCase()}, observamos que la optimización operativa no puede ser el único fin. El liderazgo estratégico reside en la capacidad de orquestar sistemas que no solo sean rápidos, sino transparentes y responsables.`,
+            `Al analizar ${topicSource.toLowerCase()}, queda claro que la optimización operativa es el gran motor de nuestra era. Sin embargo, no debemos sacrificar la transparencia que sostiene la confianza corporativa.`,
             "",
-            "La verdadera ventaja competitiva hoy no se mide en milisegundos de procesamiento, sino en la solidez del marco moral que sustenta cada decisión algorítmica. La automatización debe ser el puente hacia un propósito humano, no su reemplazo.",
+            "La verdadera eficiencia no es solo velocidad; es la sostenibilidad de un sistema que respeta la integridad humana. La automatización sin ética es una deuda técnica que ninguna organización puede permitirse hoy.",
             "",
-            "🔹 EJES DE ACCIÓN ESTRATÉGICA:",
-            "• Integración de métricas de eficiencia bajo protocolos éticos activos.",
-            "• Eliminación de sesgos en los flujos de decisión automatizados.",
-            "• Transparencia algorítmica como base de la confianza corporativa.",
-            "• Escalabilidad resiliente orientada al impacto humano positivo.",
-            "• Gobernanza proactiva en el manejo de datos de alta sensibilidad.",
+            "🔹 PILARES ÉTICO-EFICIENTES:",
+            "• Sincronía entre rendimiento y responsabilidad algorítmica.",
+            "• Eliminación de sesgos en la síntesis de datos estratégicos.",
+            "• Blindaje ético como ventaja competitiva de mercado.",
+            "• Optimización de recursos bajo gobernanza humana.",
+            "• Escalabilidad resiliente que protege el propósito corporativo.",
             "",
-            "En conclusión, el éxito en la era de la IA será de aquellas organizaciones que logren transformar la eficiencia en integridad, construyendo un futuro donde la tecnología potencie nuestra humanidad en lugar de comprometerla.",
+            "En conclusión, el éxito real reside en la visión estratégica para orquestar un futuro donde la eficiencia y la ética se potencien mutuamente para construir una ventaja competitiva sostenible.",
             "",
-            "#IA #Estrategia #Etica #Eficiencia #Liderazgo #Negocios #TechResponsable"
+            "#IA #Estrategia #EticaIA #Eficiencia #Liderazgo #Negocios #TechResponsable"
         ];
         
         document.getElementById('postText').value = content.join("\n");
         document.getElementById('btnImg').disabled = false;
-        document.getElementById('status').innerText = "✓ POST REESCRITO CON ÉXITO";
+        document.getElementById('status').innerText = "✓ ANÁLISIS ESTRATÉGICO GENERADO";
     }
 
     function generarImagen() {
@@ -170,7 +131,7 @@
         img.style.display = "none";
         loader.style.display = "block";
         const seed = Date.now();
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " 3d isometric business ethics efficiency render")}?width=1200&height=630&seed=${seed}&nologo=true`;
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic business ethics and efficiency 3d render")}?width=1200&height=630&seed=${seed}&nologo=true`;
         img.src = finalImageUrl;
         img.onload = () => {
             loader.style.display = "none";
@@ -179,31 +140,19 @@
         };
     }
 
-    function limpiarYRefrescar() {
-        document.getElementById('postText').value = "";
-        document.getElementById('postImg').style.display = "none";
-        document.getElementById('manualTopic').value = "";
-        document.getElementById('btnImg').disabled = true;
-        document.getElementById('btnPub').disabled = true;
-        document.getElementById('status').innerText = "VACIANDO Y BUSCANDO NUEVAS FUENTES...";
-        fetchNewsInCascade(); 
-    }
-
     async function publicar() {
         const btn = document.getElementById('btnPub');
         btn.disabled = true;
-        document.getElementById('status').innerText = "PUBLICANDO...";
+        document.getElementById('status').innerText = "ENVIANDO A LINKEDIN...";
         try {
-            const res = await fetch(WEBHOOK_URL, {
+            const res = await fetch(PUBLISH_WEBHOOK_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ mensaje: document.getElementById('postText').value, url_imagen: finalImageUrl })
             });
             if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
-        } catch(e) { alert("Error de red"); btn.disabled = false; }
+        } catch(e) { alert("Error"); btn.disabled = false; }
     }
-    
-    window.onload = fetchNewsInCascade;
 </script>
 </body>
 </html>
