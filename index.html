@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IA Strategic Studio v41.2</title>
+    <title>IA Strategic Studio v41.3</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --accent: #58a6ff; --bg: #0d1117; --card: #161b22; --success: #238636; --primary: #1f6feb; --danger: #f85149; }
@@ -14,7 +14,7 @@
         .status-red { color: var(--danger); background: rgba(248, 81, 73, 0.1); border-color: var(--danger); }
         .status-blue { color: var(--accent); background: rgba(88, 166, 255, 0.1); border-color: var(--accent); }
         .input-manual { width: 100%; background: #000; color: var(--accent); border: 1px solid #444; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; font-style: italic; }
-        textarea { width: 100%; height: 420px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: none; margin-bottom: 12px; }
+        textarea { width: 100%; height: 400px; background: var(--bg); color: #e6edf3; border: 1px solid #30363d; padding: 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; resize: none; margin-bottom: 12px; }
         .img-preview { width: 100%; height: 230px; background: #000; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid #30363d; overflow: hidden; }
         #postImg { width: 100%; height: 100%; object-fit: cover; display: none; }
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -30,11 +30,11 @@
 <body>
 <div class="container">
     <div id="engineBox" class="header-status status-red">
-        <span><i class="fas fa-microchip"></i> <span id="apiLabel">ESPERANDO SEÑAL</span></span>
+        <span><i class="fas fa-robot"></i> <span id="apiLabel">FILTRO DE IA ACTIVO</span></span>
         <span id="newsSource">OFFLINE</span>
     </div>
-    <input type="text" id="manualTopic" class="input-manual" placeholder="Escribe un tema (ej: Sostenibilidad)...">
-    <textarea id="postText" placeholder="1. Presiona LIMPIAR para recibir noticias fresca de Make..."></textarea>
+    <input type="text" id="manualTopic" class="input-manual" placeholder="Busca un tema de IA (ej: Agentes IA)...">
+    <textarea id="postText" placeholder="Presiona LIMPIAR para conectar con Make..."></textarea>
     <div class="img-preview">
         <div id="loader" style="display:none;"><i class="fas fa-atom fa-spin fa-3x"></i></div>
         <img id="postImg">
@@ -45,7 +45,7 @@
         <button class="btn-clear" onclick="buscarNoticiaEnMake()"><i class="fas fa-eraser"></i> LIMPIAR</button>
         <button id="btnPub" class="btn-pub" onclick="publicar()" disabled><i class="fab fa-linkedin"></i> PUBLICAR</button>
     </div>
-    <div id="status">SISTEMA ESTRATÉGICO v41.2</div>
+    <div id="status">ESTUDIO ESTRATÉGICO v41.3</div>
 </div>
 
 <script>
@@ -63,7 +63,7 @@
         const manual = document.getElementById('manualTopic').value;
 
         activeTopic = "";
-        postText.value = "Solicitando noticia a Make...";
+        postText.value = "Consultando fuente de noticias...";
         engineBox.className = "header-status status-red";
         apiLabel.innerText = "BUSCANDO...";
         btnGen.disabled = true;
@@ -72,20 +72,30 @@
             const response = await fetch(SEARCH_WEBHOOK_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ query: manual || "Tecnología y Estrategia" })
+                body: JSON.stringify({ query: manual || "Inteligencia Artificial" })
             });
             const data = await response.json();
 
             if(data.titulo) {
+                // Validación de temática
+                const esIA = data.titulo.toLowerCase().includes("ia") || data.titulo.toLowerCase().includes("inteligencia") || data.titulo.toLowerCase().includes("artificial");
+                
                 activeTopic = data.titulo;
-                postText.value = "✓ NOTICIA RECIBIDA. Lista para procesar.";
+                
+                if(!esIA) {
+                    postText.value = "⚠️ AVISO: La noticia recibida no parece ser de IA:\n\n\"" + data.titulo + "\"\n\n¿Deseas analizarla de todos modos o prefieres buscar otro tema?";
+                    apiLabel.innerText = "TEMA NO RELACIONADO";
+                } else {
+                    postText.value = "✓ NOTICIA DE IA DETECTADA: Lista para análisis estratégico.";
+                    apiLabel.innerText = "IA DETECTADA";
+                }
+                
                 engineBox.className = "header-status status-blue";
-                apiLabel.innerText = "LISTO";
-                document.getElementById('newsSource').innerText = "ONLINE";
+                document.getElementById('newsSource').innerText = "CONECTADO";
                 btnGen.disabled = false;
             } else { throw new Error(); }
         } catch(e) {
-            postText.value = "Error: Verifica que el escenario de Make esté en ON.";
+            postText.value = "Error: Verifica tu escenario en Make.";
             apiLabel.innerText = "ERROR RED";
         }
     }
@@ -97,19 +107,14 @@
         
         const enfoques = [
             {
-                intro: "La eficiencia técnica por sí sola ha dejado de ser una ventaja competitiva única.",
-                cuerpo: `Al observar la tendencia sobre ${topicSource.toLowerCase()}, queda claro que la transparencia es el nuevo motor de valor.`,
-                concl: "El liderazgo moderno exige decisiones íntegras y escalables."
+                intro: "El despliegue de la IA exige un liderazgo que trascienda la mera adopción técnica.",
+                cuerpo: `Al analizar ${topicSource.toLowerCase()}, queda claro que la ética es el activo más valioso de la era digital.`,
+                concl: "La verdadera ventaja nace de sistemas inteligentes auditables y humanos."
             },
             {
-                intro: "Nos encontramos en un punto de inflexión donde la agilidad debe equilibrarse con la ética.",
-                cuerpo: `El impacto de ${topicSource.toLowerCase()} nos obliga a cuestionar cómo orquestamos la inteligencia en la empresa.`,
-                concl: "La optimización sin un propósito claro es simplemente ruido operativo."
-            },
-            {
-                intro: "La automatización acelerada requiere una gobernanza humana más fuerte que nunca.",
-                cuerpo: `Analizar ${topicSource.toLowerCase()} nos permite ver la importancia de un marco de responsabilidad activa.`,
-                concl: "El éxito pertenece a quienes protegen la integridad de sus procesos."
+                intro: "La agilidad algorítmica debe ser proporcional a nuestra responsabilidad ética.",
+                cuerpo: `Lo que vemos en ${topicSource.toLowerCase()} nos obliga a blindar la transparencia corporativa.`,
+                concl: "Eficiencia sin integridad es una deuda técnica que no podemos asumir."
             }
         ];
 
@@ -117,26 +122,25 @@
         const cleanTitle = topicSource.replace(/la |el |de |en |que /gi, "").trim();
         
         const content = [
-            `🚀 ${verb.toUpperCase()}: REDEFINIENDO EL IMPACTO DE ${cleanTitle.toUpperCase()}`,
+            `🚀 ${verb.toUpperCase()}: ESTRATEGIA SOBRE ${cleanTitle.toUpperCase()}`,
             "",
             enf.intro,
             "",
             enf.cuerpo,
             "",
             "🔹 PILARES CLAVE:",
-            "• Equilibrio entre rendimiento y ética.",
-            "• Eliminación de sesgos algorítmicos.",
-            "• Transparencia como activo de mercado.",
-            "• Gobernanza proactiva.",
+            "• Sincronía técnica y ética.",
+            "• Gobernanza de datos proactiva.",
+            "• Transparencia algorítmica.",
             "",
             enf.concl,
             "",
-            "#IA #Estrategia #Liderazgo #Negocios #Tech"
+            "#IA #Estrategia #Tech #Leadership #Etica"
         ];
         
         document.getElementById('postText').value = content.join("\n");
         document.getElementById('btnImg').disabled = false;
-        document.getElementById('status').innerText = "POST GENERADO";
+        document.getElementById('status').innerText = "POST ESTRATÉGICO GENERADO";
     }
 
     function generarImagen() {
@@ -145,7 +149,7 @@
         img.style.display = "none";
         loader.style.display = "block";
         const seed = Date.now();
-        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic business digital ethics cinematic 3d render")}?width=1200&height=630&seed=${seed}&nologo=true`;
+        finalImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(activeTopic + " futuristic 3d artificial intelligence ethics cinematic render")}?width=1200&height=630&seed=${seed}&nologo=true`;
         img.src = finalImageUrl;
         img.onload = () => {
             loader.style.display = "none";
@@ -157,14 +161,14 @@
     async function publicar() {
         const btn = document.getElementById('btnPub');
         btn.disabled = true;
-        document.getElementById('status').innerText = "PUBLICANDO...";
+        document.getElementById('status').innerText = "ENVIANDO...";
         try {
             const res = await fetch(PUBLISH_WEBHOOK_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ mensaje: document.getElementById('postText').value, url_imagen: finalImageUrl })
             });
-            if(res.ok) document.getElementById('status').innerText = "✅ ENVIADO A LINKEDIN";
+            if(res.ok) document.getElementById('status').innerText = "✅ PUBLICADO EXITOSAMENTE";
         } catch(e) { alert("Error"); btn.disabled = false; }
     }
 </script>
