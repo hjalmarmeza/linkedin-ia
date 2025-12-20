@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LinkedinMatic v41.23</title>
+    <title>LinkedinMatic v41.25</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
@@ -20,18 +20,18 @@
         <div class="flex justify-between items-center p-4 cyber-card rounded-2xl mt-2">
             <div>
                 <h1 class="text-xl font-bold font-['Orbitron'] text-white">LINKEDIN<span class="text-cyan-400">MATIC</span></h1>
-                <p class="text-[9px] text-gray-500 tracking-[2px]">MAPPING FIX v41.23</p>
+                <p class="text-[9px] text-gray-500 tracking-[2px]">ESTÁNDAR ACORDADO v41.25</p>
             </div>
         </div>
 
         <div class="p-4 cyber-card rounded-2xl grid grid-cols-2 gap-4">
-            <button id="btnNewPost" class="mobile-btn">NUEVA NARRATIVA</button>
-            <button id="btnNewImg" class="mobile-btn">CAMBIAR IMAGEN</button>
+            <button id="btnNewPost" class="mobile-btn">NUEVO POST</button>
+            <button id="btnNewImg" class="mobile-btn">NUEVA IMAGEN</button>
         </div>
 
         <div class="cyber-card rounded-2xl overflow-hidden relative min-h-[220px] flex items-center justify-center bg-[#111]">
             <img id="imgPreview" src="" class="w-full h-full object-cover transition-opacity duration-500 opacity-0">
-            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">SISTEMA LISTO...</div>
+            <div id="imgLoader" class="absolute text-cyan-400 text-xs animate-pulse font-['Orbitron']">SISTEMA OK...</div>
         </div>
 
         <div class="cyber-card rounded-2xl p-2">
@@ -44,12 +44,35 @@
     <script>
         const WEBHOOK_PUB = "https://hook.eu2.make.com/80rpa5t48aqprpltnwhrood646g91c63";
 
+        const contenidos = [
+            {
+                t: "IA Y APORTE SOCIAL",
+                c: "La Inteligencia Artificial está redefiniendo nuestro aporte a la sociedad al resolver problemas complejos que antes tomaban años. Al democratizar el acceso a soluciones tecnológicas avanzadas, estamos creando un entorno más equitativo donde el conocimiento y la ejecución están al alcance de todos, impulsando un crecimiento colectivo sin precedentes.",
+                p: "Modern corporate people collaborating, vibrant office, high-end photography"
+            },
+            {
+                t: "BENEFICIOS PARA EL USUARIO",
+                c: "El beneficio real de la IA para el usuario final se traduce en una experiencia intuitiva y personalizada. Ya no se trata de entender la tecnología, sino de que la tecnología nos entienda a nosotros. Esto elimina barreras de entrada y permite que cualquier persona, sin importar su perfil técnico, pueda alcanzar resultados profesionales de alto nivel.",
+                p: "Professional user with high-tech mobile device, bright natural lighting, vibrant details"
+            },
+            {
+                t: "EFICIENCIA Y AHORRO DE TIEMPOS",
+                c: "La mayor moneda de cambio hoy es el tiempo, y la IA es la herramienta definitiva para recuperarlo. Al optimizar procesos y automatizar tareas repetitivas, logramos una eficiencia operativa que devuelve horas valiosas a las personas. Este ahorro de tiempo no solo mejora la productividad, sino que eleva la calidad de vida al permitirnos enfocarnos en lo que realmente importa.",
+                p: "Futuristic office environment, clock and data streams, vibrant cyan and corporate colors"
+            }
+        ];
+
+        let idx = 0;
+
         function update() {
-            const temas = ["IA AGENTES", "IA SOBERANA", "IA SOCIEDAD", "IA EFICIENCIA"];
-            const t = temas[Math.floor(Math.random()*temas.length)];
-            document.getElementById('postText').value = `🚀 ${t}\n\nLa IA está transformando el aporte a la sociedad y usuarios, generando beneficios en eficiencia y tiempos de respuesta.\n\n#IA #Eficiencia #Sociedad #Tech`;
+            const data = contenidos[idx];
+            let post = `🚀 ${data.t}\n\n`;
+            post += `${data.c}\n\n`;
+            post += `#IA #Eficiencia #Sociedad #Tecnologia #Productividad`;
             
-            const url = `https://pollinations.ai/p/${encodeURIComponent(t + " modern corporate professional style vibrant")}.png?width=1080&height=600&seed=${Date.now()}&nologo=true`;
+            document.getElementById('postText').value = post;
+            
+            const url = `https://pollinations.ai/p/${encodeURIComponent(data.p + " professional vibrant style")}.png?width=1080&height=600&seed=${Date.now()}&nologo=true`;
             const img = document.getElementById('imgPreview');
             const loader = document.getElementById('imgLoader');
             img.classList.replace('opacity-100', 'opacity-0');
@@ -57,19 +80,18 @@
             img.src = url;
             img.dataset.url = url;
             img.onload = () => { img.classList.replace('opacity-0', 'opacity-100'); loader.style.display = "none"; };
+            
+            idx = (idx + 1) % contenidos.length;
         }
 
         async function publicar() {
             const btn = document.getElementById('btnPub');
-            // MAPEADO DE CAMPOS SOLICITADO
             const payload = {
                 "post": document.getElementById('postText').value,
                 "Url_imagen": document.getElementById('imgPreview').dataset.url
             };
-
             btn.innerText = "ENVIANDO...";
             btn.disabled = true;
-
             try {
                 await fetch(WEBHOOK_PUB, {
                     method: 'POST',
