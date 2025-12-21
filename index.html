@@ -2,106 +2,105 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedinMatic v41.53 - Generador Infinito</title>
+    <title>LinkedinMatic v41.55 - Control Total</title>
     <style>
-        :root { --primary: #00f2ff; --secondary: #7000ff; --accent: #ffb700; --bg: #050505; --text: #e0e0e0; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 20px; }
-        .app-container { max-width: 850px; width: 100%; background: #111; border: 1px solid #222; border-radius: 15px; padding: 30px; box-shadow: 0 0 50px rgba(0,0,0,0.9); }
-        h1 { color: var(--primary); text-align: center; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 5px; }
-        .version { text-align: center; font-size: 0.7rem; color: #555; margin-bottom: 20px; }
-        .category-badge { background: linear-gradient(90deg, var(--secondary), #4400aa); color: white; padding: 6px 15px; border-radius: 5px; font-size: 0.85rem; font-weight: bold; margin-bottom: 15px; display: inline-block; border-left: 3px solid var(--primary); }
-        #post-content { background: #000; border: 1px solid #222; padding: 25px; border-radius: 10px; min-height: 400px; white-space: pre-wrap; line-height: 1.7; margin: 20px 0; font-size: 1rem; color: #d0d0d0; }
-        .prompt-box { background: #0a0a0a; border: 1px dashed #333; padding: 15px; font-size: 0.85rem; color: #888; margin-top: 10px; }
-        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        button { padding: 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; font-size: 0.9rem; }
-        .btn-main { background: var(--primary); color: #000; grid-column: span 2; font-size: 1rem; }
-        .btn-copy { background: #222; color: #fff; border: 1px solid #333; }
-        button:hover { opacity: 0.8; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,242,255,0.2); }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #050505; color: #e0e0e0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .container { max-width: 600px; width: 100%; background: #111; padding: 25px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { color: #00f2ff; text-align: center; font-size: 1.5rem; margin-top: 0; }
+        #post-text { width: 100%; height: 260px; background: #000; color: #fff; border: 1px solid #444; padding: 12px; box-sizing: border-box; font-size: 14px; line-height: 1.6; border-radius: 5px; }
+        #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; display: block; background: #1a1a1a; min-height: 250px; border: 1px solid #222; }
+        .controls { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { padding: 12px; cursor: pointer; font-weight: bold; border-radius: 6px; border: none; transition: 0.3s; text-transform: uppercase; }
+        .btn-gen { background: #00f2ff; color: #000; grid-column: span 2; }
+        .btn-img { background: #7000ff; color: #fff; }
+        .btn-pub { background: #238636; color: #fff; }
+        .status-area { display: flex; align-items: center; justify-content: center; margin-top: 15px; font-size: 13px; color: #888; }
+        #status-circle { width: 12px; height: 12px; border-radius: 50%; background: gray; margin-left: 8px; }
+        .category-info { font-size: 11px; color: #00f2ff; margin-bottom: 8px; font-weight: bold; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <h1>LinkedinMatic</h1>
-    <div class="version">V41.53 | SISTEMA DE NARRATIVA INFINITA POR MATRIZ</div>
-    <div id="badge-container"></div>
-    <div id="post-content">Iniciando motor de IA... Haz clic en el botón para generar tu narrativa del día.</div>
+<div class="container">
+    <h2>LinkedinMatic v41.55</h2>
+    <div id="category-display" class="category-info">SISTEMA LISTO</div>
+    <textarea id="post-text" placeholder="Presiona 'Nueva Narrativa'..."></textarea>
     
-    <div class="prompt-box">
-        <strong style="color: var(--accent);">🎯 PROMPT CIBER-REALISTA (Copia esto en tu generador de imagen):</strong>
-        <div id="prompt-content" style="margin-top:8px italic;">El prompt se adaptará a la categoría elegida.</div>
+    <img id="post-image" src="" alt="Imagen de Alto Impacto">
+    
+    <div class="controls">
+        <button class="btn-gen" onclick="generarNarrativa()">🔄 Nueva Narrativa (Post + Imagen)</button>
+        <button class="btn-img" onclick="regenerarImagen()">🖼️ Solo Nueva Imagen</button>
+        <button class="btn-pub" onclick="publicarEnLinkedin()">📤 Publicar en LinkedIn</button>
     </div>
 
-    <div class="controls">
-        <button class="btn-main" onclick="generarPost()">🚀 GENERAR NARRATIVA ÚNICA</button>
-        <button class="btn-copy" onclick="copiarTexto('post-content')">📋 Copiar Texto Post</button>
-        <button class="btn-copy" onclick="copiarTexto('prompt-content')">🖼️ Copiar Prompt Imagen</button>
+    <div class="status-area">
+        Estado de Publicación: <div id="status-circle"></div>
     </div>
 </div>
 
 <script>
-    const categorias = [
-        "Estrategia Corporativa e Integración de IA", "Liderazgo en la Era Exponencial", "Economía de la Inteligencia", "Geopolítica de la IA", "Venture Capital e IA",
-        "Automatización RPA + IA", "Ingeniería de Prompts Avanzada", "IA Agéntica (Agentes Autónomos)", "Stack Tecnológico", "Gestión del Tiempo y Productividad",
-        "Diseño de Workflows", "Psicología Humano-IA", "Educación y Aprendizaje Acelerado", "Futuro del Trabajo", "Relaciones y Comunicación",
-        "Ética y Humanismo Digital", "Ciberseguridad Algorítmica", "Soberanía de Datos", "Arquitectura de Datos", "Hardware, Chips e Infraestructura",
-        "IA Open Source", "Multimodalidad", "Creatividad Aumentada", "Marketing e Hiper-personalización", "Entretenimiento y Medios", "Sostenibilidad e IA Verde", "Regulación y Propiedad Intelectual"
-    ];
+    const categorias = ["Estrategia Corporativa e IA", "Liderazgo en la Era Exponencial", "Economía de la Inteligencia", "Geopolítica de la IA", "Venture Capital e IA", "Automatización RPA + IA", "Ingeniería de Prompts Avanzada", "IA Agéntica", "Stack Tecnológico", "Gestión del Tiempo y Productividad", "Diseño de Workflows", "Psicología Humano-IA", "Educación y Aprendizaje Acelerado", "Futuro del Trabajo", "Relaciones y Comunicación", "Ética y Humanismo Digital", "Ciberseguridad Algorítmica", "Soberanía de Datos", "Arquitectura de Datos", "Hardware, Chips e Infraestructura", "IA Open Source", "Multimodalidad", "Creatividad Aumentada", "Marketing e Hiper-personalización", "Entretenimiento y Medios", "Sostenibilidad e IA Verde", "Regulación y Propiedad Intelectual"];
 
     const aperturas = [
-        "La frontera entre lo posible y lo inevitable se ha disuelto hoy.", "No estamos ante una era de cambios, sino ante un cambio de era sistémico.",
-        "La ventaja competitiva ya no reside en el dato, sino en la velocidad de su inferencia.", "El liderazgo moderno exige una comprensión profunda de la arquitectura digital.",
-        "La verdadera disrupción no es tecnológica, es una reconfiguración del modelo de valor.", "En la economía de la inteligencia, el activo más valioso es la capacidad de respuesta.",
-        "No estamos optimizando procesos; estamos rediseñando la naturaleza de la competitividad.", "La soberanía digital ha pasado de ser un concepto técnico a un imperativo geopolítico.",
-        "El coste del error en la estrategia de IA es la irrelevancia absoluta en menos de un ciclo.", "La IA agéntica no es el futuro de la automatización; es el estándar de ejecución hoy.",
-        "Un workflow sin IA es, por definición, un cuello de botella para el crecimiento.", "La ingeniería de prompts es el nuevo lenguaje de programación del liderazgo operativo.",
-        "Reducir la fricción humana en procesos técnicos es la métrica de éxito de esta década.", "La hiper-personalización masiva solo es posible con una arquitectura de datos impecable.",
-        "La tecnología debe ser un espejo de nuestra ética, no un reemplazo de nuestra responsabilidad.", "El humanismo digital será la habilidad más escasa y demandada en el mercado del 2026.",
-        "La transparencia algorítmica es el único camino para construir confianza real.", "No deleguemos nuestra brújula moral a una caja negra de datos sin supervisión humana.",
-        "El reposo y la confianza son los frutos de una IA diseñada con propósito.", "El éxito ya no reside en acumular información, sino en orquestar inteligencia.",
-        // ... (Aquí se asumen las 100 variaciones conceptuales integradas en la lógica de selección aleatoria)
-        "La automatización inteligente es el puente hacia una creatividad sin precedentes.", "Navegar la era exponencial requiere una brújula ética y una visión técnica audaz.",
-        "Cada token procesado es una oportunidad de redefinir la eficiencia de nuestro sector.", "La infraestructura del mañana se construye con los algoritmos que elegimos hoy."
+        "La frontera entre lo posible y lo inevitable se ha disuelto hoy.", "No estamos ante una era de cambios, sino ante un cambio de era sistémico.", "La ventaja competitiva ya no reside en el dato, sino en la velocidad de su inferencia.", "El liderazgo moderno exige una comprensión profunda de la arquitectura digital.", "La verdadera disrupción no es tecnológica, es una reconfiguración del modelo de valor.", "En la economía de la inteligencia, el activo más valioso es la capacidad de respuesta.", "No estamos optimizando procesos; estamos rediseñando la naturaleza de la competitividad.", "La soberanía digital ha pasado de ser un concepto técnico a un imperativo geopolítico.", "El coste del error en la estrategia de IA es la irrelevancia absoluta.", "La IA agéntica no es el futuro de la automatización; es el estándar de hoy.",
+        "El éxito ya no reside en acumular información, sino en orquestar inteligencia.", "La automatización inteligente es el puente hacia una creatividad sin precedentes.", "Navegar la era exponencial requiere una brújula ética y una visión técnica audaz.", "Cada token procesado es una oportunidad de redefinir la eficiencia corporativa."
     ];
 
-    const desarrollos = [
-        "La ejecución exige un enfoque tridimensional: técnica, estrategia y cultura organizacional.",
-        "Analizamos tres pilares críticos para la transformación estructural en este ámbito:",
-        "El impacto de esta tendencia redefine los márgenes operativos de cualquier industria moderna:"
-    ];
+    let categoriaActual = "";
 
-    function generarPost() {
-        const cat = categorias[Math.floor(Math.random() * categorias.length)];
+    function generarNarrativa() {
+        categoriaActual = categorias[Math.floor(Math.random() * categorias.length)];
         const hook = aperturas[Math.floor(Math.random() * aperturas.length)];
-        const dev = desarrollos[Math.floor(Math.random() * desarrollos.length)];
         
-        document.getElementById('badge-container').innerHTML = `<span class="category-badge">📂 ${cat.toUpperCase()}</span>`;
+        document.getElementById('category-display').innerText = `📂 CATEGORÍA: ${categoriaActual.toUpperCase()}`;
         
-        let cuerpo = `${hook}\n\nCuando hablamos de ${cat}, la profundidad técnica debe ir de la mano con la visión de negocio. ${dev}\n\n`;
-        cuerpo += "• Integración sistémica de modelos avanzados en el núcleo operativo.\n";
-        cuerpo += "• Optimización de latencia y eficiencia de costes por inferencia.\n";
-        cuerpo += "• Gestión de la seguridad y soberanía de la información crítica.\n";
-        cuerpo += "• Evolución hacia sistemas autónomos con mínima fricción humana.\n\n";
-        cuerpo += "La verdadera disrupción no ocurre en la nube, sino en la capacidad de orquestar estos elementos.\n";
-        cuerpo += "Estamos pasando de la era del software estático a la era de la inteligencia dinámica.\n";
-        cuerpo += "El liderazgo del futuro no teme al algoritmo; lo utiliza como catalizador de propósito.\n";
-        cuerpo += "La clave reside en mantener la agilidad sin comprometer la integridad técnica.\n";
-        cuerpo += "Es tiempo de construir arquitecturas que no solo procesen, sino que inspiren.\n\n";
-        cuerpo += "Sin una ejecución clara, la innovación es simplemente una promesa técnica vacía.\n";
-        cuerpo += "Sigamos impulsando la excelencia en la intersección de tecnología y estrategia.\n\n";
-        cuerpo += "#InteligenciaArtificial #TechStrategy #Innovación #FuturoDelTrabajo #EficienciaDigital";
+        let texto = `🚀 ${categoriaActual.toUpperCase()}\n\n${hook}\n\nEn la intersección de la tecnología y la estrategia operativa, analizamos tres ejes fundamentales:\n\n`;
+        texto += "• Integración de modelos de lenguaje en el core del negocio.\n";
+        texto += "• Optimización de la latencia y eficiencia de costes por token.\n";
+        texto += "• Arquitecturas de confianza y soberanía de datos estratégica.\n\n";
+        texto += "La verdadera transformación ocurre cuando la tecnología se alinea con un propósito claro.\n";
+        texto += "El liderazgo del futuro no teme al algoritmo, lo utiliza como catalizador.\n";
+        texto += "Es momento de construir sistemas que no solo procesen, sino que inspiren resultados.\n\n";
+        texto += "#InteligenciaArtificial #Estrategia #Innovación #FuturoDelTrabajo";
 
-        document.getElementById('post-content').innerText = `🚀 ${cat.toUpperCase()}\n\n${cuerpo}`;
-        
-        // PROMPT ESTILO SURREALISMO TECNOLÓGICO ORGÁNICO
-        const prompt = `Hyper-realistic cinematic cyber-realism, surreal technological organic fusion representing ${cat}. Intricate digital structures merging with golden light patterns and deep obsidian textures. Lighting: high-impact chiaroscuro, glows of Cosmic Violet and Deep Blue. Cinematic 8k photography, sacred geometry influence, elegant and professional. No text.`;
-        document.getElementById('prompt-content').innerText = prompt;
+        document.getElementById('post-text').value = texto;
+        regenerarImagen();
     }
 
-    function copiarTexto(id) {
-        const texto = document.getElementById(id).innerText;
-        navigator.clipboard.writeText(texto).then(() => alert("¡Contenido copiado!"));
+    function regenerarImagen() {
+        if (!categoriaActual) { alert("Primero genera una narrativa."); return; }
+        
+        // Aplicando el Estilo: Surrealismo Tecnológico Orgánico
+        const prompt = `Hyper-realistic cinematic cyber-realism, surreal technological organic fusion of ${categoriaActual}, cosmic violet and gold lighting, high-impact textures, 8k professional photography, no text`;
+        const seed = Math.floor(Math.random() * 1000000);
+        const imageUrl = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=1080&height=1080&seed=${seed}`;
+        
+        document.getElementById('post-image').src = imageUrl;
+        document.getElementById('status-circle').style.background = "gray";
+    }
+
+    async function publicarEnLinkedin() {
+        const text = document.getElementById('post-text').value;
+        const image = document.getElementById('post-image').src;
+        const webhookUrl = "https://hook.eu2.make.com/l7s7fv2ldmbrwvmbmoqw74x2jx68w4ox"; 
+
+        try {
+            const response = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text, image: image })
+            });
+
+            if (response.ok) {
+                document.getElementById('status-circle').style.background = "#238636"; // Verde éxito
+            } else {
+                alert("Hubo un problema al enviar al webhook.");
+            }
+        } catch (error) {
+            console.error("Error al publicar", error);
+            alert("Error de conexión con Make.");
+        }
     }
 </script>
 </body>
