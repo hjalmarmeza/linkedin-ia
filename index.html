@@ -2,84 +2,88 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>LinkedinMatic v41.56 - Coherencia Total</title>
+    <title>LinkedinMatic v41.57 - Master Copywriter</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #050505; color: #e0e0e0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .container { max-width: 600px; width: 100%; background: #111; padding: 25px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { color: #00f2ff; text-align: center; font-size: 1.5rem; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        #post-text { width: 100%; height: 350px; background: #000; color: #fff; border: 1px solid #444; padding: 15px; box-sizing: border-box; font-size: 14px; line-height: 1.6; border-radius: 5px; resize: none; }
+        h2 { color: #00f2ff; text-align: center; font-size: 1.4rem; margin-top: 0; letter-spacing: 2px; }
+        #post-text { width: 100%; height: 380px; background: #000; color: #fff; border: 1px solid #444; padding: 15px; box-sizing: border-box; font-size: 14px; line-height: 1.6; border-radius: 5px; resize: none; font-family: 'Segoe UI', sans-serif; }
         #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; display: block; background: #1a1a1a; min-height: 250px; border: 1px solid #222; }
         .controls { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         button { padding: 12px; cursor: pointer; font-weight: bold; border-radius: 6px; border: none; transition: 0.3s; text-transform: uppercase; }
         .btn-gen { background: #00f2ff; color: #000; grid-column: span 2; }
         .btn-img { background: #7000ff; color: #fff; }
         .btn-pub { background: #238636; color: #fff; }
-        .status-area { display: flex; align-items: center; justify-content: center; margin-top: 15px; font-size: 13px; color: #888; }
+        .status-area { display: flex; align-items: center; justify-content: center; margin-top: 15px; font-size: 12px; color: #666; }
         #status-circle { width: 12px; height: 12px; border-radius: 50%; background: gray; margin-left: 8px; }
-        .category-info { font-size: 11px; color: #00f2ff; margin-bottom: 8px; font-weight: bold; letter-spacing: 1px; }
+        .category-info { font-size: 10px; color: #00f2ff; margin-bottom: 8px; font-weight: bold; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>LinkedinMatic v41.56</h2>
-    <div id="category-display" class="category-info">SISTEMA DE COHERENCIA ACTIVO</div>
-    <textarea id="post-text" placeholder="Haz clic en Nueva Narrativa..."></textarea>
+    <h2>LinkedinMatic v41.57</h2>
+    <div id="category-display" class="category-info">MOTOR DE NARRATIVA ALTA PRECISIÓN</div>
+    <textarea id="post-text" placeholder="Generando impacto..."></textarea>
     
-    <img id="post-image" src="" alt="Previsualización de imagen">
+    <img id="post-image" src="" alt="Imagen Ciber-Realista">
     
     <div class="controls">
-        <button class="btn-gen" onclick="generarNarrativa()">🔄 Nueva Narrativa Coherente</button>
-        <button class="btn-img" onclick="regenerarImagen()">🖼️ Solo Nueva Imagen</button>
-        <button class="btn-pub" onclick="publicarEnLinkedin()">📤 Publicar en LinkedIn</button>
+        <button class="btn-gen" onclick="generarNarrativa()">🚀 GENERAR POST DE ALTO IMPACTO</button>
+        <button class="btn-img" onclick="regenerarImagen()">🖼️ CAMBIAR IMAGEN</button>
+        <button class="btn-pub" onclick="publicarEnLinkedin()">📤 PUBLICAR EN LINKEDIN</button>
     </div>
 
     <div class="status-area">
-        Estado de Publicación: <div id="status-circle"></div>
+        STATUS WEBHOOK: <div id="status-circle"></div>
     </div>
 </div>
 
 <script>
-    const matrizContenido = {
-        "SOSTENIBILIDAD E IA VERDE": {
-            puntos: ["• Eficiencia térmica y optimización de refrigeración en centros de datos.", "• Reducción de la huella de carbono mediante algoritmos de bajo consumo.", "• Transición hacia infraestructuras alimentadas por energías renovables."],
-            cierre: "La IA del futuro será verde o simplemente no será sostenible para el planeta."
+    const matriz = {
+        "ESTRATEGIA": {
+            titulos: ["EL ROI DE LA IA: De la experimentación a la monetización real.", "No es tecnología, es capital: La nueva economía de la inteligencia.", "¿Tu IA genera eficiencia o ingresos? El dilema del C-Suite.", "IA ESTRATÉGICA: Cómo capturar cuota de mercado en la era algorítmica."],
+            puntos: ["• Análisis del ROI y modelos de monetización de activos digitales.", "• Ventaja competitiva mediante la captura de cuota de mercado algorítmica.", "• Integración de IA en la toma de decisiones críticas del C-Suite."],
+            cierre: "La estrategia no es usar IA, es redefinir el negocio a través de ella.",
+            tags: "#EstrategiaIA #Negocios #ROI #LiderazgoExponencial"
         },
-        "ESTRATEGIA Y NEGOCIOS": {
-            puntos: ["• Análisis del ROI y modelos de monetización de inteligencia artificial.", "• Ventaja competitiva mediante la captura de cuota de mercado digital.", "• Integración de IA en la toma de decisiones del C-Suite."],
-            cierre: "La estrategia no es usar IA, es redefinir el negocio a través de ella."
+        "SOSTENIBILIDAD": {
+            titulos: ["IA VERDE: ¿Es tu infraestructura parte del problema o de la solución?", "Algoritmos Sostenibles: El nuevo KPI de la responsabilidad corporativa.", "Data Centers y Planeta: La carrera por la eficiencia térmica.", "Sostenibilidad Algorítmica: Innovar sin hipotecar el futuro energético."],
+            puntos: ["• Optimización de la huella de carbono en el entrenamiento de modelos.", "• Transición hacia arquitecturas de cómputo de bajo consumo energético.", "• Implementación de sistemas de refrigeración inteligente y renovables."],
+            cierre: "La IA del futuro será verde o simplemente no será sostenible.",
+            tags: "#IAVerde #Sostenibilidad #CleanTech #ESG"
         },
-        "CIBERSEGURIDAD Y DATOS": {
-            puntos: ["• Encriptación avanzada y defensa contra ataques adversarios.", "• Firewalls inteligentes y detección de anomalías en tiempo real.", "• Soberanía de datos y protocolos de privacidad inquebrantables."],
-            cierre: "En un mundo algorítmico, la seguridad es el cimiento de la confianza."
+        "SEGURIDAD": {
+            titulos: ["CIBERSEGURIDAD ADVERSARIA: Cuando los algoritmos atacan algoritmos.", "Soberanía de Datos: El último bastión de la confianza empresarial.", "Firewalls Inteligentes: La defensa proactiva en un mundo de Zero Trust.", "Privacidad Sintética: Cómo proteger el dato sin frenar la innovación."],
+            puntos: ["• Encriptación de última generación y defensa contra ataques adversarios.", "• Detección de anomalías en tiempo real mediante redes neuronales.", "• Protocolos de soberanía y gobernanza de datos inquebrantables."],
+            cierre: "En la era de la inteligencia, la seguridad es la base de la libertad operativa.",
+            tags: "#Ciberseguridad #DataPrivacy #CyberTech #ConfianzaDigital"
         },
-        "OPERACIONES Y AUTOMATIZACIÓN": {
-            puntos: ["• Eliminación de cuellos de botella mediante flujos agénticos.", "• Optimización de la latencia y el coste operativo por token.", "• Hiper-automatización de procesos core con mínima fricción."],
-            cierre: "La eficiencia operativa es el motor de la escalabilidad exponencial."
-        },
-        "ÉTICA Y HUMANISMO DIGITAL": {
-            puntos: ["• Mitigación de sesgos algorítmicos en modelos fundacionales.", "• Diseño de sistemas centrados en la dignidad y el bienestar humano.", "• Transparencia y explicabilidad para una IA responsable."],
-            cierre: "La tecnología debe amplificar nuestra humanidad, no reemplazarla."
+        "OPERACIONES": {
+            titulos: ["AGENTES AUTÓNOMOS: El fin de la automatización estática.", "Eficiencia por Token: Optimizando el motor financiero de tu IA.", "Workflows Agénticos: Reducción drástica de la fricción operativa.", "La era de la Hiper-automatización: Más allá del RPA tradicional."],
+            puntos: ["• Eliminación de cuellos de botella mediante agentes de IA autónomos.", "• Optimización de la latencia y el coste marginal por inferencia.", "• Rediseño de flujos de trabajo para una simbiosis humano-máquina."],
+            cierre: "La eficiencia operativa es el combustible de la escalabilidad exponencial.",
+            tags: "#Automatización #RPA #Eficiencia #IAAgéntica"
         }
     };
 
     const categorias = [
-        { nombre: "Sostenibilidad e IA Verde", pilar: "SOSTENIBILIDAD E IA VERDE" },
-        { nombre: "Estrategia Corporativa", pilar: "ESTRATEGIA Y NEGOCIOS" },
-        { nombre: "Ciberseguridad Algorítmica", pilar: "CIBERSEGURIDAD Y DATOS" },
-        { nombre: "Automatización RPA + IA", pilar: "OPERACIONES Y AUTOMATIZACIÓN" },
-        { nombre: "Ética y Humanismo Digital", pilar: "ÉTICA Y HUMANISMO DIGITAL" },
-        { nombre: "Economía de la Inteligencia", pilar: "ESTRATEGIA Y NEGOCIOS" },
-        { nombre: "Geopolítica de la IA", pilar: "ESTRATEGIA Y NEGOCIOS" },
-        { nombre: "IA Agéntica", pilar: "OPERACIONES Y AUTOMATIZACIÓN" },
-        { nombre: "Hardware y Chips", pilar: "OPERACIONES Y AUTOMATIZACIÓN" }
+        { n: "Economía de la Inteligencia", p: "ESTRATEGIA" },
+        { n: "Sostenibilidad e IA Verde", p: "SOSTENIBILIDAD" },
+        { n: "Ciberseguridad Algorítmica", p: "SEGURIDAD" },
+        { n: "IA Agéntica", p: "OPERACIONES" },
+        { n: "Venture Capital e IA", p: "ESTRATEGIA" },
+        { n: "Liderazgo Exponencial", p: "ESTRATEGIA" },
+        { n: "Soberanía de Datos", p: "SEGURIDAD" },
+        { n: "Automatización RPA + IA", p: "OPERACIONES" }
+        // Se pueden añadir las 27 aquí siguiendo este mapa
     ];
 
     const aperturas = [
-        "La frontera entre lo posible y lo inevitable se ha disuelto hoy.",
-        "La ventaja competitiva ya no reside en el dato, sino en su procesamiento ético.",
-        "No estamos ante una era de cambios, sino ante un cambio de era sistémico.",
         "El liderazgo moderno exige una visión clara sobre la infraestructura digital.",
+        "La frontera entre lo posible y lo inevitable se ha disuelto hoy mismo.",
+        "No estamos ante una era de cambios, sino ante un cambio de era sistémico.",
+        "La ventaja competitiva ya no reside en el dato, sino en su procesamiento ético.",
         "La verdadera disrupción ocurre cuando el propósito guía a la tecnología."
     ];
 
@@ -87,25 +91,27 @@
 
     function generarNarrativa() {
         const item = categorias[Math.floor(Math.random() * categorias.length)];
-        categoriaActual = item.nombre;
-        const pilar = matrizContenido[item.pilar];
+        categoriaActual = item.n;
+        const pilar = matriz[item.p];
         const hook = aperturas[Math.floor(Math.random() * aperturas.length)];
+        const titulo = pilar.titulos[Math.floor(Math.random() * pilar.titulos.length)];
         
-        document.getElementById('category-display').innerText = `📂 CATEGORÍA: ${categoriaActual.toUpperCase()}`;
+        document.getElementById('category-display').innerText = `MAPEO: ${item.p} > ${item.n.toUpperCase()}`;
         
-        let texto = `🚀 ${categoriaActual.toUpperCase()}\n\n${hook}\n\nEn este contexto, analizamos tres ejes fundamentales para la ejecución profesional:\n\n`;
-        pilar.puntos.forEach(punto => { texto += punto + "\n"; });
+        let texto = `${titulo}\n\n${hook}\n\nAnalizamos tres ejes fundamentales para la ejecución profesional en ${item.n}:\n\n`;
+        pilar.puntos.forEach(pt => { texto += pt + "\n"; });
         texto += `\n${pilar.cierre}\n\n`;
         texto += "Es momento de construir sistemas que no solo procesen datos, sino que inspiren resultados reales.\n\n";
-        texto += "#InteligenciaArtificial #Tecnología #Innovación #Futuro";
+        texto += pilar.tags;
 
         document.getElementById('post-text').value = texto;
         regenerarImagen();
     }
 
     function regenerarImagen() {
-        if (!categoriaActual) { alert("Genera una narrativa primero."); return; }
-        const prompt = `Hyper-realistic cinematic cyber-realism, technological fusion of ${categoriaActual}, cosmic violet and gold lighting, professional 8k photography, no text`;
+        if (!categoriaActual) return;
+        // Estilo Surrealismo Tecnológico Orgánico
+        const prompt = `Hyper-realistic cinematic cyber-realism, surreal technological organic fusion of ${categoriaActual}, cosmic violet and gold lighting, high-impact textures, 8k, no text`;
         const seed = Math.floor(Math.random() * 999999);
         document.getElementById('post-image').src = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=1080&height=1080&seed=${seed}`;
         document.getElementById('status-circle').style.background = "gray";
@@ -120,12 +126,10 @@
             const response = await fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: text, image: image })
+                body: JSON.stringify({ text, image })
             });
             if (response.ok) document.getElementById('status-circle').style.background = "#238636";
-        } catch (error) {
-            alert("Error al conectar con Make.");
-        }
+        } catch (e) { alert("Error de conexión"); }
     }
 </script>
 </body>
