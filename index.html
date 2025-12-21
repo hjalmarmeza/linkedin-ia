@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>LinkedinMatic v41.55 - Control Total</title>
+    <title>LinkedinMatic v41.56 - Coherencia Total</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #050505; color: #e0e0e0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .container { max-width: 600px; width: 100%; background: #111; padding: 25px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { color: #00f2ff; text-align: center; font-size: 1.5rem; margin-top: 0; }
-        #post-text { width: 100%; height: 260px; background: #000; color: #fff; border: 1px solid #444; padding: 12px; box-sizing: border-box; font-size: 14px; line-height: 1.6; border-radius: 5px; }
+        h2 { color: #00f2ff; text-align: center; font-size: 1.5rem; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        #post-text { width: 100%; height: 350px; background: #000; color: #fff; border: 1px solid #444; padding: 15px; box-sizing: border-box; font-size: 14px; line-height: 1.6; border-radius: 5px; resize: none; }
         #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; display: block; background: #1a1a1a; min-height: 250px; border: 1px solid #222; }
         .controls { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         button { padding: 12px; cursor: pointer; font-weight: bold; border-radius: 6px; border: none; transition: 0.3s; text-transform: uppercase; }
@@ -22,14 +22,14 @@
 <body>
 
 <div class="container">
-    <h2>LinkedinMatic v41.55</h2>
-    <div id="category-display" class="category-info">SISTEMA LISTO</div>
-    <textarea id="post-text" placeholder="Presiona 'Nueva Narrativa'..."></textarea>
+    <h2>LinkedinMatic v41.56</h2>
+    <div id="category-display" class="category-info">SISTEMA DE COHERENCIA ACTIVO</div>
+    <textarea id="post-text" placeholder="Haz clic en Nueva Narrativa..."></textarea>
     
-    <img id="post-image" src="" alt="Imagen de Alto Impacto">
+    <img id="post-image" src="" alt="Previsualización de imagen">
     
     <div class="controls">
-        <button class="btn-gen" onclick="generarNarrativa()">🔄 Nueva Narrativa (Post + Imagen)</button>
+        <button class="btn-gen" onclick="generarNarrativa()">🔄 Nueva Narrativa Coherente</button>
         <button class="btn-img" onclick="regenerarImagen()">🖼️ Solo Nueva Imagen</button>
         <button class="btn-pub" onclick="publicarEnLinkedin()">📤 Publicar en LinkedIn</button>
     </div>
@@ -40,43 +40,74 @@
 </div>
 
 <script>
-    const categorias = ["Estrategia Corporativa e IA", "Liderazgo en la Era Exponencial", "Economía de la Inteligencia", "Geopolítica de la IA", "Venture Capital e IA", "Automatización RPA + IA", "Ingeniería de Prompts Avanzada", "IA Agéntica", "Stack Tecnológico", "Gestión del Tiempo y Productividad", "Diseño de Workflows", "Psicología Humano-IA", "Educación y Aprendizaje Acelerado", "Futuro del Trabajo", "Relaciones y Comunicación", "Ética y Humanismo Digital", "Ciberseguridad Algorítmica", "Soberanía de Datos", "Arquitectura de Datos", "Hardware, Chips e Infraestructura", "IA Open Source", "Multimodalidad", "Creatividad Aumentada", "Marketing e Hiper-personalización", "Entretenimiento y Medios", "Sostenibilidad e IA Verde", "Regulación y Propiedad Intelectual"];
+    const matrizContenido = {
+        "SOSTENIBILIDAD E IA VERDE": {
+            puntos: ["• Eficiencia térmica y optimización de refrigeración en centros de datos.", "• Reducción de la huella de carbono mediante algoritmos de bajo consumo.", "• Transición hacia infraestructuras alimentadas por energías renovables."],
+            cierre: "La IA del futuro será verde o simplemente no será sostenible para el planeta."
+        },
+        "ESTRATEGIA Y NEGOCIOS": {
+            puntos: ["• Análisis del ROI y modelos de monetización de inteligencia artificial.", "• Ventaja competitiva mediante la captura de cuota de mercado digital.", "• Integración de IA en la toma de decisiones del C-Suite."],
+            cierre: "La estrategia no es usar IA, es redefinir el negocio a través de ella."
+        },
+        "CIBERSEGURIDAD Y DATOS": {
+            puntos: ["• Encriptación avanzada y defensa contra ataques adversarios.", "• Firewalls inteligentes y detección de anomalías en tiempo real.", "• Soberanía de datos y protocolos de privacidad inquebrantables."],
+            cierre: "En un mundo algorítmico, la seguridad es el cimiento de la confianza."
+        },
+        "OPERACIONES Y AUTOMATIZACIÓN": {
+            puntos: ["• Eliminación de cuellos de botella mediante flujos agénticos.", "• Optimización de la latencia y el coste operativo por token.", "• Hiper-automatización de procesos core con mínima fricción."],
+            cierre: "La eficiencia operativa es el motor de la escalabilidad exponencial."
+        },
+        "ÉTICA Y HUMANISMO DIGITAL": {
+            puntos: ["• Mitigación de sesgos algorítmicos en modelos fundacionales.", "• Diseño de sistemas centrados en la dignidad y el bienestar humano.", "• Transparencia y explicabilidad para una IA responsable."],
+            cierre: "La tecnología debe amplificar nuestra humanidad, no reemplazarla."
+        }
+    };
+
+    const categorias = [
+        { nombre: "Sostenibilidad e IA Verde", pilar: "SOSTENIBILIDAD E IA VERDE" },
+        { nombre: "Estrategia Corporativa", pilar: "ESTRATEGIA Y NEGOCIOS" },
+        { nombre: "Ciberseguridad Algorítmica", pilar: "CIBERSEGURIDAD Y DATOS" },
+        { nombre: "Automatización RPA + IA", pilar: "OPERACIONES Y AUTOMATIZACIÓN" },
+        { nombre: "Ética y Humanismo Digital", pilar: "ÉTICA Y HUMANISMO DIGITAL" },
+        { nombre: "Economía de la Inteligencia", pilar: "ESTRATEGIA Y NEGOCIOS" },
+        { nombre: "Geopolítica de la IA", pilar: "ESTRATEGIA Y NEGOCIOS" },
+        { nombre: "IA Agéntica", pilar: "OPERACIONES Y AUTOMATIZACIÓN" },
+        { nombre: "Hardware y Chips", pilar: "OPERACIONES Y AUTOMATIZACIÓN" }
+    ];
 
     const aperturas = [
-        "La frontera entre lo posible y lo inevitable se ha disuelto hoy.", "No estamos ante una era de cambios, sino ante un cambio de era sistémico.", "La ventaja competitiva ya no reside en el dato, sino en la velocidad de su inferencia.", "El liderazgo moderno exige una comprensión profunda de la arquitectura digital.", "La verdadera disrupción no es tecnológica, es una reconfiguración del modelo de valor.", "En la economía de la inteligencia, el activo más valioso es la capacidad de respuesta.", "No estamos optimizando procesos; estamos rediseñando la naturaleza de la competitividad.", "La soberanía digital ha pasado de ser un concepto técnico a un imperativo geopolítico.", "El coste del error en la estrategia de IA es la irrelevancia absoluta.", "La IA agéntica no es el futuro de la automatización; es el estándar de hoy.",
-        "El éxito ya no reside en acumular información, sino en orquestar inteligencia.", "La automatización inteligente es el puente hacia una creatividad sin precedentes.", "Navegar la era exponencial requiere una brújula ética y una visión técnica audaz.", "Cada token procesado es una oportunidad de redefinir la eficiencia corporativa."
+        "La frontera entre lo posible y lo inevitable se ha disuelto hoy.",
+        "La ventaja competitiva ya no reside en el dato, sino en su procesamiento ético.",
+        "No estamos ante una era de cambios, sino ante un cambio de era sistémico.",
+        "El liderazgo moderno exige una visión clara sobre la infraestructura digital.",
+        "La verdadera disrupción ocurre cuando el propósito guía a la tecnología."
     ];
 
     let categoriaActual = "";
 
     function generarNarrativa() {
-        categoriaActual = categorias[Math.floor(Math.random() * categorias.length)];
+        const item = categorias[Math.floor(Math.random() * categorias.length)];
+        categoriaActual = item.nombre;
+        const pilar = matrizContenido[item.pilar];
         const hook = aperturas[Math.floor(Math.random() * aperturas.length)];
         
         document.getElementById('category-display').innerText = `📂 CATEGORÍA: ${categoriaActual.toUpperCase()}`;
         
-        let texto = `🚀 ${categoriaActual.toUpperCase()}\n\n${hook}\n\nEn la intersección de la tecnología y la estrategia operativa, analizamos tres ejes fundamentales:\n\n`;
-        texto += "• Integración de modelos de lenguaje en el core del negocio.\n";
-        texto += "• Optimización de la latencia y eficiencia de costes por token.\n";
-        texto += "• Arquitecturas de confianza y soberanía de datos estratégica.\n\n";
-        texto += "La verdadera transformación ocurre cuando la tecnología se alinea con un propósito claro.\n";
-        texto += "El liderazgo del futuro no teme al algoritmo, lo utiliza como catalizador.\n";
-        texto += "Es momento de construir sistemas que no solo procesen, sino que inspiren resultados.\n\n";
-        texto += "#InteligenciaArtificial #Estrategia #Innovación #FuturoDelTrabajo";
+        let texto = `🚀 ${categoriaActual.toUpperCase()}\n\n${hook}\n\nEn este contexto, analizamos tres ejes fundamentales para la ejecución profesional:\n\n`;
+        pilar.puntos.forEach(punto => { texto += punto + "\n"; });
+        texto += `\n${pilar.cierre}\n\n`;
+        texto += "Es momento de construir sistemas que no solo procesen datos, sino que inspiren resultados reales.\n\n";
+        texto += "#InteligenciaArtificial #Tecnología #Innovación #Futuro";
 
         document.getElementById('post-text').value = texto;
         regenerarImagen();
     }
 
     function regenerarImagen() {
-        if (!categoriaActual) { alert("Primero genera una narrativa."); return; }
-        
-        // Aplicando el Estilo: Surrealismo Tecnológico Orgánico
-        const prompt = `Hyper-realistic cinematic cyber-realism, surreal technological organic fusion of ${categoriaActual}, cosmic violet and gold lighting, high-impact textures, 8k professional photography, no text`;
-        const seed = Math.floor(Math.random() * 1000000);
-        const imageUrl = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=1080&height=1080&seed=${seed}`;
-        
-        document.getElementById('post-image').src = imageUrl;
+        if (!categoriaActual) { alert("Genera una narrativa primero."); return; }
+        const prompt = `Hyper-realistic cinematic cyber-realism, technological fusion of ${categoriaActual}, cosmic violet and gold lighting, professional 8k photography, no text`;
+        const seed = Math.floor(Math.random() * 999999);
+        document.getElementById('post-image').src = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=1080&height=1080&seed=${seed}`;
         document.getElementById('status-circle').style.background = "gray";
     }
 
@@ -91,15 +122,9 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text: text, image: image })
             });
-
-            if (response.ok) {
-                document.getElementById('status-circle').style.background = "#238636"; // Verde éxito
-            } else {
-                alert("Hubo un problema al enviar al webhook.");
-            }
+            if (response.ok) document.getElementById('status-circle').style.background = "#238636";
         } catch (error) {
-            console.error("Error al publicar", error);
-            alert("Error de conexión con Make.");
+            alert("Error al conectar con Make.");
         }
     }
 </script>
