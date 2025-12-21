@@ -2,77 +2,58 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>LinkedinMatic v41.59 - Autoridad y Alcance</title>
+    <title>LinkedinMatic v41.60 - Alta Densidad</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #050505; color: #e0e0e0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .container { max-width: 650px; width: 100%; background: #111; padding: 25px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.7); }
-        h2 { color: #00f2ff; text-align: center; font-size: 1.4rem; margin-top: 0; letter-spacing: 2px; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        #post-text { width: 100%; height: 520px; background: #000; color: #fff; border: 1px solid #444; padding: 18px; box-sizing: border-box; font-size: 14.5px; line-height: 1.7; border-radius: 5px; resize: none; }
-        #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; display: block; background: #1a1a1a; min-height: 280px; border: 1px solid #222; }
-        .controls { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        button { padding: 14px; cursor: pointer; font-weight: bold; border-radius: 6px; border: none; transition: 0.3s; text-transform: uppercase; }
+        h2 { color: #00f2ff; text-align: center; font-size: 1.4rem; margin-top: 0; letter-spacing: 2px; }
+        #post-text { width: 100%; height: 500px; background: #000; color: #fff; border: 1px solid #444; padding: 18px; box-sizing: border-box; font-size: 14px; line-height: 1.7; border-radius: 5px; resize: none; }
+        #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #222; min-height: 250px; }
+        .controls { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { padding: 14px; cursor: pointer; font-weight: bold; border-radius: 6px; border: none; text-transform: uppercase; transition: 0.3s; }
         .btn-gen { background: #00f2ff; color: #000; grid-column: span 2; }
         .btn-img { background: #7000ff; color: #fff; }
         .btn-pub { background: #238636; color: #fff; }
-        .status-area { display: flex; align-items: center; justify-content: center; margin-top: 15px; font-size: 11px; color: #555; }
-        #status-circle { width: 10px; height: 10px; border-radius: 50%; background: gray; margin-left: 8px; }
+        #status-circle { width: 12px; height: 12px; border-radius: 50%; background: gray; display: inline-block; margin-left: 10px; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>LinkedinMatic v41.59</h2>
-    <textarea id="post-text" placeholder="Generando contenido de alta densidad..."></textarea>
-    <img id="post-image" src="" alt="Visual de Autoridad">
-    <div class="controls">
-        <button class="btn-gen" onclick="generarNarrativa()">🚀 GENERAR POST (180 PALABRAS + 8 TAGS)</button>
-        <button class="btn-img" onclick="regenerarImagen()">🖼️ CAMBIAR VISUAL</button>
-        <button class="btn-pub" onclick="publicarEnLinkedin()">📤 PUBLICAR AHORA</button>
+    <div class="container">
+        <h2>LinkedinMatic v41.60</h2>
+        <textarea id="post-text"></textarea>
+        <img id="post-image" src="">
+        <div class="controls">
+            <button class="btn-gen" onclick="generarNarrativa()">🚀 GENERAR POST DE AUTORIDAD</button>
+            <button class="btn-img" onclick="regenerarImagen()">🖼️ CAMBIAR IMAGEN</button>
+            <button class="btn-pub" onclick="publicarEnLinkedin()">📤 PUBLICAR EN LINKEDIN</button>
+        </div>
+        <div style="text-align:center; margin-top:15px; font-size:12px; color:#555;">
+            Estado: <div id="status-circle"></div>
+        </div>
     </div>
-    <div class="status-area">ESTADO DEL WEBHOOK <div id="status-circle"></div></div>
-</div>
 
 <script>
+    // --- AQUÍ EMPIEZAN LOS DATOS ---
     const matriz = {
         "ESTRATEGIA": {
-            titulos: ["EL ROI DE LA IA: De la experimentación a la monetización real.", "IA ESTRATÉGICA: Cómo capturar cuota de mercado en la era algorítmica."],
-            contexto: "La IA ha dejado de ser una promesa tecnológica para convertirse en el eje de la planificación financiera y operativa de las empresas líderes.",
+            titulos: ["EL ROI DE LA IA: De la monetización al impacto real.", "IA ESTRATÉGICA: Capturando cuota de mercado algorítmica."],
+            contexto: "La IA ha dejado de ser una promesa tecnológica para convertirse en el eje de la planificación financiera corporativa.",
             puntos: [
-                "• **Monetización de Activos:** No basta con procesar datos; el reto es empaquetar la inferencia como un producto de alto margen operativo y escalable.",
-                "• **Captura de Cuota:** La ventaja competitiva hoy se mide en la velocidad para iterar modelos que respondan a la demanda del mercado en tiempo real.",
-                "• **Gobernanza C-Suite:** La IA debe ser el eje central de la planificación estratégica, asegurando que cada token invertido genere un retorno medible."
+                "• **Monetización de Activos:** No basta con procesar datos; el reto es empaquetar la inferencia como producto de alto margen.",
+                "• **Captura de Cuota:** La ventaja competitiva se mide en la velocidad para iterar modelos que respondan a la demanda real.",
+                "• **Gobernanza C-Suite:** La IA debe ser el eje central de la estrategia, asegurando que cada token genere un retorno medible."
             ],
             cierre: "La estrategia no es usar IA, es redefinir el negocio a través de ella.",
-            tags: "#InteligenciaArtificial #EstrategiaIA #Negocios #ROI #LiderazgoExponencial #Innovación #FuturoDelTrabajo #TechLeadership"
-        },
-        "SOSTENIBILIDAD": {
-            titulos: ["IA VERDE: ¿Es tu infraestructura parte del problema o de la solución?", "Sostenibilidad Algorítmica: Innovar sin hipotecar el futuro energético."],
-            contexto: "El crecimiento de la IA enfrenta su mayor límite: la huella energética. La eficiencia es ahora el KPI más crítico de la industria.",
-            puntos: [
-                "• **Eficiencia Térmica:** La optimización de la refrigeración y el consumo en centros de datos define la viabilidad financiera de los proyectos a gran escala.",
-                "• **Algoritmos de Bajo Consumo:** El uso de Small Language Models permite reducir el gasto energético sin sacrificar la precisión de los resultados.",
-                "• **Soberanía Energética:** La transición hacia nubes alimentadas por energías renovables es el único camino para una escalabilidad responsable y ética."
-            ],
-            cierre: "La IA del mañana será sostenible o simplemente no podrá escalar.",
-            tags: "#IAVerde #Sostenibilidad #CleanTech #ESG #Energia #Tecnologia #ResponsabilidadSocial #FuturoSostenible"
-        },
-        "OPERACIONES": {
-            titulos: ["AGENTES AUTÓNOMOS: El fin de la automatización estática.", "Workflows Agénticos: Reducción drástica de la fricción operativa."],
-            contexto: "La automatización tradicional ha tocado techo. El siguiente nivel es la orquestación de agentes capaces de razonar y ejecutar procesos complejos.",
-            puntos: [
-                "• **Autonomía Decisional:** Los agentes de IA ya no solo siguen reglas; ahora evalúan contextos y toman decisiones para optimizar el flujo de trabajo.",
-                "• **Eficiencia de Costes:** La transición hacia sistemas agénticos reduce el coste marginal por inferencia, permitiendo una escalabilidad exponencial.",
-                "• **Simbiosis Humano-Máquina:** El rediseño de flujos permite que el talento humano se enfoque en la supervisión estratégica y no en la tarea repetitiva."
-            ],
-            cierre: "La eficiencia operativa es el combustible de la competitividad moderna.",
-            tags: "#IAAgentica #Automatización #RPA #Eficiencia #Productividad #InnovaciónTecnológica #AgentesIA #Workflows"
+            tags: "#InteligenciaArtificial #EstrategiaIA #Negocios #ROI #LiderazgoExponencial #Innovación #Futuro #TechLeadership"
         }
+        // [INSERTAR_MAS_PILARES_AQUÍ]
     };
 
     const categorias = [
         { n: "Economía de la Inteligencia", p: "ESTRATEGIA" },
-        { n: "Sostenibilidad e IA Verde", p: "SOSTENIBILIDAD" },
-        { n: "IA Agéntica y Workflows", p: "OPERACIONES" }
+        { n: "Venture Capital e IA", p: "ESTRATEGIA" },
+        { n: "Liderazgo Exponencial", p: "ESTRATEGIA" }
+        // [INSERTAR_MAS_CATEGORIAS_AQUÍ]
     ];
 
     const aperturas = [
@@ -102,10 +83,9 @@
 
     function regenerarImagen() {
         if (!categoriaActual) return;
-        const prompt = `Hyper-realistic cinematic cyber-realism, technological organic fusion of ${categoriaActual}, cosmic violet and gold lighting, 8k professional, no text`;
+        const prompt = `Hyper-realistic cinematic cyber-realism, technological organic fusion of ${categoriaActual}, cosmic violet and gold lighting, 8k, no text`;
         const seed = Math.floor(Math.random() * 999999);
         document.getElementById('post-image').src = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=1080&height=1080&seed=${seed}`;
-        document.getElementById('status-circle').style.background = "gray";
     }
 
     async function publicarEnLinkedin() {
@@ -119,7 +99,7 @@
                 body: JSON.stringify({ text, image })
             });
             if (response.ok) document.getElementById('status-circle').style.background = "#238636";
-        } catch (e) { alert("Error de conexión"); }
+        } catch (e) { alert("Error de envío"); }
     }
 </script>
 </body>
