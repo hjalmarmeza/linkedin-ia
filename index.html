@@ -35,158 +35,192 @@
     </div>
 
 <script>
-    const matriz = {
-        ESTRATEGIA: {
-            titulos: [
-                "EL ROI DE LA IA: De la monetización al impacto real.",
-                "IA ESTRATÉGICA: Capturando cuota de mercado algorítmica."
-            ],
-            contexto: "La IA ha dejado de ser una promesa tecnológica para convertirse en el eje de la planificación financiera corporativa.",
+    const paquetes = [
+        {
+            categoria: "Estrategia y ROI en IA",
+            titulo: "El ROI de la IA: Más allá de la promesa tecnológica",
+            apertura: "Invertir en IA sin medir su impacto real es como navegar sin brújula en un océano de datos.",
+            contexto: "La inteligencia artificial ha dejado de ser una apuesta de futuro para convertirse en el eje central de la planificación financiera corporativa. Las empresas que lideran no son las que más invierten, sino las que mejor miden el retorno de cada decisión algorítmica.",
             puntos: [
-                "• **Monetización de Activos:** No basta con procesar datos; el reto es empaquetar la inferencia como producto de alto margen.",
-                "• **Captura de Cuota:** La ventaja competitiva se mide en la velocidad para iterar modelos que respondan a la demanda real.",
-                "• **Gobernanza C-Suite:** La IA debe ser el eje central de la estrategia, asegurando que cada token genere un retorno medible."
+                "• **Monetización Inteligente:** El verdadero valor no está en procesar datos, sino en convertir cada inferencia en un producto o servicio de alto margen que resuelva problemas reales del mercado.",
+                "• **Velocidad Competitiva:** La ventaja hoy se mide en la capacidad de iterar modelos que respondan a la demanda cambiante antes que la competencia, no en la complejidad técnica.",
+                "• **Gobernanza Ejecutiva:** Cada token procesado debe estar alineado con objetivos estratégicos medibles. La IA no es un departamento, es el motor del negocio."
             ],
-            cierre: "La estrategia no es usar IA, es redefinir el negocio a través de ella.",
-            tags: "#InteligenciaArtificial #EstrategiaIA #Negocios #ROI #LiderazgoExponencial #Innovación #Futuro #TechLeadership"
+            cierre: "La pregunta ya no es si usar IA, sino cómo convertirla en el eje que redefine completamente tu modelo de negocio.",
+            frase_transicion: "Las organizaciones que lideren la próxima década serán aquellas que conviertan la inteligencia artificial en resultados tangibles y medibles.",
+            tags: "#InteligenciaArtificial #EstrategiaEmpresarial #ROI #TransformacionDigital #Liderazgo #Innovacion #Negocios"
         },
-        OPERACIONES: {
-            titulos: [
-                "AGENTES AUTÓNOMOS: El fin de la automatización estática.",
-                "EFICIENCIA POR TOKEN: Optimizando el motor financiero de tu IA.",
-                "WORKFLOWS AGÉNTICOS: Reducción drástica de la fricción operativa."
-            ],
-            contexto: "La automatización tradicional ha tocado techo. El siguiente nivel de competitividad reside en la orquestación de agentes capaces de razonar y ejecutar.",
+        {
+            categoria: "Liderazgo en la Era de la IA",
+            titulo: "Liderazgo Exponencial: Liderar equipos en la era algorítmica",
+            apertura: "El liderazgo del siglo XXI no se mide en jerarquías, sino en la capacidad de orquestar talento humano e inteligencia artificial.",
+            contexto: "Los líderes actuales enfrentan un desafío sin precedentes: gestionar equipos donde humanos y algoritmos colaboran de forma simbiótica. La habilidad crítica ya no es solo gestionar personas, sino comprender cómo la IA amplifica o limita el potencial de cada profesional.",
             puntos: [
-                "• **Autonomía Decisional:** Los agentes de IA ya no solo siguen reglas predefinidas; ahora evalúan contextos dinámicos para optimizar el flujo de trabajo en tiempo real.",
-                "• **Eficiencia de Costes:** La transición hacia sistemas agénticos reduce el coste marginal por inferencia, permitiendo una escalabilidad exponencial sin disparar el presupuesto.",
-                "• **Simbiosis Humano-Máquina:** El rediseño de flujos permite que el talento humano se enfoque en la supervisión estratégica, delegando la ejecución táctica a la inteligencia autónoma."
+                "• **Visión Tecnológica:** Los líderes efectivos comprenden las capacidades y limitaciones de la IA, tomando decisiones informadas sobre qué automatizar y qué mantener bajo supervisión humana.",
+                "• **Cultura de Adaptación:** Fomentar un entorno donde el equipo vea la IA como aliada, no como amenaza, requiere comunicación transparente y formación continua en nuevas herramientas.",
+                "• **Resultados Aumentados:** El verdadero liderazgo se demuestra al lograr que cada miembro del equipo multiplique su impacto utilizando sistemas inteligentes de forma estratégica."
             ],
-            cierre: "La eficiencia operativa hoy se mide en la capacidad de delegar la complejidad al algoritmo.",
-            tags: "#IAAgentica #Automatización #RPA #Eficiencia #Productividad #Innovación #AgentesIA #Workflows"
+            cierre: "Liderar en la era de la IA significa ser el puente entre el potencial humano y las capacidades tecnológicas.",
+            frase_transicion: "El futuro pertenece a los líderes que entienden que su rol es potenciar, no reemplazar, el criterio humano con inteligencia artificial.",
+            tags: "#Liderazgo #GestionDelCambio #InteligenciaArtificial #Equipos #Innovacion #CulturaEmpresarial #Transformacion"
         },
-        SEGURIDAD: {
-            titulos: [
-                "CIBERSEGURIDAD ADVERSARIA: Cuando los algoritmos atacan algoritmos.",
-                "SOBERANÍA DE DATOS: El último bastión de la confianza empresarial.",
-                "FIREWALLS INTELIGENTES: La defensa proactiva en un modelo Zero Trust."
-            ],
-            contexto: "En un ecosistema digital interconectado, la seguridad ya no es una capa periférica, sino el núcleo de la resiliencia operativa y la reputación de marca.",
+        {
+            categoria: "Agentes Autónomos y Operaciones",
+            titulo: "Agentes Inteligentes: El siguiente nivel de la automatización",
+            apertura: "La automatización tradicional ejecuta tareas. Los agentes inteligentes toman decisiones.",
+            contexto: "Hemos alcanzado el límite de la automatización basada en reglas fijas. El siguiente salto competitivo reside en sistemas capaces de razonar, adaptarse y ejecutar sin intervención constante. Los agentes autónomos están redefiniendo qué significa la eficiencia operativa.",
             puntos: [
-                "• **Defensa Proactiva:** El uso de redes neuronales para la detección de anomalías permite identificar amenazas antes de que se conviertan en incidentes críticos de seguridad.",
-                "• **Privacidad Sintética:** Implementar protocolos que protejan el dato sensible sin frenar la innovación, permitiendo el entrenamiento de modelos en entornos seguros.",
-                "• **Gobernanza Algorítmica:** La soberanía de datos garantiza que la propiedad intelectual y la información crítica permanezcan bajo control total de la organización."
+                "• **Decisiones Contextuales:** Los agentes de IA evalúan escenarios dinámicos y ajustan sus acciones en tiempo real, optimizando flujos de trabajo sin necesidad de reprogramación constante.",
+                "• **Escalabilidad Exponencial:** Al reducir el costo marginal por tarea ejecutada, las empresas pueden crecer sin aumentar proporcionalmente su estructura operativa.",
+                "• **Colaboración Híbrida:** Los profesionales se liberan de tareas repetitivas para enfocarse en supervisión estratégica, mientras los agentes gestionan la ejecución táctica."
             ],
-            cierre: "En la era de la inteligencia, la seguridad es la base de la libertad operativa y la confianza del mercado.",
-            tags: "#Ciberseguridad #DataPrivacy #CyberTech #ConfianzaDigital #SeguridadIA #Datos #Gobernanza #Infraestructura"
+            cierre: "La eficiencia moderna no se mide en cuántas personas trabajan, sino en cuánta complejidad puede delegar a sistemas inteligentes.",
+            frase_transicion: "Las empresas más competitivas del futuro cercano serán aquellas que dominen la orquestación de agentes autónomos en sus operaciones diarias.",
+            tags: "#Automatizacion #IAAgentica #Eficiencia #Operaciones #Productividad #Innovacion #Tecnologia"
         },
-        SOSTENIBILIDAD: {
-            titulos: [
-                "IA VERDE: ¿Es tu infraestructura parte del problema o de la solución?",
-                "SOSTENIBILIDAD ALGORÍTMICA: Innovar sin hipotecar el futuro energético."
-            ],
-            contexto: "El crecimiento exponencial de la IA enfrenta su mayor límite físico: la huella energética. La sostenibilidad es hoy el KPI más crítico de la industria tech.",
+        {
+            categoria: "Ciberseguridad con IA",
+            titulo: "Defensa Inteligente: Cuando la IA protege contra la propia IA",
+            apertura: "Las amenazas cibernéticas evolucionan a velocidad algorítmica. Defenderse con métodos tradicionales es llegar tarde a la batalla.",
+            contexto: "En un mundo donde los ataques cibernéticos utilizan inteligencia artificial para encontrar vulnerabilidades, la única defensa efectiva es una seguridad igualmente inteligente. La ciberseguridad moderna es una carrera armamentista algorítmica donde la velocidad de detección marca la diferencia entre la resiliencia y el desastre.",
             puntos: [
-                "• **Eficiencia Térmica:** La optimización de la refrigeración y el consumo en centros de datos define la viabilidad financiera de los proyectos de IA a gran escala.",
-                "• **Small Language Models (SLM):** El desarrollo de modelos compactos permite reducir drásticamente los TFLOPS necesarios sin sacrificar la precisión del resultado final.",
-                "• **Energías Renovables:** La transición hacia nubes alimentadas por fuentes limpias es el único camino para una escalabilidad responsable y alineada con los criterios ESG."
+                "• **Detección Predictiva:** Las redes neuronales identifican patrones anómalos antes de que se conviertan en brechas de seguridad, actuando de forma preventiva en lugar de reactiva.",
+                "• **Privacidad Operativa:** Implementar protocolos que permitan el entrenamiento de modelos sin exponer información sensible es crítico para innovar sin comprometer la seguridad corporativa.",
+                "• **Soberanía de Datos:** Mantener el control absoluto sobre la información crítica garantiza que la propiedad intelectual y los datos estratégicos permanezcan protegidos ante cualquier amenaza externa."
             ],
-            cierre: "La IA del mañana será sostenible o simplemente no podrá escalar en el mercado global.",
-            tags: "#IAVerde #Sostenibilidad #CleanTech #ESG #Energia #Tecnologia #ResponsabilidadSocial #Futuro"
+            cierre: "En la era digital, la seguridad no es un departamento: es el fundamento sobre el cual se construye la confianza del mercado.",
+            frase_transicion: "La seguridad algorítmica no es opcional, es la base que permite la innovación sin riesgo existencial para la organización.",
+            tags: "#Ciberseguridad #IA #Seguridad #ProteccionDeDatos #Tecnologia #Innovacion #CiberDefensa"
         },
-        HUMANISMO: {
-            titulos: [
-                "ÉTICA POR DISEÑO: El imperativo moral de la inteligencia artificial.",
-                "HUMANISMO DIGITAL: Por qué la empatía es el algoritmo más complejo.",
-                "MÁS ALLÁ DEL CÓDIGO: Construyendo una IA centrada en la dignidad humana."
-            ],
-            contexto: "La tecnología sin propósito es solo ruido. El reto del siglo XXI es asegurar que la automatización no erosione los valores que nos definen como sociedad.",
+        {
+            categoria: "Sostenibilidad y IA Verde",
+            titulo: "IA Sostenible: Innovar sin hipotecar el futuro energético",
+            apertura: "El verdadero costo de la IA no está en el presupuesto tecnológico, sino en la huella energética que deja en el planeta.",
+            contexto: "La industria de la inteligencia artificial enfrenta su mayor paradoja: mientras promete optimizar el futuro, consume recursos energéticos a un ritmo insostenible. Las empresas que ignoren la sostenibilidad algorítmica no solo enfrentan crisis reputacionales, sino límites operativos reales para escalar.",
             puntos: [
-                "• **Mitigación de Sesgos:** La auditoría constante de los modelos fundacionales es vital para evitar la perpetuación de prejuicios y garantizar la equidad algorítmica.",
-                "• **Explicabilidad (XAI):** Pasar de la 'caja negra' a sistemas transparentes donde el usuario comprenda el porqué de cada decisión tomada por la máquina.",
-                "• **Bienestar Cognitivo:** Diseñar interfaces que potencien la capacidad humana sin generar dependencia, priorizando la salud mental y el reposo en entornos digitales."
+                "• **Eficiencia Térmica:** Optimizar el consumo energético en centros de datos no es solo responsabilidad ambiental, es viabilidad financiera a largo plazo para cualquier proyecto de IA a gran escala.",
+                "• **Modelos Compactos:** El desarrollo de Small Language Models permite mantener precisión mientras se reduce drásticamente el consumo de recursos computacionales por inferencia.",
+                "• **Energías Limpias:** La transición hacia infraestructuras alimentadas por fuentes renovables es el único camino viable para escalar sin comprometer los criterios ESG que exigen inversores y clientes."
             ],
-            cierre: "La IA debe ser una herramienta para amplificar nuestra humanidad, nunca para reemplazarla.",
-            tags: "#EticaIA #HumanismoDigital #Psicologia #Sociedad #IAResponsable #DerechosHumanos #Futuro #FilosofiaTech"
+            cierre: "La IA del mañana será sostenible, o simplemente no podrá existir a la escala que el mercado demanda.",
+            frase_transicion: "Invertir en IA sin considerar su impacto ambiental es construir sobre cimientos que no resistirán la presión regulatoria y social del futuro cercano.",
+            tags: "#Sostenibilidad #IAVerde #ESG #TecnologiaLimpia #Innovacion #ResponsabilidadCorporativa #Futuro"
         },
-        TECNICA: {
-            titulos: [
-                "EL PODER DEL SILICIO: La nueva geopolítica de los semiconductores.",
-                "MULTIMODALIDAD: Cuando la IA aprende a ver, oír y razonar simultáneamente.",
-                "OPEN SOURCE IA: La democratización del conocimiento algorítmico."
-            ],
-            contexto: "Debajo de cada línea de código hay una infraestructura física y arquitectónica que determina los límites de lo que la inteligencia artificial puede lograr.",
+        {
+            categoria: "Ética y Humanismo Digital",
+            titulo: "Ética por Diseño: El imperativo moral de la inteligencia artificial",
+            apertura: "La tecnología sin valores es solo ruido digital. La IA debe servir a la humanidad, nunca reemplazar lo que nos define como sociedad.",
+            contexto: "Cada modelo de IA entrenado refleja las decisiones éticas de quienes lo construyen. La responsabilidad de garantizar que la automatización no erosione la equidad, la dignidad y los derechos humanos recae directamente en los líderes tecnológicos y empresariales que impulsan su adopción.",
             puntos: [
-                "• **Arquitecturas de Próxima Generación:** Desde la computación neuromórfica hasta los chips específicos para IA (ASICs) que redefinen la eficiencia del cómputo.",
-                "• **Modelos de Código Abierto:** El crecimiento de comunidades globales permite una innovación transparente, segura y accesible para empresas de todo tamaño.",
-                "• **Integración Multimodal:** La capacidad de procesar texto, imagen y audio en un solo flujo de pensamiento digital abre fronteras operativas antes impensables."
+                "• **Auditoría de Sesgos:** La revisión constante de modelos fundacionales es esencial para evitar la perpetuación de prejuicios históricos que amplifiquen desigualdades existentes en la sociedad.",
+                "• **Explicabilidad Transparente:** Transitar de sistemas opacos a modelos donde los usuarios comprendan cómo y por qué se toman decisiones automatizadas es fundamental para mantener la confianza.",
+                "• **Bienestar Humano:** Diseñar interfaces que amplifiquen capacidades sin generar dependencia tóxica es un acto de responsabilidad hacia la salud mental de millones de usuarios."
             ],
-            cierre: "La innovación técnica es el motor, pero la arquitectura es el mapa que define el destino.",
-            tags: "#Hardware #Chips #OpenSource #DeepLearning #Tecnologia #Ciencia #Innovacion #Ingenieria"
+            cierre: "La inteligencia artificial debe ser una herramienta para potenciar nuestra humanidad, nunca un sustituto de ella.",
+            frase_transicion: "Las organizaciones que integren la ética desde el diseño, y no como una capa superficial, serán las que construyan tecnología en la que el mundo pueda confiar.",
+            tags: "#Etica #IA #HumanismoDigital #ResponsabilidadSocial #Tecnologia #Innovacion #ValoresEmpresariales"
         },
-        FUTURO: {
-            titulos: [
-                "EL FUTURO DEL TRABAJO: De la sustitución a la aumentación de capacidades.",
-                "APRENDIZAJE ACELERADO: Cómo la IA redefine nuestra curva de conocimiento.",
-                "RELACIONES HUMANO-IA: Navegando la nueva frontera de la comunicación."
-            ],
-            contexto: "No estamos ante el fin del empleo, sino ante la metamorfosis más profunda de la productividad humana desde la revolución industrial.",
+        {
+            categoria: "Infraestructura y Hardware de IA",
+            titulo: "El Poder del Silicio: La nueva geopolítica de los semiconductores",
+            apertura: "Detrás de cada modelo de IA hay chips que definen los límites de lo posible. Quien controla el hardware, controla el futuro digital.",
+            contexto: "La infraestructura física es el fundamento invisible de la revolución algorítmica. Desde los chips diseñados específicamente para IA hasta la arquitectura de centros de datos, la capacidad de procesamiento determina qué organizaciones pueden competir realmente en la economía de la inteligencia.",
             puntos: [
-                "• **Reskilling Exponencial:** La habilidad más crítica hoy no es el conocimiento acumulado, sino la capacidad de aprender a colaborar con sistemas inteligentes.",
-                "• **Creatividad Aumentada:** La IA actúa como un socio creativo que permite iterar ideas a una velocidad que antes requería semanas de trabajo manual.",
-                "• **Nuevos Workflows:** La reconfiguración de las jornadas laborales enfocadas en resultados estratégicos y no en la presencia física o el tiempo de ejecución."
+                "• **Chips Especializados:** Los ASICs y procesadores neuromórficos están redefiniendo la eficiencia del cómputo, permitiendo entrenar modelos más complejos con una fracción del consumo energético tradicional.",
+                "• **Arquitecturas Distribuidas:** La computación en la nube y en el edge trabajan en simbiosis para reducir latencia y maximizar la capacidad de respuesta de sistemas críticos en tiempo real.",
+                "• **Soberanía Tecnológica:** El control de la cadena de suministro de semiconductores se ha convertido en una cuestión estratégica para naciones y corporaciones por igual."
             ],
-            cierre: "El futuro pertenece a quienes ven en la IA un aliado para elevar su propio potencial.",
-            tags: "#FuturoDelTrabajo #Educacion #Productividad #IA #TransformacionDigital #Talento #Creatividad #Liderazgo"
+            cierre: "La innovación algorítmica tiene un límite físico: el hardware que la ejecuta. Quien domine el silicio, dominará la inteligencia.",
+            frase_transicion: "Invertir en software sin considerar la infraestructura de hardware es construir castillos sobre arenas movedizas tecnológicas.",
+            tags: "#Hardware #Semiconductores #Chips #Infraestructura #Tecnologia #Innovacion #Geopolitica"
+        },
+        {
+            categoria: "Open Source en IA",
+            titulo: "Código Abierto: Democratizando el conocimiento algorítmico",
+            apertura: "La verdadera revolución de la IA no vendrá de laboratorios cerrados, sino de comunidades globales colaborando en código abierto.",
+            contexto: "El movimiento open source en inteligencia artificial está redistribuyendo el poder tecnológico. Lo que antes requería presupuestos millonarios y equipos de élite, ahora es accesible para empresas de cualquier tamaño que sepan aprovechar modelos, frameworks y datasets compartidos globalmente.",
+            puntos: [
+                "• **Acceso Democratizado:** Modelos pre-entrenados de código abierto permiten a startups y PyMEs competir con gigantes tecnológicos sin necesidad de entrenar desde cero.",
+                "• **Innovación Transparente:** La revisión pública del código garantiza mayor seguridad, detecta vulnerabilidades más rápido y acelera la evolución de las mejores prácticas en la industria.",
+                "• **Ecosistemas Colaborativos:** Las comunidades globales de desarrolladores generan documentación, tutoriales y herramientas que reducen la barrera de entrada para adoptar IA de forma efectiva."
+            ],
+            cierre: "El futuro de la inteligencia artificial será escrito en código que todos puedan leer, mejorar y compartir.",
+            frase_transicion: "Las organizaciones que apuesten por open source no solo ahorran costos, sino que se conectan con la innovación colectiva más rápida de la historia.",
+            tags: "#OpenSource #IA #CodigoAbierto #Innovacion #Comunidad #Tecnologia #Colaboracion"
+        },
+        {
+            categoria: "Futuro del Trabajo con IA",
+            titulo: "Futuro del Trabajo: Potenciar capacidades en lugar de reemplazar empleos",
+            apertura: "No estamos ante el fin del empleo, sino ante la mayor transformación de la productividad humana desde la revolución industrial.",
+            contexto: "La narrativa del miedo sobre la IA eliminando empleos ignora la realidad histórica: cada revolución tecnológica ha reconfigurado el trabajo, no eliminado el valor humano. La clave está en preparar a profesionales para colaborar con sistemas inteligentes, no competir contra ellos.",
+            puntos: [
+                "• **Reskilling Continuo:** La habilidad más valiosa del siglo XXI es la capacidad de aprender a trabajar junto a sistemas inteligentes, no el conocimiento estático acumulado.",
+                "• **Creatividad Amplificada:** La IA actúa como socio creativo, permitiendo iterar conceptos, diseños y estrategias a velocidades que antes requerían semanas de trabajo manual intensivo.",
+                "• **Nuevos Modelos Laborales:** La reconfiguración hacia jornadas enfocadas en resultados estratégicos, no en horas presenciales, libera potencial humano para tareas de alto valor."
+            ],
+            cierre: "El futuro del trabajo pertenece a quienes vean en la IA una herramienta para multiplicar su impacto, no una amenaza a su relevancia.",
+            frase_transicion: "Las profesiones del mañana serán aquellas que dominen la simbiosis entre intuición humana y precisión algorítmica.",
+            tags: "#FuturoDelTrabajo #IA #Empleabilidad #Reskilling #Productividad #Innovacion #Transformacion"
+        },
+        {
+            categoria: "Multimodalidad en IA",
+            titulo: "Modelos Multimodales: Cuando la IA aprende a ver, oír y razonar simultáneamente",
+            apertura: "La inteligencia humana nunca ha sido monomodal. Era cuestión de tiempo hasta que las máquinas aprendieran a integrar múltiples sentidos también.",
+            contexto: "Los modelos multimodales representan un salto cualitativo en las capacidades de la IA. Ya no estamos hablando de sistemas que procesan texto, imagen o audio por separado, sino de arquitecturas que integran toda esa información para generar comprensión contextual profunda, tal como lo hace el cerebro humano.",
+            puntos: [
+                "• **Comprensión Contextual:** Procesar simultáneamente texto, imagen y audio permite inferencias más precisas y decisiones que consideran el contexto completo de una situación.",
+                "• **Aplicaciones Revolucionarias:** Desde asistentes que entienden emociones por voz hasta sistemas de diagnóstico médico que combinan imágenes y datos clínicos para recomendaciones precisas.",
+                "• **Interfaces Naturales:** La multimodalidad permite interacciones más humanas con la tecnología, donde podemos comunicarnos tal como lo haríamos con otra persona."
+            ],
+            cierre: "La convergencia de múltiples modalidades es el camino hacia una inteligencia artificial verdaderamente general y útil.",
+            frase_transicion: "El próximo salto competitivo no vendrá de modelos más grandes, sino de sistemas que integren información como lo hacemos los humanos: de forma multimodal y contextual.",
+            tags: "#Multimodalidad #IA #Innovacion #Tecnologia #DeepLearning #FuturoDigital #Transformacion"
+        },
+        {
+            categoria: "Privacidad y Soberanía de Datos",
+            titulo: "Soberanía de Datos: El último bastión de la confianza empresarial",
+            apertura: "En la economía digital, quien controla los datos controla el futuro. Perder soberanía sobre tu información es perder autonomía estratégica.",
+            contexto: "La privacidad y el control de datos se han convertido en ventajas competitivas críticas. Las organizaciones que no garanticen la soberanía sobre su información no solo enfrentan riesgos regulatorios, sino que pierden la capacidad de tomar decisiones estratégicas basadas en inteligencia propia e inviolable.",
+            puntos: [
+                "• **Control Total:** Garantizar que la propiedad intelectual y los datos críticos permanezcan bajo control absoluto de la organización es fundamental para mantener ventaja competitiva.",
+                "• **Cumplimiento Normativo:** Las regulaciones como GDPR y leyes de protección de datos locales exigen arquitecturas que prioricen la privacidad desde el diseño, no como añadido posterior.",
+                "• **Confianza del Cliente:** Demostrar compromiso con la protección de datos personales se traduce directamente en reputación de marca y lealtad del consumidor en mercados cada vez más conscientes."
+            ],
+            cierre: "La soberanía de datos no es paranoia corporativa, es el fundamento sobre el cual se construye la autonomía estratégica en el siglo XXI.",
+            frase_transicion: "Las empresas que pierdan control sobre sus datos perderán, inevitablemente, control sobre su propio destino competitivo.",
+            tags: "#PrivacidadDeDatos #Ciberseguridad #SoberaniaDeDatos #Cumplimiento #GDPR #Confianza #Tecnologia"
+        },
+        {
+            categoria: "Creatividad Aumentada con IA",
+            titulo: "Creatividad Aumentada: La IA como socio creativo del profesional moderno",
+            apertura: "La creatividad humana no desaparece con la IA. Se multiplica.",
+            contexto: "La inteligencia artificial está redefiniendo qué significa ser creativo en el ámbito profesional. Lejos de reemplazar la originalidad humana, los sistemas inteligentes actúan como amplificadores que permiten explorar más ideas, iterar más rápido y materializar conceptos que antes quedaban en el limbo por falta de tiempo o recursos.",
+            puntos: [
+                "• **Iteración Acelerada:** La capacidad de generar decenas de variantes de una idea en minutos permite explorar espacios creativos que antes eran inaccesibles por limitaciones de tiempo.",
+                "• **Eliminación de Bloqueos:** La IA actúa como sparring creativo que propone alternativas cuando el proceso humano se estanca, desbloqueando flujos de trabajo creativos.",
+                "• **Democratización Creativa:** Profesionales sin formación artística o técnica pueden ahora materializar visiones complejas utilizando herramientas de IA como extensiones de su intención creativa."
+            ],
+            cierre: "La creatividad del futuro no es humana vs. máquina, es humana amplificada por máquinas inteligentes.",
+            frase_transicion: "Los profesionales creativos que dominen la colaboración con IA superarán en velocidad, volumen y calidad a quienes trabajen solos.",
+            tags: "#Creatividad #IA #Innovacion #Diseño #Contenido #Transformacion #FuturoCreativo"
         }
-    };
-
-    const categorias = [
-        { n: "Economía de la Inteligencia", p: "ESTRATEGIA" },
-        { n: "Venture Capital e IA", p: "ESTRATEGIA" },
-        { n: "Liderazgo Exponencial", p: "ESTRATEGIA" },
-        { n: "Sostenibilidad e IA Verde", p: "SOSTENIBILIDAD" },
-        { n: "IA Agéntica y Workflows", p: "OPERACIONES" },
-        { n: "Ciberseguridad Algorítmica", p: "SEGURIDAD" },
-        { n: "Soberanía de Datos", p: "SEGURIDAD" },
-        { n: "Automatización RPA + IA", p: "OPERACIONES" },
-        { n: "Hardware, Chips e Infraestructura", p: "OPERACIONES" },
-        { n: "Arquitectura de Datos", p: "SEGURIDAD" },
-        { n: "Ética y Humanismo Digital", p: "HUMANISMO" },
-        { n: "Psicología Humano-IA", p: "HUMANISMO" },
-        { n: "Hardware y Chips", p: "TECNICA" },
-        { n: "IA Open Source", p: "TECNICA" },
-        { n: "Multimodalidad", p: "TECNICA" },
-        { n: "Futuro del Trabajo", p: "FUTURO" },
-        { n: "Aprendizaje Acelerado", p: "FUTURO" },
-        { n: "Creatividad Aumentada", p: "FUTURO" },
-        { n: "Relaciones y Comunicación", p: "FUTURO" },
-        { n: "Marketing e Hiper-personalización", p: "ESTRATEGIA" },
-        { n: "Regulación y Propiedad Intelectual", p: "HUMANISMO" },
-        { n: "Gestión del Tiempo y Productividad", p: "FUTURO" }
-    ];
-
-    const aperturas = [
-        "El liderazgo moderno exige una visión clara sobre la infraestructura digital.",
-        "La frontera entre lo posible y lo inevitable se ha disuelto hoy mismo.",
-        "No estamos ante una era de cambios, sino ante un cambio de era sistémico."
     ];
 
     let categoriaActual = "";
 
     function generarNarrativa() {
         try {
-            const item = categorias[Math.floor(Math.random() * categorias.length)];
-            categoriaActual = item.n;
-            const pilar = matriz[item.p];
-            const hook = aperturas[Math.floor(Math.random() * aperturas.length)];
-            const titulo = pilar.titulos[Math.floor(Math.random() * pilar.titulos.length)];
+            const paquete = paquetes[Math.floor(Math.random() * paquetes.length)];
+            categoriaActual = paquete.categoria;
             
-            let texto = `${titulo.toUpperCase()}\n\n${hook}\n\n${pilar.contexto}\n\nAnalizamos tres ejes fundamentales para la ejecución profesional en ${item.n}:\n\n`;
-            pilar.puntos.forEach(pt => { texto += pt + "\n\n"; });
-            texto += `${pilar.cierre}\n\n`;
-            texto += "Es momento de construir sistemas que no solo procesen datos, sino que inspiren resultados reales.\n\n";
-            texto += pilar.tags;
+            let texto = `${paquete.titulo.toUpperCase()}\n\n`;
+            texto += `${paquete.apertura}\n\n`;
+            texto += `${paquete.contexto}\n\n`;
+            texto += `Tres claves para entender ${paquete.categoria}:\n\n`;
+            paquete.puntos.forEach(pt => { texto += pt + "\n\n"; });
+            texto += `${paquete.cierre}\n\n`;
+            texto += `${paquete.frase_transicion}\n\n`;
+            texto += paquete.tags;
 
             document.getElementById('post-text').value = texto;
             document.getElementById('status-circle').style.background = "#ffaa00";
@@ -248,3 +282,4 @@
 </script>
 </body>
 </html>
+
