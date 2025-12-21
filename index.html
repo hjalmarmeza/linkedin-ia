@@ -1,43 +1,46 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LinkedinMatic v41.60 - Alta Densidad</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #050505; color: #e0e0e0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .container { max-width: 650px; width: 100%; background: #111; padding: 25px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.7); }
         h2 { color: #00f2ff; text-align: center; font-size: 1.4rem; margin-top: 0; letter-spacing: 2px; }
         #post-text { width: 100%; height: 500px; background: #000; color: #fff; border: 1px solid #444; padding: 18px; box-sizing: border-box; font-size: 14px; line-height: 1.7; border-radius: 5px; resize: none; }
-        #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #222; min-height: 250px; }
+        #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #222; min-height: 250px; background: #000; }
         .controls { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         button { padding: 14px; cursor: pointer; font-weight: bold; border-radius: 6px; border: none; text-transform: uppercase; transition: 0.3s; }
         .btn-gen { background: #00f2ff; color: #000; grid-column: span 2; }
         .btn-img { background: #7000ff; color: #fff; }
         .btn-pub { background: #238636; color: #fff; }
-        button:hover { opacity: 0.8; }
-        #status-circle { width: 12px; height: 12px; border-radius: 50%; background: gray; display: inline-block; margin-left: 10px; }
+        button:hover { opacity: 0.8; transform: translateY(-2px); }
+        #status-circle { width: 12px; height: 12px; border-radius: 50%; background: gray; display: inline-block; margin-left: 10px; transition: 0.3s; }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>LinkedinMatic v41.60</h2>
-        <textarea id="post-text"></textarea>
-        <img id="post-image" src="">
+        <textarea id="post-text" placeholder="Haz clic en 'Generar Post' para comenzar..."></textarea>
+        <img id="post-image" src="" alt="Imagen del post">
         <div class="controls">
             <button class="btn-gen" onclick="generarNarrativa()">🚀 GENERAR POST DE AUTORIDAD</button>
             <button class="btn-img" onclick="regenerarImagen()">🖼️ CAMBIAR IMAGEN</button>
             <button class="btn-pub" onclick="publicarEnLinkedin()">📤 PUBLICAR EN LINKEDIN</button>
         </div>
         <div style="text-align:center; margin-top:15px; font-size:12px; color:#555;">
-            Estado: <div id="status-circle"></div>
+            Estado: <span id="status-circle"></span>
         </div>
     </div>
 
 <script>
     const matriz = {
-        "ESTRATEGIA": {
-            titulos: ["EL ROI DE LA IA: De la monetización al impacto real.", "IA ESTRATÉGICA: Capturando cuota de mercado algorítmica."],
+        ESTRATEGIA: {
+            titulos: [
+                "EL ROI DE LA IA: De la monetización al impacto real.",
+                "IA ESTRATÉGICA: Capturando cuota de mercado algorítmica."
+            ],
             contexto: "La IA ha dejado de ser una promesa tecnológica para convertirse en el eje de la planificación financiera corporativa.",
             puntos: [
                 "• **Monetización de Activos:** No basta con procesar datos; el reto es empaquetar la inferencia como producto de alto margen.",
@@ -47,8 +50,12 @@
             cierre: "La estrategia no es usar IA, es redefinir el negocio a través de ella.",
             tags: "#InteligenciaArtificial #EstrategiaIA #Negocios #ROI #LiderazgoExponencial #Innovación #Futuro #TechLeadership"
         },
-        "OPERACIONES": {
-            titulos: ["AGENTES AUTÓNOMOS: El fin de la automatización estática.", "EFICIENCIA POR TOKEN: Optimizando el motor financiero de tu IA.", "WORKFLOWS AGÉNTICOS: Reducción drástica de la fricción operativa."],
+        OPERACIONES: {
+            titulos: [
+                "AGENTES AUTÓNOMOS: El fin de la automatización estática.",
+                "EFICIENCIA POR TOKEN: Optimizando el motor financiero de tu IA.",
+                "WORKFLOWS AGÉNTICOS: Reducción drástica de la fricción operativa."
+            ],
             contexto: "La automatización tradicional ha tocado techo. El siguiente nivel de competitividad reside en la orquestación de agentes capaces de razonar y ejecutar.",
             puntos: [
                 "• **Autonomía Decisional:** Los agentes de IA ya no solo siguen reglas predefinidas; ahora evalúan contextos dinámicos para optimizar el flujo de trabajo en tiempo real.",
@@ -58,8 +65,12 @@
             cierre: "La eficiencia operativa hoy se mide en la capacidad de delegar la complejidad al algoritmo.",
             tags: "#IAAgentica #Automatización #RPA #Eficiencia #Productividad #Innovación #AgentesIA #Workflows"
         },
-        "SEGURIDAD": {
-            titulos: ["CIBERSEGURIDAD ADVERSARIA: Cuando los algoritmos atacan algoritmos.", "SOBERANÍA DE DATOS: El último bastión de la confianza empresarial.", "FIREWALLS INTELIGENTES: La defensa proactiva en un modelo Zero Trust."],
+        SEGURIDAD: {
+            titulos: [
+                "CIBERSEGURIDAD ADVERSARIA: Cuando los algoritmos atacan algoritmos.",
+                "SOBERANÍA DE DATOS: El último bastión de la confianza empresarial.",
+                "FIREWALLS INTELIGENTES: La defensa proactiva en un modelo Zero Trust."
+            ],
             contexto: "En un ecosistema digital interconectado, la seguridad ya no es una capa periférica, sino el núcleo de la resiliencia operativa y la reputación de marca.",
             puntos: [
                 "• **Defensa Proactiva:** El uso de redes neuronales para la detección de anomalías permite identificar amenazas antes de que se conviertan en incidentes críticos de seguridad.",
@@ -69,8 +80,11 @@
             cierre: "En la era de la inteligencia, la seguridad es la base de la libertad operativa y la confianza del mercado.",
             tags: "#Ciberseguridad #DataPrivacy #CyberTech #ConfianzaDigital #SeguridadIA #Datos #Gobernanza #Infraestructura"
         },
-        "SOSTENIBILIDAD": {
-            titulos: ["IA VERDE: ¿Es tu infraestructura parte del problema o de la solución?", "SOSTENIBILIDAD ALGORÍTMICA: Innovar sin hipotecar el futuro energético."],
+        SOSTENIBILIDAD: {
+            titulos: [
+                "IA VERDE: ¿Es tu infraestructura parte del problema o de la solución?",
+                "SOSTENIBILIDAD ALGORÍTMICA: Innovar sin hipotecar el futuro energético."
+            ],
             contexto: "El crecimiento exponencial de la IA enfrenta su mayor límite físico: la huella energética. La sostenibilidad es hoy el KPI más crítico de la industria tech.",
             puntos: [
                 "• **Eficiencia Térmica:** La optimización de la refrigeración y el consumo en centros de datos define la viabilidad financiera de los proyectos de IA a gran escala.",
@@ -80,8 +94,12 @@
             cierre: "La IA del mañana será sostenible o simplemente no podrá escalar en el mercado global.",
             tags: "#IAVerde #Sostenibilidad #CleanTech #ESG #Energia #Tecnologia #ResponsabilidadSocial #Futuro"
         },
-        "HUMANISMO": {
-            titulos: ["ÉTICA POR DISEÑO: El imperativo moral de la inteligencia artificial.", "HUMANISMO DIGITAL: Por qué la empatía es el algoritmo más complejo.", "MÁS ALLÁ DEL CÓDIGO: Construyendo una IA centrada en la dignidad humana."],
+        HUMANISMO: {
+            titulos: [
+                "ÉTICA POR DISEÑO: El imperativo moral de la inteligencia artificial.",
+                "HUMANISMO DIGITAL: Por qué la empatía es el algoritmo más complejo.",
+                "MÁS ALLÁ DEL CÓDIGO: Construyendo una IA centrada en la dignidad humana."
+            ],
             contexto: "La tecnología sin propósito es solo ruido. El reto del siglo XXI es asegurar que la automatización no erosione los valores que nos definen como sociedad.",
             puntos: [
                 "• **Mitigación de Sesgos:** La auditoría constante de los modelos fundacionales es vital para evitar la perpetuación de prejuicios y garantizar la equidad algorítmica.",
@@ -91,8 +109,12 @@
             cierre: "La IA debe ser una herramienta para amplificar nuestra humanidad, nunca para reemplazarla.",
             tags: "#EticaIA #HumanismoDigital #Psicologia #Sociedad #IAResponsable #DerechosHumanos #Futuro #FilosofiaTech"
         },
-        "TECNICA": {
-            titulos: ["EL PODER DEL SILICIO: La nueva geopolítica de los semiconductores.", "MULTIMODALIDAD: Cuando la IA aprende a ver, oír y razonar simultáneamente.", "OPEN SOURCE IA: La democratización del conocimiento algorítmico."],
+        TECNICA: {
+            titulos: [
+                "EL PODER DEL SILICIO: La nueva geopolítica de los semiconductores.",
+                "MULTIMODALIDAD: Cuando la IA aprende a ver, oír y razonar simultáneamente.",
+                "OPEN SOURCE IA: La democratización del conocimiento algorítmico."
+            ],
             contexto: "Debajo de cada línea de código hay una infraestructura física y arquitectónica que determina los límites de lo que la inteligencia artificial puede lograr.",
             puntos: [
                 "• **Arquitecturas de Próxima Generación:** Desde la computación neuromórfica hasta los chips específicos para IA (ASICs) que redefinen la eficiencia del cómputo.",
@@ -102,8 +124,12 @@
             cierre: "La innovación técnica es el motor, pero la arquitectura es el mapa que define el destino.",
             tags: "#Hardware #Chips #OpenSource #DeepLearning #Tecnologia #Ciencia #Innovacion #Ingenieria"
         },
-        "FUTURO": {
-            titulos: ["EL FUTURO DEL TRABAJO: De la sustitución a la aumentación de capacidades.", "APRENDIZAJE ACELERADO: Cómo la IA redefine nuestra curva de conocimiento.", "RELACIONES HUMANO-IA: Navegando la nueva frontera de la comunicación."],
+        FUTURO: {
+            titulos: [
+                "EL FUTURO DEL TRABAJO: De la sustitución a la aumentación de capacidades.",
+                "APRENDIZAJE ACELERADO: Cómo la IA redefine nuestra curva de conocimiento.",
+                "RELACIONES HUMANO-IA: Navegando la nueva frontera de la comunicación."
+            ],
             contexto: "No estamos ante el fin del empleo, sino ante la metamorfosis más profunda de la productividad humana desde la revolución industrial.",
             puntos: [
                 "• **Reskilling Exponencial:** La habilidad más crítica hoy no es el conocimiento acumulado, sino la capacidad de aprender a colaborar con sistemas inteligentes.",
@@ -149,29 +175,41 @@
     let categoriaActual = "";
 
     function generarNarrativa() {
-        const item = categorias[Math.floor(Math.random() * categorias.length)];
-        categoriaActual = item.n;
-        const pilar = matriz[item.p];
-        const hook = aperturas[Math.floor(Math.random() * aperturas.length)];
-        const titulo = pilar.titulos[Math.floor(Math.random() * pilar.titulos.length)];
-        
-        let texto = `${titulo.toUpperCase()}\n\n${hook}\n\n${pilar.contexto}\n\nAnalizamos tres ejes fundamentales para la ejecución profesional en ${item.n}:\n\n`;
-        pilar.puntos.forEach(pt => { texto += pt + "\n\n"; });
-        texto += `${pilar.cierre}\n\n`;
-        texto += "Es momento de construir sistemas que no solo procesen datos, sino que inspiren resultados reales.\n\n";
-        texto += pilar.tags;
+        try {
+            const item = categorias[Math.floor(Math.random() * categorias.length)];
+            categoriaActual = item.n;
+            const pilar = matriz[item.p];
+            const hook = aperturas[Math.floor(Math.random() * aperturas.length)];
+            const titulo = pilar.titulos[Math.floor(Math.random() * pilar.titulos.length)];
+            
+            let texto = `${titulo.toUpperCase()}\n\n${hook}\n\n${pilar.contexto}\n\nAnalizamos tres ejes fundamentales para la ejecución profesional en ${item.n}:\n\n`;
+            pilar.puntos.forEach(pt => { texto += pt + "\n\n"; });
+            texto += `${pilar.cierre}\n\n`;
+            texto += "Es momento de construir sistemas que no solo procesen datos, sino que inspiren resultados reales.\n\n";
+            texto += pilar.tags;
 
-        document.getElementById('post-text').value = texto;
-        regenerarImagen();
+            document.getElementById('post-text').value = texto;
+            document.getElementById('status-circle').style.background = "#ffaa00";
+            regenerarImagen();
+        } catch (error) {
+            console.error("Error al generar narrativa:", error);
+            alert("Error al generar el post: " + error.message);
+        }
     }
 
     function regenerarImagen() {
-        if (!categoriaActual) {
-            categoriaActual = "Artificial Intelligence Technology";
+        try {
+            if (!categoriaActual) {
+                categoriaActual = "Artificial Intelligence Technology";
+            }
+            const prompt = `Hyper-realistic cinematic cyber-realism, technological organic fusion of ${categoriaActual}, cosmic violet and gold lighting, 8k, no text`;
+            const seed = Math.floor(Math.random() * 999999);
+            document.getElementById('post-image').src = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=1080&height=1080&seed=${seed}`;
+            document.getElementById('status-circle').style.background = "#ffaa00";
+        } catch (error) {
+            console.error("Error al regenerar imagen:", error);
+            alert("Error al generar imagen: " + error.message);
         }
-        const prompt = `Hyper-realistic cinematic cyber-realism, technological organic fusion of ${categoriaActual}, cosmic violet and gold lighting, 8k, no text`;
-        const seed = Math.floor(Math.random() * 999999);
-        document.getElementById('post-image').src = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=1080&height=1080&seed=${seed}`;
     }
 
     async function publicarEnLinkedin() {
@@ -179,10 +217,12 @@
         const image = document.getElementById('post-image').src;
         const webhookUrl = "https://hook.eu2.make.com/l7s7fv2ldmbrwvmbmoqw74x2jx68w4ox"; 
         
-        if (!text) {
-            alert("Por favor genera un post primero");
+        if (!text || text === "") {
+            alert("Por favor genera un post primero usando el botón 'Generar Post'");
             return;
         }
+        
+        document.getElementById('status-circle').style.background = "#ffaa00";
         
         try {
             const response = await fetch(webhookUrl, {
@@ -190,16 +230,22 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text, image })
             });
+            
             if (response.ok) {
                 document.getElementById('status-circle').style.background = "#238636";
-                alert("Post enviado correctamente a LinkedIn");
+                alert("✅ Post enviado correctamente a LinkedIn");
             } else {
-                alert("Error al publicar");
+                document.getElementById('status-circle').style.background = "#ff4444";
+                alert("❌ Error al publicar. Código: " + response.status);
             }
         } catch (e) { 
-            alert("Error de envío: " + e.message); 
+            document.getElementById('status-circle').style.background = "#ff4444";
+            alert("❌ Error de conexión: " + e.message); 
         }
     }
+
+    // Inicializar con un mensaje
+    console.log("LinkedinMatic v41.60 cargado correctamente");
 </script>
 </body>
 </html>
