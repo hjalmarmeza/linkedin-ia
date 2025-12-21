@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,6 +15,7 @@
         .btn-gen { background: #00f2ff; color: #000; grid-column: span 2; }
         .btn-img { background: #7000ff; color: #fff; }
         .btn-pub { background: #238636; color: #fff; }
+        button:hover { opacity: 0.8; }
         #status-circle { width: 12px; height: 12px; border-radius: 50%; background: gray; display: inline-block; margin-left: 10px; }
     </style>
 </head>
@@ -33,7 +35,6 @@
     </div>
 
 <script>
-    // --- AQUÍ EMPIEZAN LOS DATOS ---
     const matriz = {
         "ESTRATEGIA": {
             titulos: ["EL ROI DE LA IA: De la monetización al impacto real.", "IA ESTRATÉGICA: Capturando cuota de mercado algorítmica."],
@@ -45,7 +46,7 @@
             ],
             cierre: "La estrategia no es usar IA, es redefinir el negocio a través de ella.",
             tags: "#InteligenciaArtificial #EstrategiaIA #Negocios #ROI #LiderazgoExponencial #Innovación #Futuro #TechLeadership"
-        }
+        },
         "OPERACIONES": {
             titulos: ["AGENTES AUTÓNOMOS: El fin de la automatización estática.", "EFICIENCIA POR TOKEN: Optimizando el motor financiero de tu IA.", "WORKFLOWS AGÉNTICOS: Reducción drástica de la fricción operativa."],
             contexto: "La automatización tradicional ha tocado techo. El siguiente nivel de competitividad reside en la orquestación de agentes capaces de razonar y ejecutar.",
@@ -79,8 +80,7 @@
             cierre: "La IA del mañana será sostenible o simplemente no podrá escalar en el mercado global.",
             tags: "#IAVerde #Sostenibilidad #CleanTech #ESG #Energia #Tecnologia #ResponsabilidadSocial #Futuro"
         },
-    };
-"HUMANISMO": {
+        "HUMANISMO": {
             titulos: ["ÉTICA POR DISEÑO: El imperativo moral de la inteligencia artificial.", "HUMANISMO DIGITAL: Por qué la empatía es el algoritmo más complejo.", "MÁS ALLÁ DEL CÓDIGO: Construyendo una IA centrada en la dignidad humana."],
             contexto: "La tecnología sin propósito es solo ruido. El reto del siglo XXI es asegurar que la automatización no erosione los valores que nos definen como sociedad.",
             puntos: [
@@ -112,11 +112,13 @@
             ],
             cierre: "El futuro pertenece a quienes ven en la IA un aliado para elevar su propio potencial.",
             tags: "#FuturoDelTrabajo #Educacion #Productividad #IA #TransformacionDigital #Talento #Creatividad #Liderazgo"
-        },
+        }
+    };
+
     const categorias = [
         { n: "Economía de la Inteligencia", p: "ESTRATEGIA" },
         { n: "Venture Capital e IA", p: "ESTRATEGIA" },
-        { n: "Liderazgo Exponencial", p: "ESTRATEGIA" }
+        { n: "Liderazgo Exponencial", p: "ESTRATEGIA" },
         { n: "Sostenibilidad e IA Verde", p: "SOSTENIBILIDAD" },
         { n: "IA Agéntica y Workflows", p: "OPERACIONES" },
         { n: "Ciberseguridad Algorítmica", p: "SEGURIDAD" },
@@ -164,7 +166,9 @@
     }
 
     function regenerarImagen() {
-        if (!categoriaActual) return;
+        if (!categoriaActual) {
+            categoriaActual = "Artificial Intelligence Technology";
+        }
         const prompt = `Hyper-realistic cinematic cyber-realism, technological organic fusion of ${categoriaActual}, cosmic violet and gold lighting, 8k, no text`;
         const seed = Math.floor(Math.random() * 999999);
         document.getElementById('post-image').src = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=1080&height=1080&seed=${seed}`;
@@ -174,16 +178,28 @@
         const text = document.getElementById('post-text').value;
         const image = document.getElementById('post-image').src;
         const webhookUrl = "https://hook.eu2.make.com/l7s7fv2ldmbrwvmbmoqw74x2jx68w4ox"; 
+        
+        if (!text) {
+            alert("Por favor genera un post primero");
+            return;
+        }
+        
         try {
             const response = await fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text, image })
             });
-            if (response.ok) document.getElementById('status-circle').style.background = "#238636";
-        } catch (e) { alert("Error de envío"); }
+            if (response.ok) {
+                document.getElementById('status-circle').style.background = "#238636";
+                alert("Post enviado correctamente a LinkedIn");
+            } else {
+                alert("Error al publicar");
+            }
+        } catch (e) { 
+            alert("Error de envío: " + e.message); 
+        }
     }
 </script>
 </body>
 </html>
-
