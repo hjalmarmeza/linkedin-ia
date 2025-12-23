@@ -13,7 +13,7 @@
         .stat-number { font-size: 1.8rem; color: #00f2ff; font-weight: bold; }
         .stat-label { font-size: 0.75rem; color: #888; text-transform: uppercase; }
         #post-text { width: 100%; height: 500px; background: #000; color: #fff; border: 1px solid #444; padding: 18px; box-sizing: border-box; font-size: 14px; line-height: 1.7; border-radius: 5px; resize: none; }
-        #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #222; min-height: 250px; background: #000; }
+        #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #222; min-height: 250px; background: #000; object-fit: cover; }
         .controls { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         button { padding: 14px; cursor: pointer; font-weight: bold; border-radius: 6px; border: none; text-transform: uppercase; transition: 0.3s; }
         .btn-gen { background: #00f2ff; color: #000; grid-column: span 2; }
@@ -24,6 +24,8 @@
         button:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
         #status-circle { width: 12px; height: 12px; border-radius: 50%; background: gray; display: inline-block; margin-left: 10px; transition: 0.3s; }
         .warning { background: #442200; border: 1px solid #ff8800; padding: 10px; border-radius: 5px; margin: 10px 0; color: #ffaa00; font-size: 0.9rem; text-align: center; }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0, 242, 255, 0.3); border-radius: 50%; border-top-color: #00f2ff; animation: spin 1s ease-in-out infinite; margin-right: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -54,7 +56,7 @@
         
         <div class="controls">
             <button class="btn-gen" onclick="generarNarrativa()">🚀 GENERAR POST DE AUTORIDAD</button>
-            <button class="btn-img" onclick="regenerarImagen()">🖼️ CAMBIAR IMAGEN</button>
+            <button class="btn-img" onclick="regenerarImagen()" id="btn-img">🖼️ GENERAR IMAGEN CIBER-REALISTA</button>
             <button class="btn-pub" onclick="publicarEnLinkedin()">📤 PUBLICAR EN LINKEDIN</button>
             <button class="btn-reset" onclick="reiniciarHistorial()">🔄 REINICIAR HISTORIAL</button>
         </div>
@@ -820,6 +822,85 @@
 
     let categoriaActual = "";
     let postActualId = null;
+    let imagenCargando = false;
+
+    // Diccionario de símbolos por categoría para los hologramas
+    const simbolosCategoria = {
+        "Estrategia": "circuit boards, flow charts, business graphs, profit lines, strategic diagrams",
+        "Liderazgo": "human figures with digital auras, leadership pyramids, team networks, vision crystals",
+        "Agentes": "autonomous drones, decision trees, network nodes, AI avatars, execution flows",
+        "Ciberseguridad": "digital shields, encryption symbols, firewalls, protective barriers, security layers",
+        "Sostenibilidad": "earth globes, leaf circuits, energy grids, green technology, eco-symbols",
+        "Ética": "scales of justice, transparency cubes, ethical frameworks, moral compasses, human rights symbols",
+        "Hardware": "microchips, processor crystals, silicon wafers, circuit boards, hardware architecture",
+        "Open Source": "open lock symbols, collaborative networks, shared code, community webs, open platforms",
+        "Trabajo": "human-machine collaboration, skill trees, productivity graphs, team synergy, workflow optimization",
+        "Multimodal": "sensory interfaces, multi-layer perception, fusion nodes, integrated inputs, combined data streams",
+        "Privacidad": "data vaults, privacy shields, encrypted streams, secure channels, protected information",
+        "Creatividad": "neural creativity sparks, idea bulbs, artistic algorithms, inspiration waves, creative flows",
+        "Transformación": "digital metamorphosis, evolution spirals, change vectors, transformation waves, digital rebirth",
+        "Analítica": "data cubes, predictive curves, insight crystals, analytics dashboards, intelligence matrices",
+        "Customer": "personalization spheres, client interfaces, experience maps, satisfaction metrics, service excellence",
+        "RRHH": "talent networks, skill matrices, team synergies, recruitment funnels, development paths",
+        "Blockchain": "distributed ledgers, smart contracts, trust chains, decentralized networks, immutable records",
+        "Salud": "medical holograms, DNA strands, health monitors, healing symbols, wellness indicators",
+        "NLP": "language trees, conversation flows, semantic webs, text analysis, communication networks",
+        "Finanzas": "trading algorithms, risk matrices, financial flows, investment graphs, economic indicators",
+        "Educación": "knowledge trees, learning paths, brain networks, education platforms, skill development",
+        "Marketing": "targeting spheres, campaign flows, conversion funnels, brand awareness, engagement metrics",
+        "Manufactura": "smart factories, production lines, quality grids, industrial automation, supply chains",
+        "Retail": "shopping interfaces, inventory webs, customer journeys, purchase flows, retail analytics",
+        "Legal": "contract matrices, compliance grids, legal frameworks, justice symbols, regulatory systems",
+        "Generativa": "creative algorithms, content spheres, idea generators, artistic synthesis, innovation engines",
+        "Quantum": "quantum circuits, superposition spheres, entanglement webs, quantum particles, advanced computing",
+        "Agricultura": "crop grids, soil sensors, harvest algorithms, farming automation, agricultural technology",
+        "Logística": "supply chains, route optimizations, delivery networks, transportation flows, warehouse automation",
+        "Energía": "power grids, renewable nodes, energy flows, sustainable sources, electricity networks",
+        "Seguridad": "surveillance networks, threat detection, safety grids, protection systems, emergency response",
+        "Seguros": "risk assessment, claim processing, protection shields, insurance models, actuarial analytics",
+        "Entretenimiento": "content streams, media flows, engagement metrics, entertainment platforms, audience analytics",
+        "Turismo": "travel maps, experience layers, destination networks, hospitality interfaces, journey planning",
+        "Construcción": "building models, safety grids, project timelines, architectural designs, engineering plans",
+        "Deportes": "performance analytics, training algorithms, victory metrics, athletic optimization, game analysis",
+        "Recursos": "conservation grids, ecosystem monitoring, sustainability maps, environmental protection, resource management",
+        "Gobierno": "public service interfaces, governance grids, citizen networks, administrative systems, policy implementation",
+        "Farmacéutica": "molecule structures, drug discovery, treatment paths, medical research, pharmaceutical development",
+        "Bienes Raíces": "property grids, valuation matrices, market trends, real estate networks, investment properties",
+        "Responsable": "ethical frameworks, governance models, accountability grids, transparency layers, responsible AI",
+        "Edge": "distributed nodes, local processing, latency optimization, edge devices, decentralized computing",
+        "Atención": "service interfaces, support networks, resolution paths, customer care, help systems",
+        "Investigación": "discovery algorithms, hypothesis testing, knowledge expansion, scientific method, research frameworks",
+        "Moda": "trend waves, style algorithms, fashion grids, design elements, aesthetic patterns",
+        "Movilidad": "transport networks, traffic flows, urban mobility, transportation systems, city navigation",
+        "Agua": "water distribution, conservation grids, resource management, hydration networks, aquatic ecosystems",
+        "Juegos": "game algorithms, player paths, virtual worlds, gaming interfaces, interactive experiences",
+        "Clima": "climate models, carbon tracking, environmental grids, weather patterns, ecological systems",
+        "Aprendizaje": "knowledge networks, skill development, growth paths, educational technology, lifelong learning"
+    };
+
+    function obtenerSimboloCategoria(categoria) {
+        // Buscar coincidencias parciales en las categorías
+        const categoriaLower = categoria.toLowerCase();
+        
+        // Primero buscar coincidencias exactas
+        for (const [key, value] of Object.entries(simbolosCategoria)) {
+            if (categoriaLower.includes(key.toLowerCase())) {
+                return value;
+            }
+        }
+        
+        // Si no encuentra coincidencia, usar símbolos generales
+        const palabrasClave = categoriaLower.split(' ');
+        for (const palabra of palabrasClave) {
+            for (const [key, value] of Object.entries(simbolosCategoria)) {
+                if (palabra.includes(key.toLowerCase()) || key.toLowerCase().includes(palabra)) {
+                    return value;
+                }
+            }
+        }
+        
+        return "floating holographic interfaces, glowing data streams, digital technology symbols, futuristic UI elements";
+    }
 
     function obtenerPublicados() {
         const publicados = localStorage.getItem('postsPublicados');
@@ -882,36 +963,142 @@
     }
 
     function regenerarImagen() {
+        if (!categoriaActual) {
+            alert("Primero genera un post usando el botón 'Generar Post'");
+            return;
+        }
+
+        if (imagenCargando) return;
+        
         try {
-            if (!categoriaActual) {
-                categoriaActual = "Artificial Intelligence Technology";
-            }
-            const prompt = `Hyper-realistic cinematic cyber-realism, technological organic fusion of ${categoriaActual}, cosmic violet and gold lighting, 8k, no text`;
+            imagenCargando = true;
+            const btnImg = document.getElementById('btn-img');
+            const textoOriginal = btnImg.innerHTML;
+            btnImg.innerHTML = '<span class="loading"></span> GENERANDO IMAGEN...';
+            btnImg.disabled = true;
+            
+            // Obtener símbolos específicos para la categoría
+            const simbolos = obtenerSimboloCategoria(categoriaActual);
+            
+            // Prompt maestro con estilo Ciber-Realismo Cinematográfico mejorado
+            const prompt = `Hyper-realistic cinematic cyber-realism with holographic data fusion. 
+            Composition: Three dynamic layers - foreground with sharp floating digital elements (${simbolos}), 
+            middle plane with integrated human figures interacting with technology, 
+            background with futuristic urban canyon of towering skyscrapers with neon lights creating dramatic chiaroscuro.
+            
+            Lighting: Dramatic chiaroscuro contrast with deep shadows and bright highlights. 
+            Color palette: Electric Cyan (#00f2ff) for data streams and holograms, 
+            Neon Violet (#7000ff) for contrast accents and depth, 
+            Gold (#FFD700) and Amber (#FF8C00) for street lights and warmth against cool technological blues.
+            
+            Visual elements: Glowing translucent holographic interfaces, 3D floating icons representing ${categoriaActual}, 
+            data streams flowing through air, light particles, refractive effects.
+            
+            Style: 8k resolution, ultra-detailed textures, professional commercial photography, 
+            cinematic depth of field with soft bokeh background, volumetric lighting, lens flares.
+            
+            Mood: Futuristic, technological, intelligent, innovative. 
+            No text, no logos, no people recognizable as celebrities.`;
+            
             const seed = Math.floor(Math.random() * 999999);
             
-            // URL corregida para pollinations.ai
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1080&height=1080&seed=${seed}&nologo=true`;
+            // Limpiar el prompt para URL
+            const promptLimpio = prompt.replace(/\s+/g, ' ').trim();
             
-            document.getElementById('post-image').src = imageUrl;
-            document.getElementById('status-circle').style.background = "#ffaa00";
+            // URL optimizada para pollinations.ai
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(promptLimpio)}?width=1080&height=1080&seed=${seed}&nologo=true&model=flux&style=cinematic&enhance=true`;
             
-            // Manejo de eventos para depuración
-            document.getElementById('post-image').onload = function() {
-                console.log("Imagen cargada correctamente:", imageUrl);
+            console.log("🌐 Generando imagen con estilo Ciber-Realismo para:", categoriaActual);
+            console.log("🔧 Símbolos utilizados:", simbolos);
+            
+            const imgElement = document.getElementById('post-image');
+            imgElement.src = "";
+            imgElement.style.opacity = "0.5";
+            imgElement.style.transition = "opacity 0.5s ease";
+            
+            // Precargar imagen
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            
+            img.onload = function() {
+                imgElement.src = imageUrl;
+                setTimeout(() => {
+                    imgElement.style.opacity = "1";
+                }, 100);
+                
+                document.getElementById('status-circle').style.background = "#00f2ff";
+                console.log("✅ Imagen Ciber-Realista generada exitosamente");
+                
+                // Restaurar botón
+                setTimeout(() => {
+                    btnImg.innerHTML = textoOriginal;
+                    btnImg.disabled = false;
+                    imagenCargando = false;
+                }, 500);
             };
             
-            document.getElementById('post-image').onerror = function() {
-                console.error("Error cargando imagen. Usando fallback.");
-                // Fallback a un servicio alternativo si pollinations.ai falla
-                const fallbackUrl = `https://picsum.photos/seed/${seed}/1080/1080?grayscale&blur=2`;
-                document.getElementById('post-image').src = fallbackUrl;
+            img.onerror = function() {
+                console.warn("⚠️ Pollinations.ai no disponible, usando fallback mejorado...");
+                
+                // Fallback mejorado con múltiples opciones
+                const fallbacks = [
+                    `https://picsum.photos/seed/cyber-${seed}/1080/1080?grayscale`,
+                    `https://picsum.photos/seed/future-${seed}/1080/1080`,
+                    `https://picsum.photos/seed/tech-${seed}/1080/1080?blur=2`
+                ];
+                
+                const fallbackUrl = fallbacks[seed % fallbacks.length];
+                imgElement.src = fallbackUrl;
+                
+                // Aplicar filtros CSS para simular estilo cibernético
+                imgElement.style.filter = `
+                    contrast(1.3) 
+                    saturate(1.4) 
+                    hue-rotate(200deg) 
+                    brightness(0.85)
+                    sepia(0.1)
+                `;
+                
+                setTimeout(() => {
+                    imgElement.style.opacity = "1";
+                }, 100);
+                
+                document.getElementById('status-circle').style.background = "#ffaa00";
+                console.log("🔄 Usando fallback con filtros CSS");
+                
+                // Restaurar botón
+                setTimeout(() => {
+                    btnImg.innerHTML = textoOriginal;
+                    btnImg.disabled = false;
+                    imagenCargando = false;
+                }, 500);
             };
+            
+            // Iniciar carga
+            img.src = imageUrl;
+            
+            // Timeout de seguridad (15 segundos)
+            setTimeout(() => {
+                if (imagenCargando) {
+                    console.warn("⏰ Timeout alcanzado, usando placeholder");
+                    imgElement.src = `https://via.placeholder.com/1080x1080/0a0a1a/00f2ff?text=${encodeURIComponent(categoriaActual.substring(0, 30))}`;
+                    imgElement.style.filter = "none";
+                    imgElement.style.opacity = "1";
+                    
+                    btnImg.innerHTML = textoOriginal;
+                    btnImg.disabled = false;
+                    imagenCargando = false;
+                    document.getElementById('status-circle').style.background = "#ff4444";
+                }
+            }, 15000);
             
         } catch (error) {
-            console.error("Error al regenerar imagen:", error);
-            // Fallback definitivo
-            document.getElementById('post-image').src = `https://via.placeholder.com/1080x1080/111111/00f2ff?text=${encodeURIComponent(categoriaActual || "IA")}`;
-            alert("Error al generar imagen: " + error.message);
+            console.error("❌ Error crítico al regenerar imagen:", error);
+            document.getElementById('post-image').src = `https://via.placeholder.com/1080x1080/0a0a1a/00f2ff?text=${encodeURIComponent(categoriaActual || "IA")}`;
+            document.getElementById('btn-img').innerHTML = '🖼️ GENERAR IMAGEN CIBER-REALISTA';
+            document.getElementById('btn-img').disabled = false;
+            imagenCargando = false;
+            document.getElementById('status-circle').style.background = "#ff4444";
         }
     }
 
@@ -936,7 +1123,14 @@
             const response = await fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text, image })
+                body: JSON.stringify({ 
+                    text, 
+                    image,
+                    categoria: categoriaActual,
+                    id: postActualId,
+                    timestamp: new Date().toISOString(),
+                    version: "LinkedinMatic v42.0 - Ciber-Realismo"
+                })
             });
             
             if (response.ok) {
@@ -968,8 +1162,14 @@
     }
 
     // Inicializar
-    actualizarEstadisticas();
-    console.log("LinkedinMatic v42.0 cargado correctamente - 50 posts únicos disponibles");
+    document.addEventListener('DOMContentLoaded', function() {
+        actualizarEstadisticas();
+        console.log("🚀 LinkedinMatic v42.0 - Sistema Inteligente cargado");
+        console.log("🎨 Estilo visual: Ciber-Realismo Cinematográfico con Fusión de Datos Holográficos");
+        console.log("📊 Posts disponibles: 50 categorías únicas");
+        console.log("🌈 Paleta de colores: Cyan Eléctrico, Violeta Neón, Oro/Ámbar");
+        console.log("🖼️ Generación de imágenes: 3 capas dinámicas con hologramas flotantes");
+    });
 </script>
 </body>
 </html>
