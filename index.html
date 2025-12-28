@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LinkedinMatic v42.0 - Sistema Inteligente</title>
+    <script src="https://js.puter.com/v2/"></script>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #050505; color: #e0e0e0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .container { max-width: 650px; width: 100%; background: #111; padding: 25px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.7); }
@@ -720,7 +721,7 @@
             apertura: "Los grandes descubrimientos científicos siempre han dependido de procesar información. La IA lo hace exponencialmente más rápido.",
             contexto: "Investigadores están utilizando IA para analizar literatura científica, diseñar experimentos y descubrir patrones en datos que humanos no podrían detectar. Desde física de partículas hasta biología molecular, los algoritmos están acelerando el ritmo del descubrimiento científico dramáticamente.",
             puntos: [
-                "• **Análisis de Literatura:** IA procesas millones de papers científicos para identificar conexiones y oportunidades de investigación que humanos pasarían décadas descubriendo.",
+                "• **Análisis de Literatura:** IA procesa millones de papers científicos para identificar conexiones y oportunidades de investigación que humanos pasarían décadas descubriendo.",
                 "• **Diseño de Experimentos:** Algoritmos sugieren experimentos óptimos que maximizan aprendizaje con mínimos recursos, acelerando validación de hipótesis.",
                 "• **Descubrimiento de Patrones:** Machine learning identifica correlaciones complejas en datasets masivos que revelan fenómenos científicos previamente desconocidos."
             ],
@@ -841,10 +842,8 @@
     function actualizarEstadisticas() {
         const publicados = obtenerPublicados();
         const disponibles = paquetes.length - publicados.length;
-        
         document.getElementById('publicados').textContent = publicados.length;
         document.getElementById('disponibles').textContent = disponibles;
-        
         if (disponibles === 0) {
             document.getElementById('warning-message').style.display = 'block';
         } else {
@@ -856,12 +855,10 @@
         try {
             const publicados = obtenerPublicados();
             const disponibles = paquetes.filter(p => !publicados.includes(p.id));
-            
             if (disponibles.length === 0) {
-                alert('⚠️ Ya has usado todos los posts disponibles. Usa "Reiniciar Historial" para comenzar de nuevo.');
+                alert('⚠️ Ya has usado todos los posts disponibles.');
                 return;
             }
-            
             const paquete = disponibles[Math.floor(Math.random() * disponibles.length)];
             categoriaActual = paquete.categoria;
             postActualId = paquete.id;
@@ -884,7 +881,7 @@
         }
     }
 
-    function regenerarImagen() {
+    async function regenerarImagen() {
         if (!categoriaActual) {
             alert("Primero genera un post usando el botón 'Generar Post'");
             return;
@@ -896,68 +893,36 @@
             imagenCargando = true;
             const btnImg = document.getElementById('btn-img');
             const textoOriginal = btnImg.innerHTML;
-            btnImg.innerHTML = '<span class="loading"></span> GENERANDO IMAGEN...';
+            btnImg.innerHTML = '<span class="loading"></span> GENERANDO CIBER-REALISMO...';
             btnImg.disabled = true;
             
-            // EL NUEVO PROMPT SOLICITADO
-            const prompt = `A focused professional tech executive interacting with Hyper-realistic cinematic cyber-realism, high-end photography of a futuristic workspace integrated with holographic data interfaces. Intense volumetric lighting, deep teal and electric orange color palette. Extremely detailed textures: brushed metal, carbon fiber, and glass. Sharp focus, bokeh background, 8k resolution, shot on 35mm lens. No organic or surreal elements, strictly high-tech industrial aesthetic. Atmosphere is moody, professional, and sophisticated. Topic context: ${categoriaActual}`;
+            // EL PROMPT MAESTRO QUE SOLICITASTE
+            const prompt = `A focused professional tech executive interacting with Hyper-realistic cinematic cyber-realism, high-end photography of a futuristic workspace integrated with holographic data interfaces. Intense volumetric lighting, deep teal and electric orange color palette. Extremely detailed textures: brushed metal, carbon fiber, and glass. Sharp focus, bokeh background, 8k resolution, shot on 35mm lens. No organic or surreal elements, strictly high-tech industrial aesthetic. Atmosphere is moody, professional, and sophisticated. Topic: ${categoriaActual}`;
+
+            console.log("🌐 Usando Puter.js para generar estilo Cyber-Realism...");
             
-            const seed = Math.floor(Math.random() * 999999);
-            const promptLimpio = prompt.replace(/\s+/g, ' ').trim();
-            
-            // URL configurada para POLLINATIONS con el nuevo prompt
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(promptLimpio)}?width=1080&height=1080&seed=${seed}&nologo=true&model=flux&style=cinematic&enhance=true`;
-            
-            console.log("🌐 Generando imagen Cyber-Realista para:", categoriaActual);
-            
+            // Usamos Puter.js para generar la imagen de alta calidad
             const imgElement = document.getElementById('post-image');
-            imgElement.src = "";
             imgElement.style.opacity = "0.5";
-            imgElement.style.transition = "opacity 0.5s ease";
             
-            const img = new Image();
-            img.crossOrigin = "anonymous";
+            // Llamada a la IA de Puter (Stable Diffusion XL)
+            const result = await puter.ai.txt2img(prompt);
             
-            img.onload = function() {
-                imgElement.src = imageUrl;
-                setTimeout(() => {
-                    imgElement.style.opacity = "1";
-                }, 100);
-                
-                document.getElementById('status-circle').style.background = "#00f2ff";
-                
-                setTimeout(() => {
-                    btnImg.innerHTML = textoOriginal;
-                    btnImg.disabled = false;
-                    imagenCargando = false;
-                }, 500);
-            };
+            imgElement.src = result.src;
+            imgElement.style.opacity = "1";
+            document.getElementById('status-circle').style.background = "#00f2ff";
             
-            img.onerror = function() {
-                console.warn("⚠️ Error en generación, usando fallback...");
-                imgElement.src = `https://picsum.photos/seed/${seed}/1080/1080`;
-                imgElement.style.opacity = "1";
-                btnImg.innerHTML = textoOriginal;
-                btnImg.disabled = false;
-                imagenCargando = false;
-                document.getElementById('status-circle').style.background = "#ffaa00";
-            };
-            
-            img.src = imageUrl;
-            
-            setTimeout(() => {
-                if (imagenCargando) {
-                    btnImg.innerHTML = textoOriginal;
-                    btnImg.disabled = false;
-                    imagenCargando = false;
-                }
-            }, 15000);
-            
-        } catch (error) {
-            console.error("❌ Error crítico al regenerar imagen:", error);
-            btnImg.innerHTML = '🖼️ GENERAR IMAGEN CIBER-REALISTA';
+            btnImg.innerHTML = textoOriginal;
             btnImg.disabled = false;
             imagenCargando = false;
+
+        } catch (error) {
+            console.error("❌ Error en Puter.ai:", error);
+            alert("Error al generar la imagen industrial. Por favor, reintenta.");
+            document.getElementById('btn-img').innerHTML = '🖼️ GENERAR IMAGEN CIBER-REALISTA';
+            document.getElementById('btn-img').disabled = false;
+            imagenCargando = false;
+            document.getElementById('status-circle').style.background = "#ff4444";
         }
     }
 
@@ -967,14 +932,11 @@
         const webhookUrl = "https://hook.eu2.make.com/xbfleegfnwx93ri9m260xfi3lf5ovf23"; 
         
         if (!text || text === "") {
-            alert("Por favor genera un post primero usando el botón 'Generar Post'");
+            alert("Por favor genera un post primero.");
             return;
         }
         
-        if (!postActualId) {
-            alert("Error: No se puede identificar el post actual");
-            return;
-        }
+        if (!postActualId) return;
         
         document.getElementById('status-circle').style.background = "#ffaa00";
         
@@ -987,8 +949,7 @@
                     image,
                     categoria: categoriaActual,
                     id: postActualId,
-                    timestamp: new Date().toISOString(),
-                    version: "LinkedinMatic v42.0 - Cinematic Cyber-realism"
+                    version: "v42.0 - Cinematic Cyber-realism"
                 })
             });
             
@@ -996,22 +957,14 @@
                 guardarPublicado(postActualId);
                 document.getElementById('status-circle').style.background = "#238636";
                 alert("✅ Post enviado correctamente a LinkedIn");
-                document.getElementById('post-text').value = "";
-                document.getElementById('post-image').src = "";
-                categoriaActual = "";
-                postActualId = null;
             } else {
-                document.getElementById('status-circle').style.background = "#ff4444";
-                alert("❌ Error al publicar. Código: " + response.status);
+                alert("❌ Error al publicar.");
             }
-        } catch (e) { 
-            document.getElementById('status-circle').style.background = "#ff4444";
-            alert("❌ Error de conexión: " + e.message); 
-        }
+        } catch (e) { alert("❌ Error de conexión."); }
     }
 
     function reiniciarHistorial() {
-        if (confirm('¿Estás seguro de que deseas reiniciar el historial? Esto marcará todos los posts como no publicados.')) {
+        if (confirm('¿Estás seguro de que deseas reiniciar el historial?')) {
             localStorage.removeItem('postsPublicados');
             actualizarEstadisticas();
             alert('✅ Historial reiniciado correctamente');
@@ -1020,8 +973,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         actualizarEstadisticas();
-        console.log("🚀 LinkedinMatic v42.0 - Sistema Inteligente cargado");
-        console.log("🎨 Estilo visual: Hyper-realistic Cinematic Cyber-realism");
+        console.log("🚀 LinkedinMatic v42.0 Cargado con Puter.js");
     });
 </script>
 </body>
