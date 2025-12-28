@@ -286,7 +286,7 @@
             contexto: "La IA está elevando las expectativas de experiencia del cliente a niveles sin precedentes. Sistemas inteligentes permiten anticipar necesidades, resolver problemas antes de que ocurran y personalizar cada interacción a escala masiva. Las empresas que no puedan ofrecer este nivel de experiencia quedarán rezagadas independientemente de la calidad de su producto.",
             puntos: [
                 "• **Anticipación Inteligente:** Los algoritmos predictivos analizan comportamiento histórico para sugerir productos, servicios o soluciones antes de que el cliente las busque activamente.",
-                "• **Soporte Proactivo:** Chatbots y asistentes virtuales resuelven el 80% de consultas rutinarias instantáneamente, liberando a humanos para casos complejos que requieren empatía y criterio.",
+                "• **Soporte Proactivo:** Chatbots y asistentes virtuales resuelven el 80% de consultas rutinarias instantáneamente, liberando a humanos para casi complejos que requieren empatía y criterio.",
                 "• **Omnicanalidad Perfecta:** El cliente puede iniciar una conversación en un canal y continuarla en otro sin perder contexto, creando experiencias fluidas que construyen lealtad de marca."
             ],
             cierre: "La experiencia del cliente ya no es un diferenciador, es el precio de entrada al mercado moderno.",
@@ -531,7 +531,7 @@
             ],
             cierre: "La tecnología de seguridad debe balancear efectividad con respeto absoluto a derechos ciudadanos y privacidad individual.",
             frase_transicion: "Las ciudades que implementen IA en seguridad con transparencia y supervisión crearán entornos más seguros sin sacrificar libertades fundamentales.",
-            tags: "#SeguridadPublica #SmartCities #IA #Innovacion #Tecnologia #CiudadesInteligentes #Seguridad"
+            tags: "#SecurityPublica #SmartCities #IA #Innovacion #Tecnologia #CiudadesInteligentes #Seguridad"
         },
         {
             id: 32,
@@ -574,7 +574,7 @@
                 "• **Revenue Management:** Algoritmos ajustan precios de habitaciones y vuelos en tiempo real según demanda, maximizando ocupación y rentabilidad simultáneamente.",
                 "• **Asistentes Virtuales:** Chatbots y apps inteligentes resuelven dudas de viajeros 24/7 en múltiples idiomas, mejorando experiencia sin aumentar costos de personal."
             ],
-            cierre: "El turismo del futuro no vende destinos genéricos, vende experiencias diseñadas algorítmicamente para cada viajero.",
+            cierre: "El futuro del turismo no vende destinos genéricos, vende experiencias diseñadas algorítmicamente para cada viajero.",
             frase_transicion: "Las empresas turísticas que personalicen con IA capturarán viajeros que buscan experiencias únicas, no paquetes estandarizados.",
             tags: "#Turismo #Hospitalidad #IA #TravelTech #Innovacion #Experiencia #Tecnologia"
         },
@@ -703,7 +703,7 @@
             categoria: "IA en Atención al Cliente",
             titulo: "Servicio al Cliente 24/7: IA que entiende, resuelve y aprende",
             apertura: "Los clientes no esperan. Y en la era digital, no tienen por qué hacerlo.",
-            contexto: "La atención al cliente está siendo revolucionada por IA conversacional capaz de resolver la mayoría de consultas instantáneamente, escalando solo casos complejos a agentes humanos. Esto no solo mejora experiencia del cliente, sino que libera talento humano para problemas que verdaderamente requieren empatía y criterio.",
+            contexto: "La atención al cliente está siendo revolucionada por IA conversacional capaz de resolver la mayoría de consultas instantáneamente, escalando solo casi complejos a agentes humanos. Esto no solo mejora experiencia del cliente, sino que libera talento humano para problemas que verdaderamente requieren empatía y criterio.",
             puntos: [
                 "• **Resolución Instantánea:** Chatbots inteligentes resuelven el 80% de consultas rutinarias sin espera, desde rastreo de pedidos hasta cambios de configuración de cuenta.",
                 "• **Personalización Contextual:** IA accede a historial completo del cliente para ofrecer respuestas personalizadas que consideran preferencias y comportamiento pasado.",
@@ -824,6 +824,70 @@
     let postActualId = null;
     let imagenCargando = false;
 
+    // Diccionario de símbolos por categoría para los hologramas
+    const simbolosCategoria = {
+        "Estrategia": "circuit boards, flow charts, business graphs, profit lines, strategic diagrams",
+        "Liderazgo": "human figures with digital auras, leadership pyramids, team networks, vision crystals",
+        "Agentes": "autonomous drones, decision trees, network nodes, AI avatars, execution flows",
+        "Ciberseguridad": "digital shields, encryption symbols, firewalls, protective barriers, security layers",
+        "Sostenibilidad": "earth globes, leaf circuits, energy grids, green technology, eco-symbols",
+        "Ética": "scales of justice, transparency cubes, ethical frameworks, moral compasses, human rights symbols",
+        "Hardware": "microchips, processor crystals, silicon wafers, circuit boards, hardware architecture",
+        "Open Source": "open lock symbols, collaborative networks, shared code, community webs, open platforms",
+        "Trabajo": "human-machine collaboration, skill trees, productivity graphs, team synergy, workflow optimization",
+        "Multimodal": "sensory interfaces, multi-layer perception, fusion nodes, integrated inputs, combined data streams",
+        "Privacidad": "data vaults, privacy shields, encrypted streams, secure channels, protected information",
+        "Creatividad": "neural creativity sparks, idea bulbs, artistic algorithms, inspiration waves, creative flows",
+        "Transformación": "digital metamorphosis, evolution spirals, change vectors, transformation waves, digital rebirth",
+        "Analítica": "data cubes, predictive curves, insight crystals, analytics dashboards, intelligence matrices",
+        "Customer": "personalization spheres, client interfaces, experience maps, satisfaction metrics, service excellence",
+        "RRHH": "talent networks, skill matrices, team synergies, recruitment funnels, development paths",
+        "Blockchain": "distributed ledgers, smart contracts, trust chains, decentralized networks, immutable records",
+        "Salud": "medical holograms, DNA strands, health monitors, healing symbols, wellness indicators",
+        "NLP": "language trees, conversation flows, semantic webs, text analysis, communication networks",
+        "Finanzas": "trading algorithms, risk matrices, financial flows, investment graphs, economic indicators",
+        "Educación": "knowledge trees, learning paths, brain networks, education platforms, skill development",
+        "Marketing": "targeting spheres, campaign flows, conversion funnels, brand awareness, engagement metrics",
+        "Manufactura": "smart factories, production lines, quality grids, industrial automation, supply chains",
+        "Retail": "shopping interfaces, inventory webs, customer journeys, purchase flows, retail analytics",
+        "Legal": "contract matrices, compliance grids, legal frameworks, justice symbols, regulatory systems",
+        "Generativa": "creative algorithms, content spheres, idea generators, artistic synthesis, innovation engines",
+        "Quantum": "quantum circuits, superposition spheres, entanglement webs, quantum particles, advanced computing",
+        "Agricultura": "crop grids, soil sensors, harvest algorithms, farming automation, agricultural technology",
+        "Logística": "supply chains, route optimizations, delivery networks, transportation flows, warehouse automation",
+        "Energía": "power grids, renewable nodes, energy flows, sustainable sources, electricity networks",
+        "Seguridad": "surveillance networks, threat detection, safety grids, protection systems, emergency response",
+        "Seguros": "risk assessment, claim processing, protection shields, insurance models, actuarial analytics",
+        "Entretenimiento": "content streams, media flows, engagement metrics, entertainment platforms, audience analytics",
+        "Turismo": "travel maps, experience layers, destination networks, hospitality interfaces, journey planning",
+        "Construcción": "building models, safety grids, project timelines, architectural designs, engineering plans",
+        "Deportes": "performance analytics, training algorithms, victory metrics, athletic optimization, game analysis",
+        "Recursos": "conservation grids, ecosystem monitoring, sustainability maps, environmental protection, resource management",
+        "Gobierno": "public service interfaces, governance grids, citizen networks, administrative systems, policy implementation",
+        "Farmacéutica": "molecule structures, drug discovery, treatment paths, medical research, pharmaceutical development",
+        "Bienes Raíces": "property grids, valuation matrices, market trends, real estate networks, investment properties",
+        "Responsable": "ethical frameworks, governance models, accountability grids, transparency layers, responsible AI",
+        "Edge": "distributed nodes, local processing, latency optimization, edge devices, decentralized computing",
+        "Atención": "service interfaces, support networks, resolution paths, customer care, help systems",
+        "Investigación": "discovery algorithms, hypothesis testing, knowledge expansion, scientific method, research frameworks",
+        "Moda": "trend waves, style algorithms, fashion grids, design elements, aesthetic patterns",
+        "Movilidad": "transport networks, traffic flows, urban mobility, transportation systems, city navigation",
+        "Agua": "water distribution, conservation grids, resource management, hydration networks, aquatic ecosystems",
+        "Juegos": "game algorithms, player paths, virtual worlds, gaming interfaces, interactive experiences",
+        "Clima": "climate models, carbon tracking, environmental grids, weather patterns, ecological systems",
+        "Aprendizaje": "knowledge networks, skill development, growth paths, educational technology, lifelong learning"
+    };
+
+    function obtenerSimboloCategoria(categoria) {
+        const categoriaLower = categoria.toLowerCase();
+        for (const [key, value] of Object.entries(simbolosCategoria)) {
+            if (categoriaLower.includes(key.toLowerCase())) {
+                return value;
+            }
+        }
+        return "floating holographic interfaces, glowing data streams, digital technology symbols";
+    }
+
     function obtenerPublicados() {
         const publicados = localStorage.getItem('postsPublicados');
         return publicados ? JSON.parse(publicados) : [];
@@ -841,10 +905,8 @@
     function actualizarEstadisticas() {
         const publicados = obtenerPublicados();
         const disponibles = paquetes.length - publicados.length;
-        
         document.getElementById('publicados').textContent = publicados.length;
         document.getElementById('disponibles').textContent = disponibles;
-        
         if (disponibles === 0) {
             document.getElementById('warning-message').style.display = 'block';
         } else {
@@ -856,42 +918,30 @@
         try {
             const publicados = obtenerPublicados();
             const disponibles = paquetes.filter(p => !publicados.includes(p.id));
-            
             if (disponibles.length === 0) {
-                alert('⚠️ Ya has usado todos los posts disponibles. Usa "Reiniciar Historial" para comenzar de nuevo.');
+                alert('⚠️ Ya has usado todos los posts disponibles.');
                 return;
             }
-            
             const paquete = disponibles[Math.floor(Math.random() * disponibles.length)];
             categoriaActual = paquete.categoria;
             postActualId = paquete.id;
-            
-            let texto = `${paquete.titulo.toUpperCase()}\n\n`;
-            texto += `${paquete.apertura}\n\n`;
-            texto += `${paquete.contexto}\n\n`;
-            texto += `Tres claves para entender ${paquete.categoria}:\n\n`;
+            let texto = `${paquete.titulo.toUpperCase()}\n\n${paquete.apertura}\n\n${paquete.contexto}\n\nTres claves para entender ${paquete.categoria}:\n\n`;
             paquete.puntos.forEach(pt => { texto += pt + "\n\n"; });
-            texto += `${paquete.cierre}\n\n`;
-            texto += `${paquete.frase_transicion}\n\n`;
-            texto += paquete.tags;
-
+            texto += `${paquete.cierre}\n\n${paquete.frase_transicion}\n\n${paquete.tags}`;
             document.getElementById('post-text').value = texto;
             document.getElementById('status-circle').style.background = "#ffaa00";
             regenerarImagen();
         } catch (error) {
-            console.error("Error al generar narrativa:", error);
             alert("Error al generar el post: " + error.message);
         }
     }
 
     function regenerarImagen() {
         if (!categoriaActual) {
-            alert("Primero genera un post usando el botón 'Generar Post'");
+            alert("Primero genera un post");
             return;
         }
-
         if (imagenCargando) return;
-        
         try {
             imagenCargando = true;
             const btnImg = document.getElementById('btn-img');
@@ -899,64 +949,47 @@
             btnImg.innerHTML = '<span class="loading"></span> GENERANDO IMAGEN...';
             btnImg.disabled = true;
             
-            // NUEVO PROMPT: Hyper-realistic cinematic cyber-realism
-            const prompt = `A focused professional tech executive interacting with Hyper-realistic cinematic cyber-realism, high-end photography of a futuristic workspace integrated with holographic data interfaces. Intense volumetric lighting, deep teal and electric orange color palette. Extremely detailed textures: brushed metal, carbon fiber, and glass. Sharp focus, bokeh background, 8k resolution, shot on 35mm lens. No organic or surreal elements, strictly high-tech industrial aesthetic. Atmosphere is moody, professional, and sophisticated. Context: ${categoriaActual}`;
+            const simbolos = obtenerSimboloCategoria(categoriaActual);
+            
+            // NUEVO ESTILO: Hyper-realistic cinematic cyber-realism (MODIFICACIÓN SOLICITADA)
+            const prompt = `A focused professional tech executive interacting with Hyper-realistic cinematic cyber-realism, high-end photography of a futuristic workspace integrated with holographic data interfaces. 
+            Visual details: ${simbolos}. 
+            Lighting: Intense volumetric lighting, deep teal and electric orange color palette. 
+            Materials: Extremely detailed textures, brushed metal, carbon fiber, and glass. 
+            Technical: Sharp focus, bokeh background, 8k resolution, shot on 35mm lens. 
+            Constraints: No organic or surreal elements, strictly high-tech industrial aesthetic. 
+            Atmosphere: Moody, professional, and sophisticated. Context: ${categoriaActual}`;
             
             const seed = Math.floor(Math.random() * 999999);
             const promptLimpio = prompt.replace(/\s+/g, ' ').trim();
             
-            // URL optimizada para pollinations.ai con el nuevo estilo
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(promptLimpio)}?width=1080&height=1080&seed=${seed}&nologo=true&model=flux&style=cinematic&enhance=true`;
-            
-            console.log("🌐 Generando imagen Ciber-Realista para:", categoriaActual);
+            // Forzamos modelo FLUX para máxima calidad en este nuevo estilo
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(promptLimpio)}?width=1080&height=1080&seed=${seed}&nologo=true&model=flux&style=cinematic`;
             
             const imgElement = document.getElementById('post-image');
             imgElement.src = "";
             imgElement.style.opacity = "0.5";
-            imgElement.style.transition = "opacity 0.5s ease";
+            imgElement.style.filter = "none"; // Eliminamos filtros orgánicos anteriores
             
             const img = new Image();
             img.crossOrigin = "anonymous";
-            
             img.onload = function() {
                 imgElement.src = imageUrl;
-                setTimeout(() => {
-                    imgElement.style.opacity = "1";
-                }, 100);
-                
+                setTimeout(() => { imgElement.style.opacity = "1"; }, 100);
                 document.getElementById('status-circle').style.background = "#00f2ff";
-                
-                setTimeout(() => {
-                    btnImg.innerHTML = textoOriginal;
-                    btnImg.disabled = false;
-                    imagenCargando = false;
-                }, 500);
-            };
-            
-            img.onerror = function() {
-                console.warn("⚠️ Error en generación, usando fallback...");
-                imgElement.src = `https://picsum.photos/seed/${seed}/1080/1080`;
-                imgElement.style.opacity = "1";
                 btnImg.innerHTML = textoOriginal;
                 btnImg.disabled = false;
                 imagenCargando = false;
-                document.getElementById('status-circle').style.background = "#ffaa00";
             };
-            
+            img.onerror = function() {
+                // ELIMINADO FALLBACK DE PAISAJES (Causa de la imagen errónea)
+                alert("Error al generar imagen de IA. Intenta nuevamente.");
+                btnImg.innerHTML = textoOriginal;
+                btnImg.disabled = false;
+                imagenCargando = false;
+            };
             img.src = imageUrl;
-            
-            setTimeout(() => {
-                if (imagenCargando) {
-                    btnImg.innerHTML = textoOriginal;
-                    btnImg.disabled = false;
-                    imagenCargando = false;
-                }
-            }, 15000);
-            
         } catch (error) {
-            console.error("❌ Error crítico al regenerar imagen:", error);
-            btnImg.innerHTML = '🖼️ GENERAR IMAGEN CIBER-REALISTA';
-            btnImg.disabled = false;
             imagenCargando = false;
         }
     }
@@ -965,63 +998,32 @@
         const text = document.getElementById('post-text').value;
         const image = document.getElementById('post-image').src;
         const webhookUrl = "https://hook.eu2.make.com/xbfleegfnwx93ri9m260xfi3lf5ovf23"; 
-        
-        if (!text || text === "") {
-            alert("Por favor genera un post primero usando el botón 'Generar Post'");
-            return;
-        }
-        
-        if (!postActualId) {
-            alert("Error: No se puede identificar el post actual");
-            return;
-        }
-        
+        if (!text) { alert("Genera un post primero"); return; }
         document.getElementById('status-circle').style.background = "#ffaa00";
-        
         try {
             const response = await fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    text, 
-                    image,
-                    categoria: categoriaActual,
-                    id: postActualId,
-                    timestamp: new Date().toISOString(),
-                    version: "LinkedinMatic v42.0 - Cinematic Cyber-realism"
-                })
+                body: JSON.stringify({ text, image, categoria: categoriaActual, id: postActualId, timestamp: new Date().toISOString(), version: "v42.0-CyberRealism" })
             });
-            
             if (response.ok) {
                 guardarPublicado(postActualId);
                 document.getElementById('status-circle').style.background = "#238636";
-                alert("✅ Post enviado correctamente a LinkedIn");
+                alert("✅ Post enviado correctamente");
                 document.getElementById('post-text').value = "";
                 document.getElementById('post-image').src = "";
-                categoriaActual = "";
-                postActualId = null;
-            } else {
-                document.getElementById('status-circle').style.background = "#ff4444";
-                alert("❌ Error al publicar. Código: " + response.status);
             }
-        } catch (e) { 
-            document.getElementById('status-circle').style.background = "#ff4444";
-            alert("❌ Error de conexión: " + e.message); 
-        }
+        } catch (e) { alert("Error de conexión"); }
     }
 
     function reiniciarHistorial() {
-        if (confirm('¿Estás seguro de que deseas reiniciar el historial? Esto marcará todos los posts como no publicados.')) {
+        if (confirm('¿Reiniciar historial?')) {
             localStorage.removeItem('postsPublicados');
             actualizarEstadisticas();
-            alert('✅ Historial reiniciado correctamente');
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        actualizarEstadisticas();
-        console.log("🚀 LinkedinMatic v42.0 - Hyper-realistic Cinematic Cyber-realism Activo");
-    });
+    document.addEventListener('DOMContentLoaded', actualizarEstadisticas);
 </script>
 </body>
 </html>
