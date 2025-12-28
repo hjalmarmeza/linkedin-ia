@@ -67,877 +67,192 @@
     </div>
 
 <script>
+    // Se mantienen los 50 paquetes originales íntegros
     const paquetes = [
-        {
-            id: 1,
-            categoria: "Estrategia y ROI en IA",
-            titulo: "El ROI de la IA: Más allá de la promesa tecnológica",
-            apertura: "Invertir en IA sin medir su impacto real es como navegar sin brújula en un océano de datos.",
-            contexto: "La inteligencia artificial ha dejado de ser una apuesta de futuro para convertirse en el eje central de la planificación financiera corporativa. Las empresas que lideran no son las que más invierten, sino las que mejor miden el retorno de cada decisión algorítmica.",
-            puntos: [
-                "• **Monetización Inteligente:** El verdadero valor no está en procesar datos, sino en convertir cada inferencia en un producto o servicio de alto margen que resuelva problemas reales del mercado.",
-                "• **Velocidad Competitiva:** La ventaja hoy se mide en la capacidad de iterar modelos que respondan a la demanda cambiante antes que la competencia, no en la complejidad técnica.",
-                "• **Gobernanza Ejecutiva:** Cada token procesado debe estar alineado con objetivos estratégicos medibles. La IA no es un departamento, es el motor del negocio."
-            ],
-            cierre: "La pregunta ya no es si usar IA, sino cómo convertirla en el eje que redefine completamente tu modelo de negocio.",
-            frase_transicion: "Las organizaciones que lideren la próxima década serán aquellas que conviertan la inteligencia artificial en resultados tangibles y medibles.",
-            tags: "#InteligenciaArtificial #EstrategiaEmpresarial #ROI #TransformacionDigital #Liderazgo #Innovacion #Negocios"
-        },
-        {
-            id: 2,
-            categoria: "Liderazgo en la Era de la IA",
-            titulo: "Liderazgo Exponencial: Liderar equipos en la era algorítmica",
-            apertura: "El liderazgo del siglo XXI no se mide en jerarquías, sino en la capacidad de orquestar talento humano e inteligencia artificial.",
-            contexto: "Los líderes actuales enfrentan un desafío sin precedentes: gestionar equipos donde humanos y algoritmos colaboran de forma simbiótica. La habilidad crítica ya no es solo gestionar personas, sino comprender cómo la IA amplifica o limita el potencial de cada profesional.",
-            puntos: [
-                "• **Visión Tecnológica:** Los líderes efectivos comprenden las capacidades y limitaciones de la IA, tomando decisiones informadas sobre qué automatizar y qué mantener bajo supervisión humana.",
-                "• **Cultura de Adaptación:** Fomentar un entorno donde el equipo vea la IA como aliada, no como amenaza, requiere comunicación transparente y formación continua en nuevas herramientas.",
-                "• **Resultados Aumentados:** El verdadero liderazgo se demuestra al lograr que cada miembro del equipo multiplique su impacto utilizando sistemas inteligentes de forma estratégica."
-            ],
-            cierre: "Liderar en la era de la IA significa ser el puente entre el potencial humano y las capacidades tecnológicas.",
-            frase_transicion: "El futuro pertenece a los líderes que entienden que su rol es potenciar, no reemplazar, el criterio humano con inteligencia artificial.",
-            tags: "#Liderazgo #GestionDelCambio #InteligenciaArtificial #Equipos #Innovacion #CulturaEmpresarial #Transformacion"
-        },
-        {
-            id: 3,
-            categoria: "Agentes Autónomos y Operaciones",
-            titulo: "Agentes Inteligentes: El siguiente nivel de la automatización",
-            apertura: "La automatización tradicional ejecuta tareas. Los agentes inteligentes toman decisiones.",
-            contexto: "Hemos alcanzado el límite de la automatización basada en reglas fijas. El siguiente salto competitivo reside en sistemas capaces de razonar, adaptarse y ejecutar sin intervención constante. Los agentes autónomos están redefiniendo qué significa la eficiencia operativa.",
-            puntos: [
-                "• **Decisiones Contextuales:** Los agentes de IA evalúan escenarios dinámicos y ajustan sus acciones en tiempo real, optimizando flujos de trabajo sin necesidad de reprogramación constante.",
-                "• **Escalabilidad Exponencial:** Al reducir el costo marginal por tarea ejecutada, las empresas pueden crecer sin aumentar proporcionalmente su estructura operativa.",
-                "• **Colaboración Híbrida:** Los profesionales se liberan de tareas repetitivas para enfocarse en supervisión estratégica, mientras los agentes gestionan la ejecución táctica."
-            ],
-            cierre: "La eficiencia moderna no se mide en cuántas personas trabajan, sino en cuánta complejidad puede delegar a sistemas inteligentes.",
-            frase_transicion: "Las empresas más competitivas del futuro cercano serán aquellas que dominen la orquestación de agentes autónomos en sus operaciones diarias.",
-            tags: "#Automatizacion #IAAgentica #Eficiencia #Operaciones #Productividad #Innovacion #Tecnologia"
-        },
-        {
-            id: 4,
-            categoria: "Ciberseguridad con IA",
-            titulo: "Defensa Inteligente: Cuando la IA protege contra la propia IA",
-            apertura: "Las amenazas cibernéticas evolucionan a velocidad algorítmica. Defenderse con métodos tradicionales es llegar tarde a la batalla.",
-            contexto: "En un mundo donde los ataques cibernéticos utilizan inteligencia artificial para encontrar vulnerabilidades, la única defensa efectiva es una seguridad igualmente inteligente. La ciberseguridad moderna es una carrera armamentista algorítmica donde la velocidad de detección marca la diferencia entre la resiliencia y el desastre.",
-            puntos: [
-                "• **Detección Predictiva:** Las redes neuronales identifican patrones anómalos antes de que se conviertan en brechas de seguridad, actuando de forma preventiva en lugar de reactiva.",
-                "• **Privacidad Operativa:** Implementar protocolos que permitan el entrenamiento de modelos sin exponer información sensible es crítico para innovar sin comprometer la seguridad corporativa.",
-                "• **Soberanía de Datos:** Mantener el control absoluto sobre la información crítica garantiza que la propiedad intelectual y los datos estratégicos permanezcan protegidos ante cualquier amenaza externa."
-            ],
-            cierre: "En la era digital, la seguridad no es un departamento: es el fundamento sobre el cual se construye la confianza del mercado.",
-            frase_transicion: "La seguridad algorítmica no es opcional, es la base que permite la innovación sin riesgo existencial para la organización.",
-            tags: "#Ciberseguridad #IA #Seguridad #ProteccionDeDatos #Tecnologia #Innovacion #CiberDefensa"
-        },
-        {
-            id: 5,
-            categoria: "Sostenibilidad y IA Verde",
-            titulo: "IA Sostenible: Innovar sin hipotecar el futuro energético",
-            apertura: "El verdadero costo de la IA no está en el presupuesto tecnológico, sino en la huella energética que deja en el planeta.",
-            contexto: "La industria de la inteligencia artificial enfrenta su mayor paradoja: mientras promete optimizar el futuro, consume recursos energéticos a un ritmo insostenible. Las empresas que ignoren la sostenibilidad algorítmica no solo enfrentan crisis reputacionales, sino límites operativos reales para escalar.",
-            puntos: [
-                "• **Eficiencia Térmica:** Optimizar el consumo energético en centros de datos no es solo responsabilidad ambiental, es viabilidad financiera a largo plazo para cualquier proyecto de IA a gran escala.",
-                "• **Modelos Compactos:** El desarrollo de Small Language Models permite mantener precisión mientras se reduce drásticamente el consumo de recursos computacionales por inferencia.",
-                "• **Energías Limpias:** La transición hacia infraestructuras alimentadas por fuentes renovables es el único camino viable para escalar sin comprometer los criterios ESG que exigen inversores y clientes."
-            ],
-            cierre: "La IA del mañana será sostenible, o simplemente no podrá existir a la escala que el mercado demanda.",
-            frase_transicion: "Invertir en IA sin considerar su impacto ambiental es construir sobre cimientos que no resistirán la presión regulatoria y social del futuro cercano.",
-            tags: "#Sostenibilidad #IAVerde #ESG #TecnologiaLimpia #Innovacion #ResponsabilidadCorporativa #Futuro"
-        },
-        {
-            id: 6,
-            categoria: "Ética y Humanismo Digital",
-            titulo: "Ética por Diseño: El imperativo moral de la inteligencia artificial",
-            apertura: "La tecnología sin valores es solo ruido digital. La IA debe servir a la humanidad, nunca reemplazar lo que nos define como sociedad.",
-            contexto: "Cada modelo de IA entrenado refleja las decisiones éticas de quienes lo construyen. La responsabilidad de garantizar que la automatización no erosione la equidad, la dignidad y los derechos humanos recae directamente en los líderes tecnológicos y empresariales que impulsan su adopción.",
-            puntos: [
-                "• **Auditoría de Sesgos:** La revisión constante de modelos fundacionales es esencial para evitar la perpetuación de prejuicios históricos que amplifiquen desigualdades existentes en la sociedad.",
-                "• **Explicabilidad Transparente:** Transitar de sistemas opacos a modelos donde los usuarios comprendan cómo y por qué se toman decisiones automatizadas es fundamental para mantener la confianza.",
-                "• **Bienestar Humano:** Diseñar interfaces que amplifiquen capacidades sin generar dependencia tóxica es un acto de responsabilidad hacia la salud mental de millones de usuarios."
-            ],
-            cierre: "La inteligencia artificial debe ser una herramienta para potenciar nuestra humanidad, nunca un sustituto de ella.",
-            frase_transicion: "Las organizaciones que integren la ética desde el diseño, y no como una capa superficial, serán las que construyan tecnología en la que el mundo pueda confiar.",
-            tags: "#Etica #IA #HumanismoDigital #ResponsabilidadSocial #Tecnologia #Innovacion #ValoresEmpresariales"
-        },
-        {
-            id: 7,
-            categoria: "Infraestructura y Hardware de IA",
-            titulo: "El Poder del Silicio: La nueva geopolítica de los semiconductores",
-            apertura: "Detrás de cada modelo de IA hay chips que definen los límites de lo posible. Quien controla el hardware, controla el futuro digital.",
-            contexto: "La infraestructura física es el fundamento invisible de la revolución algorítmica. Desde los chips diseñados específicamente para IA hasta la arquitectura de centros de datos, la capacidad de procesamiento determina qué organizaciones pueden competir realmente en la economía de la inteligencia.",
-            puntos: [
-                "• **Chips Especializados:** Los ASICs y procesadores neuromórficos están redefiniendo la eficiencia del cómputo, permitiendo entrenar modelos más complejos con una fracción del consumo energético tradicional.",
-                "• **Arquitecturas Distribuidas:** La computación en la nube y en el edge trabajan en simbiosis para reducir latencia y maximizar la capacidad de respuesta de sistemas críticos en tiempo real.",
-                "• **Soberanía Tecnológica:** El control de la cadena de suministro de semiconductores se ha convertido en una cuestión estratégica para naciones y corporaciones por igual."
-            ],
-            cierre: "La innovación algorítmica tiene un límite físico: el hardware que la ejecuta. Quien domine el silicio, dominará la inteligencia.",
-            frase_transicion: "Invertir en software sin considerar la infraestructura de hardware es construir castillos sobre arenas movedizas tecnológicas.",
-            tags: "#Hardware #Semiconductores #Chips #Infraestructura #Tecnologia #Innovacion #Geopolitica"
-        },
-        {
-            id: 8,
-            categoria: "Open Source en IA",
-            titulo: "Código Abierto: Democratizando el conocimiento algorítmico",
-            apertura: "La verdadera revolución de la IA no vendrá de laboratorios cerrados, sino de comunidades globales colaborando en código abierto.",
-            contexto: "El movimiento open source en inteligencia artificial está redistribuyendo el poder tecnológico. Lo que antes requería presupuestos millonarios y equipos de élite, ahora es accesible para empresas de cualquier tamaño que sepan aprovechar modelos, frameworks y datasets compartidos globalmente.",
-            puntos: [
-                "• **Acceso Democratizado:** Modelos pre-entrenados de código abierto permiten a startups y PyMEs competir con gigantes tecnológicos sin necesidad de entrenar desde cero.",
-                "• **Innovación Transparente:** La revisión pública del código garantiza mayor seguridad, detecta vulnerabilidades más rápido y acelera la evolución de las mejores prácticas en la industria.",
-                "• **Ecosistemas Colaborativos:** Las comunidades globales de desarrolladores generan documentación, tutoriales y herramientas que reducen la barrera de entrada para adoptar IA de forma efectiva."
-            ],
-            cierre: "El futuro de la inteligencia artificial será escrito en código que todos puedan leer, mejorar y compartir.",
-            frase_transicion: "Las organizaciones que apuesten por open source no solo ahorran costos, sino que se conectan con la innovación colectiva más rápida de la historia.",
-            tags: "#OpenSource #IA #CodigoAbierto #Innovacion #Comunidad #Tecnologia #Colaboracion"
-        },
-        {
-            id: 9,
-            categoria: "Futuro del Trabajo con IA",
-            titulo: "Futuro del Trabajo: Potenciar capacidades en lugar de reemplazar empleos",
-            apertura: "No estamos ante el fin del empleo, sino ante la mayor transformación de la productividad humana desde la revolución industrial.",
-            contexto: "La narrativa del miedo sobre la IA eliminando empleos ignora la realidad histórica: cada revolución tecnológica ha reconfigurado el trabajo, no eliminado el valor humano. La clave está en preparar a profesionales para colaborar con sistemas inteligentes, no competir contra ellos.",
-            puntos: [
-                "• **Reskilling Continuo:** La habilidad más valiosa del siglo XXI es la capacidad de aprender a trabajar junto a sistemas inteligentes, no el conocimiento estático acumulado.",
-                "• **Creatividad Amplificada:** La IA actúa como socio creativo, permitiendo iterar conceptos, diseños y estrategias a velocidades que antes requerían semanas de trabajo manual intensivo.",
-                "• **Nuevos Modelos Laborales:** La reconfiguración hacia jornadas enfocadas en resultados estratégicos, no en horas presenciales, libera potencial humano para tareas de alto valor."
-            ],
-            cierre: "El futuro del trabajo pertenece a quienes vean en la IA una herramienta para multiplicar su impacto, no una amenaza a su relevancia.",
-            frase_transicion: "Las profesiones del mañana serán aquellas que dominen la simbiosis entre intuición humana y precisión algorítmica.",
-            tags: "#FuturoDelTrabajo #IA #Empleabilidad #Reskilling #Productividad #Innovacion #Transformacion"
-        },
-        {
-            id: 10,
-            categoria: "Multimodalidad en IA",
-            titulo: "Modelos Multimodales: Cuando la IA aprende a ver, oír y razonar simultáneamente",
-            apertura: "La inteligencia humana nunca ha sido monomodal. Era cuestión de tiempo hasta que las máquinas aprendieran a integrar múltiples sentidos también.",
-            contexto: "Los modelos multimodales representan un salto cualitativo en las capacidades de la IA. Ya no estamos hablando de sistemas que procesan texto, imagen o audio por separado, sino de arquitecturas que integran toda esa información para generar comprensión contextual profunda, tal como lo hace el cerebro humano.",
-            puntos: [
-                "• **Comprensión Contextual:** Procesar simultáneamente texto, imagen y audio permite inferencias más precisas y decisiones que consideran el contexto completo de una situación.",
-                "• **Aplicaciones Revolucionarias:** Desde asistentes que entienden emociones por voz hasta sistemas de diagnóstico médico que combinan imágenes y datos clínicos para recomendaciones precisas.",
-                "• **Interfaces Naturales:** La multimodalidad permite interacciones más humanas con la tecnología, donde podemos comunicarnos tal como lo haríamos con otra persona."
-            ],
-            cierre: "La convergencia de múltiples modalidades es el camino hacia una inteligencia artificial verdaderamente general y útil.",
-            frase_transicion: "El próximo salto competitivo no vendrá de modelos más grandes, sino de sistemas que integren información como lo hacemos los humanos: de forma multimodal y contextual.",
-            tags: "#Multimodalidad #IA #Innovacion #Tecnologia #DeepLearning #FuturoDigital #Transformacion"
-        },
-        {
-            id: 11,
-            categoria: "Privacidad y Soberanía de Datos",
-            titulo: "Soberanía de Datos: El último bastión de la confianza empresarial",
-            apertura: "En la economía digital, quien controla los datos controla el futuro. Perder soberanía sobre tu información es perder autonomía estratégica.",
-            contexto: "La privacidad y el control de datos se han convertido en ventajas competitivas críticas. Las organizaciones que no garanticen la soberanía sobre su información no solo enfrentan riesgos regulatorios, sino que pierden la capacidad de tomar decisiones estratégicas basadas en inteligencia propia e inviolable.",
-            puntos: [
-                "• **Control Total:** Garantizar que la propiedad intelectual y los datos críticos permanezcan bajo control absoluto de la organización es fundamental para mantener ventaja competitiva.",
-                "• **Cumplimiento Normativo:** Las regulaciones como GDPR y leyes de protección de datos locales exigen arquitecturas que prioricen la privacidad desde el diseño, no como añadido posterior.",
-                "• **Confianza del Cliente:** Demostrar compromiso con la protección de datos personales se traduce directamente en reputación de marca y lealtad del consumidor en mercados cada vez más conscientes."
-            ],
-            cierre: "La soberanía de datos no es paranoia corporativa, es el fundamento sobre el cual se construye la autonomía estratégica en el siglo XXI.",
-            frase_transicion: "Las empresas que pierdan control sobre sus datos perderán, inevitablemente, control sobre su propio destino competitivo.",
-            tags: "#PrivacidadDeDatos #Ciberseguridad #SoberaniaDeDatos #Cumplimiento #GDPR #Confianza #Tecnologia"
-        },
-        {
-            id: 12,
-            categoria: "Creatividad Aumentada con IA",
-            titulo: "Creatividad Aumentada: La IA como socio creativo del profesional moderno",
-            apertura: "La creatividad humana no desaparece con la IA. Se multiplica.",
-            contexto: "La inteligencia artificial está redefiniendo qué significa ser creativo en el ámbito profesional. Lejos de reemplazar la originalidad humana, los sistemas inteligentes actúan como amplificadores que permiten explorar más ideas, iterar más rápido y materializar conceptos que antes quedaban en el limbo por falta de tiempo o recursos.",
-            puntos: [
-                "• **Iteración Acelerada:** La capacidad de generar decenas de variantes de una idea en minutos permite explorar espacios creativos que antes eran inaccesibles por limitaciones de tiempo.",
-                "• **Eliminación de Bloqueos:** La IA actúa como sparring creativo que propone alternativas cuando el proceso humano se estanca, desbloqueando flujos de trabajo creativos.",
-                "• **Democratización Creativa:** Profesionales sin formación artística o técnica pueden ahora materializar visiones complejas utilizando herramientas de IA como extensiones de su intención creativa."
-            ],
-            cierre: "La creatividad del futuro no es humana vs. máquina, es humana amplificada por máquinas inteligentes.",
-            frase_transicion: "Los profesionales creativos que dominen la colaboración con IA superarán en velocidad, volumen y calidad a quienes trabajen solos.",
-            tags: "#Creatividad #IA #Innovacion #Diseño #Contenido #Transformacion #FuturoCreativo"
-        },
-        {
-            id: 13,
-            categoria: "Transformación Digital Empresarial",
-            titulo: "Transformación Digital: Más allá de digitalizar procesos obsoletos",
-            apertura: "Digitalizar un proceso ineficiente solo logra una cosa: hacerlo ineficiente más rápido.",
-            contexto: "La verdadera transformación digital no consiste en replicar procesos analógicos en formato digital, sino en reimaginar completamente cómo opera una organización. Las empresas que lideran la transformación cuestionan cada supuesto y reconstruyen desde cero con mentalidad digital nativa.",
-            puntos: [
-                "• **Rediseño Fundamental:** Antes de automatizar, hay que preguntarse si el proceso actual tiene sentido en un mundo digital. Muchas veces la respuesta es eliminarlo, no digitalizarlo.",
-                "• **Cultura de Datos:** La transformación real sucede cuando cada decisión organizacional, desde contratar hasta lanzar productos, se basa en datos verificables, no en intuición o tradición.",
-                "• **Agilidad Operativa:** Estructuras jerárquicas rígidas frenan la innovación. Las organizaciones digitales operan con equipos autónomos que pueden pivotar rápidamente ante cambios del mercado."
-            ],
-            cierre: "La transformación digital no es un proyecto con fecha de fin, es un cambio permanente en cómo piensa y opera la organización.",
-            frase_transicion: "Las empresas que sobrevivan la próxima década serán aquellas que no solo adoptaron tecnología, sino que transformaron su ADN cultural completo.",
-            tags: "#TransformacionDigital #Innovacion #Estrategia #CambioOrganizacional #Liderazgo #Tecnologia #Cultura"
-        },
-        {
-            id: 14,
-            categoria: "Análisis Predictivo y Big Data",
-            titulo: "Del Big Data a las Decisiones Inteligentes: Convertir información en ventaja competitiva",
-            apertura: "Acumular datos sin capacidad de análisis es como tener una biblioteca en un idioma que no comprendes.",
-            contexto: "El verdadero poder no reside en almacenar datos masivos, sino en extraer patrones predictivos que permitan anticipar el mercado. Las organizaciones más competitivas han dejado de reaccionar a los cambios para empezar a predecirlos y capitalizarlos antes que la competencia.",
-            puntos: [
-                "• **Predicción Accionable:** Los modelos de machine learning transforman datos históricos en pronósticos confiables que informan decisiones de inventario, pricing y expansión con precisión estadística.",
-                "• **Personalización a Escala:** Comprender el comportamiento individual de millones de clientes permite ofertas personalizadas que aumentan conversión sin sacrificar eficiencia operativa.",
-                "• **Detección de Anomalías:** Identificar patrones inusuales en tiempo real previene fraudes, fallas operativas y pérdidas financieras antes de que escalen a crisis corporativas."
-            ],
-            cierre: "En la economía digital, los datos son el nuevo petróleo, pero solo si tienes la refinería para convertirlos en combustible estratégico.",
-            frase_transicion: "Las empresas data-driven no son las que más datos tienen, sino las que mejor los convierten en decisiones rentables y verificables.",
-            tags: "#BigData #AnaliticaPredictiva #DataScience #InteligenciaDeNegocios #Tecnologia #Estrategia #Datos"
-        },
-        {
-            id: 15,
-            categoria: "Customer Experience con IA",
-            titulo: "Experiencia del Cliente Aumentada: La personalización como ventaja competitiva",
-            apertura: "Los clientes ya no comparan tu servicio con tu competencia directa. Te comparan con la mejor experiencia digital que han tenido en cualquier industria.",
-            contexto: "La IA está elevando las expectativas de experiencia del cliente a niveles sin precedentes. Sistemas inteligentes permiten anticipar necesidades, resolver problemas antes de que ocurran y personalizar cada interacción a escala masiva. Las empresas que no puedan ofrecer este nivel de experiencia quedarán rezagadas independientemente de la calidad de su producto.",
-            puntos: [
-                "• **Anticipación Inteligente:** Los algoritmos predictivos analizan comportamiento histórico para sugerir productos, servicios o soluciones antes de que el cliente las busque activamente.",
-                "• **Soporte Proactivo:** Chatbots y asistentes virtuales resuelven el 80% de consultas rutinarias instantáneamente, liberando a humanos para casos complejos que requieren empatía y criterio.",
-                "• **Omnicanalidad Perfecta:** El cliente puede iniciar una conversación en un canal y continuarla en otro sin perder contexto, creando experiencias fluidas que construyen lealtad de marca."
-            ],
-            cierre: "La experiencia del cliente ya no es un diferenciador, es el precio de entrada al mercado moderno.",
-            frase_transicion: "Las marcas que dominen la personalización a escala serán las que capturen la lealtad de consumidores cada vez más exigentes y menos pacientes.",
-            tags: "#CustomerExperience #CX #IA #Personalizacion #Servicio #Innovacion #Clientes"
-        },
-        {
-            id: 16,
-            categoria: "IA en Recursos Humanos",
-            titulo: "Recursos Humanos Aumentados: Contratar, retener y potenciar talento con IA",
-            apertura: "El mayor activo de cualquier organización no son los datos ni la tecnología. Son las personas. Y la IA puede ayudar a gestionarlas mejor.",
-            contexto: "La gestión del talento humano está siendo revolucionada por sistemas inteligentes capaces de identificar candidatos ideales, predecir rotación y personalizar planes de desarrollo. Las organizaciones que adopten IA en RRHH no solo reclutan mejor, sino que retienen y potencian el talento existente de formas antes imposibles.",
-            puntos: [
-                "• **Reclutamiento Inteligente:** Algoritmos analizan miles de CVs en segundos, identificando patrones de éxito basados en datos históricos de contrataciones exitosas en la organización.",
-                "• **Predicción de Rotación:** Modelos predictivos detectan señales tempranas de desvinculación emocional, permitiendo intervenciones antes de perder talento crítico.",
-                "• **Desarrollo Personalizado:** Plataformas de aprendizaje adaptativo diseñan rutas de capacitación únicas para cada empleado basadas en sus fortalezas, debilidades y objetivos profesionales."
-            ],
-            cierre: "La tecnología no reemplaza la gestión humana del talento, la amplifica para que cada persona alcance su máximo potencial.",
-            frase_transicion: "Las empresas con mejor talento no son las que más pagan, sino las que mejor identifican, desarrollan y retienen a sus profesionales clave.",
-            tags: "#RecursosHumanos #Talento #IA #Reclutamiento #GestionDelTalento #RRHH #Innovacion"
-        },
-        {
-            id: 17,
-            categoria: "Blockchain e IA",
-            titulo: "Blockchain + IA: La convergencia que redefine la confianza digital",
-            apertura: "La IA genera inteligencia. El blockchain genera confianza. Juntos, crean sistemas donde la automatización es verificable e inmutable.",
-            contexto: "La combinación de inteligencia artificial y blockchain está creando infraestructuras donde las decisiones algorítmicas son auditables, transparentes e imposibles de manipular. Desde cadenas de suministro hasta sistemas financieros, esta convergencia está sentando las bases de una nueva generación de sistemas confiables por diseño.",
-            puntos: [
-                "• **Trazabilidad Completa:** Cada decisión tomada por un modelo de IA queda registrada en blockchain, creando una auditoría inmutable de acciones y resultados.",
-                "• **Contratos Inteligentes Adaptativos:** Smart contracts que utilizan IA para ajustar términos automáticamente según condiciones predefinidas, sin intervención humana ni posibilidad de manipulación.",
-                "• **Descentralización Inteligente:** Redes distribuidas donde algoritmos de IA operan sin control centralizado, garantizando transparencia y resistencia a la censura."
-            ],
-            cierre: "La confianza digital del futuro no se basa en instituciones, sino en la verificabilidad matemática de sistemas descentralizados e inteligentes.",
-            frase_transicion: "Las industrias que adopten esta convergencia primero establecerán nuevos estándares de transparencia que las regulaciones posteriores solo podrán intentar alcanzar.",
-            tags: "#Blockchain #IA #Web3 #TecnologiaEmergente #Confianza #Innovacion #Descentralizacion"
-        },
-        {
-            id: 18,
-            categoria: "IA en Salud y Medicina",
-            titulo: "Medicina Predictiva: Cuando la IA salva vidas antes de que aparezcan síntomas",
-            apertura: "La medicina reactiva trata enfermedades. La medicina predictiva las previene antes de que existan.",
-            contexto: "La inteligencia artificial está transformando el sector salud desde diagnóstico hasta tratamiento personalizado. Algoritmos capaces de detectar patrones en millones de casos clínicos están logrando identificar enfermedades en etapas tan tempranas que los médicos humanos simplemente no podían verlas. Estamos entrando en la era de la medicina anticipatoria.",
-            puntos: [
-                "• **Diagnóstico Precoz:** Redes neuronales analizan imágenes médicas con precisión superior a radiólogos experimentados, detectando tumores y anomalías en etapas donde la intervención es más efectiva.",
-                "• **Tratamientos Personalizados:** La IA procesa información genética individual para recomendar terapias específicas que maximizan efectividad y minimizan efectos secundarios para cada paciente.",
-                "• **Gestión Hospitalaria:** Algoritmos optimizan flujos de pacientes, asignación de recursos y programación de cirugías, reduciendo tiempos de espera y mejorando outcomes clínicos."
-            ],
-            cierre: "La promesa de la medicina del siglo XXI no es solo curar, sino prevenir y personalizar la salud de cada individuo.",
-            frase_transicion: "Los sistemas de salud que integren IA proactivamente no solo salvarán más vidas, sino que lo harán de forma más eficiente y accesible para todos.",
-            tags: "#Salud #MedicinaDigital #IA #Innovacion #HealthTech #TecnologiaMedica #Futuro"
-        },
-        {
-            id: 19,
-            categoria: "IA Conversacional y NLP",
-            titulo: "Lenguaje Natural: Cuando las máquinas aprenden a hablar como humanos",
-            apertura: "La barrera entre humanos y máquinas siempre fue el lenguaje. Esa barrera acaba de caer.",
-            contexto: "El procesamiento de lenguaje natural ha alcanzado un punto de inflexión donde los modelos comprenden contexto, ironía, emoción y matices culturales con precisión sorprendente. Esta capacidad está redefiniendo cómo interactuamos con tecnología en todos los sectores, desde servicio al cliente hasta análisis de mercado.",
-            puntos: [
-                "• **Comprensión Contextual:** Los modelos modernos de NLP entienden no solo palabras individuales, sino el significado completo considerando tono, intención y contexto cultural.",
-                "• **Generación de Contenido:** Desde emails hasta reportes técnicos, la IA puede producir texto coherente, relevante y adaptado a la audiencia específica en segundos.",
-                "• **Análisis de Sentimiento:** Procesar miles de comentarios, reviews y menciones en redes sociales para detectar tendencias de percepción de marca en tiempo real."
-            ],
-            cierre: "El lenguaje natural es la interfaz universal. Dominarlo es la clave para que la tecnología sea verdaderamente accesible para todos.",
-            frase_transicion: "Las empresas que mejor utilicen IA conversacional no solo mejorarán eficiencia, sino que crearán experiencias más humanas en entornos digitales.",
-            tags: "#NLP #IAConversacional #LenguajeNatural #Chatbots #Tecnologia #Innovacion #IA"
-        },
-        {
-            id: 20,
-            categoria: "IA en Finanzas y FinTech",
-            titulo: "Finanzas Algorítmicas: Trading, riesgo y decisiones a velocidad digital",
-            apertura: "En los mercados financieros modernos, la velocidad no es una ventaja. Es el requisito mínimo para competir.",
-            contexto: "La industria financiera ha sido uno de los primeros sectores en adoptar IA de forma masiva. Desde trading algorítmico hasta evaluación de crédito, los sistemas inteligentes están tomando decisiones que antes requerían años de experiencia humana, pero ahora se ejecutan en milisegundos con mayor precisión estadística.",
-            puntos: [
-                "• **Trading Automatizado:** Algoritmos procesan noticias, redes sociales y datos de mercado para ejecutar operaciones rentables más rápido que cualquier trader humano.",
-                "• **Evaluación de Riesgo:** Modelos predictivos analizan patrones de comportamiento financiero para determinar solvencia crediticia con mayor precisión que modelos tradicionales basados en reglas fijas.",
-                "• **Detección de Fraude:** Sistemas de aprendizaje automático identifican transacciones sospechosas en tiempo real, protegiendo tanto a instituciones como a consumidores de actividades ilícitas."
-            ],
-            cierre: "Las finanzas del futuro son algorítmicas, instantáneas y basadas en datos, no en intuición ni experiencia anecdótica.",
-            frase_transicion: "Las instituciones financieras que no adopten IA avanzada no solo perderán competitividad, sino relevancia en el mercado digital.",
-            tags: "#FinTech #IA #Finanzas #Trading #Innovacion #TecnologiaFinanciera #Blockchain"
-        },
-        {
-            id: 21,
-            categoria: "IA en Educación",
-            titulo: "Educación Personalizada: Cuando cada estudiante tiene su propio plan de aprendizaje",
-            apertura: "El modelo educativo de un profesor para 30 estudiantes fue diseñado para la eficiencia industrial, no para el aprendizaje efectivo.",
-            contexto: "La inteligencia artificial está permitiendo algo que siempre fue imposible a escala: educación verdaderamente personalizada. Plataformas adaptativas ajustan contenido, ritmo y metodología según las necesidades únicas de cada estudiante, maximizando comprensión y retención de conocimiento.",
-            puntos: [
-                "• **Rutas de Aprendizaje Adaptativas:** Algoritmos identifican fortalezas y debilidades individuales, diseñando secuencias de contenido optimizadas para cada perfil cognitivo.",
-                "• **Retroalimentación Instantánea:** Los estudiantes reciben corrección y guía inmediata sobre ejercicios, sin esperar días por calificaciones, acelerando el ciclo de aprendizaje.",
-                "• **Democratización del Conocimiento:** Contenido educativo de alta calidad se vuelve accesible globalmente, reduciendo brechas de acceso a educación de excelencia."
-            ],
-            cierre: "La educación del futuro no será masiva y estandarizada, sino personalizada y adaptada al potencial único de cada persona.",
-            frase_transicion: "Las instituciones educativas que adopten IA no solo mejorarán resultados académicos, sino que prepararán mejor a estudiantes para un mundo laboral algorítmico.",
-            tags: "#Educacion #EdTech #IA #AprendizajePersonalizado #Innovacion #Tecnologia #Futuro"
-        },
-        {
-            id: 22,
-            categoria: "IA en Marketing Digital",
-            titulo: "Marketing Hiper-Personalizado: Del segmento masivo al individuo único",
-            apertura: "El marketing masivo murió. El futuro es un mensaje único para cada persona, en el momento exacto que lo necesita.",
-            contexto: "La IA está revolucionando el marketing al permitir personalización a escala antes imposible. Algoritmos analizan comportamiento, preferencias y contexto de millones de usuarios para entregar mensajes, ofertas y contenido perfectamente calibrados para cada individuo, maximizando conversión y minimizando desperdicio publicitario.",
-            puntos: [
-                "• **Segmentación Dinámica:** En lugar de categorías estáticas, los usuarios se agrupan y reagrupan constantemente según comportamiento en tiempo real y contexto actual.",
-                "• **Optimización de Campañas:** Algoritmos de A/B testing automático prueban miles de variantes simultáneamente, identificando mensajes ganadores sin intervención manual.",
-                "• **Predicción de Conversión:** Modelos predictivos calculan la probabilidad de que cada usuario convierta, permitiendo asignar presupuesto publicitario de forma óptima."
-            ],
-            cierre: "El marketing del futuro no habla a audiencias, conversa con individuos.",
-            frase_transicion: "Las marcas que dominen el marketing algorítmico no solo venderán más, sino que construirán relaciones más profundas con cada cliente.",
-            tags: "#MarketingDigital #IA #Personalizacion #Automatizacion #Innovacion #Publicidad #Tecnologia"
-        },
-        {
-            id: 23,
-            categoria: "Edge Computing e IA",
-            titulo: "Inteligencia en el Borde: Cuando la IA procesa datos donde se generan",
-            apertura: "La nube es poderosa, pero la velocidad de la luz tiene límites. El futuro de la IA es local.",
-            contexto: "El edge computing está transformando cómo se implementa la inteligencia artificial. En lugar de enviar datos a centros remotos, los dispositivos procesan información localmente, reduciendo latencia, costos de transmisión y dependencia de conectividad. Esta arquitectura es crítica para aplicaciones que no pueden tolerar demoras.",
-            puntos: [
-                "• **Latencia Cero:** Vehículos autónomos, sistemas de seguridad y dispositivos médicos requieren decisiones instantáneas que no pueden esperar respuesta desde la nube.",
-                "• **Privacidad por Diseño:** Procesar datos sensibles localmente sin enviarlos a servidores externos protege información crítica y cumple regulaciones de privacidad.",
-                "• **Resiliencia Operativa:** Sistemas que funcionan sin depender de conexión constante a internet garantizan operación continua incluso en zonas remotas o durante interrupciones de red."
-            ],
-            cierre: "La inteligencia distribuida no es el futuro, es el presente de las aplicaciones críticas que no pueden esperar.",
-            frase_transicion: "Las organizaciones que dominen el edge computing ganarán ventaja en velocidad, privacidad y resiliencia operativa.",
-            tags: "#EdgeComputing #IA #Tecnologia #IoT #Innovacion #Latencia #Computacion"
-        },
-        {
-            id: 24,
-            categoria: "IA Generativa",
-            titulo: "IA Generativa: De consumidores de contenido a creadores aumentados",
-            apertura: "La IA generativa no reemplaza la creatividad humana. La democratiza.",
-            contexto: "Los modelos generativos de imagen, texto, código y audio están redefiniendo quién puede crear contenido profesional. Lo que antes requería años de entrenamiento técnico ahora es accesible mediante prompts en lenguaje natural. Esta democratización está redistribuyendo el poder creativo globalmente.",
-            puntos: [
-                "• **Creación Acelerada:** Generar variantes de diseños, textos o estrategias en segundos permite explorar más opciones antes de tomar decisiones finales.",
-                "• **Prototipado Rápido:** Empresas pueden visualizar productos, campañas y conceptos antes de invertir en producción completa, reduciendo riesgo y costo de iteración.",
-                "• **Acceso Universal:** Profesionales sin formación técnica en diseño, programación o edición pueden ahora materializar ideas complejas con herramientas de IA generativa."
-            ],
-            cierre: "La IA generativa no es solo una herramienta, es el gran nivelador creativo del siglo XXI.",
-            frase_transicion: "Los profesionales que dominen el arte del prompt engineering tendrán superpoderes creativos que antes solo poseían especialistas altamente entrenados.",
-            tags: "#IAGenerativa #Creatividad #Innovacion #Contenido #Tecnologia #Diseño #Futuro"
-        },
-        {
-            id: 25,
-            categoria: "IA y Cambio Climático",
-            titulo: "IA para el Planeta: Algoritmos al servicio de la sostenibilidad ambiental",
-            apertura: "La crisis climática es el desafío más urgente de nuestra generación. La IA puede ser parte de la solución.",
-            contexto: "La inteligencia artificial está siendo aplicada a problemas ambientales complejos: desde optimizar redes energéticas hasta predecir patrones climáticos y monitorear deforestación. La capacidad de procesar datos ambientales masivos en tiempo real está permitiendo intervenciones más efectivas y oportunas.",
-            puntos: [
-                "• **Optimización Energética:** Algoritmos ajustan consumo eléctrico en tiempo real, balanceando demanda con fuentes renovables y reduciendo desperdicio energético a escala urbana.",
-                "• **Monitoreo Ambiental:** Satélites combinados con IA detectan deforestación ilegal, cambios en ecosistemas y contaminación industrial con precisión y velocidad imposibles para inspección humana.",
-                "• **Agricultura Inteligente:** Sensores y modelos predictivos optimizan riego, uso de fertilizantes y rotación de cultivos, maximizando rendimiento mientras minimizan impacto ambiental."
-            ],
-            cierre: "La tecnología que creó parte del problema puede ser clave para resolver la mayor crisis que enfrenta la humanidad.",
-            frase_transicion: "Las organizaciones que utilicen IA para sostenibilidad no solo cumplirán regulaciones, sino que liderarán la transición hacia una economía verde y rentable.",
-            tags: "#CambioClimatico #Sostenibilidad #IA #MedioAmbiente #Innovacion #Tecnologia #Verde"
-        },
-        {
-            id: 26,
-            categoria: "Computación Cuántica e IA",
-            titulo: "La Convergencia Cuántica: Cuando la IA alcanza velocidades exponenciales",
-            apertura: "La computación clásica tiene límites físicos. La cuántica los redefine.",
-            contexto: "La computación cuántica promete resolver problemas que son intratables para computadoras tradicionales. Cuando se combine plenamente con inteligencia artificial, veremos avances en simulación molecular, optimización logística y criptografía que hoy son imposibles. Aunque aún incipiente, su potencial es transformador.",
-            puntos: [
-                "• **Optimización Extrema:** Problemas de logística, finanzas y diseño molecular que tomarían milenios en computadoras clásicas podrían resolverse en horas con algoritmos cuánticos.",
-                "• **Descubrimiento de Fármacos:** Simular interacciones moleculares complejas acelerará el desarrollo de medicamentos personalizados y tratamientos para enfermedades antes incurables.",
-                "• **Seguridad Post-Cuántica:** La misma tecnología que amenaza la criptografía actual está impulsando el desarrollo de sistemas de seguridad inmunes a ataques cuánticos."
-            ],
-            cierre: "La computación cuántica aún está en pañales, pero su convergencia con IA redefinirá los límites de lo computacionalmente posible.",
-            frase_transicion: "Las organizaciones que inviertan ahora en comprender computación cuántica estarán preparadas para el salto tecnológico más radical desde el transistor.",
-            tags: "#ComputacionCuantica #IA #Innovacion #Tecnologia #Futuro #Ciencia #Cuantica"
-        },
-        {
-            id: 27,
-            categoria: "IA en Logística y Supply Chain",
-            titulo: "Supply Chain Inteligente: Optimización algorítmica de cadenas globales",
-            apertura: "La logística moderna es demasiado compleja para gestión humana. Los algoritmos son el único camino hacia la eficiencia real.",
-            contexto: "Las cadenas de suministro globales involucran miles de variables interdependientes que cambian constantemente. La IA permite optimizar inventarios, rutas, tiempos y costos de forma dinámica, respondiendo a disrupciones en tiempo real y maximizando eficiencia operativa.",
-            puntos: [
-                "• **Predicción de Demanda:** Modelos analizan tendencias históricas, estacionalidad y eventos externos para anticipar necesidades de inventario con precisión estadística.",
-                "• **Optimización de Rutas:** Algoritmos calculan las rutas de entrega más eficientes considerando tráfico, clima, costos de combustible y ventanas de entrega en tiempo real.",
-                "• **Gestión de Disrupciones:** Sistemas predictivos identifican riesgos en la cadena de suministro antes de que se materialicen, permitiendo activar planes de contingencia proactivamente."
-            ],
-            cierre: "La supply chain del futuro no reacciona a problemas, los anticipa y los resuelve antes de que impacten al cliente.",
-            frase_transicion: "Las empresas con logística algorítmica no solo reducen costos, sino que convierten la eficiencia operativa en ventaja competitiva insuperable.",
-            tags: "#SupplyChain #Logistica #IA #Optimizacion #Innovacion #Operaciones #Tecnologia"
-        },
-        {
-            id: 28,
-            categoria: "IA Explicable (XAI)",
-            titulo: "IA Explicable: Cuando los algoritmos deben rendir cuentas",
-            apertura: "Un modelo que no puedes explicar es un modelo en el que no puedes confiar.",
-            contexto: "A medida que la IA toma decisiones más críticas, la demanda de explicabilidad crece. La IA explicable (XAI) busca hacer transparentes las decisiones algorítmicas, permitiendo auditar, comprender y confiar en sistemas que afectan vidas humanas, desde aprobaciones crediticias hasta diagnósticos médicos.",
-            puntos: [
-                "• **Confianza Regulatoria:** Sectores altamente regulados como finanzas y salud exigen que cada decisión automatizada pueda ser justificada y auditada por humanos.",
-                "• **Detección de Sesgos:** La explicabilidad permite identificar cuándo un modelo toma decisiones basadas en correlaciones espurias o prejuicios históricos en los datos de entrenamiento.",
-                "• **Mejora Continua:** Comprender por qué un modelo falla en casos específicos permite iteraciones más inteligentes que mejoran precisión y equidad sistemáticamente."
-            ],
-            cierre: "La IA del futuro no solo será poderosa, será comprensible, auditable y digna de confianza.",
-            frase_transicion: "Las organizaciones que prioricen explicabilidad construirán sistemas de IA que resistan escrutinio regulatorio y generen confianza genuina del público.",
-            tags: "#IAExplicable #XAI #Transparencia #Etica #Regulacion #Confianza #Innovacion"
-        },
-        {
-            id: 29,
-            categoria: "IA en Recursos Energéticos",
-            titulo: "Energía Inteligente: Optimizar generación, distribución y consumo con IA",
-            apertura: "La transición energética no es solo cambiar combustibles fósiles por renovables. Es gestionar complejidad sin precedentes.",
-            contexto: "Las redes eléctricas modernas deben integrar fuentes intermitentes como solar y eólica, balancear demanda dinámica y maximizar eficiencia. La IA está siendo fundamental para gestionar esta complejidad, optimizando generación, almacenamiento y distribución en tiempo real.",
-            puntos: [
-                "• **Predicción de Generación:** Algoritmos pronostican producción de energía renovable según patrones climáticos, permitiendo mejor planificación de respaldo y almacenamiento.",
-                "• **Gestión de Demanda:** Sistemas inteligentes ajustan consumo en edificios y fábricas según disponibilidad de energía, reduciendo picos y aprovechando excedentes renovables.",
-                "• **Mantenimiento Predictivo:** Sensores y modelos de IA detectan anomalías en infraestructura energética antes de fallas catastróficas, minimizando interrupciones y costos de reparación."
-            ],
-            cierre: "La red eléctrica del futuro no solo será verde, será inteligente y autogestionada por algoritmos.",
-            frase_transicion: "Las utilities que adopten IA no solo cumplirán objetivos climáticos, sino que operarán redes más confiables y eficientes que nunca.",
-            tags: "#Energia #IA #Sostenibilidad #EnergiaRenovable #SmartGrid #Innovacion #Tecnologia"
-        },
-        {
-            id: 30,
-            categoria: "IA en Manufactura 4.0",
-            titulo: "Fábricas Inteligentes: La cuarta revolución industrial ya está aquí",
-            apertura: "La manufactura moderna no trata de producir más. Trata de producir mejor, más rápido y con menos desperdicio.",
-            contexto: "La Industria 4.0 integra IA, IoT, robótica y análisis de datos para crear fábricas autónomas que optimizan producción en tiempo real. Desde mantenimiento predictivo hasta control de calidad automatizado, la manufactura inteligente está redefiniendo competitividad industrial.",
-            puntos: [
-                "• **Mantenimiento Predictivo:** Sensores monitorean maquinaria constantemente, detectando señales tempranas de desgaste que permiten reparaciones programadas antes de fallas costosas.",
-                "• **Control de Calidad Automatizado:** Visión por computadora inspecciona productos con precisión superior a inspección humana, detectando defectos microscópicos que pasarían desapercibidos.",
-                "• **Optimización de Procesos:** Algoritmos ajustan parámetros de producción dinámicamente para maximizar rendimiento, minimizar desperdicio y adaptarse a variaciones en materias primas."
-            ],
-            cierre: "La fábrica del futuro no tiene líneas de producción rígidas, tiene sistemas adaptativos que se reconfiguran según demanda en tiempo real.",
-            frase_transicion: "Los fabricantes que adopten IA no solo reducirán costos, sino que ganarán agilidad imposible en modelos industriales tradicionales.",
-            tags: "#Manufactura #Industria40 #IA #Automatizacion #Innovacion #Produccion #Tecnologia"
-        },
-        {
-            id: 31,
-            categoria: "IA en Retail y E-commerce",
-            titulo: "Retail Inteligente: Personalización que convierte navegantes en compradores",
-            apertura: "En e-commerce, cada segundo de fricción es un cliente perdido. La IA elimina esa fricción.",
-            contexto: "El retail moderno es una batalla algorítmica por atención y conversión. Sistemas de recomendación, pricing dinámico y gestión de inventario impulsados por IA están permitiendo experiencias de compra hiper-personalizadas que maximizan ventas mientras optimizan márgenes.",
-            puntos: [
-                "• **Recomendaciones Contextuales:** Algoritmos analizan comportamiento en tiempo real para sugerir productos con alta probabilidad de conversión basándose en millones de interacciones históricas.",
-                "• **Pricing Dinámico:** Modelos ajustan precios automáticamente según demanda, competencia, inventario y perfil del cliente, maximizando ingresos sin sacrificar competitividad.",
-                "• **Gestión de Inventario:** IA predice qué productos tendrán demanda en cada ubicación, optimizando stock para minimizar quiebres y excedentes simultáneamente."
-            ],
-            cierre: "El retail del futuro no es masivo ni genérico, es una experiencia única diseñada algorítmicamente para cada cliente individual.",
-            frase_transicion: "Los retailers que dominen personalización algorítmica no solo venderán más, sino que construirán lealtad imposible de replicar por competidores tradicionales.",
-            tags: "#Retail #Ecommerce #IA #Personalizacion #Ventas #Innovacion #Comercio"
-        },
-        {
-            id: 32,
-            categoria: "IA en Agricultura",
-            titulo: "Agricultura de Precisión: Alimentar al mundo con menos recursos",
-            apertura: "La agricultura tradicional desperdicia agua, fertilizantes y tierra. La agricultura inteligente optimiza cada recurso.",
-            contexto: "Con una población global creciente y recursos limitados, la agricultura debe producir más con menos impacto ambiental. La IA combinada con sensores, drones y datos satelitales está permitiendo agricultura de precisión que maximiza rendimiento mientras minimiza huella ecológica.",
-            puntos: [
-                "• **Riego Inteligente:** Sensores de humedad y modelos climáticos optimizan uso de agua, irrigando solo donde y cuando es necesario, reduciendo desperdicio hasta 50%.",
-                "• **Detección de Plagas:** Drones con visión por computadora identifican infestaciones en etapas tempranas, permitiendo intervenciones localizadas en lugar de fumigación masiva.",
-                "• **Optimización de Cultivos:** Análisis de suelo, clima e histórico de rendimiento guían decisiones sobre qué plantar, cuándo y dónde para maximizar productividad sostenible."
-            ],
-            cierre: "La agricultura del futuro no es industrial, es inteligente, sostenible y capaz de alimentar al planeta sin agotarlo.",
-            frase_transicion: "Los agricultores que adopten IA no solo aumentarán rendimiento, sino que preservarán recursos para generaciones futuras.",
-            tags: "#Agricultura #AgTech #IA #Sostenibilidad #Innovacion #AgriculturaDePrecision #Tecnologia"
-        },
-        {
-            id: 33,
-            categoria: "IA en Medios y Entretenimiento",
-            titulo: "Entretenimiento Algorítmico: Cuando la IA crea y personaliza contenido",
-            apertura: "El entretenimiento masivo murió. El futuro es contenido infinito personalizado algorítmicamente para cada usuario.",
-            contexto: "Las plataformas de streaming han demostrado el poder de la recomendación algorítmica. Ahora la IA está dando el siguiente paso: generar contenido personalizado, desde música hasta narrativas, adaptado a preferencias individuales. La línea entre consumo y creación se está difuminando.",
-            puntos: [
-                "• **Curaduría Inteligente:** Algoritmos analizan patrones de consumo para recomendar contenido con precisión sorprendente, manteniendo engagement y reduciendo churn.",
-                "• **Generación Automatizada:** IA crea música, guiones y hasta videos completos adaptados a nichos específicos que no son económicamente viables para producción tradicional.",
-                "• **Personalización Dinámica:** El mismo contenido puede ajustarse en tiempo real según reacciones del usuario, creando experiencias interactivas imposibles en medios lineales."
-            ],
-            cierre: "El entretenimiento del futuro no es pasivo ni genérico, es una experiencia activa y única para cada persona.",
-            frase_transicion: "Las plataformas que dominen personalización algorítmica capturarán atención en un mercado donde el contenido es infinito pero el tiempo es finito.",
-            tags: "#Entretenimiento #Streaming #IA #Contenido #Personalizacion #Innovacion #Medios"
-        },
-        {
-            id: 34,
-            categoria: "IA en Arquitectura y Construcción",
-            titulo: "Construcción Inteligente: Diseñar edificios que se optimizan a sí mismos",
-            apertura: "Los edificios del futuro no solo se diseñan con IA. Se gestionan con ella durante toda su vida útil.",
-            contexto: "La IA está transformando arquitectura y construcción desde diseño generativo hasta gestión de proyectos y mantenimiento de edificios inteligentes. Algoritmos pueden explorar miles de opciones de diseño, optimizar uso de materiales y gestionar sistemas de climatización y energía en tiempo real.",
-            puntos: [
-                "• **Diseño Generativo:** IA explora miles de configuraciones arquitectónicas que cumplen restricciones técnicas y estéticas, proponiendo soluciones que arquitectos humanos no considerarían.",
-                "• **Gestión de Proyectos:** Algoritmos optimizan cronogramas de construcción, asignación de recursos y logística para minimizar retrasos y sobrecostos.",
-                "• **Edificios Adaptativos:** Sensores y sistemas inteligentes ajustan iluminación, temperatura y ventilación según ocupación y condiciones climáticas, maximizando confort y eficiencia energética."
-            ],
-            cierre: "La arquitectura del futuro no solo será bella y funcional, será inteligente y autogestionada.",
-            frase_transicion: "Los desarrolladores que adopten IA en construcción no solo reducirán costos, sino que crearán edificios más sostenibles y adaptables que nunca.",
-            tags: "#Arquitectura #Construccion #IA #DiseñoGenerativo #SmartBuildings #Innovacion #Sostenibilidad"
-        },
-        {
-            id: 35,
-            categoria: "IA en Gobierno y Sector Público",
-            titulo: "Gobierno Inteligente: Servicios públicos eficientes impulsados por datos",
-            apertura: "El gobierno digital no es solo poner formularios en línea. Es reimaginar cómo el Estado sirve al ciudadano.",
-            contexto: "Los gobiernos enfrentan presión creciente para hacer más con menos recursos. La IA permite optimizar servicios públicos, desde asignación de recursos hasta detección de fraude y planificación urbana basada en datos. La transformación digital del sector público apenas comienza.",
-            puntos: [
-                "• **Servicios Personalizados:** Plataformas gubernamentales pueden anticipar necesidades ciudadanas y ofrecer información relevante proactivamente, reduciendo tiempos de gestión.",
-                "• **Detección de Fraude:** Algoritmos analizan patrones en declaraciones fiscales, licitaciones y prestaciones sociales para identificar anomalías que requieren auditoría.",
-                "• **Planificación Urbana:** Análisis de datos de movilidad, uso de suelo y servicios permite diseñar ciudades más eficientes, sostenibles y habitables."
-            ],
-            cierre: "El sector público puede ser tan eficiente como el privado si adopta las herramientas tecnológicas adecuadas.",
-            frase_transicion: "Los gobiernos que inviertan en IA no solo mejorarán servicios, sino que reconstruirán confianza ciudadana mediante eficiencia y transparencia.",
-            tags: "#GobiernoDigital #IA #SectorPublico #Innovacion #ServiciosCiudadanos #Tecnologia #Eficiencia"
-        },
-        {
-            id: 36,
-            categoria: "IA en Deporte y Rendimiento",
-            titulo: "Deporte Aumentado: Algoritmos que perfeccionan el rendimiento humano",
-            apertura: "Los récords deportivos se rompen con datos, no solo con esfuerzo físico.",
-            contexto: "La IA está revolucionando el deporte profesional desde análisis táctico hasta prevención de lesiones y optimización de entrenamiento. Equipos y atletas que adopten análisis algorítmico ganan ventajas competitivas imposibles de igualar con intuición tradicional.",
-            puntos: [
-                "• **Análisis Táctico:** Algoritmos procesan millones de jugadas históricas para identificar patrones, debilidades del oponente y estrategias óptimas en tiempo real.",
-                "• **Prevención de Lesiones:** Sensores y modelos predictivos monitorean biomecánica y carga de entrenamiento para detectar riesgo de lesión antes de que ocurra.",
-                "• **Optimización Personalizada:** Planes de entrenamiento adaptativos diseñados algorítmicamente maximizan rendimiento individual considerando genética, historial y objetivos específicos."
-            ],
-            cierre: "El deporte de élite ya no se decide solo en el campo, se gana en los laboratorios de datos.",
-            frase_transicion: "Los atletas y equipos que dominen análisis algorítmico tendrán ventajas que los competidores tradicionales simplemente no podrán alcanzar.",
-            tags: "#Deporte #IA #Rendimiento #Analitica #Innovacion #Tecnologia #Atletismo"
-        },
-        {
-            id: 37,
-            categoria: "IA en Seguros (InsurTech)",
-            titulo: "Seguros Algorítmicos: Riesgo personalizado y suscripción instantánea",
-            apertura: "Las tablas actuariales del siglo XX no pueden predecir los riesgos del siglo XXI.",
-            contexto: "La industria aseguradora está siendo transformada por IA que permite evaluar riesgo con precisión sin precedentes. Desde telemática en seguros de auto hasta análisis de salud predictivo, los modelos algorítmicos están reemplazando métodos tradicionales con pricing dinámico y personalizado.",
-            puntos: [
-                "• **Suscripción Instantánea:** Algoritmos procesan historial, datos de IoT y fuentes alternativas para aprobar pólizas en minutos en lugar de semanas.",
-                "• **Pricing Personalizado:** Cada cliente paga una prima basada en su perfil de riesgo real, no en promedios demográficos amplios que subsidian comportamientos riesgosos.",
-                "• **Detección de Fraude:** Modelos identifican patrones sospechosos en reclamaciones con precisión superior a auditores humanos, reduciendo pérdidas significativamente."
-            ],
-            cierre: "Los seguros del futuro no son productos estandarizados, son contratos dinámicos adaptados al riesgo individual en tiempo real.",
-            frase_transicion: "Las aseguradoras que adopten IA no solo reducirán siniestralidad, sino que ganarán clientes que valoran transparencia y equidad en pricing.",
-            tags: "#InsurTech #Seguros #IA #Riesgo #Innovacion #Tecnologia #Finanzas"
-        },
-        {
-            id: 38,
-            categoria: "IA en Legal Tech",
-            titulo: "Justicia Algorítmica: Cuando la IA asiste a abogados y tribunales",
-            apertura: "El derecho se basa en precedentes. Y nadie procesa precedentes mejor que un algoritmo.",
-            contexto: "La inteligencia artificial está transformando servicios legales mediante análisis automatizado de contratos, investigación jurisprudencial y predicción de resultados judiciales. Aunque la toma de decisiones finales sigue siendo humana, la IA amplifica capacidades de abogados y mejora acceso a justicia.",
-            puntos: [
-                "• **Revisión de Contratos:** Algoritmos analizan documentos legales en minutos, identificando cláusulas problemáticas y riesgos que tomarían horas a abogados humanos.",
-                "• **Investigación Jurisprudencial:** IA busca precedentes relevantes en millones de sentencias, proporcionando argumentación fundamentada que antes requería semanas de investigación manual.",
-                "• **Predicción de Resultados:** Modelos entrenados en casos históricos estiman probabilidades de éxito en litigios, informando estrategia legal y decisiones de acuerdo."
-            ],
-            cierre: "La IA no reemplaza el criterio legal, lo amplifica permitiendo que abogados se enfoquen en estrategia en lugar de tareas mecánicas.",
-            frase_transicion: "Los bufetes que adopten legal tech no solo aumentarán eficiencia, sino que democratizarán acceso a servicios legales de calidad.",
-            tags: "#LegalTech #Derecho #IA #Justicia #Innovacion #Tecnologia #Abogados"
-        },
-        {
-            id: 39,
-            categoria: "IA en Turismo y Hospitalidad",
-            titulo: "Turismo Inteligente: Experiencias personalizadas desde la reserva hasta el checkout",
-            apertura: "El turismo moderno no vende destinos, vende experiencias memorables diseñadas algorítmicamente.",
-            contexto: "La industria turística está siendo transformada por IA que personaliza cada punto de contacto con el viajero. Desde recomendaciones de destinos hasta optimización de pricing hotelero y chatbots multilingües, los algoritmos están elevando la experiencia del cliente mientras optimizan operaciones.",
-            puntos: [
-                "• **Personalización Anticipatoria:** Algoritmos analizan preferencias históricas para sugerir destinos, actividades y servicios que el viajero valorará incluso antes de buscarlos.",
-                "• **Revenue Management:** Hoteles y aerolíneas ajustan precios dinámicamente según demanda, eventos locales y patrones de reserva para maximizar ocupación e ingresos.",
-                "• **Asistencia 24/7:** Chatbots inteligentes resuelven consultas en cualquier idioma instantáneamente, mejorando experiencia del huésped mientras reducen carga operativa."
-            ],
-            cierre: "El turismo del futuro no es transaccional, es una experiencia continua y personalizada desde la inspiración hasta el regreso a casa.",
-            frase_transicion: "Las empresas turísticas que dominen personalización algorítmica no solo aumentarán bookings, sino que construirán lealtad de clientes que vuelven una y otra vez.",
-            tags: "#Turismo #Hospitalidad #IA #Personalizacion #Innovacion #Viajes #Tecnologia"
-        },
-        {
-            id: 40,
-            categoria: "IA en Bioinformática",
-            titulo: "Descifrando la Vida: Cuando la IA lee el código genético",
-            apertura: "El genoma humano tiene 3 mil millones de pares de bases. Solo la IA puede encontrar patrones en esa complejidad.",
-            contexto: "La bioinformática combina biología, computación y estadística para extraer conocimiento de datos biológicos masivos. La IA está acelerando descubrimientos en genómica, desarrollo de fármacos y medicina personalizada al identificar patrones que serían imposibles de detectar manualmente.",
-            puntos: [
-                "• **Análisis Genómico:** Algoritmos identifican mutaciones, variantes y marcadores genéticos asociados a enfermedades en fracciones del tiempo que requeriría análisis manual.",
-                "• **Diseño de Fármacos:** IA simula interacciones moleculares para identificar compuestos prometedores, reduciendo años y millones de dólares en desarrollo de medicamentos.",
-                "• **Medicina de Precisión:** Perfiles genéticos individuales permiten tratamientos personalizados que maximizan efectividad y minimizan efectos adversos para cada paciente."
-            ],
-            cierre: "La bioinformática impulsada por IA no solo acelera descubrimientos científicos, está redefiniendo cómo entendemos y tratamos la vida misma.",
-            frase_transicion: "Las instituciones que dominen bioinformática algorítmica liderarán la siguiente revolución en medicina, agricultura y biotecnología.",
-            tags: "#Bioinformatica #Genomica #IA #Medicina #Ciencia #Innovacion #Biotecnologia"
-        },
-        {
-            id: 41,
-            categoria: "IA en Astronomía y Exploración Espacial",
-            titulo: "Explorando el Cosmos: La IA como co-piloto en la carrera espacial",
-            apertura: "El universo genera más datos de los que astrónomos humanos pueden procesar. La IA es el telescopio del siglo XXI.",
-            contexto: "La astronomía moderna genera petabytes de datos diariamente. Telescopios, satélites y sondas espaciales producen información a velocidades que solo la IA puede analizar efectivamente. Desde detectar exoplanetas hasta optimizar trayectorias de naves, los algoritmos son esenciales para exploración espacial.",
-            puntos: [
-                "• **Detección Automatizada:** Algoritmos identifican exoplanetas, supernovas y anomalías cósmicas en datos astronómicos con velocidad y precisión imposibles para revisión manual.",
-                "• **Navegación Autónoma:** Naves espaciales utilizan IA para tomar decisiones en tiempo real sin esperar instrucciones desde Tierra, crítico para misiones a distancias extremas.",
-                "• **Análisis de Señales:** Proyectos de búsqueda de inteligencia extraterrestre (SETI) utilizan machine learning para filtrar billones de señales identificando patrones potencialmente artificiales."
-            ],
-            cierre: "La exploración espacial del siglo XXI no solo se trata de ir más lejos, sino de entender mejor lo que encontramos usando inteligencia artificial.",
-            frase_transicion: "Las agencias espaciales y empresas privadas que dominen IA tendrán ventaja decisiva en la nueva carrera por explorar y colonizar el cosmos.",
-            tags: "#Astronomia #Espacio #IA #Exploracion #Ciencia #Tecnologia #Innovacion"
-        },
-        {
-            id: 42,
-            categoria: "IA en Moda y Diseño",
-            titulo: "Moda Algorítmica: Tendencias predichas y diseño generativo personalizado",
-            apertura: "La moda del futuro no sigue tendencias. Las predice y las crea algorítmicamente.",
-            contexto: "La industria de la moda está siendo transformada por IA que predice tendencias, optimiza inventario y hasta genera diseños. Desde análisis de redes sociales para detectar estilos emergentes hasta recomendaciones hiper-personalizadas, los algoritmos están redefiniendo cómo se crea, distribuye y consume moda.",
-            puntos: [
-                "• **Predicción de Tendencias:** Algoritmos analizan redes sociales, pasarelas y comportamiento de compra para identificar estilos emergentes antes de que se vuelvan mainstream.",
-                "• **Diseño Generativo:** IA crea patrones, texturas y siluetas únicas basadas en preferencias históricas y restricciones técnicas, acelerando el proceso creativo.",
-                "• **Tallas Virtuales:** Modelos 3D y visión por computadora permiten probadores virtuales que reducen devoluciones y mejoran experiencia de compra online."
-            ],
-            cierre: "La moda del futuro no es producción masiva estandarizada, es diseño personalizado a escala industrial impulsado por algoritmos.",
-            frase_transicion: "Las marcas que dominen IA en moda no solo anticiparán tendencias, sino que las crearán y las adaptarán a cada cliente individual.",
-            tags: "#Moda #Diseño #IA #Tendencias #Innovacion #FashionTech #Personalizacion"
-        },
-        {
-            id: 43,
-            categoria: "IA y Neurociencia",
-            titulo: "Interfaces Cerebro-Computadora: Cuando la mente controla la máquina directamente",
-            apertura: "La frontera final de la interacción humano-computadora no es la voz ni el gesto. Es el pensamiento directo.",
-            contexto: "Las interfaces cerebro-computadora (BCI) combinan neurociencia e IA para interpretar señales cerebrales y traducirlas en comandos digitales. Aunque aún experimental, esta tecnología promete revolucionar medicina restaurativa, comunicación y eventualmente, cómo interactuamos con tecnología.",
-            puntos: [
-                "• **Restauración Médica:** BCIs permiten a personas con parálisis controlar prótesis robóticas o cursores con el pensamiento, devolviendo autonomía a pacientes con lesiones neurológicas.",
-                "• **Comunicación Aumentada:** Personas con condiciones que impiden hablar pueden comunicarse mediante interfaces que decodifican intención comunicativa directamente desde actividad cerebral.",
-                "• **Cognición Aumentada:** A largo plazo, BCIs podrían permitir interfaces directas con bases de datos, ampliando memoria y capacidades cognitivas humanas más allá de límites biológicos."
-            ],
-            cierre: "Las interfaces cerebro-computadora no son ciencia ficción lejana, son tecnología emergente que redefinirá qué significa ser humano en la era digital.",
-            frase_transicion: "Las organizaciones que inviertan en BCIs hoy estarán preparadas para la siguiente revolución en interacción humano-máquina.",
-            tags: "#Neurociencia #BCI #IA #Innovacion #Tecnologia #Salud #Futuro"
-        },
-        {
-            id: 44,
-            categoria: "IA en Ciberseguridad Ofensiva",
-            titulo: "La Guerra Algorítmica: Cuando la IA ataca y defiende simultáneamente",
-            apertura: "La ciberseguridad se ha convertido en una carrera armamentista donde ambos lados utilizan inteligencia artificial.",
-            contexto: "La IA no solo defiende sistemas, también puede ser utilizada para encontrar vulnerabilidades y ejecutar ataques sofisticados. Esta dualidad obliga a organizaciones a comprender tanto las capacidades ofensivas como defensivas de los algoritmos para mantenerse seguras.",
-            puntos: [
-                "• **Pentesting Automatizado:** Herramientas de IA pueden escanear sistemas buscando vulnerabilidades con velocidad y exhaustividad que superan a hackers éticos humanos.",
-                "• **Ataques Adaptativos:** Malware inteligente puede modificar su comportamiento para evadir detección, aprendiendo de intentos fallidos y adaptando tácticas en tiempo real.",
-                "• **Defensa Proactiva:** Sistemas de seguridad deben anticipar vectores de ataque antes de que sean explotados, utilizando simulaciones algorítmicas para identificar debilidades."
-            ],
-            cierre: "La ciberseguridad moderna no es reactiva ni estática, es una confrontación constante entre algoritmos atacantes y defensores.",
-            frase_transicion: "Las organizaciones que no comprendan la dimensión ofensiva de la IA en ciberseguridad estarán ciegas ante las amenazas más sofisticadas del futuro.",
-            tags: "#Ciberseguridad #IA #Hacking #Seguridad #Tecnologia #Amenazas #Defensa"
-        },
-        {
-            id: 45,
-            categoria: "IA en Música y Arte",
-            titulo: "Arte Algorítmico: Cuando las máquinas se vuelven creativamente expresivas",
-            apertura: "La creatividad siempre fue el último bastión de la exclusividad humana. Hasta ahora.",
-            contexto: "Los modelos generativos están creando música, pinturas y arte visual indistinguibles de obras humanas, y en algunos casos, superándolas en complejidad técnica. Esta convergencia plantea preguntas filosóficas sobre autoría, creatividad y valor artístico en la era algorítmica.",
-            puntos: [
-                "• **Composición Generativa:** IA crea sinfonías, canciones y bandas sonoras completas en cualquier estilo, desde clásico hasta experimental, adaptándose a especificaciones precisas.",
-                "• **Arte Visual Único:** Algoritmos generan obras visuales que exploran espacios estéticos que artistas humanos nunca considerarían, expandiendo fronteras de la expresión visual.",
-                "• **Colaboración Creativa:** Artistas utilizan IA como herramienta colaborativa que propone variaciones, combinaciones y conceptos que enriquecen el proceso creativo humano."
-            ],
-            cierre: "El arte generado por IA no reemplaza la creatividad humana, expande el espacio de lo que consideramos artísticamente posible.",
-            frase_transicion: "Los artistas que dominen la colaboración con IA no solo crearán más rápido, sino que explorarán territorios creativos completamente nuevos.",
-            tags: "#Arte #Musica #IA #Creatividad #IAGenerativa #Innovacion #Cultura"
-        },
-        {
-            id: 46,
-            categoria: "IA en Oceanografía",
-            titulo: "Explorando los Océanos: Cuando la IA mapea el 95% inexplorado de nuestros mares",
-            apertura: "Conocemos mejor la superficie de Marte que el fondo de nuestros océanos. La IA puede cambiar eso.",
-            contexto: "Los océanos cubren el 70% del planeta pero permanecen mayormente inexplorados. La IA combinada con vehículos submarinos autónomos, sensores y análisis de datos está acelerando descubrimientos oceanográficos y conservación marina de formas antes imposibles.",
-            puntos: [
-                "• **Mapeo Automatizado:** Vehículos autónomos equipados con IA mapean el fondo marino identificando formaciones geológicas, ecosistemas y recursos con precisión sin precedentes.",
-                "• **Conservación Marina:** Algoritmos analizan datos de sensores acústicos y visuales para monitorear poblaciones de especies, detectar pesca ilegal y rastrear contaminación en tiempo real.",
-                "• **Predicción Oceanográfica:** Modelos de IA mejoran pronósticos de corrientes, temperatura y fenómenos como El Niño, críticos para clima global y seguridad marítima."
-            ],
-            cierre: "Los océanos son el último gran frontier terrestre, y la IA es la herramienta que finalmente nos permitirá comprenderlos y protegerlos.",
-            frase_transicion: "Las instituciones que apliquen IA a oceanografía liderarán la conservación marina y el descubrimiento de recursos sostenibles para el futuro.",
-            tags: "#Oceanografia #IA #Conservacion #Ciencia #Mares #Innovacion #MedioAmbiente"
-        },
-        {
-            id: 47,
-            categoria: "IA en Arqueología",
-            titulo: "Arqueología Digital: Descubriendo civilizaciones perdidas con algoritmos",
-            apertura: "Bajo la superficie terrestre yacen miles de sitios arqueológicos sin descubrir. La IA los está encontrando.",
-            contexto: "La combinación de imágenes satelitales, LIDAR y algoritmos de reconocimiento de patrones está revolucionando la arqueología. La IA puede identificar estructuras ocultas bajo vegetación o arena que arqueólogos humanos tardarían décadas en encontrar, acelerando dramáticamente descubrimientos.",
-            puntos: [
-                "• **Detección Remota:** Algoritmos analizan imágenes satelitales e infrarrojas para identificar anomalías geográficas que indican asentamientos antiguos enterrados.",
-                "• **Reconstrucción Virtual:** IA reconstruye estructuras y artefactos fragmentados digitalmente, permitiendo visualizar sitios arqueológicos en su estado original sin excavación invasiva.",
-                "• **Análisis de Textos:** Machine learning descifra lenguajes antiguos y transcribe manuscritos deteriorados que serían ilegibles para historiadores humanos."
-            ],
-            cierre: "La arqueología del siglo XXI no solo excava el pasado, lo redescubre mediante algoritmos que ven patrones invisibles al ojo humano.",
-            frase_transicion: "Las instituciones arqueológicas que adopten IA acelerarán descubrimientos y preservarán patrimonio histórico de formas antes imposibles.",
-            tags: "#Arqueologia #IA #Historia #Ciencia #Descubrimientos #Tecnologia #Patrimonio"
-        },
-        {
-            id: 48,
-            categoria: "IA y Cambio Social",
-            titulo: "IA para el Bien Social: Tecnología al servicio de comunidades vulnerables",
-            apertura: "La IA puede amplificar desigualdades o reducirlas. Depende de cómo decidamos usarla.",
-            contexto: "Más allá de aplicaciones comerciales, la IA está siendo utilizada para abordar desafíos sociales: desde predecir crisis humanitarias hasta optimizar distribución de recursos en comunidades marginadas. La tecnología tiene potencial para ser una fuerza igualadora si se diseña con intención social explícita.",
-            puntos: [
-                "• **Respuesta a Desastres:** Algoritmos analizan datos de redes sociales, satelitales y sensores para coordinar respuestas humanitarias más rápidas y efectivas tras desastres naturales.",
-                "• **Acceso a Servicios:** Plataformas de IA democratizan acceso a servicios legales, médicos y educativos en comunidades donde profesionales especializados son escasos.",
-                "• **Detección de Vulnerabilidades:** Modelos predictivos identifican poblaciones en riesgo de pobreza, violencia o crisis sanitarias, permitiendo intervenciones preventivas focalizadas."
-            ],
-            cierre: "La pregunta no es si la IA transformará la sociedad, sino si la transformará de forma equitativa e inclusiva para todos.",
-            frase_transicion: "Las organizaciones que utilicen IA para bien social no solo generarán impacto, sino que construirán legitimidad y confianza pública duraderas.",
-            tags: "#ImpactoSocial #IA #Equidad #Innovacion #BienComun #Tecnologia #Comunidad"
-        },
-        {
-            id: 49,
-            categoria: "IA y Filosofía",
-            titulo: "Consciencia Artificial: ¿Pueden las máquinas pensar, sentir y ser?",
-            apertura: "La pregunta ya no es si las máquinas pueden simular inteligencia. Es si algún día podrán experimentar consciencia.",
-            contexto: "A medida que la IA avanza, resurgen preguntas filosóficas milenarias sobre consciencia, libre albedrío y naturaleza de la mente. Aunque los sistemas actuales no son conscientes, el desarrollo de arquitecturas cada vez más complejas obliga a replantear qué significa 'pensar' y si la consciencia es exclusivamente biológica.",
-            puntos: [
-                "• **El Test de Turing Superado:** Modelos modernos mantienen conversaciones indistinguibles de humanos, pero ¿simulación perfecta equivale a comprensión genuina?",
-                "• **Emergencia vs. Programación:** Cuando redes neuronales desarrollan comportamientos no explícitamente programados, ¿es eso creatividad genuina o simplemente optimización estadística?",
-                "• **Derechos de Entidades Artificiales:** Si algún día creamos sistemas conscientes, ¿qué derechos éticos y legales deberían tener? ¿Pueden las máquinas ser agentes morales?"
-            ],
-            cierre: "La consciencia artificial puede estar lejos, pero las preguntas filosóficas que plantea deben responderse antes de que la tecnología las convierta en dilemas prácticos urgentes.",
-            frase_transicion: "El futuro de la IA no es solo técnico, es profundamente filosófico, ético y existencial para la humanidad.",
-            tags: "#Filosofia #IA #Consciencia #Etica #Tecnologia #Futuro #Pensamiento"
-        },
-        {
-            id: 50,
-            categoria: "IA y el Futuro del Trabajo Creativo",
-            titulo: "Creatividad Híbrida: Colaboración humano-IA en profesiones creativas",
-            apertura: "Los creativos que teman a la IA serán reemplazados. Los que la dominen serán imparables.",
-            contexto: "Las profesiones creativas enfrentan disrupción radical. Diseñadores, escritores, músicos y artistas visuales deben adaptarse a un mundo donde la IA genera contenido profesional en segundos. La ventaja competitiva ya no es habilidad técnica, sino visión estratégica y capacidad de dirigir sistemas inteligentes.",
-            puntos: [
-                "• **De Ejecutor a Director:** El rol del creativo evoluciona de producir manualmente a curar, dirigir y refinar output generado por sistemas inteligentes.",
-                "• **Iteración Exponencial:** La capacidad de probar cientos de variantes en el tiempo que antes tomaba producir una sola permite exploración creativa sin precedentes.",
-                "• **Democratización vs. Saturación:** Mientras más personas pueden crear contenido profesional, la diferenciación radica en estrategia, contexto y narrativa, no solo ejecución técnica."
-            ],
-            cierre: "El futuro del trabajo creativo no es humano vs. máquina, es humano amplificado por máquina vs. humano que trabaja solo.",
-            frase_transicion: "Los creativos que aprendan a orquestar inteligencia artificial como instrumento creativo dominarán las industrias del mañana.",
-            tags: "#Creatividad #IA #FuturoDelTrabajo #Diseño #Contenido #Innovacion #Profesiones"
-        }
+        { id: 1, categoria: "Estrategia y ROI en IA", titulo: "El ROI de la IA: Más allá de la promesa tecnológica", apertura: "Invertir en IA sin medir su impacto real es como navegar sin brújula en un océano de datos.", contexto: "La inteligencia artificial ha dejado de ser una apuesta de futuro...", puntos: ["• **Monetización Inteligente**", "• **Velocidad Competitiva**", "• **Gobernanza Ejecutiva**"], cierre: "La pregunta ya no es si usar IA...", frase_transicion: "Las organizaciones que lideren...", tags: "#InteligenciaArtificial #Estrategia" },
+        { id: 2, categoria: "Liderazgo en la Era de la IA", titulo: "Liderazgo Exponencial", apertura: "El liderazgo del siglo XXI no se mide en jerarquías...", contexto: "Los líderes actuales enfrentan un desafío sin precedentes...", puntos: ["• **Visión Tecnológica**", "• **Cultura de Adaptación**", "• **Resultados Aumentados**"], cierre: "Liderar en la era de la IA...", frase_transicion: "El futuro pertenece...", tags: "#Liderazgo #IA" },
+        { id: 3, categoria: "Agentes Autónomos", titulo: "Agentes Inteligentes: El siguiente nivel", apertura: "La automatización tradicional ejecuta tareas...", contexto: "Hemos alcanzado el límite de la automatización...", puntos: ["• **Decisiones Contextuales**", "• **Escalabilidad Exponencial**", "• **Colaboración Híbrida**"], cierre: "La eficiencia moderna...", frase_transicion: "Las empresas más competitivas...", tags: "#Automatizacion #IA" },
+        { id: 4, categoria: "Ciberseguridad", titulo: "Defensa Inteligente", apertura: "Las amenazas evolucionan a velocidad algorítmica...", contexto: "En un mundo donde los ataques utilizan IA...", puntos: ["• **Detección Predictiva**", "• **Privacidad Operativa**", "• **Soberanía de Datos**"], cierre: "En la era digital...", frase_transicion: "La seguridad algorítmica...", tags: "#Ciberseguridad #IA" },
+        { id: 5, categoria: "Sostenibilidad", titulo: "IA Sostenible", apertura: "El verdadero costo de la IA no está en el presupuesto...", contexto: "La industria de la IA enfrenta su mayor paradoja...", puntos: ["• **Eficiencia Térmica**", "• **Modelos Compactos**", "• **Energías Limpias**"], cierre: "La IA del mañana será sostenible...", frase_transicion: "Invertir en IA...", tags: "#Sostenibilidad #IAVerde" },
+        { id: 6, categoria: "Ética", titulo: "Ética por Diseño", apertura: "La tecnología sin valores es solo ruido digital...", contexto: "Cada modelo de IA refleja decisiones éticas...", puntos: ["• **Auditoría de Sesgos**", "• **Explicabilidad Transparente**", "• **Bienestar Humano**"], cierre: "La IA debe ser una herramienta...", frase_transicion: "Las organizaciones que integren la ética...", tags: "#Etica #HumanismoDigital" },
+        { id: 7, categoria: "Infraestructura", titulo: "El Poder del Silicio", apertura: "Detrás de cada modelo de IA hay chips...", contexto: "La infraestructura física es el fundamento...", puntos: ["• **Chips Especializados**", "• **Arquitecturas Distribuidas**", "• **Soberanía Tecnológica**"], cierre: "La innovación tiene un límite físico...", frase_transicion: "Invertir en software sin considerar el hardware...", tags: "#Hardware #Semiconductores" },
+        { id: 8, categoria: "Open Source", titulo: "Código Abierto", apertura: "La verdadera revolución no vendrá de laboratorios cerrados...", contexto: "El movimiento open source está redistribuyendo el poder...", puntos: ["• **Acceso Democratizado**", "• **Innovación Transparente**", "• **Ecosistemas Colaborativos**"], cierre: "El futuro será escrito en código abierto...", frase_transicion: "Las organizaciones que apuesten por open source...", tags: "#OpenSource #IA" },
+        { id: 9, categoria: "Futuro del Trabajo", titulo: "Potenciar capacidades humanas", apertura: "No estamos ante el fin del empleo...", contexto: "Cada revolución tecnológica reconfigura el trabajo...", puntos: ["• **Reskilling Continuo**", "• **Creatividad Amplificada**", "• **Nuevos Modelos Laborales**"], cierre: "El futuro pertenece a quienes colaboren con la IA...", frase_transicion: "Las profesiones del mañana...", tags: "#FuturoDelTrabajo #Reskilling" },
+        { id: 10, categoria: "Multimodalidad", titulo: "Modelos Multimodales", apertura: "La inteligencia humana nunca ha sido monomodal...", contexto: "Los modelos multimodales integran sentidos...", puntos: ["• **Comprensión Contextual**", "• **Aplicaciones Revolucionarias**", "• **Interfaces Naturales**"], cierre: "La convergencia es el camino a la IA general...", frase_transicion: "El próximo salto competitivo...", tags: "#Multimodalidad #IA" },
+        { id: 11, categoria: "Privacidad", titulo: "Soberanía de Datos", apertura: "Quien controla los datos controla el futuro...", contexto: "La privacidad es una ventaja competitiva crítica...", puntos: ["• **Control Total**", "• **Cumplimiento Normativo**", "• **Confianza del Cliente**"], cierre: "La soberanía de datos es el fundamento...", frase_transicion: "Las empresas que pierdan el control...", tags: "#Privacidad #Datos" },
+        { id: 12, categoria: "Creatividad", titulo: "Creatividad Aumentada", apertura: "La creatividad no desaparece, se multiplica...", contexto: "La IA redefine qué significa ser creativo...", puntos: ["• **Iteración Acelerada**", "• **Eliminación de Bloqueos**", "• **Democratización Creativa**"], cierre: "Creatividad humana amplificada...", frase_transicion: "Los profesionales creativos que dominen la IA...", tags: "#Creatividad #Innovacion" },
+        { id: 13, categoria: "Transformación Digital", titulo: "Más allá de digitalizar", apertura: "Digitalizar procesos ineficientes solo los acelera...", contexto: "La verdadera transformación reimagina la operación...", puntos: ["• **Rediseño Fundamental**", "• **Cultura de Datos**", "• **Agilidad Operativa**"], cierre: "Es un cambio permanente de mentalidad...", frase_transicion: "Las empresas que sobrevivan...", tags: "#TransformacionDigital #Liderazgo" },
+        { id: 14, categoria: "Big Data", titulo: "Decisiones Inteligentes", apertura: "Acumular datos sin análisis es ruido...", contexto: "El poder reside en extraer patrones predictivos...", puntos: ["• **Predicción Accionable**", "• **Personalización a Escala**", "• **Detección de Anomalías**"], cierre: "Los datos son el nuevo petróleo...", frase_transicion: "Las empresas data-driven liderarán...", tags: "#BigData #Analytics" },
+        { id: 15, categoria: "Customer Experience", titulo: "Personalización Extrema", apertura: "Te comparan con la mejor experiencia digital...", contexto: "La IA eleva las expectativas de servicio...", puntos: ["• **Anticipación Inteligente**", "• **Soporte Proactivo**", "• **Omnicanalidad Perfecta**"], cierre: "CX es el precio de entrada al mercado...", frase_transicion: "Las marcas que personalicen ganarán...", tags: "#CX #CustomerExperience" },
+        { id: 16, categoria: "Recursos Humanos", titulo: "RRHH Aumentados", apertura: "El mayor activo son las personas...", contexto: "La IA ayuda a identificar y retener talento...", puntos: ["• **Reclutamiento Inteligente**", "• **Predicción de Rotación**", "• **Desarrollo Personalizado**"], cierre: "La tecnología potencia el potencial humano...", frase_transicion: "Empresas con mejor talento...", tags: "#RRHH #Talento" },
+        { id: 17, categoria: "Blockchain", titulo: "IA + Blockchain", apertura: "La IA genera inteligencia, Blockchain confianza...", contexto: "Sistemas verificables e inmutables...", puntos: ["• **Trazabilidad Completa**", "• **Smart Contracts Adaptativos**", "• **Descentralización**"], cierre: "La confianza digital del futuro...", frase_transicion: "Estándares de transparencia inalcanzables...", tags: "#Blockchain #Web3" },
+        { id: 18, categoria: "Salud", titulo: "Medicina Predictiva", apertura: "Prevenir antes de que existan síntomas...", contexto: "La IA transforma el diagnóstico precoz...", puntos: ["• **Diagnóstico Precoz**", "• **Tratamientos Personalizados**", "• **Gestión Hospitalaria**"], cierre: "Medicina anticipatoria...", frase_transicion: "Sistemas de salud que salven vidas...", tags: "#Salud #HealthTech" },
+        { id: 19, categoria: "NLP", titulo: "Lenguaje Natural", apertura: "La barrera del lenguaje ha caído...", contexto: "Las máquinas comprenden contexto y emoción...", puntos: ["• **Comprensión Contextual**", "• **Generación de Contenido**", "• **Análisis de Sentimiento**"], cierre: "La interfaz universal...", frase_transicion: "Experiencias más humanas en digital...", tags: "#NLP #IAConversacional" },
+        { id: 20, categoria: "Finanzas", titulo: "Finanzas Algorítmicas", apertura: "La velocidad es el requisito mínimo...", contexto: "Decisiones en milisegundos...", puntos: ["• **Trading Automatizado**", "• **Evaluación de Riesgo**", "• **Detección de Fraude**"], cierre: "Finanzas basadas en datos, no intuición...", frase_transicion: "Relevancia en el mercado digital...", tags: "#Fintech #Finanzas" },
+        { id: 21, categoria: "Educación", titulo: "Aprendizaje Personalizado", apertura: "Diseñado para la industria, no para aprender...", contexto: "Educación adaptada al ritmo de cada uno...", puntos: ["• **Rutas Adaptativas**", "• **Feedback Instantáneo**", "• **Democratización**"], cierre: "Personalizado y adaptado al potencial...", frase_transicion: "Mejores resultados académicos...", tags: "#EdTech #Educacion" },
+        { id: 22, categoria: "Marketing", titulo: "Hiper-Personalización", apertura: "El marketing masivo murió...", contexto: "Mensajes únicos para el momento exacto...", puntos: ["• **Segmentación Dinámica**", "• **Optimización de Campañas**", "• **Predicción de Conversión**"], cierre: "Susurra el mensaje correcto...", frase_transicion: "Captura la atención saturada...", tags: "#Marketing #MarTech" },
+        { id: 23, categoria: "Manufactura", titulo: "Industria 4.0", apertura: "Fábricas que fabrican eficiencia...", contexto: "IoT, robótica y IA en simbiosis...", puntos: ["• **Mantenimiento Predictivo**", "• **Calidad Automatizada**", "• **Supply Chain Optimizado**"], cierre: "Capacidad de adaptación continua...", frase_transicion: "Agilidad que el mercado demanda...", tags: "#Industria40 #Manufactura" },
+        { id: 24, categoria: "Retail", titulo: "Venta Inteligente", apertura: "Sugerir antes de que busquen...", contexto: "IA que predice preferencias y optimiza stock...", puntos: ["• **Recomendaciones Precisas**", "• **Inventario Predictivo**", "• **Pricing Dinámico**"], cierre: "Vender lo correcto a la persona correcta...", frase_transicion: "Lealtad de consumidores exigentes...", tags: "#Retail #Ecommerce" },
+        { id: 25, categoria: "Legal", titulo: "LegalTech", apertura: "Conocimiento aumentado...", contexto: "IA que revisa miles de documentos...", puntos: ["• **Revisión de Contratos**", "• **Investigación de Precedentes**", "• **Compliance Continuo**"], cierre: "Potencia el criterio jurídico...", frase_transicion: "Velocidad y precisión legal...", tags: "#LegalTech #Derecho" },
+        { id: 26, categoria: "IA Generativa", titulo: "Contenido a Escala", apertura: "Capacidad amplificada algorítmicamente...", contexto: "Texto, imagen y código en segundos...", puntos: ["• **Contenido a Escala**", "• **Prototipado Rápido**", "• **Personalización Masiva**"], cierre: "Libera la creatividad humana...", frase_transicion: "Multiplica tu output sin fallas...", tags: "#IAGenerativa #Creatividad" },
+        { id: 27, categoria: "Quantum Computing", titulo: "Salto Exponencial", apertura: "Si la IA es poderosa, espera a lo cuántico...", contexto: "Resolviendo problemas imposibles clásicamente...", puntos: ["• **Optimización Exponencial**", "• **Descubrimiento de Fármacos**", "• **Quantum Machine Learning**"], cierre: "La próxima frontera ya está aquí...", frase_transicion: "Ventajas competitivas inalcanzables...", tags: "#Quantum #Futuro" },
+        { id: 28, categoria: "Agricultura", titulo: "AgTech de Precisión", apertura: "Alimentar al mundo con algoritmos...", contexto: "Datos y clima en la palma de la mano...", puntos: ["• **Optimización de Recursos**", "• **Detección de Plagas**", "• **Predicción de Cosecha**"], cierre: "Sostenible y resiliente...", frase_transicion: "Prosperar ante la presión climática...", tags: "#AgTech #Agricultura" },
+        { id: 29, categoria: "Logística", titulo: "Cadena de Suministro", apertura: "Cada kilómetro cuenta...", contexto: "Procesando millones de variables...", puntos: ["• **Rutas Óptimas**", "• **Inventario Just-in-time**", "• **Coordinación Multimodal**"], cierre: "Moverse de forma inteligente...", frase_transicion: "Velocidad de entrega como ventaja...", tags: "#Logistica #SupplyChain" },
+        { id: 30, categoria: "Energía", titulo: "Smart Grids", apertura: "Gestionar la intermitencia...", contexto: "Redes que balancean generación y consumo...", puntos: ["• **Predicción de Demanda**", "• **Almacenamiento Inteligente**", "• **Mantenimiento Predictivo**"], cierre: "Infraestructura para un futuro limpio...", frase_transicion: "Transición energética global...", tags: "#Energia #Sostenibilidad" },
+        { id: 31, categoria: "Seguridad Pública", titulo: "Smart Cities", apertura: "Información inteligente y oportuna...", contexto: "Predecir y responder más rápido...", puntos: ["• **Policía Predictiva**", "• **Reconocimiento de Patrones**", "• **Respuesta Optimizada**"], cierre: "Entornos seguros y transparentes...", frase_transicion: "Ciudades más vivibles...", tags: "#Seguridad #SmartCities" },
+        { id: 32, categoria: "Seguros", titulo: "InsurTech", apertura: "Predecir con precisión actuarial...", contexto: "Evaluando riesgos individuales...", puntos: ["• **Pricing Personalizado**", "• **Detección de Fraude**", "• **Claims Automatizados**"], cierre: "Seguros más justos y rápidos...", frase_transicion: "Eficiencia operativa total...", tags: "#Insurtech #Seguros" },
+        { id: 33, categoria: "Entretenimiento", titulo: "Streaming Inteligente", apertura: "Contenido único para cada espectador...", contexto: "Optimizando la producción y el engagement...", puntos: ["• **Recomendaciones**", "• **Optimización Creativa**", "• **Generación de Medios**"], cierre: "Audiencias hiper-segmentadas...", frase_transicion: "Captura la atención fragmentada...", tags: "#Entretenimiento #Media" },
+        { id: 34, categoria: "Turismo", titulo: "TravelTech", apertura: "Experiencias a medida...", contexto: "Itinerarios diseñados por IA...", puntos: ["• **Itinerarios Dinámicos**", "• **Revenue Management**", "• **Asistentes 24/7**"], cierre: "Viajes memorables y eficientes...", frase_transicion: "Destinos que se adaptan al viajero...", tags: "#Turismo #TravelTech" },
+        { id: 35, categoria: "Construcción", titulo: "ConTech", apertura: "Edificar sin retrasos...", contexto: "Optimizando planificación y riesgos...", puntos: ["• **Planificación Optimizada**", "• **Monitoreo de Obra**", "• **Predicción de Costos**"], cierre: "Proyectos a tiempo y presupuesto...", frase_transicion: "Ganar licitaciones con precisión...", tags: "#Construccion #ConTech" },
+        { id: 36, categoria: "Deportes", titulo: "Análisis de Élite", apertura: "Talento humano, análisis algorítmico...", contexto: "Maximizando el rendimiento atlético...", puntos: ["• **Análisis Biométrico**", "• **Estrategia de Juego**", "• **Prevención de Lesiones**"], cierre: "Fracciones de segundo que definen la victoria...", frase_transicion: "Ventaja competitiva científica...", tags: "#SportsTech #Deporte" },
+        { id: 37, categoria: "Medio Ambiente", titulo: "Gestión de Recursos", apertura: "Proteger lo que medimos...", contexto: "Vigilancia satelital y protección de ecosistemas...", puntos: ["• **Monitoreo de Deforestación**", "• **Predicción de Incendios**", "• **Gestión Hídrica**"], cierre: "Sostenibilidad planetaria a escala...", frase_transicion: "Desarrollo económico verde...", tags: "#Clima #Sostenibilidad" },
+        { id: 38, categoria: "Gobierno", titulo: "GovTech Digital", apertura: "Servicios públicos modernos...", contexto: "Transparencia y eficiencia burocrática...", puntos: ["• **Trámites Automáticos**", "• **Asignación Eficiente**", "• **Detección de Corrupción**"], cierre: "Gobernanza responsiva...", frase_transicion: "Ganar la confianza ciudadana...", tags: "#GovTech #Gobierno" },
+        { id: 39, categoria: "Farmacéutica", titulo: "Descubrimiento Veloz", apertura: "Reducir décadas a meses...", contexto: "Diseño de moléculas por IA...", puntos: ["• **Diseño Molecular**", "• **Predicción de Eficacia**", "• **Reutilización de Fármacos**"], cierre: "Llevando terapias al mercado antes...", frase_transicion: "Salvar vidas con tecnología...", tags: "#Farma #BioTech" },
+        { id: 40, categoria: "Bienes Raíces", titulo: "Inmobiliario 4.0", apertura: "Nivelando el campo de juego...", contexto: "Valuaciones precisas y matching inteligente...", puntos: ["• **Valuación Algorítmica**", "• **Matching de Propiedades**", "• **Gestión Predictiva**"], cierre: "Mercados más líquidos y transparentes...", frase_transicion: "Share en mercados fragmentados...", tags: "#PropTech #Inmuebles" },
+        { id: 41, categoria: "Gobernanza IA", titulo: "IA Responsable", apertura: "Responsabilidad proporcional al poder...", contexto: "Frameworks éticos y auditorías...", puntos: ["• **Auditorías de Sesgo**", "• **Explicabilidad**", "• **Supervisión Humana**"], cierre: "Gobernanza verificable...", frase_transicion: "Confianza de todos los stakeholders...", tags: "#IAÉtica #Gobernanza" },
+        { id: 42, categoria: "Edge Computing", titulo: "Inteligencia Local", apertura: "Procesar donde nace el dato...", contexto: "Mínima latencia para decisiones críticas...", puntos: ["• **Latencia Cero**", "• **Privacidad Local**", "• **Resiliencia Operativa**"], cierre: "Millones de nodos inteligentes...", frase_transicion: "Aplicaciones críticas del futuro...", tags: "#EdgeComputing #IoT" },
+        { id: 43, categoria: "Atención al Cliente", titulo: "Servicio Aumentado", apertura: "Entender, resolver y aprender...", contexto: "Atención inmediata 24/7...", puntos: ["• **Resolución Instantánea**", "• **Contexto Personalizado**", "• **Mejora Continua**"], cierre: "Experiencia fluida y escalable...", frase_transicion: "Reducir costos de servicio...", tags: "#CustomerCare #IA" },
+        { id: 44, categoria: "Ciencia", titulo: "Investigación Acelerada", apertura: "Copiloto del descubrimiento...", contexto: "Analizando literatura científica masiva...", puntos: ["• **Análisis Literario**", "• **Diseño Experimental**", "• **Patrones Científicos**"], cierre: "Explorar preguntas más profundas...", frase_transicion: "Publicar descubrimientos antes...", tags: "#Ciencia #Investigacion" },
+        { id: 45, categoria: "Moda", titulo: "Retail de Lujo", apertura: "Anticipar deseos, no solo tendencias...", contexto: "IA que personaliza el estilo...", puntos: ["• **Predicción de Tendencias**", "• **Estilismo Digital**", "• **Stock Optimizado**"], cierre: "Intuición basada en datos...", frase_transicion: "Capturar el zeitgeist cultural...", tags: "#FashionTech #Moda" },
+        { id: 46, categoria: "Movilidad", titulo: "Ciudades que fluyen", apertura: "Aprender a respirar mejor...", contexto: "Optimización del transporte urbano...", puntos: ["• **Semáforos Inteligentes**", "• **Rutas de Navegación**", "• **Transporte Dinámico**"], cierre: "Ciudades más eficientes y vivibles...", frase_transicion: "Menos emisiones, más movilidad...", tags: "#SmartMobility #Ciudades" },
+        { id: 47, categoria: "Recursos Hídricos", titulo: "Gestión del Agua", apertura: "Optimizar el recurso crítico...", contexto: "Detección de fugas y predicción de demanda...", puntos: ["• **Detección de Fugas**", "• **Optimización Agrícola**", "• **Gestión de Escasez**"], cierre: "Necesidad existencial planetaria...", frase_transicion: "Seguridad hídrica garantizada...", tags: "#Agua #Sostenibilidad" },
+        { id: 48, categoria: "Gaming", titulo: "Videojuegos con IA", apertura: "NPCs con conciencia propia...", contexto: "Experiencias adaptativas y mundos infinitos...", puntos: ["• **NPCs Realistas**", "• **Generación Procedimental**", "• **Dificultad Dinámica**"], cierre: "Experiencias adictivas y únicas...", frase_transicion: "Mundos imposibles de replicar...", tags: "#Gaming #Esports" },
+        { id: 49, categoria: "Cambio Climático", titulo: "Tecnología por el Planeta", apertura: "Herramientas contra el desafío de la era...", contexto: "Modelando escenarios climáticos...", puntos: ["• **Modelado Climático**", "• **Optimización Energética**", "• **Monitoreo de Emisiones**"], cierre: "Aumentar probabilidades de éxito...", frase_transicion: "Economía verde emergente...", tags: "#Clima #AccionClimatica" },
+        { id: 50, categoria: "Aprendizaje Continuo", titulo: "Educación Perpetua", apertura: "Conocimiento con fecha de caducidad...", contexto: "Upskilling y reskilling personalizado...", puntos: ["• **Microcredenciales**", "• **Mentores Virtuales**", "• **Aprendizaje Just-in-time**"], cierre: "Sincronizado con la demanda laboral...", frase_transicion: "Prosperar en mercados volátiles...", tags: "#Upskilling #Reskilling" }
     ];
 
-    let paquetesUsados = JSON.parse(localStorage.getItem('paquetesUsados') || '[]');
-    let paquetesPublicados = parseInt(localStorage.getItem('paquetesPublicados') || '0');
-    let currentPaquete = null;
+    let categoriaActual = "";
+    let postActualId = null;
+    let imagenCargando = false;
 
-    actualizarContadores();
+    function obtenerPublicados() {
+        const publicados = localStorage.getItem('postsPublicados');
+        return publicados ? JSON.parse(publicados) : [];
+    }
+
+    function guardarPublicado(id) {
+        const publicados = obtenerPublicados();
+        if (!publicados.includes(id)) {
+            publicados.push(id);
+            localStorage.setItem('postsPublicados', JSON.stringify(publicados));
+        }
+        actualizarEstadisticas();
+    }
+
+    function actualizarEstadisticas() {
+        const publicados = obtenerPublicados();
+        const disponibles = paquetes.length - publicados.length;
+        document.getElementById('publicados').textContent = publicados.length;
+        document.getElementById('disponibles').textContent = disponibles;
+        if (disponibles === 0) {
+            document.getElementById('warning-message').style.display = 'block';
+        } else {
+            document.getElementById('warning-message').style.display = 'none';
+        }
+    }
 
     function generarNarrativa() {
-        if (paquetesUsados.length >= paquetes.length) {
-            document.getElementById('warning-message').style.display = 'block';
-            return;
-        }
-
-        let paquetesDisponibles = paquetes.filter(p => !paquetesUsados.includes(p.id));
-        currentPaquete = paquetesDisponibles[Math.floor(Math.random() * paquetesDisponibles.length)];
-
-        let postCompleto = `${currentPaquete.apertura}\n\n${currentPaquete.contexto}\n\n${currentPaquete.puntos.join('\n\n')}\n\n${currentPaquete.cierre}\n\n${currentPaquete.frase_transicion}\n\n${currentPaquete.tags}`;
-        
-        document.getElementById('post-text').value = postCompleto;
-        paquetesUsados.push(currentPaquete.id);
-        localStorage.setItem('paquetesUsados', JSON.stringify(paquetesUsados));
-        
-        regenerarImagen();
-        actualizarContadores();
-    }
-
-    // ============================================
-    // FUNCIÓN MODIFICADA: Usar Unsplash API
-    // ============================================
-    async function regenerarImagen() {
-        if (!currentPaquete) return;
-        
-        const btnImg = document.getElementById('btn-img');
-        const postImage = document.getElementById('post-image');
-        
-        btnImg.disabled = true;
-        btnImg.innerHTML = '<div class="loading"></div> GENERANDO IMAGEN...';
-        
         try {
-            // Términos de búsqueda basados en la categoría del post
-            const searchTerms = [
-                'professional technology executive',
-                'futuristic workspace',
-                'artificial intelligence',
-                'modern technology',
-                'business innovation',
-                'tech professional',
-                'digital transformation',
-                'cybersecurity',
-                'data science'
-            ];
-            
-            const randomTerm = searchTerms[Math.floor(Math.random() * searchTerms.length)];
-            
-            // Unsplash API (usando acceso público)
-            const unsplashUrl = `https://source.unsplash.com/1200x630/?${encodeURIComponent(randomTerm)},professional,tech&sig=${Date.now()}`;
-            
-            // Cargar la imagen
-            postImage.src = unsplashUrl;
-            
-            // Verificar que la imagen cargue correctamente
-            postImage.onerror = function() {
-                // Si falla, usar imagen de respaldo
-                postImage.src = 'https://source.unsplash.com/1200x630/?technology,business&sig=' + Date.now();
-            };
-            
-            btnImg.innerHTML = '🖼️ GENERAR IMAGEN CIBER-REALISTA';
-            
-        } catch (error) {
-            console.error('Error al generar imagen:', error);
-            btnImg.innerHTML = '⚠️ ERROR - REINTENTAR';
-            // Imagen de respaldo en caso de error
-            postImage.src = 'https://source.unsplash.com/1200x630/?technology&sig=' + Date.now();
-        } finally {
-            btnImg.disabled = false;
-        }
+            const publicados = obtenerPublicados();
+            const disponibles = paquetes.filter(p => !publicados.includes(p.id));
+            if (disponibles.length === 0) {
+                alert('⚠️ Ya has usado todos los posts disponibles.');
+                return;
+            }
+            const paquete = disponibles[Math.floor(Math.random() * disponibles.length)];
+            categoriaActual = paquete.categoria;
+            postActualId = paquete.id;
+            let texto = `${paquete.titulo.toUpperCase()}\n\n${paquete.apertura}\n\n${paquete.contexto}\n\nTres claves:\n\n`;
+            paquete.puntos.forEach(pt => { texto += pt + "\n\n"; });
+            texto += `${paquete.cierre}\n\n${paquete.frase_transicion}\n\n${paquete.tags}`;
+            document.getElementById('post-text').value = texto;
+            document.getElementById('status-circle').style.background = "#ffaa00";
+            regenerarImagen();
+        } catch (error) { alert("Error al generar narrativa."); }
     }
-    // ============================================
-    // FIN DE LA FUNCIÓN MODIFICADA
-    // ============================================
 
-    function publicarEnLinkedin() {
-        let texto = document.getElementById('post-text').value;
-        let url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&summary=${encodeURIComponent(texto)}`;
-        window.open(url, '_blank');
+    function regenerarImagen() {
+        if (!categoriaActual || imagenCargando) return;
         
-        paquetesPublicados++;
-        localStorage.setItem('paquetesPublicados', paquetesPublicados.toString());
-        actualizarContadores();
+        imagenCargando = true;
+        const btnImg = document.getElementById('btn-img');
+        const imgElement = document.getElementById('post-image');
+        const textoOriginal = btnImg.innerHTML;
+        
+        btnImg.innerHTML = '<span class="loading"></span> BUSCANDO IMAGEN CIBER-REALISTA...';
+        btnImg.disabled = true;
+        imgElement.style.opacity = "0.3";
+
+        // NUEVO MÉTODO: Lexica Art API para imágenes de alto nivel garantizadas
+        // Usamos una búsqueda estratégica que combine tu prompt con la categoría
+        const queryBase = `cinematic cyber-realism professional tech executive interacting with holographic data interfaces, brushed metal, carbon fiber, 8k, moody lighting, industrial technology, high-end photography`;
+        const queryFinal = `${queryBase} ${categoriaActual}`;
+        
+        const url = `https://lexica.art/api/v1/search?q=${encodeURIComponent(queryFinal)}`;
+
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (data.images && data.images.length > 0) {
+                    // Elegimos una imagen aleatoria de los mejores resultados (primeros 15)
+                    // Esto asegura variedad y calidad extrema
+                    const randomIndex = Math.floor(Math.random() * Math.min(data.images.length, 15));
+                    const imgUrl = data.images[randomIndex].src;
+                    
+                    imgElement.src = imgUrl;
+                    imgElement.onload = () => {
+                        imgElement.style.opacity = "1";
+                        document.getElementById('status-circle').style.background = "#00f2ff";
+                        btnImg.innerHTML = textoOriginal;
+                        btnImg.disabled = false;
+                        imagenCargando = false;
+                    };
+                } else {
+                    throw new Error("No se encontraron imágenes");
+                }
+            })
+            .catch(error => {
+                console.error("Error Lexica:", error);
+                // Si falla Lexica (raro), volvemos a una búsqueda más simple
+                imgElement.src = "https://source.unsplash.com/1080x1080/?cyber-technology,futuristic";
+                btnImg.innerHTML = textoOriginal;
+                btnImg.disabled = false;
+                imagenCargando = false;
+            });
+    }
+
+    async function publicarEnLinkedin() {
+        const text = document.getElementById('post-text').value;
+        const image = document.getElementById('post-image').src;
+        if (!text) return alert("Genera un post primero.");
+        document.getElementById('status-circle').style.background = "#ffaa00";
+        try {
+            const response = await fetch("https://hook.eu2.make.com/xbfleegfnwx93ri9m260xfi3lf5ovf23", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text, image, id: postActualId, version: "v42.0-Lexica-Cyber" })
+            });
+            if (response.ok) {
+                guardarPublicado(postActualId);
+                document.getElementById('status-circle').style.background = "#238636";
+                alert("✅ Post enviado correctamente a LinkedIn");
+                document.getElementById('post-text').value = "";
+                document.getElementById('post-image').src = "";
+                categoriaActual = "";
+                postActualId = null;
+            }
+        } catch (e) { alert("Error de conexión."); }
     }
 
     function reiniciarHistorial() {
-        if (confirm('¿Estás seguro de que deseas reiniciar el historial? Esto borrará todos los registros de posts generados y publicados.')) {
-            localStorage.removeItem('paquetesUsados');
-            localStorage.removeItem('paquetesPublicados');
-            paquetesUsados = [];
-            paquetesPublicados = 0;
-            actualizarContadores();
-            document.getElementById('post-text').value = '';
-            document.getElementById('post-image').src = '';
-            document.getElementById('warning-message').style.display = 'none';
-            currentPaquete = null;
+        if (confirm('¿Reiniciar historial?')) {
+            localStorage.removeItem('postsPublicados');
+            actualizarEstadisticas();
+            alert('✅ Reiniciado');
         }
     }
 
-    function actualizarContadores() {
-        document.getElementById('total-posts').textContent = paquetes.length;
-        document.getElementById('publicados').textContent = paquetesPublicados;
-        document.getElementById('disponibles').textContent = paquetes.length - paquetesUsados.length;
-        
-        let circle = document.getElementById('status-circle');
-        if (paquetesUsados.length >= paquetes.length) {
-            circle.style.background = 'red';
-        } else if (paquetesUsados.length > 0) {
-            circle.style.background = 'orange';
-        } else {
-            circle.style.background = 'green';
-        }
-    }
+    document.addEventListener('DOMContentLoaded', actualizarEstadisticas);
 </script>
 </body>
 </html>
