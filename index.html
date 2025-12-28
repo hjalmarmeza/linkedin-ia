@@ -861,22 +861,13 @@
             const paquete = disponibles[Math.floor(Math.random() * disponibles.length)];
             categoriaActual = paquete.categoria;
             postActualId = paquete.id;
-            
-            let texto = `${paquete.titulo.toUpperCase()}\n\n`;
-            texto += `${paquete.apertura}\n\n`;
-            texto += `${paquete.contexto}\n\n`;
-            texto += `Tres claves para entender ${paquete.categoria}:\n\n`;
+            let texto = `${paquete.titulo.toUpperCase()}\n\n${paquete.apertura}\n\n${paquete.contexto}\n\nTres claves para entender ${paquete.categoria}:\n\n`;
             paquete.puntos.forEach(pt => { texto += pt + "\n\n"; });
-            texto += `${paquete.cierre}\n\n`;
-            texto += `${paquete.frase_transicion}\n\n`;
-            texto += paquete.tags;
-
+            texto += `${paquete.cierre}\n\n${paquete.frase_transicion}\n\n${paquete.tags}`;
             document.getElementById('post-text').value = texto;
             document.getElementById('status-circle').style.background = "#ffaa00";
             regenerarImagen();
-        } catch (error) {
-            console.error("Error al generar narrativa:", error);
-        }
+        } catch (error) { console.error(error); }
     }
 
     function regenerarImagen() {
@@ -887,24 +878,33 @@
         const imgElement = document.getElementById('post-image');
         const textoOriginal = btnImg.innerHTML;
         
-        btnImg.innerHTML = '<span class="loading"></span> BUSCANDO IMAGEN PROFESIONAL...';
+        btnImg.innerHTML = '<span class="loading"></span> CONECTANDO CON LEXICA...';
         btnImg.disabled = true;
         imgElement.style.opacity = "0.3";
 
-        // CONFIGURACIÓN DE PIXABAY: Solo tecnología, 3D y Cyber-realism.
-        const apiKey = '47844052-166299b66f281e695d7363cf8'; // Clave de Pixabay
-        const query = `futuristic technology cyber high tech professional cinematic ${categoriaActual}`;
-        const url = `https://pixabay.com/api/?key=${apiKey}&q=${encodeURIComponent(query)}&image_type=photo&category=technology&orientation=horizontal&min_width=1000&safesearch=true&per_page=10`;
+        // CONFIGURACIÓN LEXICA CON PUENTE PROXY PARA EVITAR BLOQUEOS
+        // Buscamos exactamente el estilo solicitado
+        const promptBusqueda = `Hyper-realistic cinematic cyber-realism, futuristic workspace holographic data interfaces, brushed metal carbon fiber glass textures, 8k resolution shot on 35mm lens, moody professional sophisticated atmosphere, high-tech industrial aesthetic ${categoriaActual}`;
+        
+        // Usamos un proxy de código abierto para saltar las restricciones de CORS
+        const proxyUrl = "https://api.allorigins.win/get?url=";
+        const targetUrl = `https://lexica.art/api/v1/search?q=${encodeURIComponent(promptBusqueda)}`;
 
-        fetch(url)
-            .then(res => res.json())
+        fetch(proxyUrl + encodeURIComponent(targetUrl))
+            .then(response => {
+                if (response.ok) return response.json();
+                throw new Error('Network response was not ok.');
+            })
             .then(data => {
-                if (data.hits && data.hits.length > 0) {
-                    // Seleccionar una imagen aleatoria de los mejores resultados para variedad
-                    const randomIndex = Math.floor(Math.random() * Math.min(data.hits.length, 5));
-                    const imgUrl = data.hits[randomIndex].largeImageURL;
-                    
-                    imgElement.src = imgUrl;
+                // Parseamos el contenido del proxy
+                const lexicaData = JSON.parse(data.contents);
+                
+                if (lexicaData.images && lexicaData.images.length > 0) {
+                    // Seleccionamos una imagen aleatoria de las mejores 15 opciones para variedad
+                    const randomIndex = Math.floor(Math.random() * Math.min(lexicaData.images.length, 15));
+                    const selectedImg = lexicaData.images[randomIndex].src;
+
+                    imgElement.src = selectedImg;
                     imgElement.onload = () => {
                         imgElement.style.opacity = "1";
                         document.getElementById('status-circle').style.background = "#00f2ff";
@@ -913,13 +913,14 @@
                         imagenCargando = false;
                     };
                 } else {
-                    throw new Error("No results");
+                    throw new Error("No images found");
                 }
             })
             .catch(error => {
-                console.error("Error Pixabay:", error);
-                // Si falla Pixabay, usamos un placeholder tecnológico para no romper la estética
+                console.error("Error Lexica:", error);
+                // Si falla Lexica por completo, mostramos una imagen de alta calidad fija de tecnología para no romper la estética
                 imgElement.src = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1080&auto=format&fit=crop";
+                imgElement.style.opacity = "1";
                 btnImg.innerHTML = textoOriginal;
                 btnImg.disabled = false;
                 imagenCargando = false;
@@ -931,58 +932,31 @@
         const text = document.getElementById('post-text').value;
         const image = document.getElementById('post-image').src;
         const webhookUrl = "https://hook.eu2.make.com/xbfleegfnwx93ri9m260xfi3lf5ovf23"; 
-        
-        if (!text || text === "") {
-            alert("Por favor genera un post primero.");
-            return;
-        }
-        
+        if (!text || text === "") return alert("Genera un post primero.");
         document.getElementById('status-circle').style.background = "#ffaa00";
-        
         try {
             const response = await fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    text, 
-                    image,
-                    categoria: categoriaActual,
-                    id: postActualId,
-                    timestamp: new Date().toISOString(),
-                    version: "LinkedinMatic v42.0 - Cinematic Cyber-realism"
-                })
+                body: JSON.stringify({ text, image, categoria: categoriaActual, id: postActualId, version: "v42.0-Lexica-Proxy" })
             });
-            
             if (response.ok) {
                 guardarPublicado(postActualId);
                 document.getElementById('status-circle').style.background = "#238636";
-                alert("✅ Post enviado correctamente a LinkedIn");
-                document.getElementById('post-text').value = "";
-                document.getElementById('post-image').src = "";
-                categoriaActual = "";
-                postActualId = null;
-            } else {
-                document.getElementById('status-circle').style.background = "#ff4444";
-                alert("❌ Error al publicar.");
+                alert("✅ Post enviado correctamente");
             }
-        } catch (e) { 
-            document.getElementById('status-circle').style.background = "#ff4444";
-            alert("❌ Error de conexión."); 
-        }
+        } catch (e) { document.getElementById('status-circle').style.background = "#ff4444"; }
     }
 
     function reiniciarHistorial() {
-        if (confirm('¿Estás seguro de que deseas reiniciar el historial?')) {
+        if (confirm('¿Reiniciar historial?')) {
             localStorage.removeItem('postsPublicados');
             actualizarEstadisticas();
-            alert('✅ Historial reiniciado correctamente');
+            alert('✅ Reiniciado');
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        actualizarEstadisticas();
-        console.log("🚀 LinkedinMatic v42.0 - Cinematic Cyber-realism Cargado");
-    });
+    document.addEventListener('DOMContentLoaded', actualizarEstadisticas);
 </script>
 </body>
 </html>
