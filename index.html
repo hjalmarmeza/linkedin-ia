@@ -13,7 +13,7 @@
         .stat-number { font-size: 1.8rem; color: #00f2ff; font-weight: bold; }
         .stat-label { font-size: 0.75rem; color: #888; text-transform: uppercase; }
         #post-text { width: 100%; height: 500px; background: #000; color: #fff; border: 1px solid #444; padding: 18px; box-sizing: border-box; font-size: 14px; line-height: 1.7; border-radius: 5px; resize: none; }
-        #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #222; min-height: 250px; background: #000; object-fit: cover; transition: opacity 0.5s; }
+        #post-image { width: 100%; height: auto; margin-top: 15px; border-radius: 8px; border: 1px solid #222; min-height: 250px; background: #000; object-fit: cover; }
         .controls { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         button { padding: 14px; cursor: pointer; font-weight: bold; border-radius: 6px; border: none; text-transform: uppercase; transition: 0.3s; }
         .btn-gen { background: #00f2ff; color: #000; grid-column: span 2; }
@@ -24,7 +24,7 @@
         button:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
         #status-circle { width: 12px; height: 12px; border-radius: 50%; background: gray; display: inline-block; margin-left: 10px; transition: 0.3s; }
         .warning { background: #442200; border: 1px solid #ff8800; padding: 10px; border-radius: 5px; margin: 10px 0; color: #ffaa00; font-size: 0.9rem; text-align: center; }
-        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0, 242, 255, 0.3); border-radius: 50%; border-top-color: #00f2ff; animation: spin 1s ease-in-out infinite; margin-right: 10px; vertical-align: middle; }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0, 242, 255, 0.3); border-radius: 50%; border-top-color: #00f2ff; animation: spin 1s ease-in-out infinite; margin-right: 10px; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
@@ -47,7 +47,9 @@
             </div>
         </div>
 
-        <div id="warning-message" class="warning" style="display:none;">⚠️ Has usado todos los posts disponibles.</div>
+        <div id="warning-message" class="warning" style="display:none;">
+            ⚠️ Has usado todos los posts disponibles. Usa "Reiniciar Historial" para comenzar de nuevo.
+        </div>
 
         <textarea id="post-text" placeholder="Haz clic en 'Generar Post' para comenzar..."></textarea>
         <img id="post-image" src="" alt="Imagen del post">
@@ -59,7 +61,9 @@
             <button class="btn-reset" onclick="reiniciarHistorial()">🔄 REINICIAR HISTORIAL</button>
         </div>
         
-        <div style="text-align:center; margin-top:15px; font-size:12px; color:#555;">Estado: <span id="status-circle"></span></div>
+        <div style="text-align:center; margin-top:15px; font-size:12px; color:#555;">
+            Estado: <span id="status-circle"></span>
+        </div>
     </div>
 
 <script>
@@ -282,7 +286,7 @@
             contexto: "La IA está elevando las expectativas de experiencia del cliente a niveles sin precedentes. Sistemas inteligentes permiten anticipar necesidades, resolver problemas antes de que ocurran y personalizar cada interacción a escala masiva. Las empresas que no puedan ofrecer este nivel de experiencia quedarán rezagadas independientemente de la calidad de su producto.",
             puntos: [
                 "• **Anticipación Inteligente:** Los algoritmos predictivos analizan comportamiento histórico para sugerir productos, servicios o soluciones antes de que el cliente las busque activamente.",
-                "• **Soporte Proactivo:** Chatbots y asistentes virtuales resuelven el 80% de consultas rutinarias instantáneamente, liberando a humanos para casi complejos que requieren empatía y criterio.",
+                "• **Soporte Proactivo:** Chatbots y asistentes virtuales resuelven el 80% de consultas rutinarias instantáneamente, liberando a humanos para casos complejos que requieren empatía y criterio.",
                 "• **Omnicanalidad Perfecta:** El cliente puede iniciar una conversación en un canal y continuarla en otro sin perder contexto, creando experiencias fluidas que construyen lealtad de marca."
             ],
             cierre: "La experiencia del cliente ya no es un diferenciador, es el precio de entrada al mercado moderno.",
@@ -369,7 +373,7 @@
             categoria: "IA en Educación",
             titulo: "Educación Personalizada: Cuando cada estudiante tiene su propio plan de aprendizaje",
             apertura: "El modelo educativo de un profesor para 30 estudiantes fue diseñado para la eficiencia industrial, no para el aprendizaje efectivo.",
-            contexto: "La inteligencia artificial está permitir algo que siempre fue imposible a escala: educación verdaderamente personalizada. Plataformas adaptativas ajustan contenido, ritmo y metodología según las necesidades únicas de cada estudiante, maximizando comprensión y retención de conocimiento.",
+            contexto: "La inteligencia artificial está permitiendo algo que siempre fue imposible a escala: educación verdaderamente personalizada. Plataformas adaptativas ajustan contenido, ritmo y metodología según las necesidades únicas de cada estudiante, maximizando comprensión y retención de conocimiento.",
             puntos: [
                 "• **Rutas de Aprendizaje Adaptativas:** Algoritmos identifican fortalezas y debilidades individuales, diseñando secuencias de contenido optimizadas para cada perfil cognitivo.",
                 "• **Retroalimentación Instantánea:** Los estudiantes reciben corrección y guía inmediata sobre ejercicios, sin esperar días por calificaciones, acelerando el ciclo de aprendizaje.",
@@ -504,7 +508,7 @@
             categoria: "IA en Energía",
             titulo: "Redes Eléctricas Inteligentes: Optimizar generación y consumo energético",
             apertura: "La transición energética no solo requiere fuentes limpias. Requiere inteligencia para gestionar su intermitencia.",
-            contexto: "Las energías renovables son intermitentes por naturaleza: el sol no siempre brilla y el viento no siempre sopla. La IA está permitir gestionar redes eléctricas complejas que balancean generación distribuida, almacenamiento y consumo en tiempo real, haciendo viable la transición hacia energías limpias.",
+            contexto: "Las energías renovables son intermitentes por naturaleza: el sol no siempre brilla y el viento no siempre sopla. La IA está permitiendo gestionar redes eléctricas complejas que balancean generación distribuida, almacenamiento y consumo en tiempo real, haciendo viable la transición hacia energías limpias.",
             puntos: [
                 "• **Predicción de Demanda:** Algoritmos pronostican consumo energético con precisión, permitiendo ajustar generación y evitar tanto excesos costosos como déficits peligrosos.",
                 "• **Optimización de Almacenamiento:** IA determina cuándo almacenar energía en baterías y cuándo liberarla según precios de mercado y demanda esperada, maximizando rentabilidad.",
@@ -570,7 +574,7 @@
                 "• **Revenue Management:** Algoritmos ajustan precios de habitaciones y vuelos en tiempo real según demanda, maximizando ocupación y rentabilidad simultáneamente.",
                 "• **Asistentes Virtuales:** Chatbots y apps inteligentes resuelven dudas de viajeros 24/7 en múltiples idiomas, mejorando experiencia sin aumentar costos de personal."
             ],
-            cierre: "El futuro del turismo no vende destinos genéricos, vende experiencias diseñadas algorítmicamente para cada viajero.",
+            cierre: "El turismo del futuro no vende destinos genéricos, vende experiencias diseñadas algorítmicamente para cada viajero.",
             frase_transicion: "Las empresas turísticas que personalicen con IA capturarán viajeros que buscan experiencias únicas, no paquetes estandarizados.",
             tags: "#Turismo #Hospitalidad #IA #TravelTech #Innovacion #Experiencia #Tecnologia"
         },
@@ -736,7 +740,7 @@
                 "• **Optimización de Inventario:** Modelos predictivos determinan qué prendas producir en qué cantidades, reduciendo sobrestock mientras maximizan ventas."
             ],
             cierre: "La moda del futuro combina creatividad humana con insights algorítmicos que convierten intuición en decisiones basadas en datos.",
-            frase_transicion: "Las marcas de moda que mejor utilicen IA lanzarán colecciones que capturarán zeitgeist cultural antes que la competencia.",
+            frase_transicion: "Las marcas de moda que mejor utilicen IA lanzarán colecciones que capturan zeitgeist cultural antes que la competencia.",
             tags: "#Moda #Fashion #IA #RetailTech #Innovacion #Tendencias #Tecnologia"
         },
         {
@@ -820,137 +824,352 @@
     let postActualId = null;
     let imagenCargando = false;
 
-    function obtenerPublicados() { return JSON.parse(localStorage.getItem('postsPublicados') || '[]'); }
-    function guardarPublicado(id) { const p = obtenerPublicados(); if(!p.includes(id)){ p.push(id); localStorage.setItem('postsPublicados', JSON.stringify(p)); } actualizarEstadisticas(); }
-    
+    // Diccionario de símbolos por categoría para los hologramas
+    const simbolosCategoria = {
+        "Estrategia": "circuit boards, flow charts, business graphs, profit lines, strategic diagrams",
+        "Liderazgo": "human figures with digital auras, leadership pyramids, team networks, vision crystals",
+        "Agentes": "autonomous drones, decision trees, network nodes, AI avatars, execution flows",
+        "Ciberseguridad": "digital shields, encryption symbols, firewalls, protective barriers, security layers",
+        "Sostenibilidad": "earth globes, leaf circuits, energy grids, green technology, eco-symbols",
+        "Ética": "scales of justice, transparency cubes, ethical frameworks, moral compasses, human rights symbols",
+        "Hardware": "microchips, processor crystals, silicon wafers, circuit boards, hardware architecture",
+        "Open Source": "open lock symbols, collaborative networks, shared code, community webs, open platforms",
+        "Trabajo": "human-machine collaboration, skill trees, productivity graphs, team synergy, workflow optimization",
+        "Multimodal": "sensory interfaces, multi-layer perception, fusion nodes, integrated inputs, combined data streams",
+        "Privacidad": "data vaults, privacy shields, encrypted streams, secure channels, protected information",
+        "Creatividad": "neural creativity sparks, idea bulbs, artistic algorithms, inspiration waves, creative flows",
+        "Transformación": "digital metamorphosis, evolution spirals, change vectors, transformation waves, digital rebirth",
+        "Analítica": "data cubes, predictive curves, insight crystals, analytics dashboards, intelligence matrices",
+        "Customer": "personalization spheres, client interfaces, experience maps, satisfaction metrics, service excellence",
+        "RRHH": "talent networks, skill matrices, team synergies, recruitment funnels, development paths",
+        "Blockchain": "distributed ledgers, smart contracts, trust chains, decentralized networks, immutable records",
+        "Salud": "medical holograms, DNA strands, health monitors, healing symbols, wellness indicators",
+        "NLP": "language trees, conversation flows, semantic webs, text analysis, communication networks",
+        "Finanzas": "trading algorithms, risk matrices, financial flows, investment graphs, economic indicators",
+        "Educación": "knowledge trees, learning paths, brain networks, education platforms, skill development",
+        "Marketing": "targeting spheres, campaign flows, conversion funnels, brand awareness, engagement metrics",
+        "Manufactura": "smart factories, production lines, quality grids, industrial automation, supply chains",
+        "Retail": "shopping interfaces, inventory webs, customer journeys, purchase flows, retail analytics",
+        "Legal": "contract matrices, compliance grids, legal frameworks, justice symbols, regulatory systems",
+        "Generativa": "creative algorithms, content spheres, idea generators, artistic synthesis, innovation engines",
+        "Quantum": "quantum circuits, superposition spheres, entanglement webs, quantum particles, advanced computing",
+        "Agricultura": "crop grids, soil sensors, harvest algorithms, farming automation, agricultural technology",
+        "Logística": "supply chains, route optimizations, delivery networks, transportation flows, warehouse automation",
+        "Energía": "power grids, renewable nodes, energy flows, sustainable sources, electricity networks",
+        "Seguridad": "surveillance networks, threat detection, safety grids, protection systems, emergency response",
+        "Seguros": "risk assessment, claim processing, protection shields, insurance models, actuarial analytics",
+        "Entretenimiento": "content streams, media flows, engagement metrics, entertainment platforms, audience analytics",
+        "Turismo": "travel maps, experience layers, destination networks, hospitality interfaces, journey planning",
+        "Construcción": "building models, safety grids, project timelines, architectural designs, engineering plans",
+        "Deportes": "performance analytics, training algorithms, victory metrics, athletic optimization, game analysis",
+        "Recursos": "conservation grids, ecosystem monitoring, sustainability maps, environmental protection, resource management",
+        "Gobierno": "public service interfaces, governance grids, citizen networks, administrative systems, policy implementation",
+        "Farmacéutica": "molecule structures, drug discovery, treatment paths, medical research, pharmaceutical development",
+        "Bienes Raíces": "property grids, valuation matrices, market trends, real estate networks, investment properties",
+        "Responsable": "ethical frameworks, governance models, accountability grids, transparency layers, responsible AI",
+        "Edge": "distributed nodes, local processing, latency optimization, edge devices, decentralized computing",
+        "Atención": "service interfaces, support networks, resolution paths, customer care, help systems",
+        "Investigación": "discovery algorithms, hypothesis testing, knowledge expansion, scientific method, research frameworks",
+        "Moda": "trend waves, style algorithms, fashion grids, design elements, aesthetic patterns",
+        "Movilidad": "transport networks, traffic flows, urban mobility, transportation systems, city navigation",
+        "Agua": "water distribution, conservation grids, resource management, hydration networks, aquatic ecosystems",
+        "Juegos": "game algorithms, player paths, virtual worlds, gaming interfaces, interactive experiences",
+        "Clima": "climate models, carbon tracking, environmental grids, weather patterns, ecological systems",
+        "Aprendizaje": "knowledge networks, skill development, growth paths, educational technology, lifelong learning"
+    };
+
+    function obtenerSimboloCategoria(categoria) {
+        // Buscar coincidencias parciales en las categorías
+        const categoriaLower = categoria.toLowerCase();
+        
+        // Primero buscar coincidencias exactas
+        for (const [key, value] of Object.entries(simbolosCategoria)) {
+            if (categoriaLower.includes(key.toLowerCase())) {
+                return value;
+            }
+        }
+        
+        // Si no encuentra coincidencia, usar símbolos generales
+        const palabrasClave = categoriaLower.split(' ');
+        for (const palabra of palabrasClave) {
+            for (const [key, value] of Object.entries(simbolosCategoria)) {
+                if (palabra.includes(key.toLowerCase()) || key.toLowerCase().includes(palabra)) {
+                    return value;
+                }
+            }
+        }
+        
+        return "floating holographic interfaces, glowing data streams, digital technology symbols, futuristic UI elements";
+    }
+
+    function obtenerPublicados() {
+        const publicados = localStorage.getItem('postsPublicados');
+        return publicados ? JSON.parse(publicados) : [];
+    }
+
+    function guardarPublicado(id) {
+        const publicados = obtenerPublicados();
+        if (!publicados.includes(id)) {
+            publicados.push(id);
+            localStorage.setItem('postsPublicados', JSON.stringify(publicados));
+        }
+        actualizarEstadisticas();
+    }
+
     function actualizarEstadisticas() {
-        const p = obtenerPublicados();
-        document.getElementById('publicados').textContent = p.length;
-        document.getElementById('disponibles').textContent = paquetes.length - p.length;
-        document.getElementById('warning-message').style.display = (paquetes.length - p.length === 0) ? 'block' : 'none';
+        const publicados = obtenerPublicados();
+        const disponibles = paquetes.length - publicados.length;
+        
+        document.getElementById('publicados').textContent = publicados.length;
+        document.getElementById('disponibles').textContent = disponibles;
+        
+        if (disponibles === 0) {
+            document.getElementById('warning-message').style.display = 'block';
+        } else {
+            document.getElementById('warning-message').style.display = 'none';
+        }
     }
 
     function generarNarrativa() {
-        const p = obtenerPublicados();
-        const disponibles = paquetes.filter(item => !p.includes(item.id));
-        if (disponibles.length === 0) return alert('⚠️ Ya has usado todos los posts.');
-        const paquete = disponibles[Math.floor(Math.random() * disponibles.length)];
-        categoriaActual = paquete.categoria;
-        postActualId = paquete.id;
-        
-        let texto = `${paquete.titulo.toUpperCase()}\n\n${paquete.apertura}\n\n${paquete.contexto}\n\nTres claves:\n\n`;
-        paquete.puntos.forEach(pt => { texto += pt + "\n\n"; });
-        texto += `${paquete.cierre}\n\n${paquete.frase_transicion}\n\n${paquete.tags}`;
-        
-        document.getElementById('post-text').value = texto;
-        document.getElementById('status-circle').style.background = "#ffaa00";
-        regenerarImagen();
+        try {
+            const publicados = obtenerPublicados();
+            const disponibles = paquetes.filter(p => !publicados.includes(p.id));
+            
+            if (disponibles.length === 0) {
+                alert('⚠️ Ya has usado todos los posts disponibles. Usa "Reiniciar Historial" para comenzar de nuevo.');
+                return;
+            }
+            
+            const paquete = disponibles[Math.floor(Math.random() * disponibles.length)];
+            categoriaActual = paquete.categoria;
+            postActualId = paquete.id;
+            
+            let texto = `${paquete.titulo.toUpperCase()}\n\n`;
+            texto += `${paquete.apertura}\n\n`;
+            texto += `${paquete.contexto}\n\n`;
+            texto += `Tres claves para entender ${paquete.categoria}:\n\n`;
+            paquete.puntos.forEach(pt => { texto += pt + "\n\n"; });
+            texto += `${paquete.cierre}\n\n`;
+            texto += `${paquete.frase_transicion}\n\n`;
+            texto += paquete.tags;
+
+            document.getElementById('post-text').value = texto;
+            document.getElementById('status-circle').style.background = "#ffaa00";
+            regenerarImagen();
+        } catch (error) {
+            console.error("Error al generar narrativa:", error);
+            alert("Error al generar el post: " + error.message);
+        }
     }
 
-    // --- LÓGICA DE IMAGEN PROFESIONAL BLINDADA (SOLUCIÓN DEFINITIVA) ---
-    async function regenerarImagen() {
-        if (!categoriaActual || imagenCargando) return;
-        imagenCargando = true;
-        const btnImg = document.getElementById('btn-img');
-        const imgElement = document.getElementById('post-image');
-        const textoOriginal = btnImg.innerHTML;
+    function regenerarImagen() {
+        if (!categoriaActual) {
+            alert("Primero genera un post usando el botón 'Generar Post'");
+            return;
+        }
+
+        if (imagenCargando) return;
         
-        imgElement.style.opacity = "0.3";
-        btnImg.innerHTML = '<span class="loading"></span> SINCRONIZANDO ACTIVO...';
-        btnImg.disabled = true;
-
-        // SISTEMA DE 10 NIVELES REALES (SIN GIPHY Y SIN PAISAJES)
-        // Cada nivel es una opción de imagen técnica real.
-        const seed = Math.floor(Math.random() * 1000000);
-        const searchTerms = `professional technology futuristic holographic ${categoriaActual.replace(/ /g, '+')}`;
-
-        const engines = [
-            // 1. Pollinations Flux (Prioridad 1: Generación IA Pro de Alta Fidelidad)
-            async () => `https://image.pollinations.ai/prompt/Hyper-realistic+cinematic+cyber-realism+tech+professional+executive+holographic+${encodeURIComponent(categoriaActual)}?nologo=true&model=flux&width=1080&height=1080&seed=${seed}`,
-            // 2. Pexels CGI (Renders Industriales)
-            async () => {
-                const res = await fetch(`https://api.pexels.com/v1/search?query=futuristic+technology+cgi+${categoriaActual}&per_page=1&seed=${seed}`, {
-                    headers: { Authorization: "563492ad6f917000010000010c2839f9976b4a5392e92c45f479906d" }
-                });
-                const data = await res.json();
-                return data.photos[0].src.large2x;
-            },
-            // 3. Pixabay Industrial (Hardware Pro)
-            async () => {
-                const res = await fetch(`https://pixabay.com/api/?key=47844052-166299b66f281e695d7363cf8&q=technology+datacenter+${categoriaActual}&image_type=photo&category=technology&per_page=1`);
-                const data = await res.json();
-                return data.hits[0].largeImageURL;
-            },
-            // 4. Cloudinary Tech (Inyección de Activo de Autoridad)
-            async () => `https://res.cloudinary.com/demo/image/fetch/q_auto,f_auto,w_1080,h_1080,c_fill/https://images.unsplash.com/photo-1518770660439-4636190af475`,
-            // 5. Lummi AI (Biblioteca IA Estática)
-            async () => `https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1080`,
-            // 6. Pikwizard Professional (Entornos de Oficina Futurista)
-            async () => `https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1080`,
-            // 7. Adobe Stock vía CDN (Activo de Diseño)
-            async () => `https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1080`,
-            // 8. Engine IA Alternativo (Stable Diffusion)
-            async () => `https://image.pollinations.ai/prompt/cybernetic+high-end+technology+hologram+${seed}?model=turbo`,
-            // 9. Librería Crítica de Hardware (Imagen de Servidor)
-            async () => `https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?w=1080`,
-            // 10. BACKUP DE AUTORIDAD FINAL (Centro de Datos 8K - IMPOSIBLE DE FALLAR)
-            async () => `https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=1080`
-        ];
-
-        for (let i = 0; i < engines.length; i++) {
-            try {
-                btnImg.innerHTML = `<span class="loading"></span> MOTOR ${i + 1}/10...`;
-                const url = await engines[i]();
-                if (url) {
-                    imgElement.src = url;
-                    await new Promise((resolve, reject) => {
-                        imgElement.onload = resolve;
-                        imgElement.onerror = reject;
-                        setTimeout(reject, 4000); // Si el motor no responde en 4 seg, salta al siguiente
-                    });
+        try {
+            imagenCargando = true;
+            const btnImg = document.getElementById('btn-img');
+            const textoOriginal = btnImg.innerHTML;
+            btnImg.innerHTML = '<span class="loading"></span> GENERANDO IMAGEN...';
+            btnImg.disabled = true;
+            
+            // Obtener símbolos específicos para la categoría
+            const simbolos = obtenerSimboloCategoria(categoriaActual);
+            
+            // Prompt maestro con estilo Ciber-Realismo Cinematográfico mejorado
+            const prompt = `Hyper-realistic cinematic cyber-realism with holographic data fusion. 
+            Composition: Three dynamic layers - foreground with sharp floating digital elements (${simbolos}), 
+            middle plane with integrated human figures interacting with technology, 
+            background with futuristic urban canyon of towering skyscrapers with neon lights creating dramatic chiaroscuro.
+            
+            Lighting: Dramatic chiaroscuro contrast with deep shadows and bright highlights. 
+            Color palette: Electric Cyan (#00f2ff) for data streams and holograms, 
+            Neon Violet (#7000ff) for contrast accents and depth, 
+            Gold (#FFD700) and Amber (#FF8C00) for street lights and warmth against cool technological blues.
+            
+            Visual elements: Glowing translucent holographic interfaces, 3D floating icons representing ${categoriaActual}, 
+            data streams flowing through air, light particles, refractive effects.
+            
+            Style: 8k resolution, ultra-detailed textures, professional commercial photography, 
+            cinematic depth of field with soft bokeh background, volumetric lighting, lens flares.
+            
+            Mood: Futuristic, technological, intelligent, innovative. 
+            No text, no logos, no people recognizable as celebrities.`;
+            
+            const seed = Math.floor(Math.random() * 999999);
+            
+            // Limpiar el prompt para URL
+            const promptLimpio = prompt.replace(/\s+/g, ' ').trim();
+            
+            // URL optimizada para pollinations.ai
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(promptLimpio)}?width=1080&height=1080&seed=${seed}&nologo=true&model=flux&style=cinematic&enhance=true`;
+            
+            console.log("🌐 Generando imagen con estilo Ciber-Realismo para:", categoriaActual);
+            console.log("🔧 Símbolos utilizados:", simbolos);
+            
+            const imgElement = document.getElementById('post-image');
+            imgElement.src = "";
+            imgElement.style.opacity = "0.5";
+            imgElement.style.transition = "opacity 0.5s ease";
+            
+            // Precargar imagen
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            
+            img.onload = function() {
+                imgElement.src = imageUrl;
+                setTimeout(() => {
                     imgElement.style.opacity = "1";
-                    document.getElementById('status-circle').style.background = "#00f2ff";
+                }, 100);
+                
+                document.getElementById('status-circle').style.background = "#00f2ff";
+                console.log("✅ Imagen Ciber-Realista generada exitosamente");
+                
+                // Restaurar botón
+                setTimeout(() => {
                     btnImg.innerHTML = textoOriginal;
                     btnImg.disabled = false;
                     imagenCargando = false;
-                    return;
+                }, 500);
+            };
+            
+            img.onerror = function() {
+                console.warn("⚠️ Pollinations.ai no disponible, usando fallback mejorado...");
+                
+                // Fallback mejorado con múltiples opciones
+                const fallbacks = [
+                    `https://picsum.photos/seed/cyber-${seed}/1080/1080?grayscale`,
+                    `https://picsum.photos/seed/future-${seed}/1080/1080`,
+                    `https://picsum.photos/seed/tech-${seed}/1080/1080?blur=2`
+                ];
+                
+                const fallbackUrl = fallbacks[seed % fallbacks.length];
+                imgElement.src = fallbackUrl;
+                
+                // Aplicar filtros CSS para simular estilo cibernético
+                imgElement.style.filter = `
+                    contrast(1.3) 
+                    saturate(1.4) 
+                    hue-rotate(200deg) 
+                    brightness(0.85)
+                    sepia(0.1)
+                `;
+                
+                setTimeout(() => {
+                    imgElement.style.opacity = "1";
+                }, 100);
+                
+                document.getElementById('status-circle').style.background = "#ffaa00";
+                console.log("🔄 Usando fallback con filtros CSS");
+                
+                // Restaurar botón
+                setTimeout(() => {
+                    btnImg.innerHTML = textoOriginal;
+                    btnImg.disabled = false;
+                    imagenCargando = false;
+                }, 500);
+            };
+            
+            // Iniciar carga
+            img.src = imageUrl;
+            
+            // Timeout de seguridad (15 segundos)
+            setTimeout(() => {
+                if (imagenCargando) {
+                    console.warn("⏰ Timeout alcanzado, usando placeholder");
+                    imgElement.src = `https://via.placeholder.com/1080x1080/0a0a1a/00f2ff?text=${encodeURIComponent(categoriaActual.substring(0, 30))}`;
+                    imgElement.style.filter = "none";
+                    imgElement.style.opacity = "1";
+                    
+                    btnImg.innerHTML = textoOriginal;
+                    btnImg.disabled = false;
+                    imagenCargando = false;
+                    document.getElementById('status-circle').style.background = "#ff4444";
                 }
-            } catch (e) { console.warn(`Motor ${i+1} falló.`); }
+            }, 15000);
+            
+        } catch (error) {
+            console.error("❌ Error crítico al regenerar imagen:", error);
+            document.getElementById('post-image').src = `https://via.placeholder.com/1080x1080/0a0a1a/00f2ff?text=${encodeURIComponent(categoriaActual || "IA")}`;
+            document.getElementById('btn-img').innerHTML = '🖼️ GENERAR IMAGEN CIBER-REALISTA';
+            document.getElementById('btn-img').disabled = false;
+            imagenCargando = false;
+            document.getElementById('status-circle').style.background = "#ff4444";
         }
-        
-        btnImg.innerHTML = textoOriginal; btnImg.disabled = false; imagenCargando = false;
     }
 
     async function publicarEnLinkedin() {
         const text = document.getElementById('post-text').value;
         const image = document.getElementById('post-image').src;
-        if (!text) return alert("Genera un post primero.");
+        const webhookUrl = "https://hook.eu2.make.com/xbfleegfnwx93ri9m260xfi3lf5ovf23"; 
+        
+        if (!text || text === "") {
+            alert("Por favor genera un post primero usando el botón 'Generar Post'");
+            return;
+        }
+        
+        if (!postActualId) {
+            alert("Error: No se puede identificar el post actual");
+            return;
+        }
+        
         document.getElementById('status-circle').style.background = "#ffaa00";
+        
         try {
-            const response = await fetch("https://hook.eu2.make.com/xbfleegfnwx93ri9m260xfi3lf5ovf23", {
+            const response = await fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text, image, categoria: categoriaActual, id: postActualId, version: "v42.0-Failsafe-Active" })
+                body: JSON.stringify({ 
+                    text, 
+                    image,
+                    categoria: categoriaActual,
+                    id: postActualId,
+                    timestamp: new Date().toISOString(),
+                    version: "LinkedinMatic v42.0 - Ciber-Realismo"
+                })
             });
+            
             if (response.ok) {
                 guardarPublicado(postActualId);
                 document.getElementById('status-circle').style.background = "#238636";
-                alert("✅ Enviado correctamente");
-                document.getElementById('post-text').value = ""; document.getElementById('post-image').src = "";
-                categoriaActual = ""; postActualId = null;
+                alert("✅ Post enviado correctamente a LinkedIn");
+                
+                // Limpiar
+                document.getElementById('post-text').value = "";
+                document.getElementById('post-image').src = "";
+                categoriaActual = "";
+                postActualId = null;
+            } else {
+                document.getElementById('status-circle').style.background = "#ff4444";
+                alert("❌ Error al publicar. Código: " + response.status);
             }
-        } catch (e) { document.getElementById('status-circle').style.background = "#ff4444"; }
-    }
-
-    function reiniciarHistorial() {
-        if (confirm('¿Reiniciar historial?')) {
-            localStorage.removeItem('postsPublicados');
-            actualizarEstadisticas();
-            alert('✅ Reiniciado');
+        } catch (e) { 
+            document.getElementById('status-circle').style.background = "#ff4444";
+            alert("❌ Error de conexión: " + e.message); 
         }
     }
 
-    document.addEventListener('DOMContentLoaded', actualizarEstadisticas);
+    function reiniciarHistorial() {
+        if (confirm('¿Estás seguro de que deseas reiniciar el historial? Esto marcará todos los posts como no publicados.')) {
+            localStorage.removeItem('postsPublicados');
+            actualizarEstadisticas();
+            alert('✅ Historial reiniciado correctamente');
+        }
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function() {
+        actualizarEstadisticas();
+        console.log("🚀 LinkedinMatic v42.0 - Sistema Inteligente cargado");
+        console.log("🎨 Estilo visual: Ciber-Realismo Cinematográfico con Fusión de Datos Holográficos");
+        console.log("📊 Posts disponibles: 50 categorías únicas");
+        console.log("🌈 Paleta de colores: Cyan Eléctrico, Violeta Neón, Oro/Ámbar");
+        console.log("🖼️ Generación de imágenes: 3 capas dinámicas con hologramas flotantes");
+    });
 </script>
 </body>
 </html>
