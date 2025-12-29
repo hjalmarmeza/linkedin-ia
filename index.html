@@ -191,7 +191,7 @@
             contexto: "La privacidad y el control de datos se han convertido en ventajas competitivas críticas. Las organizaciones que no garanticen la soberanía sobre su información no solo enfrentan riesgos regulatorios, sino que pierden la capacidad de tomar decisiones estratégicas basadas en inteligencia propia e inviolable.",
             puntos: [
                 "• **Control Total:** Garantizar que la propiedad intelectual y los datos críticos permanezcan bajo control absoluto de la organización es fundamental para mantener ventaja competitiva.",
-                "• **Cumplimiento Normativo:** Las regulaciones como GDPR e leyes de protección de datos locales exigen arquitecturas que prioricen la privacidad desde el diseño, no como añadido posterior.",
+                "• **Cumplimiento Normativo:** Las regulaciones como GDPR y leyes de protección de datos locales exigen arquitecturas que prioricen la privacidad desde el diseño, no como añadido posterior.",
                 "• **Confianza del Cliente:** Demostrar compromiso con la protección de datos personales se traduce directamente en reputación de marca y lealtad del consumidor en mercados cada vez más conscientes."
             ],
             cierre: "La soberanía de datos no es paranoia corporativa, es el fundamento sobre el cual se construye la autonomía estratégica en el siglo XXI.",
@@ -243,7 +243,7 @@
             contexto: "La IA está elevando las expectativas de experiencia del cliente a niveles sin precedentes. Sistemas inteligentes permiten anticipar necesidades, resolver problemas antes de que ocurran y personalizar cada interacción a escala masiva. Las empresas que no puedan ofrecer este nivel de experiencia quedarán rezagadas independientemente de la calidad de su producto.",
             puntos: [
                 "• **Anticipación Inteligente:** Los algoritmos predictivos analizan comportamiento histórico para sugerir productos, servicios o soluciones antes de que el cliente las busque activamente.",
-                "• **Soporte Proactivo:** Chatbots y asistentes virtuales resuelven el 80% de consultas rutinarias instantáneamente, liberando a humanos para casi complejos que requieren empatía y criterio.",
+                "• **Soporte Proactivo:** Chatbots y asistentes virtuales resuelven el 80% de consultas rutinarias instantáneamente, liberando a humanos para casos complejos que requieren empatía y criterio.",
                 "• **Omnicanalidad Perfecta:** El cliente puede iniciar una conversación en un canal y continuarla en otro sin perder contexto, creando experiencias fluidas que construyen lealtad de marca."
             ],
             cierre: "La experiencia del cliente ya no es un diferenciador, es el precio de entrada al mercado moderno.",
@@ -435,7 +435,7 @@
         {
             id: 30, categoria: "IA en Energía", titulo: "Redes Eléctricas Inteligentes: Optimizar generación y consumo energético",
             apertura: "La transición energética no solo requiere fuentes limpias. Requiere inteligencia para gestionar su intermitencia.",
-            contexto: "Las energías renovables son intermitentes por naturaleza: el sol no siempre brilla y el viento no siempre sopla. La IA está permitir gestionar redes eléctricas complejas que balancean generación distribuida, almacenamiento y consumo en tiempo real, haciendo viable la transición hacia energías limpias.",
+            contexto: "Las energías renovables son intermitentes por naturaleza: el sol no siempre brilla y el viento no siempre sopla. La IA está permitiendo gestionar redes eléctricas complejas que balancean generación distribuida, almacenamiento y consumo en tiempo real, haciendo viable la transición hacia energías limpias.",
             puntos: [
                 "• **Predicción de Demanda:** Algoritmos pronostican consumo energético con precisión, permitiendo ajustar generación y evitar tanto excesos costosos como déficits peligrosos.",
                 "• **Optimización de Almacenamiento:** IA determina cuándo almacenar energía en baterías y cuándo liberarla según precios de mercado y demanda esperada, maximizando rentabilidad.",
@@ -742,7 +742,6 @@
         regenerarImagen();
     }
 
-    // --- MOTOR DE RENDERIZADO DINÁMICO POR SEMILLA INFINITA (SIN PAISAJES) ---
     async function regenerarImagen() {
         if (!categoriaActual || imagenCargando) return;
         imagenCargando = true;
@@ -753,17 +752,17 @@
         btnImg.innerHTML = '<span class="loading"></span> RENDERIZANDO...';
         btnImg.disabled = true;
 
-        // Generamos una semilla aleatoria única para variedad infinita
         const seed = Math.floor(Math.random() * 1000000);
+        // Prompt simplificado para evitar timeouts y asegurar calidad
+        const prompt = `Hyper-realistic cinematic cyber-realism professional executive holographic high-tech industrial dark background metal glass carbon fiber ${categoriaActual.replace(/ /g, '+')}`;
         
-        // El motor genera una imagen nueva cada vez basándose en la semilla
-        // Bloqueamos el prompt para Ciber-Realismo Cinematográfico estricto
-        const prompt = `Hyper-realistic cinematic cyber-realism professional executive holographic high-tech industrial dark background ${categoriaActual.replace(/ /g, '+')}`;
-        
+        // URL de Pollinations.ai (Flux Model)
         const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?nologo=true&model=flux&width=1080&height=1080&seed=${seed}&enhance=true`;
 
-        // Intentamos cargar la imagen generada
         const img = new Image();
+        
+        // NO USAR crossOrigin="anonymous" aquí para simple visualización
+        
         img.onload = () => {
             imgElement.src = imageUrl;
             imgElement.style.opacity = "1";
@@ -774,16 +773,24 @@
         };
 
         img.onerror = () => {
-            // RED DE SEGURIDAD: Inyectamos un activo de autoridad si el renderizado falla
-            // Nunca usamos paisajes genéricos
+            // BACKUP DE AUTORIDAD (Imagen de Servidor - No Paisaje)
             imgElement.src = "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?w=1080";
             imgElement.style.opacity = "1";
+            document.getElementById('status-circle').style.background = "#ffaa00"; // Advertencia visual
             btnImg.innerHTML = '🖼️ GENERAR IMAGEN CIBER-REALISTA';
             btnImg.disabled = false;
             imagenCargando = false;
         };
 
         img.src = imageUrl;
+        
+        // Timeout de seguridad
+        setTimeout(() => {
+            if(imagenCargando) {
+                // Forzar backup si tarda demasiado
+                img.onerror();
+            }
+        }, 10000);
     }
 
     async function publicarEnLinkedin() {
@@ -795,13 +802,7 @@
             const response = await fetch("https://hook.eu2.make.com/xbfleegfnwx93ri9m260xfi3lf5ovf23", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    text, 
-                    image, 
-                    categoria: categoriaActual, 
-                    id: postActualId,
-                    version: "v42.0-InfiniteSeed" 
-                })
+                body: JSON.stringify({ text, image, categoria: categoriaActual, id: postActualId, version: "v42.0-InfiniteSeed" })
             });
             if (response.ok) {
                 guardarPublicado(postActualId);
