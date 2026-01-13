@@ -393,32 +393,47 @@
 
                 loadingText.textContent = "GENERANDO PIXELES...";
 
-                // --- MEJORA DE PROMPT (CONCEPTUAL) ---
-                const titleForPrompt = currentTitle || currentText.split("\n")[0];
-                const tagsForPrompt = currentTags || "";
+                // --- CEREBRO DE TRADUCCIÓN RADICAL (ANTI-AUTO) ---
+                const titleText = (currentTitle || currentText.split("\n")[0]).toLowerCase();
 
-                // Heurística para evitar interpretaciones literales erróneas (ej. tráfico de autos)
-                let enhancedConcept = titleForPrompt;
-                const literalAvoidance = [
-                    "tráfico", "traffic", "nube", "cloud", "red", "network",
-                    "embudo", "funnel", "cadena", "chain", "ancla", "anchor",
-                    "pirámide", "pyramid", "puente", "bridge", "semilla", "seed",
-                    "virus", "gusano", "worm", "ventana", "window", "llave", "key"
+                // Definimos metáforas puras. Si el título tiene la palabra clave, 
+                // OLVIDAMOS el título original y usamos la metáfora.
+                const metaphors = [
+                    { key: "tráfico", value: "A stream of glowing fiber optic cables with light pulses moving through a void, interconnected neural pathways" },
+                    { key: "nube", value: "A floating cluster of translucent geometric crystalline structures, digital data monoliths" },
+                    { key: "red", value: "Complex golden fractal web of connections, glowing nodes in deep space" },
+                    { key: "embudo", value: "A vortex of swirling liquid light particles, focusing into a single point of energy" },
+                    { key: "seguridad", value: "An impenetrable shield made of interlocking hexagonal light plates, crystal structure" }
                 ];
-                const isLiteralRisk = literalAvoidance.some(word => enhancedConcept.toLowerCase().includes(word));
 
-                if (isLiteralRisk) {
-                    enhancedConcept = `Conceptual representation of ${enhancedConcept}, digital environment, abstract data visualization, no literal vehicles, no real clouds, metaphorical`;
-                } else {
-                    enhancedConcept = `Metaphorical visualization of ${enhancedConcept}`;
+                let finalConcept = "An abstract conceptual art piece representing innovation and technology";
+                let matched = false;
+
+                for (const m of metaphors) {
+                    if (titleText.includes(m.key)) {
+                        finalConcept = m.value;
+                        matched = true;
+                        break;
+                    }
+                }
+
+                // Si no hay metáfora específica, traducimos el título de forma segura
+                if (!matched) {
+                    finalConcept = `A conceptual and metaphorical artistic representation of the theme: ${titleText}`;
                 }
 
                 const styleP = PROMPTS[currentStyle];
                 const intentP = INTENTIONS[currentIntention];
-                const colorP = brandColor ? `with accent color ${brandColor}, ${brandColor} lighting highlights` : "";
+                const colorP = brandColor ? `with ${brandColor} energy highlights` : "";
 
-                // Construcción del Prompt Final "Super-Potenciado"
-                const finalPrompt = `${enhancedConcept}, ${styleP}, related to ${tagsForPrompt}, ${intentP}, ${colorP}, high quality, professional art direction, centered composition --no cars --no trucks`;
+                // CONSTRUCCIÓN DEL PROMPT (Sin usar la palabra "Car", "Road" o "Traffic" NUNCA)
+                // Usamos un lenguaje puramente artístico y abstracto.
+                const finalPrompt = `Masterpiece conceptual art. ${finalConcept}. 
+                                    Style: ${styleP}. 
+                                    Atmosphere: ${intentP}. 
+                                    Vibe: ${colorP}. 
+                                    NO REAL WORLD OBJECTS, NO VEHICLES, NO PEOPLE, NO BUILDINGS. 
+                                    Pure abstraction, digital art, high resolution, 8k, trending on ArtStation, vivid colors, complex geometry.`;
 
                 const seed = Math.floor(Math.random() * 999999);
                 const w = 1080;
