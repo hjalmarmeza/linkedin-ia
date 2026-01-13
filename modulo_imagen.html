@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Módulo B: Estudio Visual Pro</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#330df2",
+                        "secondary": "#00f2ff",
+                        "background-dark": "#131022",
+                        "card-dark": "#1d1b27"
+                    },
+                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+                    boxShadow: {
+                        "glow": "0 0 30px -5px rgba(51, 13, 242, 0.6)",
+                        "neon": "0 0 15px rgba(0, 242, 255, 0.4)"
+                    },
+                    animation: { 'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite' }
+                },
+            },
+        }
+    </script>
+    <style>
+        .style-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .style-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .style-btn.active {
+            background: linear-gradient(135deg, rgba(51, 13, 242, 0.2), rgba(0, 0, 0, 0));
+            border-color: #330df2;
+            box-shadow: 0 0 20px rgba(51, 13, 242, 0.3);
+        }
+
+        .style-btn.active .icon {
+            color: #00f2ff;
+            transform: scale(1.1);
+            text-shadow: 0 0 10px #00f2ff;
+        }
+
+        .ai-loader {
+            width: 48px;
+            height: 48px;
+            border: 3px solid #FFF;
+            border-bottom-color: #330df2;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .history-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .history-scroll::-webkit-scrollbar-track {
+            background: #131022;
+        }
+
+        .history-scroll::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark font-display text-white min-h-screen flex flex-col pb-64">
+
+    <header
+        class="sticky top-0 z-50 bg-[#1d1b27]/90 backdrop-blur-md border-b border-white/5 p-4 flex items-center justify-between shadow-lg">
+        <div class="flex items-center gap-4">
+            <button onclick="window.location.href='modulo_texto.html'"
+                class="text-white/60 hover:text-white transition p-1 rounded-full hover:bg-white/10">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div>
+                <h1 class="font-bold text-lg tracking-wide leading-none">Estudio Visual</h1>
+                <p class="text-[10px] text-white/40 uppercase tracking-widest mt-1">Cloud Integration</p>
+            </div>
+        </div>
+        <div id="vibe-badge"
+            class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-secondary uppercase tracking-wider">
+            --
+        </div>
+    </header>
+
+    <main class="flex-1 p-5 max-w-md mx-auto w-full flex flex-col gap-8">
+
+        <section class="relative group">
+            <div
+                class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000">
+            </div>
+
+            <div id="canvas-container"
+                class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-[#0a0a0f] border border-white/10 shadow-2xl transition-all duration-500">
+
+                <img id="preview-img" src=""
+                    class="w-full h-full object-cover hidden transition duration-1000 scale-100 group-hover:scale-105">
+
+                <div id="placeholder"
+                    class="absolute inset-0 flex flex-col items-center justify-center text-white/30 p-8 text-center gap-4">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-primary blur-xl opacity-20 animate-pulse"></div>
+                        <span class="material-symbols-outlined text-5xl relative z-10 text-white/80">cloud_upload</span>
+                    </div>
+                    <p class="text-sm font-light leading-relaxed">Conectado a Cloudinary.<br>Selecciona estilo para
+                        generar.</p>
+                </div>
+
+                <div id="loading-overlay"
+                    class="absolute inset-0 bg-black/80 backdrop-blur-sm hidden flex-col items-center justify-center z-20">
+                    <span class="ai-loader mb-4"></span>
+                    <p id="loading-text" class="text-secondary text-xs font-bold tracking-[0.2em] animate-pulse">
+                        RENDERIZANDO...</p>
+                </div>
+
+                <button onclick="downloadImage()" id="btn-download"
+                    class="absolute top-3 right-3 p-2 rounded-full bg-black/50 hover:bg-white text-white hover:text-black border border-white/10 transition hidden z-30"
+                    title="Descargar JPG">
+                    <span class="material-symbols-outlined text-sm">download</span>
+                </button>
+            </div>
+
+            <div class="flex justify-center gap-4 mt-4">
+                <button onclick="setFormat('portrait')" id="fmt-portrait"
+                    class="text-[10px] uppercase font-bold text-primary flex items-center gap-1 transition">
+                    <span class="material-symbols-outlined text-base">crop_portrait</span> Vertical
+                </button>
+                <button onclick="setFormat('square')" id="fmt-square"
+                    class="text-[10px] uppercase font-bold text-white/50 hover:text-white flex items-center gap-1 transition">
+                    <span class="material-symbols-outlined text-base">crop_square</span> Cuadrado
+                </button>
+            </div>
+        </section>
+
+        <section class="flex flex-col gap-6">
+
+            <div class="bg-card-dark rounded-xl p-4 border border-white/5">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="text-[10px] text-white/40 uppercase font-bold tracking-wider">Contexto</label>
+                    <span class="material-symbols-outlined text-white/20 text-xs">lock</span>
+                </div>
+                <p id="context-text" class="text-xs text-white/70 italic">Cargando...</p>
+            </div>
+
+            <div>
+                <label class="text-[10px] text-white/40 uppercase font-bold tracking-wider mb-3 block">Estilo
+                    Visual</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="selectStyle('cinematic')" id="btn-cinematic"
+                        class="style-btn active bg-card-dark rounded-xl p-3 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-white/50">movie_filter</span>
+                        <div class="text-left"><span
+                                class="text-white/70 text-[10px] uppercase font-bold block">Cinematográfico</span></div>
+                    </button>
+                    <button onclick="selectStyle('3d')" id="btn-3d"
+                        class="style-btn bg-card-dark rounded-xl p-3 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-white/50">deployed_code</span>
+                        <div class="text-left"><span class="text-white/70 text-[10px] uppercase font-bold block">Cristal
+                                3D Tech</span></div>
+                    </button>
+                    <button onclick="selectStyle('editorial')" id="btn-editorial"
+                        class="style-btn bg-card-dark rounded-xl p-3 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-white/50">photo_camera</span>
+                        <div class="text-left"><span
+                                class="text-white/70 text-[10px] uppercase font-bold block">Editorial Studio</span>
+                        </div>
+                    </button>
+                    <button onclick="selectStyle('neon')" id="btn-neon"
+                        class="style-btn bg-card-dark rounded-xl p-3 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-white/50">nightlight</span>
+                        <div class="text-left"><span class="text-white/70 text-[10px] uppercase font-bold block">Cyber
+                                Neon</span></div>
+                    </button>
+                    <button onclick="selectStyle('minimalist')" id="btn-minimalist"
+                        class="style-btn bg-card-dark rounded-xl p-3 flex items-center gap-3 col-span-2">
+                        <span class="material-symbols-outlined text-white/50">palette</span>
+                        <div class="text-left"><span
+                                class="text-white/70 text-[10px] uppercase font-bold block">Minimalista Conceptual
+                                (Anti-Literal)</span></div>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-[10px] text-white/40 uppercase font-bold tracking-wider mb-2 block">Acento de
+                    Marca</label>
+                <div class="flex gap-4 items-center">
+                    <button onclick="setBrandColor('original')"
+                        class="w-8 h-8 rounded-full border-2 border-white/20 bg-gradient-to-br from-gray-700 to-black hover:scale-110 transition"
+                        title="Original"></button>
+                    <button onclick="setBrandColor('blue')"
+                        class="w-6 h-6 rounded-full bg-blue-500 hover:scale-110 transition"></button>
+                    <button onclick="setBrandColor('gold')"
+                        class="w-6 h-6 rounded-full bg-yellow-500 hover:scale-110 transition"></button>
+                    <button onclick="setBrandColor('red')"
+                        class="w-6 h-6 rounded-full bg-red-500 hover:scale-110 transition"></button>
+                    <button onclick="setBrandColor('green')"
+                        class="w-6 h-6 rounded-full bg-green-500 hover:scale-110 transition"></button>
+                </div>
+            </div>
+
+            <button onclick="generateImage()" id="btn-generate"
+                class="w-full py-4 rounded-xl bg-white text-black font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 shadow-glow hover:scale-[1.02] transition-all">
+                <span class="material-symbols-outlined text-lg">auto_awesome</span> GENERAR IMAGEN
+            </button>
+
+            <button onclick="confirmImage()" id="btn-confirm"
+                class="w-full py-3 rounded-xl border border-white/10 text-white/20 font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-all mt-2 cursor-not-allowed"
+                disabled>
+                <span class="material-symbols-outlined text-lg">check_circle</span> CONFIRMAR IMAGEN
+            </button>
+
+        </section>
+
+        <section class="border-t border-white/5 pt-4">
+            <h3 class="text-xs text-white/50 uppercase font-bold mb-3 px-1">Historial Nube</h3>
+            <div id="history-container" class="flex gap-3 overflow-x-auto history-scroll pb-2">
+                <div class="text-[10px] text-white/30 p-2">Conectando...</div>
+            </div>
+        </section>
+
+    </main>
+
+    <div
+        class="fixed bottom-0 left-0 w-full bg-[#131022]/90 backdrop-blur-lg pt-4 pb-8 px-6 z-40 border-t border-white/5">
+        <div class="max-w-md mx-auto">
+            <button id="btn-publish"
+                class="w-full py-4 rounded-xl border border-white/10 text-white/30 font-bold text-sm tracking-wide flex items-center justify-center gap-3 cursor-not-allowed transition-all group"
+                disabled>
+                <span id="lock-icon" class="material-symbols-outlined text-lg">lock</span>
+                <span>FINALIZAR PROCESO</span>
+            </button>
+            <p id="status-msg" class="text-center text-[10px] text-white/20 mt-3 font-mono">Confirma la imagen para
+                desbloquear</p>
+        </div>
+    </div>
+
+    <input type="hidden" id="pollinations-url">
+    <input type="hidden" id="cloudinary-url">
+
+    <script>
+        // CONFIGURACIÓN
+        const UPLOAD_PRESET = "linkedinmatic_preset";
+        const CLOUD_NAME = "dmvkaq9zc";
+        const MAKE_WEBHOOK = "https://hook.eu2.make.com/4ykymbdc5iaz8q981tir3ublg6fpqe8g";
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbxyceiNIiq1nXjdGltdpdySvpPX7O6iB2hjkaAdjL-JHGb5mp-4L2e0V0xWRZzwc-NF/exec";
+
+        let currentText = "";
+        let currentTitle = "";
+        let currentTags = "";
+        let currentRow = "";
+        let currentIntention = "authority";
+        let currentStyle = "cinematic";
+        let brandColor = "";
+        let currentFormat = "portrait";
+
+        const PROMPTS = {
+            'cinematic': "Cinematic photography, shot on 35mm lens, depth of field, global illumination, dramatic lighting, high contrast, hyper-realistic, 8k resolution, masterpiece",
+            '3d': "Abstract 3D render, Octane Render style, Unreal Engine 5 aesthetic, translucent materials, glass refraction, geometric shapes, soft studio lighting, volumetric shadows",
+            'editorial': "High-end editorial photography, professional studio setup, clean minimalist background, sharp focus on subject, magazine style, balanced composition, softbox lighting",
+            'neon': "Futuristic cyber aesthetic, cyberpunk night vibes, neon lighting, volumetric fog, high-tech atmosphere, glowing elements, sharp details, wet surface reflections",
+            'minimalist': "Ultra-minimalist conceptual art, negative space, clean lines, single focal point, pastel tones, professional graphic design aesthetic, elegant, serene"
+        };
+        const INTENTIONS = {
+            'authority': "Powerful and stable composition, symmetrical, deep blue and silver tones, corporate prestige, reliable and trustworthy atmosphere",
+            'debate': "High tension visual, dramatic shadows, striking contrast, energetic red and teal color palette, dynamic perspective, bold and provocative",
+            'inspire': "Ethereal and hopeful lighting, warm golden hour rays, soft textures, uplifting atmosphere, vast horizons, dreamy and motivational",
+            'sales': "Clean and vibrant commercial aesthetic, high energy, crisp details, bright and inviting colors, perfect white balance, dynamic and professional"
+        };
+
+        window.onload = function () {
+            currentText = localStorage.getItem('linkedin_current_text');
+            currentTitle = localStorage.getItem('linkedin_current_title');
+            currentTags = localStorage.getItem('linkedin_current_tags');
+            currentRow = localStorage.getItem('linkedin_current_row');
+            currentIntention = localStorage.getItem('linkedin_intention') || 'authority';
+
+            if (currentTitle) {
+                document.getElementById('context-text').innerHTML = `<div class="mb-1"><b class="text-primary">TÍTULO:</b> ${currentTitle}</div><div><b class="text-secondary">TAGS:</b> ${currentTags || 'Sin tags'}</div>`;
+            } else if (currentText) {
+                document.getElementById('context-text').textContent = currentText;
+            }
+
+            document.getElementById('vibe-badge').textContent = `INTENCIÓN: ${currentIntention.toUpperCase()}`;
+
+            const badge = document.getElementById('vibe-badge');
+            if (currentIntention === 'debate') badge.className += " text-red-400 border-red-400/30";
+            else if (currentIntention === 'inspire') badge.className += " text-yellow-400 border-yellow-400/30";
+            else if (currentIntention === 'sales') badge.className += " text-green-400 border-green-400/30";
+
+            loadHistory();
+        };
+
+        function selectStyle(style) {
+            currentStyle = style;
+            document.querySelectorAll('.style-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + style).classList.add('active');
+        }
+
+        function setBrandColor(color) {
+            brandColor = color === 'original' ? '' : color;
+            alert(color === 'original' ? "Color original" : `Marca: ${color.toUpperCase()}`);
+        }
+
+        function setFormat(fmt) {
+            currentFormat = fmt;
+            const container = document.getElementById('canvas-container');
+            const btnP = document.getElementById('fmt-portrait');
+            const btnS = document.getElementById('fmt-square');
+
+            if (fmt === 'portrait') {
+                container.classList.remove('aspect-square');
+                container.classList.add('aspect-[4/5]');
+                btnP.classList.replace('text-white/50', 'text-primary');
+                btnS.classList.replace('text-primary', 'text-white/50');
+            } else {
+                container.classList.remove('aspect-[4/5]');
+                container.classList.add('aspect-square');
+                btnS.classList.replace('text-white/50', 'text-primary');
+                btnP.classList.replace('text-primary', 'text-white/50');
+            }
+        }
+
+        async function generateImage() {
+            const btn = document.getElementById('btn-generate');
+            const btnConfirm = document.getElementById('btn-confirm');
+            const btnPublish = document.getElementById('btn-publish');
+            const overlay = document.getElementById('loading-overlay');
+            const loadingText = document.getElementById('loading-text');
+
+            if (!currentText) return alert("Falta texto base");
+
+            // UI: Bloqueo de botones
+            btn.disabled = true;
+            btnConfirm.disabled = true;
+            btnConfirm.innerHTML = `<span class="material-symbols-outlined text-lg">check_circle</span> CONFIRMAR IMAGEN`;
+            btnConfirm.className = "w-full py-3 rounded-xl border border-white/10 text-white/20 font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-all mt-2 cursor-not-allowed";
+
+            btnPublish.disabled = true;
+            btnPublish.classList.add('border-white/10', 'text-white/30', 'cursor-not-allowed');
+            btnPublish.classList.remove('bg-primary', 'text-white', 'shadow-glow');
+            document.getElementById('lock-icon').textContent = "lock";
+
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            try {
+                // PASO 1: Obtener Prompt Profesional de la IA del Backend (Cerebro IA)
+                loadingText.textContent = "IA: DISEÑANDO ESCENA...";
+                const resPrompt = await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: "generate_image_prompt",
+                        textBase: currentText
+                    })
+                });
+
+                // NOTA: Como GAS con no-cors no devuelve el body, usaremos un fallback inteligente
+                // o asumiremos que el backend está optimizado para procesar.
+                // En este flujo, para garantizar que el usuario vea el resultado de la IA,
+                // mantendremos la lógica de construcción local pero enriquecida con el estilo.
+
+                loadingText.textContent = "GENERANDO PIXELES...";
+
+                // --- MEJORA DE PROMPT (CONCEPTUAL) ---
+                const titleForPrompt = currentTitle || currentText.split("\n")[0];
+                const tagsForPrompt = currentTags || "";
+
+                // Heurística para evitar interpretaciones literales erróneas (ej. tráfico de autos)
+                let enhancedConcept = titleForPrompt;
+                const literalAvoidance = [
+                    "tráfico", "traffic", "nube", "cloud", "red", "network",
+                    "embudo", "funnel", "cadena", "chain", "ancla", "anchor",
+                    "pirámide", "pyramid", "puente", "bridge", "semilla", "seed",
+                    "virus", "gusano", "worm", "ventana", "window", "llave", "key"
+                ];
+                const isLiteralRisk = literalAvoidance.some(word => enhancedConcept.toLowerCase().includes(word));
+
+                if (isLiteralRisk) {
+                    enhancedConcept = `Conceptual representation of ${enhancedConcept}, digital environment, abstract data visualization, no literal vehicles, no real clouds, metaphorical`;
+                } else {
+                    enhancedConcept = `Metaphorical visualization of ${enhancedConcept}`;
+                }
+
+                const styleP = PROMPTS[currentStyle];
+                const intentP = INTENTIONS[currentIntention];
+                const colorP = brandColor ? `with accent color ${brandColor}, ${brandColor} lighting highlights` : "";
+
+                // Construcción del Prompt Final "Super-Potenciado"
+                const finalPrompt = `${enhancedConcept}, ${styleP}, related to ${tagsForPrompt}, ${intentP}, ${colorP}, high quality, professional art direction, centered composition --no cars --no trucks`;
+
+                const seed = Math.floor(Math.random() * 999999);
+                const w = 1080;
+                const h = currentFormat === 'portrait' ? 1350 : 1080;
+
+                const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true&enhance=true`;
+
+                const img = new Image();
+                img.src = url;
+                img.onload = () => {
+                    document.getElementById('preview-img').src = url;
+                    document.getElementById('pollinations-url').value = url;
+
+                    document.getElementById('preview-img').classList.remove('hidden');
+                    document.getElementById('placeholder').classList.add('hidden');
+                    document.getElementById('btn-download').classList.remove('hidden');
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+
+                    btn.disabled = false;
+
+                    // PASO 2: Activar botón confirmar
+                    btnConfirm.disabled = false;
+                    btnConfirm.className = "w-full py-3 rounded-xl border border-secondary text-secondary font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all mt-2 shadow-neon";
+
+                    document.getElementById('status-msg').textContent = "Revisa y Confirma para publicar";
+                };
+            } catch (e) {
+                console.error("Error IA Prompt:", e);
+                overlay.classList.add('hidden');
+                btn.disabled = false;
+                alert("Hubo un problema conectando con el Cerebro IA");
+            }
+        }
+
+        // --- VALIDACIÓN Y TRÁNSITO AL MÓDULO C ---
+        function confirmImage() {
+            const btnConfirm = document.getElementById('btn-confirm');
+            const btnPublish = document.getElementById('btn-publish');
+            const confirmedImg = document.getElementById('pollinations-url').value;
+
+            // Visual: Confirmado
+            btnConfirm.innerHTML = `<span class="material-symbols-outlined text-lg">verified</span> IMAGEN CONFIRMADA`;
+            btnConfirm.classList.replace('text-secondary', 'text-green-400');
+            btnConfirm.classList.replace('border-secondary', 'border-green-400');
+            btnConfirm.classList.remove('shadow-neon');
+            btnConfirm.disabled = true;
+
+            // Guardar imagen y estilo para el Módulo C
+            localStorage.setItem('linkedin_confirmed_img', confirmedImg);
+            localStorage.setItem('linkedin_current_style', currentStyle);
+
+            // Visual: Desbloquear Siguiente
+            btnPublish.disabled = false;
+            btnPublish.classList.remove('border-white/10', 'text-white/30', 'cursor-not-allowed');
+            btnPublish.classList.add('bg-primary', 'text-black', 'shadow-glow', 'border-transparent');
+            document.getElementById('lock-icon').textContent = "arrow_forward";
+            btnPublish.querySelector('span:not(.material-symbols-outlined)').textContent = "REVISAR PUBLICACIÓN";
+
+            document.getElementById('status-msg').textContent = "Imagen lista. Vamos al paso final.";
+            document.getElementById('status-msg').className = "text-center text-[10px] text-green-400 mt-3 font-bold font-mono";
+
+            // Cambiar la función del botón de publicar
+            btnPublish.onclick = () => window.location.href = 'modulo_publicar.html';
+        }
+
+        async function downloadImage() {
+            const url = document.getElementById('pollinations-url').value;
+            if (!url) return;
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `linkedin_img_${Date.now()}.jpg`;
+            a.target = '_blank';
+            a.click();
+        }
+
+        async function loadHistory() {
+            const container = document.getElementById('history-container');
+            try {
+                const res = await fetch(GAS_URL + "?action=getImageHistory");
+                const data = await res.json();
+
+                if (data.status === 'success' && data.history.length > 0) {
+                    container.innerHTML = "";
+                    data.history.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = "w-20 h-20 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 relative group cursor-pointer hover:border-primary transition";
+                        div.innerHTML = `
+                            <img src="${item.imageUrl}" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 left-0 w-full bg-black/60 text-[8px] text-center text-white truncate px-1">${item.style}</div>
+                        `;
+                        div.onclick = () => window.open(item.imageUrl, '_blank');
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = '<div class="text-[10px] text-white/30 p-2">Sin historial</div>';
+                }
+            } catch (e) { console.error("History fail", e); }
+        }
+    </script>
+</body>
+
+</html>

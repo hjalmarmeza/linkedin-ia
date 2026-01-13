@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Módulo A: Gestor de Contenido Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#7f0df2", "obsidian": "#0B0B0E", "obsidian-card": "#16161A", "silver": "#A0A0A0" },
+                    fontFamily: { "display": ["Manrope", "sans-serif"] },
+                    animation: { 'pulse-slow': 'pulse 3s infinite' }
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass-button {
+            background: rgba(127, 13, 242, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(127, 13, 242, 0.4);
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #7f0df2;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        /* Botones de Intención */
+        .vibe-btn.active {
+            background: #7f0df2;
+            color: white;
+            border-color: #7f0df2;
+        }
+
+        /* Scrollbar Personalizado para Historial */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #7f0df2;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9d4edd;
+        }
+    </style>
+</head>
+
+<body class="bg-obsidian text-white font-display min-h-screen pb-40">
+
+    <nav class="fixed top-0 w-full z-40 bg-obsidian/90 backdrop-blur border-b border-white/5">
+        <div class="max-w-md mx-auto px-5 h-16 flex items-center justify-between">
+            <span class="text-silver material-symbols-outlined">description</span>
+            <h1 class="font-bold tracking-tight">Módulo A: Contenido</h1>
+            <div class="flex items-center gap-3">
+                <a id="sheet-link" href="#" target="_blank" class="text-silver hover:text-green-400 transition"
+                    title="Abrir Google Sheet">
+                    <span class="material-symbols-outlined">table_view</span>
+                </a>
+                <div id="loading-indicator" class="spinner opacity-0"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 px-5 max-w-md mx-auto flex flex-col gap-5">
+
+        <div class="bg-obsidian-card rounded-3xl p-6 border border-white/5 shadow-lg relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[50px] pointer-events-none">
+            </div>
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h2 class="text-xl font-bold">Progreso Global</h2>
+                    <p class="text-silver text-sm">Base de Datos</p>
+                </div>
+                <span class="material-symbols-outlined text-primary text-xl bg-white/5 p-2 rounded-xl">insights</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="relative w-24 h-24 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="48" cy="48" r="40" stroke="#2A2A30" stroke-width="8" fill="transparent"></circle>
+                        <circle id="progress-ring" cx="48" cy="48" r="40" stroke="#7f0df2" stroke-width="8"
+                            fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="251.2"
+                            stroke-linecap="round"></circle>
+                    </svg>
+                    <span id="global-percent" class="absolute text-xl font-bold">0%</span>
+                </div>
+                <div>
+                    <div class="text-sm text-silver">Publicados: <b id="stat-published" class="text-white">--</b></div>
+                    <div class="text-sm text-silver">Total BD: <b id="stat-total" class="text-white">--</b></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-obsidian-card rounded-3xl p-5 border border-white/5 shadow-lg">
+            <label class="text-xs text-silver uppercase font-bold tracking-wider mb-2 block">Categoría</label>
+            <div class="flex gap-2">
+                <div class="relative flex-1">
+                    <select id="category-select" onchange="fetchPost()"
+                        class="w-full bg-obsidian border border-white/10 rounded-xl p-3 pl-4 pr-10 text-white text-sm focus:border-primary outline-none transition-colors">
+                        <option value="">Todas las Categorías</option>
+                        <option value="" disabled>Cargando...</option>
+                    </select>
+                </div>
+                <button onclick="fetchPost()"
+                    class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 flex items-center justify-center transition"
+                    title="Buscar otro (Shuffle)">
+                    <span class="material-symbols-outlined text-silver">shuffle</span>
+                </button>
+            </div>
+            <div class="flex justify-between items-center mt-3 px-1 border-t border-white/5 pt-2">
+                <div class="flex items-center gap-4 text-[10px]">
+                    <span class="text-green-400 font-bold" id="cat-available">Disponibles: --</span>
+                    <span class="text-silver" id="cat-published">Publicados: --</span>
+                </div>
+                <span class="text-[10px] text-primary font-bold" id="row-display">#--</span>
+            </div>
+        </div>
+
+        <div class="bg-obsidian-card rounded-3xl p-5 border border-white/5 shadow-lg">
+            <div class="flex justify-between items-center mb-3">
+                <label class="text-xs text-silver uppercase font-bold tracking-wider block">Intención del Post</label>
+                <span class="text-[10px] text-silver/60">Define la imagen</span>
+            </div>
+            <div class="grid grid-cols-4 gap-2">
+                <button onclick="setIntention('authority')" id="btn-authority"
+                    class="vibe-btn active border border-white/10 rounded-lg py-2 flex flex-col items-center gap-1 hover:bg-white/5 transition">
+                    <span class="material-symbols-outlined text-sm">verified</span>
+                    <span class="text-[9px] font-bold">Autoridad</span>
+                </button>
+                <button onclick="setIntention('debate')" id="btn-debate"
+                    class="vibe-btn border border-white/10 rounded-lg py-2 flex flex-col items-center gap-1 hover:bg-white/5 transition">
+                    <span class="material-symbols-outlined text-sm">campaign</span>
+                    <span class="text-[9px] font-bold">Debate</span>
+                </button>
+                <button onclick="setIntention('inspire')" id="btn-inspire"
+                    class="vibe-btn border border-white/10 rounded-lg py-2 flex flex-col items-center gap-1 hover:bg-white/5 transition">
+                    <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                    <span class="text-[9px] font-bold">Inspirar</span>
+                </button>
+                <button onclick="setIntention('sales')" id="btn-sales"
+                    class="vibe-btn border border-white/10 rounded-lg py-2 flex flex-col items-center gap-1 hover:bg-white/5 transition">
+                    <span class="material-symbols-outlined text-sm">rocket_launch</span>
+                    <span class="text-[9px] font-bold">Venta</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-obsidian-card rounded-3xl overflow-hidden border border-white/5 shadow-lg flex flex-col">
+            <div class="bg-gradient-to-r from-purple-900/50 to-indigo-900/50 p-4 border-b border-white/5">
+                <div class="flex justify-between items-center mb-3">
+                    <span
+                        class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/40 border border-white/10 text-[10px] font-medium text-yellow-400">
+                        <span class="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></span> Pendiente
+                    </span>
+                    <div class="flex gap-2">
+                        <button onclick="convertToBold()"
+                            class="w-7 h-7 rounded bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs font-serif font-bold transition"
+                            title="Convertir a Negrita Matemática">𝐁</button>
+                        <button onclick="skipPost()"
+                            class="text-xs text-white/50 hover:text-red-400 flex items-center gap-1 transition">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative group">
+                    <textarea id="post-title" rows="2"
+                        class="w-full bg-transparent border-none text-white font-bold text-lg placeholder-white/30 focus:ring-0 px-0 pr-8 resize-none leading-tight"
+                        placeholder="Cargando Título..."></textarea>
+
+                    <span
+                        class="material-symbols-outlined absolute right-0 top-3 text-white/30 text-sm pointer-events-none">edit</span>
+                </div>
+            </div>
+
+            <div class="p-4 pb-2 flex flex-col flex-1 relative z-10 bg-obsidian">
+                <div class="flex justify-end mb-2">
+                    <button onclick="cleanText()"
+                        class="text-silver hover:text-white flex items-center gap-1 text-[10px] bg-white/5 px-2 py-1 rounded transition"
+                        title="Limpiar formato">
+                        <span class="material-symbols-outlined text-xs">cleaning_services</span> Limpiar
+                    </button>
+                </div>
+                <textarea id="post-body"
+                    class="w-full bg-transparent border-none text-gray-300 text-sm focus:ring-0 outline-none resize-none h-48 leading-relaxed"
+                    placeholder="Cuerpo del post..."></textarea>
+            </div>
+
+            <div class="px-4 pb-4 bg-obsidian">
+                <div class="flex items-start gap-2 pt-3 border-t border-white/5">
+                    <span class="material-symbols-outlined text-primary text-sm mt-0.5">tag</span>
+                    <p id="post-tags" class="text-xs text-primary font-mono opacity-80 break-words">#Cargando...</p>
+                </div>
+            </div>
+
+            <div class="h-1 w-full bg-black">
+                <div id="char-progress" class="h-full bg-green-500 w-0 transition-all duration-300"></div>
+            </div>
+            <div class="flex justify-between px-4 py-2 bg-black/50 text-[10px] text-silver">
+                <div class="flex gap-3">
+                    <span id="char-count">0 chars</span>
+                    <span id="read-time" class="text-white/70">Lectura: 0s</span>
+                </div>
+                <span>Max: 3000</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="flex items-center justify-between px-2">
+                <h3 class="text-lg font-bold text-white">Historial Reciente (10)</h3>
+            </div>
+
+            <div id="history-list" class="flex flex-col gap-2 max-h-60 overflow-y-auto custom-scrollbar pr-2">
+
+                <div
+                    class="bg-obsidian-card rounded-2xl p-4 flex items-center gap-4 border border-white/5 animate-pulse">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center"></div>
+                    <div class="flex-1 space-y-2">
+                        <div class="h-3 bg-white/5 rounded w-3/4"></div>
+                        <div class="h-2 bg-white/5 rounded w-1/2"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <div class="fixed bottom-8 left-0 w-full z-50 px-5 pointer-events-none">
+        <div class="max-w-md mx-auto pointer-events-auto">
+            <button onclick="confirmAndProceed()"
+                class="w-full glass-button h-14 rounded-2xl flex items-center justify-between px-6 active:scale-95 transition-transform group">
+                <div class="flex flex-col items-start">
+                    <span class="font-bold text-lg leading-none">Confirmar</span>
+                    <span class="text-[10px] font-normal opacity-80">Guardar y generar imagen</span>
+                </div>
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition">arrow_forward</span>
+            </button>
+        </div>
+    </div>
+
+    <input type="hidden" id="row-id">
+    <input type="hidden" id="hidden-tags-value">
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbxyceiNIiq1nXjdGltdpdySvpPX7O6iB2hjkaAdjL-JHGb5mp-4L2e0V0xWRZzwc-NF/exec";
+        let currentIntention = 'authority';
+
+        async function loadInitialData() {
+            // Cargar URL del Sheet
+            fetch(GAS_URL + "?action=getSheetUrl")
+                .then(res => res.json())
+                .then(data => { if (data.url) document.getElementById('sheet-link').href = data.url; });
+
+            // Cargar Categorías
+            fetch(GAS_URL + "?action=getCategories")
+                .then(res => res.json())
+                .then(data => {
+                    const select = document.getElementById('category-select');
+                    select.innerHTML = '<option value="">Todas las Categorías</option>';
+                    if (data.categories) {
+                        data.categories.forEach(cat => {
+                            const option = document.createElement('option');
+                            option.value = cat;
+                            option.textContent = cat;
+                            select.appendChild(option);
+                        });
+                    }
+                });
+
+            // Cargar Stats y Historial
+            fetch(GAS_URL + "?action=getGlobalStats")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('stat-published').textContent = data.published;
+                        document.getElementById('stat-total').textContent = data.total;
+                        document.getElementById('global-percent').textContent = data.percentage + "%";
+                        const offset = 251.2 - (251.2 * data.percentage / 100);
+                        document.getElementById('progress-ring').style.strokeDashoffset = offset;
+
+                        // LÓGICA DE HISTORIAL (LISTA DE 10)
+                        const historyContainer = document.getElementById('history-list');
+                        if (data.lastPosts && data.lastPosts.length > 0) {
+                            historyContainer.innerHTML = ''; // Limpiar loader
+                            data.lastPosts.forEach(post => {
+                                const itemHtml = `
+                                    <div class="bg-obsidian-card rounded-2xl p-3 flex items-center gap-3 border border-white/5 hover:bg-white/5 transition shrink-0">
+                                        <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 shrink-0">
+                                            <span class="material-symbols-outlined text-sm">check_circle</span>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-white font-medium truncate text-xs">${post.title}</h4>
+                                            <p class="text-[10px] text-silver mt-0.5">${post.date}</p>
+                                        </div>
+                                    </div>
+                                `;
+                                historyContainer.insertAdjacentHTML('beforeend', itemHtml);
+                            });
+                        } else {
+                            historyContainer.innerHTML = '<div class="p-4 text-center text-silver text-xs bg-obsidian-card rounded-2xl border border-white/5">No hay publicaciones recientes.</div>';
+                        }
+                    }
+                });
+
+            fetchPost();
+        }
+
+        async function fetchPost() {
+            document.getElementById('loading-indicator').classList.remove('opacity-0');
+            const category = document.getElementById('category-select').value;
+            let url = GAS_URL;
+            if (category) url += `?category=${encodeURIComponent(category)}`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    // Cargar Datos en Inputs
+                    document.getElementById('post-title').value = data.post.title || "";
+                    document.getElementById('post-body').value = data.post.content || "";
+
+                    // Manejar Tags
+                    const tags = data.post.tags || "";
+                    document.getElementById('post-tags').textContent = tags;
+                    document.getElementById('hidden-tags-value').value = tags;
+
+                    document.getElementById('row-id').value = data.post.rowNumber;
+                    document.getElementById('row-display').innerText = "#" + data.post.rowNumber;
+
+                    // Stats de categoría
+                    if (data.post.stats) {
+                        document.getElementById('cat-available').textContent = `Disponibles: ${data.post.stats.pending}`;
+                        document.getElementById('cat-published').textContent = `Publicados: ${data.post.stats.published}`;
+                    }
+
+                    updateMetrics();
+
+                } else {
+                    document.getElementById('post-title').value = "Sin contenido";
+                    document.getElementById('post-body').value = "No hay posts pendientes en esta categoría.";
+                    document.getElementById('post-tags').textContent = "";
+                    document.getElementById('cat-available').textContent = "Disponibles: 0";
+                }
+            } catch (e) { console.error(e); }
+            document.getElementById('loading-indicator').classList.add('opacity-0');
+        }
+
+        // --- FUNCIONES PRO ---
+
+        // 1. Selector de Intención
+        function setIntention(vibe) {
+            currentIntention = vibe;
+            document.querySelectorAll('.vibe-btn').forEach(btn => btn.classList.remove('active', 'bg-primary', 'text-white', 'border-primary'));
+            const activeBtn = document.getElementById('btn-' + vibe);
+            activeBtn.classList.add('active');
+        }
+
+        // 2. Limpieza (Escoba)
+        function cleanText() {
+            let body = document.getElementById('post-body').value;
+            body = body.replace(/  +/g, ' '); // Dobles espacios
+            body = body.replace(/^\s+|\s+$/g, ''); // Trim
+            body = body.replace(/\n\s+\n/g, '\n\n'); // Líneas vacías con espacios
+            document.getElementById('post-body').value = body;
+            alert("🧹 Texto limpiado");
+            updateMetrics();
+        }
+
+        // 3. Negritas Unicode para Título
+        function convertToBold() {
+            const input = document.getElementById('post-title');
+            const text = input.value;
+
+            // Mapa básico de caracteres a Negrita Matemática (Sans-Serif Bold)
+            const map = {
+                'A': '𝐀', 'B': '𝐁', 'C': '𝐂', 'D': '𝐃', 'E': '𝐄', 'F': '𝐅', 'G': '𝐆', 'H': '𝐇', 'I': '𝐈', 'J': '𝐉', 'K': '𝐊', 'L': '𝐋', 'M': '𝐌', 'N': '𝐍', 'O': '𝐎', 'P': '𝐏', 'Q': '𝐐', 'R': '𝐑', 'S': '𝐒', 'T': '𝐓', 'U': '𝐔', 'V': '𝐕', 'W': '𝐖', 'X': '𝐗', 'Y': '𝐘', 'Z': '𝙕',
+                'a': '𝐚', 'b': '𝐛', 'c': '𝐜', 'd': '𝐝', 'e': '𝐞', 'f': '𝐟', 'g': '𝐠', 'h': '𝐡', 'i': '𝐢', 'j': '𝐣', 'k': '𝐤', 'l': '𝐥', 'm': '𝐦', 'n': '𝐧', 'o': '𝐨', 'p': '𝐩', 'q': '𝐪', 'r': '𝐫', 's': '𝐬', 't': '𝐭', 'u': '𝐮', 'v': '𝐯', 'w': '𝐰', 'x': '𝐱', 'y': '𝐲', 'z': '𝐳',
+                '0': '𝟎', '1': '𝟏', '2': '𝟐', '3': '𝟑', '4': '𝟒', '5': '𝟓', '6': '𝟔', '7': '𝟕', '8': '𝟖', '9': '𝟗'
+            };
+
+            const newText = text.split('').map(char => map[char] || char).join('');
+            input.value = newText;
+        }
+
+        // 4. Métricas (Char count + Reading Time)
+        function updateMetrics() {
+            const title = document.getElementById('post-title').value;
+            const body = document.getElementById('post-body').value;
+            const tags = document.getElementById('hidden-tags-value').value;
+
+            const total = title.length + body.length + tags.length;
+            const percent = Math.min((total / 3000) * 100, 100);
+
+            // Update Char Bar
+            document.getElementById('char-count').innerText = `${total} chars`;
+            document.getElementById('char-progress').style.width = `${percent}%`;
+
+            const bar = document.getElementById('char-progress');
+            if (total < 200) bar.className = "h-full bg-red-500 w-0 transition-all duration-300";
+            else if (total > 2800) bar.className = "h-full bg-orange-500 w-0 transition-all duration-300";
+            else bar.className = "h-full bg-green-500 w-0 transition-all duration-300";
+
+            // Update Reading Time (aprox 200 words/min)
+            const words = (title + " " + body).split(/\s+/).length;
+            const minutes = Math.floor(words / 200);
+            const seconds = Math.floor((words % 200) / (200 / 60));
+
+            let timeString = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+            document.getElementById('read-time').textContent = `Lectura: ${timeString}`;
+        }
+
+        // --- LÓGICA DE SALIDA ---
+
+        async function skipPost() {
+            const row = document.getElementById('row-id').value;
+            if (!row) return;
+            if (!confirm("¿Descartar post?")) return;
+
+            document.getElementById('post-body').value = "Descartando...";
+            await fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rowNumber: parseInt(row) })
+            });
+            setTimeout(fetchPost, 1000);
+        }
+
+        async function confirmAndProceed() {
+            const title = document.getElementById('post-title').value;
+            const body = document.getElementById('post-body').value;
+            const tags = document.getElementById('hidden-tags-value').value;
+            const row = document.getElementById('row-id').value;
+
+            if (body.includes("No hay posts")) return alert("No hay contenido válido.");
+
+            // Combinar todo para copiar
+            const fullText = `${title}\n\n${body}\n\n${tags}`;
+
+            document.getElementById('loading-indicator').classList.remove('opacity-0');
+
+            // 1. Backend: Marcar Publicado
+            await fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rowNumber: parseInt(row) })
+            });
+
+            // 2. Guardar datos para Módulo B
+            localStorage.setItem('linkedin_current_text', fullText);
+            localStorage.setItem('linkedin_current_title', title);
+            localStorage.setItem('linkedin_current_tags', tags);
+            localStorage.setItem('linkedin_current_row', row);
+            localStorage.setItem('linkedin_intention', currentIntention); // Nuevo
+
+            // 3. Ir a Imagen
+            window.location.href = 'modulo_imagen.html';
+        }
+
+        document.getElementById('post-title').addEventListener('input', updateMetrics);
+        document.getElementById('post-body').addEventListener('input', updateMetrics);
+
+        window.onload = loadInitialData;
+    </script>
+</body>
+
+</html>

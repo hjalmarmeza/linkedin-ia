@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Módulo C: Centro de Publicación Pro</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00f2ff",
+                        "secondary": "#330df2",
+                        "background-dark": "#0a0a0f",
+                        "card-dark": "#16161D"
+                    },
+                    fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+                    boxShadow: {
+                        "glow": "0 0 30px -5px rgba(0, 242, 255, 0.4)",
+                        "neon": "0 0 15px rgba(51, 13, 242, 0.3)"
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0f;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .ai-loader {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-bottom-color: #00f2ff;
+            border-radius: 50%;
+            display: inline-block;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark font-display text-white min-h-screen flex flex-col">
+
+    <header
+        class="sticky top-0 z-50 bg-[#0a0a0f]/90 backdrop-blur-md border-b border-white/5 p-4 flex items-center justify-between shadow-lg">
+        <div class="flex items-center gap-4">
+            <button onclick="window.location.href='modulo_imagen.html'"
+                class="text-white/60 hover:text-white transition p-1 rounded-full hover:bg-white/10">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div>
+                <h1 class="font-bold text-lg tracking-wide leading-none">Publicación</h1>
+                <p class="text-[10px] text-primary uppercase tracking-widest mt-1">Revisión Final</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 p-5 max-w-md mx-auto w-full flex flex-col gap-6">
+
+        <!-- Vista previa del Post -->
+        <section class="flex flex-col gap-4">
+            <div class="glass-card rounded-2xl overflow-hidden shadow-2xl">
+                <!-- Imagen confirmada -->
+                <div class="relative w-full aspect-[4/5] bg-black">
+                    <img id="final-img" src="" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent">
+                        <span id="final-style"
+                            class="text-[9px] font-bold text-primary uppercase tracking-[0.2em] bg-primary/10 px-2 py-0.5 rounded border border-primary/20">ESTILO:
+                            --</span>
+                    </div>
+                </div>
+
+                <!-- Cuerpo del post -->
+                <div class="p-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-secondary"></div>
+                        <div>
+                            <p class="text-[11px] font-bold">Tu Perfil de LinkedIn</p>
+                            <p class="text-[9px] text-white/40">Visualización de contenido</p>
+                        </div>
+                    </div>
+                    <p id="final-text" class="text-sm text-white/80 leading-relaxed font-light whitespace-pre-wrap"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detalles Técnicos -->
+        <section class="grid grid-cols-2 gap-3">
+            <div class="glass-card rounded-xl p-3 flex flex-col gap-1">
+                <span class="text-[9px] text-white/30 uppercase font-bold tracking-wider">Intención</span>
+                <span id="final-intention" class="text-xs font-semibold text-primary">--</span>
+            </div>
+            <div class="glass-card rounded-xl p-3 flex flex-col gap-1">
+                <span class="text-[9px] text-white/30 uppercase font-bold tracking-wider">Fila BD</span>
+                <span id="final-row" class="text-xs font-semibold text-primary">#--</span>
+            </div>
+        </section>
+
+        <!-- Botón de Acción -->
+        <section class="mt-4 flex flex-col gap-3">
+            <button onclick="publishNow()" id="btn-publish"
+                class="w-full py-5 rounded-2xl bg-primary text-black font-black text-sm tracking-[0.1em] uppercase flex items-center justify-center gap-3 shadow-glow hover:scale-[1.02] transition-all">
+                <span class="material-symbols-outlined">rocket_launch</span>
+                SUBIR Y PUBLICAR AHORA
+            </button>
+            <p id="status-msg" class="text-center text-[10px] text-white/40 font-mono">Paso final: Sincronización con
+                Nube y Webhooks</p>
+        </section>
+
+    </main>
+
+    <!-- Overlay de carga -->
+    <div id="publish-overlay"
+        class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex-col items-center justify-center z-[100] p-8 text-center">
+        <div class="relative mb-8">
+            <div class="absolute inset-0 bg-primary blur-3xl opacity-20 animate-pulse"></div>
+            <span class="ai-loader" style="width:60px; height:60px; border-width:4px;"></span>
+        </div>
+        <h2 id="overlay-title" class="text-2xl font-bold mb-2">Despegando...</h2>
+        <p id="overlay-msg" class="text-white/50 text-xs font-mono tracking-widest leading-relaxed">CONECTANDO CON
+            CLOUDINARY Y MAKE.COM</p>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN (Misma que en Módulo B)
+        const UPLOAD_PRESET = "linkedinmatic_preset";
+        const CLOUD_NAME = "dmvkaq9zc";
+        const MAKE_WEBHOOK = "https://hook.eu2.make.com/4ykymbdc5iaz8q981tir3ublg6fpqe8g";
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbxyceiNIiq1nXjdGltdpdySvpPX7O6iB2hjkaAdjL-JHGb5mp-4L2e0V0xWRZzwc-NF/exec";
+
+        let currentData = {
+            text: "",
+            img: "",
+            row: "",
+            intention: "",
+            style: ""
+        };
+
+        window.onload = function () {
+            currentData.text = localStorage.getItem('linkedin_current_text') || "Sin texto";
+            currentData.img = localStorage.getItem('linkedin_confirmed_img');
+            currentData.row = localStorage.getItem('linkedin_current_row') || "0";
+            currentData.intention = localStorage.getItem('linkedin_intention') || "authority";
+            currentData.style = localStorage.getItem('linkedin_current_style') || "cinematic";
+
+            if (!currentData.img) {
+                alert("No hay imagen confirmada. Volviendo al Módulo B.");
+                window.location.href = "modulo_imagen.html";
+                return;
+            }
+
+            // Inyectar datos
+            document.getElementById('final-img').src = currentData.img;
+            document.getElementById('final-text').textContent = currentData.text;
+            document.getElementById('final-row').textContent = `#${currentData.row}`;
+            document.getElementById('final-intention').textContent = currentData.intention.toUpperCase();
+            document.getElementById('final-style').textContent = `ESTILO: ${currentData.style.toUpperCase()}`;
+        };
+
+        async function publishNow() {
+            const btn = document.getElementById('btn-publish');
+            const overlay = document.getElementById('publish-overlay');
+            const overlayMsg = document.getElementById('overlay-msg');
+            const overlayTitle = document.getElementById('overlay-title');
+
+            btn.disabled = true;
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            try {
+                // 1. Subir a Cloudinary
+                overlayMsg.textContent = "PASO 1: SUBIENDO IMAGEN A LA NUBE...";
+                const resBlob = await fetch(currentData.img);
+                const blob = await resBlob.blob();
+
+                const formData = new FormData();
+                formData.append('file', blob);
+                formData.append('upload_preset', UPLOAD_PRESET);
+
+                const resCloud = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const dataCloud = await resCloud.json();
+
+                if (!dataCloud.secure_url) throw new Error("Error Cloudinary: " + (dataCloud.error?.message || "Revisa Preset"));
+                const permaLink = dataCloud.secure_url;
+
+                // 2. Ejecutar Webhook de Make
+                overlayMsg.textContent = "PASO 2: DISPARANDO AUTOMATIZACIÓN (MAKE.COM)...";
+                const payload = {
+                    text: currentData.text,
+                    imageUrl: permaLink,
+                    rowNumber: parseInt(currentData.row),
+                    style: currentData.style,
+                    intention: currentData.intention
+                };
+
+                await fetch(MAKE_WEBHOOK, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                // 3. Actualizar Google Sheets (GAS)
+                overlayMsg.textContent = "PASO 3: REGISTRANDO EN BASE DE DATOS...";
+                await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        rowNumber: parseInt(currentData.row),
+                        imageUrl: permaLink,
+                        style: currentData.style
+                    })
+                });
+
+                // ÉXITO
+                overlayTitle.textContent = "¡MISIÓN CUMPLIDA!";
+                overlayMsg.textContent = "CONTENIDO PUBLICADO Y SINCRONIZADO CORRECTAMENTE.";
+                document.querySelector('.ai-loader').style.display = 'none';
+
+                const checkIcon = document.createElement('span');
+                checkIcon.className = "material-symbols-outlined text-primary text-6xl mb-4";
+                checkIcon.textContent = "check_circle";
+                document.querySelector('.relative.mb-8').appendChild(checkIcon);
+
+                setTimeout(() => {
+                    window.location.href = "modulo_texto.html";
+                }, 3000);
+
+            } catch (e) {
+                console.error(e);
+                overlayTitle.textContent = "ERROR EN VUELO";
+                overlayMsg.textContent = "FALLÓ: " + e.message;
+                overlayMsg.classList.add('text-red-400');
+
+                const errorBtn = document.createElement('button');
+                errorBtn.className = "mt-6 px-6 py-2 bg-white/10 border border-white/20 rounded-full text-[10px] font-bold uppercase tracking-widest";
+                errorBtn.textContent = "REINTENTAR";
+                errorBtn.onclick = () => location.reload();
+                overlay.appendChild(errorBtn);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso V43</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; overflow: hidden; background: #000; }
+        
+        /* Hacer el video muy pequeño y esconderlo detrás del botón */
+        #bg-video {
+            position: fixed !important;
+            width: 2px !important;
+            height: 2px !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            z-index: -999 !important;
+        }
+        
+        /* Video de fondo real */
+        #bg-video-display {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+        /* Input Minimalista */
+        .minimal-input {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            text-align: center;
+            letter-spacing: 0.8em;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .minimal-input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #00f2ff;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+        }
+        .minimal-input::placeholder { color: rgba(255, 255, 255, 0.3); letter-spacing: normal; font-size: 0.8rem;}
+
+        /* Botón pequeño */
+        .btn-enter {
+            background: white;
+            color: black;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.7rem;
+            transition: all 0.3s;
+        }
+        .btn-enter:hover {
+            background: #00f2ff;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="h-screen w-full flex flex-col justify-end items-center pb-20 relative" onclick="forzarInicio()">
+
+    <!-- Video invisible muy pequeño para controles -->
+    <video id="bg-video" autoplay muted loop playsinline preload="auto">
+        <source src="https://res.cloudinary.com/dmvkaq9zc/video/upload/v1768145801/fondo_inicio_toag8w.mp4" type="video/mp4">
+    </video>
+
+    <!-- Canvas para mostrar el video de fondo -->
+    <canvas id="bg-video-display"></canvas>
+
+    <div class="fixed bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black/90 to-transparent pointer-events-none z-0"></div>
+
+    <div class="relative z-10 flex flex-col items-center gap-3 fade-in">
+        <form onsubmit="verificarCodigo(event)" class="flex flex-col items-center gap-3">
+            <input type="password" id="access-code" maxlength="4" placeholder="PIN" 
+                   class="minimal-input w-32 h-12 rounded-full placeholder-gray-400">
+            
+            <button type="button" onclick="verificarCodigo(event)" 
+                    class="btn-enter px-6 py-2 rounded-full shadow-lg">
+                Entrar
+            </button>
+        </form>
+        <p id="error-msg" class="text-red-400 text-[10px] h-4 opacity-0 transition-opacity font-mono font-bold tracking-widest mt-1">⛔ ERROR</p>
+    </div>
+
+    <script>
+        // SCRIPT DE ARRANQUE FORZOSO - Reproducción automática garantizada
+        const video = document.getElementById('bg-video');
+        const canvas = document.getElementById('bg-video-display');
+        const ctx = canvas.getContext('2d');
+        const input = document.getElementById('access-code');
+        
+        // Configurar canvas
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // Redimensionar canvas cuando cambia el tamaño
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Dibujar video en el canvas
+        function dibujarVideo() {
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                const videoAspect = video.videoWidth / video.videoHeight;
+                const canvasAspect = canvas.width / canvas.height;
+                
+                let sx, sy, sWidth, sHeight;
+                
+                if (videoAspect > canvasAspect) {
+                    sHeight = video.videoHeight;
+                    sWidth = sHeight * canvasAspect;
+                    sx = (video.videoWidth - sWidth) / 2;
+                    sy = 0;
+                } else {
+                    sWidth = video.videoWidth;
+                    sHeight = sWidth / canvasAspect;
+                    sx = 0;
+                    sy = (video.videoHeight - sHeight) / 2;
+                }
+                
+                ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
+            }
+            requestAnimationFrame(dibujarVideo);
+        }
+        
+        // Configurar video antes de cualquier evento
+        video.muted = true;
+        video.playsInline = true;
+        video.loop = true;
+        
+        // Intentar reproducir inmediatamente (sin esperar DOMContentLoaded)
+        function iniciarVideo() {
+            video.muted = true;
+            const playPromise = video.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log("✅ Video reproduciendo correctamente.");
+                    dibujarVideo(); // Iniciar dibujado en canvas
+                })
+                .catch(error => {
+                    console.log("⚠️ Autoplay bloqueado. Esperando interacción del usuario.");
+                });
+            }
+        }
+
+        // Ejecutar apenas se carga el script
+        iniciarVideo();
+
+        // Reintentar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', iniciarVideo);
+
+        // Reintentar si el video se carga después
+        video.addEventListener('loadeddata', iniciarVideo);
+        
+        // Reintentar si se suspende
+        video.addEventListener('suspend', iniciarVideo);
+
+        // Respaldo: Activar con cualquier interacción del usuario
+        function forzarInicio() {
+            if (video.paused) {
+                video.muted = true;
+                video.play().then(() => {
+                    dibujarVideo();
+                }).catch(e => console.log("Error al reproducir:", e));
+            }
+        }
+        
+        // ACTIVAR VIDEO AL HACER CLICK EN EL INPUT PIN
+        input.addEventListener('click', forzarInicio, { once: false });
+        input.addEventListener('focus', forzarInicio, { once: false });
+        input.addEventListener('touchstart', forzarInicio, { once: false });
+        
+        // Listeners adicionales para garantizar reproducción con cualquier interacción
+        ['click', 'touchstart', 'keydown'].forEach(evento => {
+            document.addEventListener(evento, forzarInicio, { once: true });
+        });
+
+        function verificarCodigo(e) {
+            e.preventDefault(); 
+            const codigo = document.getElementById('access-code').value;
+            const errorMsg = document.getElementById('error-msg');
+            const input = document.getElementById('access-code');
+
+            if (codigo === "5028") {
+                errorMsg.style.opacity = "0";
+                input.style.borderColor = "#00f2ff";
+                input.style.boxShadow = "0 0 20px #00f2ff";
+                document.body.style.opacity = "0";
+                document.body.style.transition = "opacity 0.5s ease";
+                
+                setTimeout(() => {
+                    window.location.href = "modulo_texto.html"; 
+                }, 500);
+            } else {
+                errorMsg.style.opacity = "1";
+                input.value = "";
+                input.focus();
+                input.style.borderColor = "#ef4444";
+            }
+        }
+
+        window.onload = () => document.getElementById('access-code').focus();
+    </script>
+
+</body>
+</html>
