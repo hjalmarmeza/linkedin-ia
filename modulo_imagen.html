@@ -412,46 +412,61 @@
                 const titleClean = cleanForMatch(currentTitle || currentText.split("\n")[0]);
                 const tagsClean = cleanForMatch(currentTags || "");
 
-                // COMPOSICIÓN DINÁMICA DE LA ESCENA (Sin palabras clave fijas)
-                const compositions = [
-                    "dynamic and asymmetrical composition",
-                    "epic wide-angle perspective",
-                    "close-up macro details with deep bokeh",
-                    "multi-layered depth perspective",
-                    "dramatic brids-eye view",
-                    "immersive 3D atmospheric layout"
-                ];
-                const randomComp = compositions[Math.floor(Math.random() * compositions.length)];
+                // Traductor ligero para que Pollinations entienda mejor el contexto (prefiere inglés)
+                function translateForAI(text) {
+                    let t = text.toLowerCase();
+                    const dict = {
+                        "tienda": "futuristic smart retail store",
+                        "comercio": "high-tech commerce",
+                        "phygital": "physical and digital fusion layers",
+                        "datos": "luminous data streams",
+                        "realidad": "augmented reality holograms",
+                        "vision": "computational vision tech",
+                        "digital": "cybernetic data nodes",
+                        "futuro": "visionary tomorrow",
+                        "negocios": "corporate prestige energy",
+                        "estrategia": "complex tactical structure"
+                    };
+                    for (const [key, val] of Object.entries(dict)) {
+                        t = t.replace(new RegExp(key, 'g'), val);
+                    }
+                    return t;
+                }
 
-                // CONCEPTO ÚNICO: Se construye solo con lo que viene del POST
-                const finalConcept = `A visionary and high-end conceptual masterpiece artistic representation. 
-                                    Subject: ${titleClean}. 
-                                    Visual elements & motifs: ${tagsClean}. 
-                                    Atmosphere: Unique, innovative and sophisticated.`;
+                const aiContext = translateForAI(titleClean + " " + tagsClean);
+
+                // ESCENARIOS VISUALES FORZADOS (Para romper el patrón de pasillos)
+                const variations = [
+                    "A complex composition of floating glass prisms and holographic interfaces",
+                    "Intricate macro details of glowing fiber-optic circuitry and liquid metal",
+                    "Elegant multi-layered translucent windows with deep volumetric lighting",
+                    "A central symbolic artifact made of pure light and geometric glass",
+                    "Sophisticated data visualization explosion with bokeh and particles",
+                    "Immersive futuristic environment with glowing nodes and soft reflections"
+                ];
+                const selectedVar = variations[Math.floor(Math.random() * variations.length)];
 
                 const styleP = PROMPTS[currentStyle];
                 const intentP = INTENTIONS[currentIntention];
-                const colorP = brandColor ? `with ${brandColor} accents` : "";
+                const colorP = brandColor ? `with primary ${brandColor} light accents` : "";
 
-                // REGLAS "ANTI-GENÉRICO" (Para evitar los pasillos vacíos)
-                const qualityRules = `Top-tier digital design, complex geometry, professional artistic lighting. 
-                                     AVOID generic corridors, AVOID empty blue boxes, AVOID repetitive architectural patterns. 
-                                     Focus on poetic symbolism and high-end textures like frosted glass, liquid metal, and particles of light.`;
+                // REGLAS ANTI-PASILLO (Instrucciones de alta fidelidad)
+                const masterRules = `AVOID ALL generic corridors, AVOID empty blue halls, AVOID repetitive buildings. 
+                                    Target: High-end professional design, cinematic lighting, 8k resolution. 
+                                    Materials: Frosted glass, iridescent surfaces, soft glow, depth of field.`;
 
                 // CONSTRUCCIÓN DEL PROMPT FINAL
-                const finalPrompt = `Professional Masterpiece Art. ${finalConcept}. 
-                                    Composition: ${randomComp}. 
-                                    Artistic Style: ${styleP}. 
-                                    Vibe: ${intentP}. 
-                                    Color Profile: ${colorP}. 
-                                    ${qualityRules} 
-                                    8k resolution, octane render, trending on visual arts platforms, highly detailed, expressive and original.`;
+                const finalPrompt = `Professional Masterpiece Digital Art. ${selectedVar}. 
+                                    Theme: ${aiContext}. 
+                                    Vibe: ${intentP} and ${styleP}. 
+                                    Lighting: ${colorP}. 
+                                    Details: ${masterRules}. 
+                                    Unreal Engine 5 style, octane render, trending on ArtStation, unique and expressive composition, sharp focus.`;
 
-                const seed = Math.floor(Math.random() * 1000000);
+                const seed = Math.floor(Math.random() * 9999999);
                 const w = 1080;
                 const h = currentFormat === 'portrait' ? 1350 : 1080;
-                const ts = Date.now(); // Para evitar caché del navegador
-
+                const ts = Date.now();
                 const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true&enhance=true&t=${ts}`;
 
                 const img = new Image();
