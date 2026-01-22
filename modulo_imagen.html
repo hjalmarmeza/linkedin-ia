@@ -411,78 +411,48 @@
 
                 const titleClean = cleanForMatch(currentTitle || currentText.split("\n")[0]);
                 const tagsClean = cleanForMatch(currentTags || "");
-                const fullContext = (titleClean + " " + tagsClean).trim();
 
-                // DICCIONARIO DE CONCEPTOS UNIVERSALES (Metáforas de alto nivel para post empresariales/tech)
-                const metaphors = [
-                    // Tecnología y VR/AR
-                    { key: "realidad mixta", value: "A futuristic holographic workspace where light and data blend seamlessly, sophisticated translucent interfaces floating in a serene professional environment" },
-                    { key: "vision", value: "High-end spatial computing aesthetic, glass-like digital windows and floating luminous icons, elegant futuristic technology" },
-                    { key: "computacion", value: "Intricate digital architecture composed of glowing data streams and light particles, advanced processing power visualization" },
-
-                    // Estrategia y Negocios
-                    { key: "estrategia", value: "An abstract tactical map of light and glass, interlocking geometric paths leading to a central beacon of clarity" },
-                    { key: "exito", value: "A triumphant ascent of golden light particles towards a brilliant sun-like horizon, peak achievement symbolism" },
-                    { key: "negocios", value: "Modern architectural structures made of solid light and transparent glass, representing organizational growth and stability" },
-                    { key: "liderazgo", value: "A central, powerful source of warm light guiding a network of smaller glowing nodes, inspiration and direction" },
-
-                    // Datos y Marketing
-                    { key: "datos", value: "A vast cosmos of interconnected data points and luminous information strands, complex but organized digital beauty" },
-                    { key: "marketing", value: "Expanding ripples of vibrant energy moving through a digital field, connectivity and influence pulses" },
-                    { key: "ventas", value: "A powerful spiral of golden energy focusing into a single point of value, prosperity and momentum" },
-                    { key: "tráfico", value: "Rapid streams of neon light pulses flowing through a high-tech network, velocity and volume of information" },
-                    { key: "trafico", value: "Rapid streams of neon light pulses flowing through a high-tech network" },
-
-                    // Otros universales
-                    { key: "muerte", value: "A graceful fading of light forms into a deep, elegant dark void, artistic closure and transformation" },
-                    { key: "crecimiento", value: "Organic crystalline formations growing upwards, evolving shapes of light and glass" },
-                    { key: "futuro", value: "A portal of infinite light opening towards a high-tech horizon, transcendence and new possibilities" },
-                    { key: "ia", value: "Glowing neural network patterns, synapsis of light representing artificial consciousness and intelligence" },
-                    { key: "inteligencia artificial", value: "Complex brain-like structures made of luminous fiber optics and digital particles" }
+                // COMPOSICIÓN DINÁMICA DE LA ESCENA (Sin palabras clave fijas)
+                const compositions = [
+                    "dynamic and asymmetrical composition",
+                    "epic wide-angle perspective",
+                    "close-up macro details with deep bokeh",
+                    "multi-layered depth perspective",
+                    "dramatic brids-eye view",
+                    "immersive 3D atmospheric layout"
                 ];
+                const randomComp = compositions[Math.floor(Math.random() * compositions.length)];
 
-                let finalConcept = "";
-                let matched = false;
-
-                // 1. Intentar encontrar una metáfora coincidente
-                for (const m of metaphors) {
-                    if (fullContext.includes(m.key)) {
-                        finalConcept = m.value;
-                        matched = true;
-                        break;
-                    }
-                }
-
-                // 2. Si no hay metáfora, crear un concepto dinámico basado en las palabras del post
-                if (!matched) {
-                    finalConcept = `An abstract and sophisticated conceptual artistic masterpiece representing the essence of: ${titleClean}. 
-                                    Symbolic forms, metaphorical light, and professional digital textures`;
-                }
+                // CONCEPTO ÚNICO: Se construye solo con lo que viene del POST
+                const finalConcept = `A visionary and high-end conceptual masterpiece artistic representation. 
+                                    Subject: ${titleClean}. 
+                                    Visual elements & motifs: ${tagsClean}. 
+                                    Atmosphere: Unique, innovative and sophisticated.`;
 
                 const styleP = PROMPTS[currentStyle];
                 const intentP = INTENTIONS[currentIntention];
-                const colorP = brandColor ? `with accented ${brandColor} highlights` : "";
+                const colorP = brandColor ? `with ${brandColor} accents` : "";
 
-                // REGLAS MASTER DE CALIDAD (Para evitar lo genérico y lo literal)
-                // Eliminamos el "NO REAL WORLD OBJECTS" que estaba forzando pasillos vacíos.
-                const qualityRules = `Top-tier conceptual digital art, trending on ArtStation, museum quality. 
-                                     Intricate details, volumetric lighting, photorealistic textures but abstract composition. 
-                                     Symmetrical balance, high contrast, clean professional aesthetic. 
-                                     NO Distorted faces, NO blurry elements, NO low-quality textures, NO literal road traffic, NO cluttered backgrounds.`;
+                // REGLAS "ANTI-GENÉRICO" (Para evitar los pasillos vacíos)
+                const qualityRules = `Top-tier digital design, complex geometry, professional artistic lighting. 
+                                     AVOID generic corridors, AVOID empty blue boxes, AVOID repetitive architectural patterns. 
+                                     Focus on poetic symbolism and high-end textures like frosted glass, liquid metal, and particles of light.`;
 
                 // CONSTRUCCIÓN DEL PROMPT FINAL
-                const finalPrompt = `${qualityRules} 
-                                    Subject: ${finalConcept}. 
-                                    Format: ${styleP}. 
-                                    Emotional Tone: ${intentP}. 
-                                    Color Palette: ${colorP}. 
-                                    Visual elements: Smooth gradients, glassmorphism, depth of field, 8k resolution, octane render.`;
+                const finalPrompt = `Professional Masterpiece Art. ${finalConcept}. 
+                                    Composition: ${randomComp}. 
+                                    Artistic Style: ${styleP}. 
+                                    Vibe: ${intentP}. 
+                                    Color Profile: ${colorP}. 
+                                    ${qualityRules} 
+                                    8k resolution, octane render, trending on visual arts platforms, highly detailed, expressive and original.`;
 
-                const seed = Math.floor(Math.random() * 999999);
+                const seed = Math.floor(Math.random() * 1000000);
                 const w = 1080;
                 const h = currentFormat === 'portrait' ? 1350 : 1080;
+                const ts = Date.now(); // Para evitar caché del navegador
 
-                const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true&enhance=true`;
+                const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true&enhance=true&t=${ts}`;
 
                 const img = new Image();
                 img.src = url;
