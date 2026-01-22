@@ -410,9 +410,18 @@
                 }
 
                 const titleClean = cleanForMatch(currentTitle || currentText.split("\n")[0]);
+                const tagsClean = cleanForMatch(currentTags || "");
+                const fullContext = titleClean + " " + tagsClean;
 
                 // Definimos metáforas puras.
                 const metaphors = [
+                    { key: "realidad mixta", value: "A fusion of physical reality and digital data: floating vibrant holographic interface windows seamlessly integrated into a professional modern living space, soft volumetric light" },
+                    { key: "realidad", value: "Layers of digital transparency overlapping the physical world, intricate holographic UI elements floating in mid-air, sense of depth" },
+                    { key: "espacial", value: "Spatial computing concept: 3D geometric light interfaces filling a room, user-centric digital atmosphere, immersive data volume" },
+                    { key: "vision", value: "Apple Vision Pro aesthetic: ultra-sleek glass and light interface, translucent windows floating in a serene environment, high-end tech elegance" },
+                    { key: "xr", value: "Extended reality: vibrant light projections blending with real-world textures, immersive digital overlay on architecture" },
+                    { key: "metaverso", value: "Infinite digital architecture, interconnected nodes of light forming a vast virtual world, futuristic and expansive" },
+                    { key: "computacion", value: "Advanced operating system interface: floating holographic terminal windows, flowing code particles, futuristic digital workspace" },
                     { key: "trafico", value: "A stream of glowing fiber optic cables with light pulses moving through a void, interconnected neural pathways" },
                     { key: "nube", value: "A floating cluster of translucent geometric crystalline structures, digital data monoliths" },
                     { key: "red", value: "Complex golden fractal web of connections, glowing nodes in deep space" },
@@ -440,8 +449,9 @@
                 let finalConcept = "An abstract conceptual art piece representing innovation and high-level strategy";
                 let matched = false;
 
+                // Priorizamos términos de Realidad Mixta si están presentes
                 for (const m of metaphors) {
-                    if (titleClean.includes(m.key)) {
+                    if (fullContext.includes(m.key)) {
                         finalConcept = m.value;
                         matched = true;
                         break;
@@ -456,13 +466,19 @@
                 const intentP = INTENTIONS[currentIntention];
                 const colorP = brandColor ? `with ${brandColor} accents` : "";
 
-                // CONSTRUCCIÓN DEL PROMPT (Reforzado para Evitar Literalidad)
+                // Ajuste de filtros negativos basado en si es Realidad Mixta o no
+                const isXR = fullContext.includes("realidad") || fullContext.includes("xr") || fullContext.includes("vision") || fullContext.includes("espacial");
+                const negativeFilters = isXR
+                    ? "NO CARS, NO ROADS, NO TEXT, NO LOGOS, NO DISTORTED FACES."
+                    : "STRICTLY NO VEHICLES, NO CARS, NO ROADS, NO PEOPLE, NO BUILDINGS, NO TEXT, NO LOGOS.";
+
+                // CONSTRUCCIÓN DEL PROMPT
                 const finalPrompt = `Professional Masterpiece. ${finalConcept}. 
                                     Visual Style: ${styleP}. 
                                     Atmosphere: ${intentP}. 
                                     Lighting: ${colorP}. 
-                                    STRICTLY NO VEHICLES, NO CARS, NO ROADS, NO PEOPLE, NO BUILDINGS, NO TEXT, NO LOGOS. 
-                                    Abstract symbolism, high-end digital art, stunning 8k render, octane render style, volumetric lighting, deep depth of field.`;
+                                    ${negativeFilters}
+                                    Abstract symbolism mixed with high-tech elements, stunning 8k render, octane render style, volumetric lighting, deep depth of field, elegant composition.`;
 
                 const seed = Math.floor(Math.random() * 999999);
                 const w = 1080;
