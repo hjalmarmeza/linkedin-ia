@@ -411,45 +411,40 @@
 
                 const titleClean = cleanForMatch(currentTitle || currentText.split("\n")[0]);
                 const tagsClean = cleanForMatch(currentTags || "");
-                const fullContext = titleClean + " " + tagsClean;
+                const fullContext = (titleClean + " " + tagsClean).trim();
 
-                // Definimos metáforas puras.
+                // DICCIONARIO DE CONCEPTOS UNIVERSALES (Metáforas de alto nivel para post empresariales/tech)
                 const metaphors = [
-                    { key: "realidad mixta", value: "A fusion of physical reality and digital data: floating vibrant holographic interface windows seamlessly integrated into a professional modern living space, soft volumetric light" },
-                    { key: "realidad", value: "Layers of digital transparency overlapping the physical world, intricate holographic UI elements floating in mid-air, sense of depth" },
-                    { key: "espacial", value: "Spatial computing concept: 3D geometric light interfaces filling a room, user-centric digital atmosphere, immersive data volume" },
-                    { key: "vision", value: "Apple Vision Pro aesthetic: ultra-sleek glass and light interface, translucent windows floating in a serene environment, high-end tech elegance" },
-                    { key: "xr", value: "Extended reality: vibrant light projections blending with real-world textures, immersive digital overlay on architecture" },
-                    { key: "metaverso", value: "Infinite digital architecture, interconnected nodes of light forming a vast virtual world, futuristic and expansive" },
-                    { key: "computacion", value: "Advanced operating system interface: floating holographic terminal windows, flowing code particles, futuristic digital workspace" },
-                    { key: "trafico", value: "A stream of glowing fiber optic cables with light pulses moving through a void, interconnected neural pathways" },
-                    { key: "nube", value: "A floating cluster of translucent geometric crystalline structures, digital data monoliths" },
-                    { key: "red", value: "Complex golden fractal web of connections, glowing nodes in deep space" },
-                    { key: "embudo", value: "A vortex of swirling liquid light particles, focusing into a single point of energy" },
-                    { key: "seguridad", value: "An impenetrable shield made of interlocking hexagonal light plates, crystal structure" },
-                    { key: "estrategia", value: "Strategic chess composition with light rays, abstract planning nodes, tactical depth" },
-                    { key: "exito", value: "Ascension of golden light particles towards a bright horizon, peak achievement, glorious summit" },
-                    { key: "crecimiento", value: "Organic crystalline growth patterns, upward momentum, evolving luminous structures" },
-                    { key: "futuro", value: "Visionary light portal, holographic data architecture, transcendence towards tomorrow" },
-                    { key: "datos", value: "Complex matrix of glowing data points, information streams in a cosmic digital void" },
-                    { key: "inteligencia artificial", value: "Neural network patterns, luminous synaptic connections, artificial consciousness glow" },
-                    { key: "ia", value: "Neural network patterns, luminous synaptic connections, artificial consciousness glow" },
-                    { key: "marketing", value: "Expanding ripples of influence, connectivity pulses, digital communication signals" },
-                    { key: "negocios", value: "Solid architectural light structures, interlocking geometric growth, professional stability" },
-                    { key: "dinero", value: "Flow of golden energy, prosperous light streams, liquid gold value exchange" },
-                    { key: "ventas", value: "Flow of golden energy, prosperous light streams, liquid gold value exchange" },
-                    { key: "muerte", value: "Dissolving light particles, graceful fading structure into a dark elegant void" },
-                    { key: "viral", value: "Network chain reaction, fractal explosion of light nodes, contagious energy" },
-                    { key: "productividad", value: "Efficient rhythmic light patterns, synchronized geometric motion, flow state" },
-                    { key: "liderazgo", value: "A central beacon of intense light guiding other smaller beams, focused authority" },
-                    { key: "creatividad", value: "Explosion of vibrant colors and fluid light forms, unstructured artistic energy" },
-                    { key: "tecnologia", value: "Integrated circuitry of light, high-tech fiber optic aesthetics, digital soul" }
+                    // Tecnología y VR/AR
+                    { key: "realidad mixta", value: "A futuristic holographic workspace where light and data blend seamlessly, sophisticated translucent interfaces floating in a serene professional environment" },
+                    { key: "vision", value: "High-end spatial computing aesthetic, glass-like digital windows and floating luminous icons, elegant futuristic technology" },
+                    { key: "computacion", value: "Intricate digital architecture composed of glowing data streams and light particles, advanced processing power visualization" },
+
+                    // Estrategia y Negocios
+                    { key: "estrategia", value: "An abstract tactical map of light and glass, interlocking geometric paths leading to a central beacon of clarity" },
+                    { key: "exito", value: "A triumphant ascent of golden light particles towards a brilliant sun-like horizon, peak achievement symbolism" },
+                    { key: "negocios", value: "Modern architectural structures made of solid light and transparent glass, representing organizational growth and stability" },
+                    { key: "liderazgo", value: "A central, powerful source of warm light guiding a network of smaller glowing nodes, inspiration and direction" },
+
+                    // Datos y Marketing
+                    { key: "datos", value: "A vast cosmos of interconnected data points and luminous information strands, complex but organized digital beauty" },
+                    { key: "marketing", value: "Expanding ripples of vibrant energy moving through a digital field, connectivity and influence pulses" },
+                    { key: "ventas", value: "A powerful spiral of golden energy focusing into a single point of value, prosperity and momentum" },
+                    { key: "tráfico", value: "Rapid streams of neon light pulses flowing through a high-tech network, velocity and volume of information" },
+                    { key: "trafico", value: "Rapid streams of neon light pulses flowing through a high-tech network" },
+
+                    // Otros universales
+                    { key: "muerte", value: "A graceful fading of light forms into a deep, elegant dark void, artistic closure and transformation" },
+                    { key: "crecimiento", value: "Organic crystalline formations growing upwards, evolving shapes of light and glass" },
+                    { key: "futuro", value: "A portal of infinite light opening towards a high-tech horizon, transcendence and new possibilities" },
+                    { key: "ia", value: "Glowing neural network patterns, synapsis of light representing artificial consciousness and intelligence" },
+                    { key: "inteligencia artificial", value: "Complex brain-like structures made of luminous fiber optics and digital particles" }
                 ];
 
-                let finalConcept = "An abstract conceptual art piece representing innovation and high-level strategy";
+                let finalConcept = "";
                 let matched = false;
 
-                // Priorizamos términos de Realidad Mixta si están presentes
+                // 1. Intentar encontrar una metáfora coincidente
                 for (const m of metaphors) {
                     if (fullContext.includes(m.key)) {
                         finalConcept = m.value;
@@ -458,27 +453,30 @@
                     }
                 }
 
+                // 2. Si no hay metáfora, crear un concepto dinámico basado en las palabras del post
                 if (!matched) {
-                    finalConcept = `A conceptual and metaphorical artistic representation of the digital theme: ${titleClean}`;
+                    finalConcept = `An abstract and sophisticated conceptual artistic masterpiece representing the essence of: ${titleClean}. 
+                                    Symbolic forms, metaphorical light, and professional digital textures`;
                 }
 
                 const styleP = PROMPTS[currentStyle];
                 const intentP = INTENTIONS[currentIntention];
-                const colorP = brandColor ? `with ${brandColor} accents` : "";
+                const colorP = brandColor ? `with accented ${brandColor} highlights` : "";
 
-                // Ajuste de filtros negativos basado en si es Realidad Mixta o no
-                const isXR = fullContext.includes("realidad") || fullContext.includes("xr") || fullContext.includes("vision") || fullContext.includes("espacial");
-                const negativeFilters = isXR
-                    ? "NO CARS, NO ROADS, NO TEXT, NO LOGOS, NO DISTORTED FACES."
-                    : "STRICTLY NO VEHICLES, NO CARS, NO ROADS, NO PEOPLE, NO BUILDINGS, NO TEXT, NO LOGOS.";
+                // REGLAS MASTER DE CALIDAD (Para evitar lo genérico y lo literal)
+                // Eliminamos el "NO REAL WORLD OBJECTS" que estaba forzando pasillos vacíos.
+                const qualityRules = `Top-tier conceptual digital art, trending on ArtStation, museum quality. 
+                                     Intricate details, volumetric lighting, photorealistic textures but abstract composition. 
+                                     Symmetrical balance, high contrast, clean professional aesthetic. 
+                                     NO Distorted faces, NO blurry elements, NO low-quality textures, NO literal road traffic, NO cluttered backgrounds.`;
 
-                // CONSTRUCCIÓN DEL PROMPT
-                const finalPrompt = `Professional Masterpiece. ${finalConcept}. 
-                                    Visual Style: ${styleP}. 
-                                    Atmosphere: ${intentP}. 
-                                    Lighting: ${colorP}. 
-                                    ${negativeFilters}
-                                    Abstract symbolism mixed with high-tech elements, stunning 8k render, octane render style, volumetric lighting, deep depth of field, elegant composition.`;
+                // CONSTRUCCIÓN DEL PROMPT FINAL
+                const finalPrompt = `${qualityRules} 
+                                    Subject: ${finalConcept}. 
+                                    Format: ${styleP}. 
+                                    Emotional Tone: ${intentP}. 
+                                    Color Palette: ${colorP}. 
+                                    Visual elements: Smooth gradients, glassmorphism, depth of field, 8k resolution, octane render.`;
 
                 const seed = Math.floor(Math.random() * 999999);
                 const w = 1080;
