@@ -394,46 +394,75 @@
                 loadingText.textContent = "GENERANDO PIXELES...";
 
                 // --- CEREBRO DE TRADUCCIÓN RADICAL (ANTI-AUTO) ---
-                const titleText = (currentTitle || currentText.split("\n")[0]).toLowerCase();
 
-                // Definimos metáforas puras. Si el título tiene la palabra clave, 
-                // OLVIDAMOS el título original y usamos la metáfora.
+                // Función para limpiar texto (quitar negritas unicode y acentos)
+                function cleanForMatch(str) {
+                    if (!str) return "";
+                    // Mapeo básico de negritas matemáticas a normal
+                    return str.replace(/[\u1D400-\u1D7FF]/g, char => {
+                        const cp = char.codePointAt(0);
+                        if (cp >= 0x1D400 && cp <= 0x1D419) return String.fromCodePoint(cp - 0x1D400 + 65); // A-Z Bold
+                        if (cp >= 0x1D41A && cp <= 0x1D433) return String.fromCodePoint(cp - 0x1D41A + 97); // a-z Bold
+                        if (cp >= 0x1D434 && cp <= 0x1D44D) return String.fromCodePoint(cp - 0x1D434 + 65); // A-Z Italic
+                        if (cp >= 0x1D44E && cp <= 0x1D467) return String.fromCodePoint(cp - 0x1D44E + 97); // a-z Italic
+                        return char;
+                    }).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                }
+
+                const titleClean = cleanForMatch(currentTitle || currentText.split("\n")[0]);
+
+                // Definimos metáforas puras.
                 const metaphors = [
-                    { key: "tráfico", value: "A stream of glowing fiber optic cables with light pulses moving through a void, interconnected neural pathways" },
+                    { key: "trafico", value: "A stream of glowing fiber optic cables with light pulses moving through a void, interconnected neural pathways" },
                     { key: "nube", value: "A floating cluster of translucent geometric crystalline structures, digital data monoliths" },
                     { key: "red", value: "Complex golden fractal web of connections, glowing nodes in deep space" },
                     { key: "embudo", value: "A vortex of swirling liquid light particles, focusing into a single point of energy" },
-                    { key: "seguridad", value: "An impenetrable shield made of interlocking hexagonal light plates, crystal structure" }
+                    { key: "seguridad", value: "An impenetrable shield made of interlocking hexagonal light plates, crystal structure" },
+                    { key: "estrategia", value: "Strategic chess composition with light rays, abstract planning nodes, tactical depth" },
+                    { key: "exito", value: "Ascension of golden light particles towards a bright horizon, peak achievement, glorious summit" },
+                    { key: "crecimiento", value: "Organic crystalline growth patterns, upward momentum, evolving luminous structures" },
+                    { key: "futuro", value: "Visionary light portal, holographic data architecture, transcendence towards tomorrow" },
+                    { key: "datos", value: "Complex matrix of glowing data points, information streams in a cosmic digital void" },
+                    { key: "inteligencia artificial", value: "Neural network patterns, luminous synaptic connections, artificial consciousness glow" },
+                    { key: "ia", value: "Neural network patterns, luminous synaptic connections, artificial consciousness glow" },
+                    { key: "marketing", value: "Expanding ripples of influence, connectivity pulses, digital communication signals" },
+                    { key: "negocios", value: "Solid architectural light structures, interlocking geometric growth, professional stability" },
+                    { key: "dinero", value: "Flow of golden energy, prosperous light streams, liquid gold value exchange" },
+                    { key: "ventas", value: "Flow of golden energy, prosperous light streams, liquid gold value exchange" },
+                    { key: "muerte", value: "Dissolving light particles, graceful fading structure into a dark elegant void" },
+                    { key: "viral", value: "Network chain reaction, fractal explosion of light nodes, contagious energy" },
+                    { key: "productividad", value: "Efficient rhythmic light patterns, synchronized geometric motion, flow state" },
+                    { key: "liderazgo", value: "A central beacon of intense light guiding other smaller beams, focused authority" },
+                    { key: "creatividad", value: "Explosion of vibrant colors and fluid light forms, unstructured artistic energy" },
+                    { key: "tecnologia", value: "Integrated circuitry of light, high-tech fiber optic aesthetics, digital soul" }
                 ];
 
-                let finalConcept = "An abstract conceptual art piece representing innovation and technology";
+                let finalConcept = "An abstract conceptual art piece representing innovation and high-level strategy";
                 let matched = false;
 
                 for (const m of metaphors) {
-                    if (titleText.includes(m.key)) {
+                    if (titleClean.includes(m.key)) {
                         finalConcept = m.value;
                         matched = true;
                         break;
                     }
                 }
 
-                // Si no hay metáfora específica, traducimos el título de forma segura
                 if (!matched) {
-                    finalConcept = `A conceptual and metaphorical artistic representation of the theme: ${titleText}`;
+                    finalConcept = `A conceptual and metaphorical artistic representation of the digital theme: ${titleClean}`;
                 }
 
                 const styleP = PROMPTS[currentStyle];
                 const intentP = INTENTIONS[currentIntention];
-                const colorP = brandColor ? `with ${brandColor} energy highlights` : "";
+                const colorP = brandColor ? `with ${brandColor} accents` : "";
 
-                // CONSTRUCCIÓN DEL PROMPT (Sin usar la palabra "Car", "Road" o "Traffic" NUNCA)
-                // Usamos un lenguaje puramente artístico y abstracto.
-                const finalPrompt = `Masterpiece conceptual art. ${finalConcept}. 
-                                    Style: ${styleP}. 
+                // CONSTRUCCIÓN DEL PROMPT (Reforzado para Evitar Literalidad)
+                const finalPrompt = `Professional Masterpiece. ${finalConcept}. 
+                                    Visual Style: ${styleP}. 
                                     Atmosphere: ${intentP}. 
-                                    Vibe: ${colorP}. 
-                                    NO REAL WORLD OBJECTS, NO VEHICLES, NO PEOPLE, NO BUILDINGS. 
-                                    Pure abstraction, digital art, high resolution, 8k, trending on ArtStation, vivid colors, complex geometry.`;
+                                    Lighting: ${colorP}. 
+                                    STRICTLY NO VEHICLES, NO CARS, NO ROADS, NO PEOPLE, NO BUILDINGS, NO TEXT, NO LOGOS. 
+                                    Abstract symbolism, high-end digital art, stunning 8k render, octane render style, volumetric lighting, deep depth of field.`;
 
                 const seed = Math.floor(Math.random() * 999999);
                 const w = 1080;
