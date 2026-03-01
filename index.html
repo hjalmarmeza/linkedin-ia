@@ -118,14 +118,12 @@
                         class="text-sm font-medium text-gray-400">v2</span></h1>
                 <p class="text-[10px] text-accent uppercase tracking-[0.2em] font-bold mt-1">Generador IA</p>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-3">
+                <!-- Botón de ajustes (Ahora más limpio y sin superposición) -->
                 <div onclick="document.getElementById('api-modal').classList.remove('hidden')"
-                    class="w-10 h-10 rounded-full bg-surfaceLight/50 flex items-center justify-center border border-white/5 hover:bg-white/10 transition-colors cursor-pointer shadow-lg active:scale-95">
-                    <span class="material-symbols-rounded text-gray-300 text-[20px]">settings</span>
-                </div>
-                <div
-                    class="w-10 h-10 rounded-full bg-surfaceLight/50 flex items-center justify-center border border-white/5 hover:bg-white/10 transition-colors cursor-pointer shadow-lg active:scale-95">
-                    <span class="material-symbols-rounded text-accent text-[20px]">sparkles</span>
+                    class="w-11 h-11 rounded-2xl bg-surfaceLight/50 flex items-center justify-center border border-white/5 hover:bg-accent/10 hover:border-accent/40 transition-all duration-300 cursor-pointer shadow-lg active:scale-95 group">
+                    <span
+                        class="material-symbols-rounded text-gray-400 group-hover:text-accent transition-colors text-[24px]">settings</span>
                 </div>
             </div>
         </header>
@@ -140,7 +138,7 @@
                         <span class="material-symbols-rounded text-[18px] text-accent">lightbulb</span>
                         Concepción
                     </label>
-                    <span id="char-count" class="text-[10px] text-gray-500 font-mono font-medium">0/150</span>
+                    <span id="char-count" class="text-[10px] text-gray-500 font-mono font-medium">0/500</span>
                 </div>
 
                 <div
@@ -299,8 +297,8 @@
         const charCount = document.getElementById('char-count');
         ideaInput.addEventListener('input', (e) => {
             const current = e.target.value.length;
-            charCount.textContent = `${current}/150`;
-            if (current > 150) charCount.classList.add('text-red-400');
+            charCount.textContent = `${current}/500`;
+            if (current > 500) charCount.classList.add('text-red-400');
             else charCount.classList.remove('text-red-400');
         });
 
