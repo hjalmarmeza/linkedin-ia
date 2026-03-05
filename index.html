@@ -143,11 +143,17 @@
                     <span id="char-count" class="text-[10px] text-gray-500 font-mono font-medium">0/500</span>
                 </div>
 
-                <div
-                    class="glass-card p-5 group focus-within:border-accent/40 focus-within:shadow-[0_0_30px_rgba(56,189,248,0.1)] relative">
+                <div id="input-container"
+                    class="glass-card p-5 group focus-within:border-accent/40 focus-within:shadow-[0_0_30px_rgba(56,189,248,0.1)] relative transition-all duration-300">
                     <textarea id="idea-input" rows="4"
-                        class="w-full bg-transparent text-gray-100 text-lg md:text-xl font-medium placeholder-gray-600 resize-none"
-                        placeholder="Escribe una pequeña semilla. Ej: CSS sigue siendo difícil de dominar..."></textarea>
+                        class="w-full bg-transparent text-gray-100 text-lg md:text-xl font-medium placeholder-gray-600 resize-none pb-8"
+                        placeholder="Escribe o 👉 dicta una idea aquí. Ej: La IA en las mascotas..."></textarea>
+
+                    <!-- Botón Flotante de Micrófono (Dictado IA) -->
+                    <button id="btn-mic" onclick="toggleVoiceRecording()" title="Dictado por Voz"
+                        class="absolute bottom-3 right-4 w-11 h-11 rounded-full bg-surface border border-white/5 flex items-center justify-center text-gray-400 hover:text-accent hover:border-accent hover:shadow-[0_0_15px_rgba(56,189,248,0.3)] transition-all duration-300 cursor-pointer">
+                        <span class="material-symbols-rounded text-[22px]" id="mic-icon">mic</span>
+                    </button>
                 </div>
             </section>
 
@@ -341,7 +347,7 @@ Sigue ESTRICTAMENTE esta estructura y respeta el esquema de etiquetas proporcion
    - HASHTAGS: Cierra colocando exactamente 5 hashtags. (IMPORTANTE: Tu único entregable XML es <POST> e <IMAGE>, NUNCA inventes nuevas etiquetas como <HASHTAG> para rodear el final).
 
 2. REGLA DEL TONO:
-   - El texto DEBE proyectar un tono ${currentTone.toUpperCase()}. Escribe con excelente ortografía, 100% en español fluido sin palabras sueltas en inglés.
+   - El texto DEBE proyectar un tono \${currentTone.toUpperCase()}. Escribe con excelente ortografía, 100% en español fluido sin palabras sueltas en inglés.
    - MUY IMPORTANTE: NO agregues notas aclaratorias, ni "Notas del guía", ni frases explicativas sobre cómo hiciste el post. Solo redacta el texto crudo y puro.
 
 3. REGLA DE ENVASADO TÉCNICO (VITAL):
@@ -492,6 +498,91 @@ Sigue ESTRICTAMENTE esta estructura y respeta el esquema de etiquetas proporcion
             setTimeout(() => {
                 window.location.href = "imagen.html";
             }, 500);
+        }
+
+        // --- 4. DICTADO POR VOZ (Tecnología Talk.Me / VAD) ---
+        const btnMic = document.getElementById('btn-mic');
+        const micIcon = document.getElementById('mic-icon');
+        const inputContainer = document.getElementById('input-container');
+        let isRecording = false;
+        let voiceRec = null;
+
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRec) {
+            voiceRec = new SpeechRec();
+            voiceRec.lang = 'es-ES';
+            // Configuración anti-cortes
+            const isMobileSafari = (/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) && !window.MSStream;
+            const isAndroidSystem = /Android/i.test(navigator.userAgent);
+            voiceRec.continuous = !isMobileSafari && !isAndroidSystem;
+            voiceRec.interimResults = !isAndroidSystem; // Android falla con intermedios
+
+            let finalDictation = '';
+
+            voiceRec.onstart = () => {
+                isRecording = true;
+                micIcon.innerText = 'graphic_eq';
+                micIcon.classList.add('animate-pulse');
+                btnMic.classList.replace('text-gray-400', 'text-red-500');
+                btnMic.classList.replace('border-white/5', 'border-red-500');
+                btnMic.classList.add('shadow-[0_0_15px_rgba(239,68,68,0.5)]');
+
+                // Si la caja estaba vacía o con texto basura, lo empezamos a llenar donde se quedó
+                finalDictation = ideaInput.value + (ideaInput.value ? ' ' : '');
+            };
+
+            voiceRec.onresult = (e) => {
+                let interim = '';
+
+                if (isAndroidSystem) {
+                    const lastResult = e.results[e.results.length - 1];
+                    if (lastResult.isFinal) finalDictation += lastResult[0].transcript + ' ';
+                    ideaInput.value = finalDictation;
+                } else {
+                    for (let i = e.resultIndex; i < e.results.length; ++i) {
+                        if (e.results[i].isFinal) {
+                            finalDictation += e.results[i][0].transcript + ' ';
+                        } else {
+                            interim += e.results[i][0].transcript;
+                        }
+                    }
+                    ideaInput.value = finalDictation + interim;
+                }
+
+                // Forzar a disparar el contador de texto
+                ideaInput.dispatchEvent(new Event('input'));
+            };
+
+            voiceRec.onerror = (e) => {
+                if (e.error === 'no-speech') return;
+                console.error("Mic error:", e.error);
+                stopRecordingLogic();
+            };
+
+            voiceRec.onend = () => {
+                stopRecordingLogic();
+            };
+        }
+
+        function toggleVoiceRecording() {
+            if (!voiceRec) {
+                alert("Tu navegador no soporta el dictado por voz (Prueba Chrome o Safari moderno).");
+                return;
+            }
+            if (isRecording) {
+                try { voiceRec.stop(); } catch (err) { }
+            } else {
+                try { voiceRec.start(); } catch (err) { console.log(err); }
+            }
+        }
+
+        function stopRecordingLogic() {
+            isRecording = false;
+            micIcon.innerText = 'mic';
+            micIcon.classList.remove('animate-pulse');
+            btnMic.classList.replace('text-red-500', 'text-gray-400');
+            btnMic.classList.replace('border-red-500', 'border-white/5');
+            btnMic.classList.remove('shadow-[0_0_15px_rgba(239,68,68,0.5)]');
         }
     </script>
 </body>
