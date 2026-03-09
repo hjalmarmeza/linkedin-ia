@@ -375,8 +375,8 @@ REGLA DE TONO: ${currentTone.toUpperCase()}.`;
                     generatedText = data.choices[0].message.content;
 
                 } else if (apiKey.startsWith("AIzaSy")) {
-                    // LLAMADA A GEMINI (Google AI Studio)
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    // LLAMADA A GEMINI (Google AI Studio) - Modelo 2.0 Flash (Sustituye al 1.5)
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
