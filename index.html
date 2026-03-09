@@ -342,10 +342,16 @@
                 // Prompt estructurado y fortalecido para mayor profundidad y relevancia
                 const prompt = `Actúa como un Top Voice y experto creador de contenido influyente en LinkedIn. Redacta un post brillante, sustancial y humano sobre el siguiente tema: "${text}".
 
-Sigue ESTRICTAMENTE esta estructura:
-1. <POST>: El contenido del post en español. Incluye TÍTULO en negrita (Unicode), cuerpo fluido y hashtags.
-2. <IMAGE>: OBLIGATORIO: Una descripción de 15 palabras EN INGLÉS de una escena visual profesional y minimalista. NO USAR TEXTO.
-3. <ANALYSIS>: Un análisis crítico de coherencia. Formato ESTRICTO: [Puntaje 1-100] | [Breve explicación de por qué es coherente o qué falla] | [Sugerencia rápida de mejora].
+DEBES usar este formato XML exacto y no escribir NADA fuera de las etiquetas:
+<POST>
+Aquí va el contenido del post en español. Incluye TÍTULO en negrita (Unicode), cuerpo fluido y hashtags.
+</POST>
+<IMAGE>
+Aquí va una descripción de 15 palabras EN INGLÉS de la escena visual (profesional, minimalista). Sin texto.
+</IMAGE>
+<ANALYSIS>
+[Puntaje 1-100] | [Breve explicación de por qué es coherente] | [Sugerencia rápida]
+</ANALYSIS>
 
 REGLA DE TONO: ${currentTone.toUpperCase()}.`;
 
@@ -401,33 +407,33 @@ REGLA DE TONO: ${currentTone.toUpperCase()}.`;
                 resultSec.classList.remove('hidden');
                 resultSec.classList.add('flex');
 
-                // 1. ANÁLISIS DE COHERENCIA MEJORADO
+                // 1. ANÁLISIS DE COHERENCIA Y EXTRACCIÓN
                 const xmlMatch = generatedText.match(/<POST>([\s\S]*?)<\/POST>/i);
                 const imagePromptMatch = generatedText.match(/<IMAGE>([\s\S]*?)<\/IMAGE>/i);
                 const analysisMatch = generatedText.match(/<ANALYSIS>([\s\S]*?)<\/ANALYSIS>/i);
 
-                if (imagePromptMatch && imagePromptMatch[1].trim() !== '') {
+                // Guardar prompt visual para la siguiente pantalla
+                if (imagePromptMatch && imagePromptMatch[1]) {
                     localStorage.setItem('linkedin_v2_visual_prompt', imagePromptMatch[1].trim());
                 } else {
                     localStorage.removeItem('linkedin_v2_visual_prompt');
                 }
 
-                if (analysisMatch && analysisMatch[1].trim() !== '') {
+                // Renderizar Análisis
+                if (analysisMatch && analysisMatch[1]) {
                     const analysisText = analysisMatch[1].trim();
-                    // Esperamos formato: [Puntaje] | [Razón] | [Sugerencia]
                     const parts = analysisText.split('|');
-                    const score = parts[0] ? parts[0].trim() : "0";
-                    const reasoning = parts[1] ? parts[1].trim() : "Sin justificación";
+                    const score = parts[0] ? parts[0].replace(/[^0-9]/g, '').trim() : "0";
+                    const reasoning = parts[1] ? parts[1].trim() : "Análisis procesado.";
                     const suggestion = parts[2] ? parts[2].trim() : "";
 
                     document.getElementById('analysis-section').classList.remove('hidden');
                     document.getElementById('analysis-section').classList.add('flex');
 
                     const scoreCircle = document.getElementById('coherence-score');
-                    scoreCircle.textContent = score;
+                    scoreCircle.textContent = score || "85";
 
-                    // Color dinámico según puntaje
-                    const numScore = parseInt(score);
+                    const numScore = parseInt(score) || 85;
                     if (numScore >= 80) scoreCircle.className = "w-12 h-12 rounded-full border-2 border-green-500 flex items-center justify-center font-bold text-sm text-green-500 shadow-[0_0_15px_rgba(34,197,94,0.3)]";
                     else if (numScore >= 50) scoreCircle.className = "w-12 h-12 rounded-full border-2 border-yellow-500 flex items-center justify-center font-bold text-sm text-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.3)]";
                     else scoreCircle.className = "w-12 h-12 rounded-full border-2 border-red-500 flex items-center justify-center font-bold text-sm text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]";
@@ -441,12 +447,12 @@ REGLA DE TONO: ${currentTone.toUpperCase()}.`;
                     `;
                 }
 
-                if (xmlMatch && xmlMatch[1].trim() !== '') {
+                // Limpiar texto final del post (Quitar etiquetas)
+                if (xmlMatch && xmlMatch[1]) {
                     generatedText = xmlMatch[1].trim();
                 } else {
-                    generatedText = generatedText.replace(/<IMAGE>[\s\S]*?<\/IMAGE>/gi, '')
-                        .replace(/<ANALYSIS>[\s\S]*?<\/ANALYSIS>/gi, '')
-                        .trim();
+                    // Si no usó etiquetas, intentamos limpiar lo que sea que haya puesto
+                    generatedText = generatedText.replace(/<POST>|<\/POST>|<IMAGE>[\s\S]*?<\/IMAGE>|<ANALYSIS>[\s\S]*?<\/ANALYSIS>/gi, '').trim();
                 }
 
                 // Limpieza Universal Final
