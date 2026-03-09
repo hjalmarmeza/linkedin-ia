@@ -208,6 +208,24 @@
                         class="w-full bg-transparent text-white text-sm md:text-base leading-relaxed resize-none focus:outline-none hide-scrollbar placeholder-gray-500 font-medium"
                         placeholder="Tu contenido se revelará aquí..."></textarea>
                 </div>
+
+                <!-- 4. Análisis de Coherencia -->
+                <div id="analysis-section" class="hidden flex-col gap-2 mt-2">
+                    <label
+                        class="text-[10px] uppercase tracking-[0.15em] text-secondary font-bold flex items-center gap-2">
+                        <span class="material-symbols-rounded text-[16px]">analytics</span>
+                        Análisis de Coherencia
+                    </label>
+                    <div class="glass-card p-4 border-secondary/20 bg-secondary/5 rounded-2xl">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div id="coherence-score"
+                                class="w-10 h-10 rounded-full border-2 border-secondary flex items-center justify-center font-bold text-xs text-secondary">
+                                --</div>
+                            <p id="coherence-feedback" class="text-[11px] text-gray-300 leading-tight font-medium">La IA
+                                está evaluando la conexión entre el título, el cuerpo y las palabras clave...</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
         </main>
@@ -239,18 +257,14 @@
                 <span class="material-symbols-rounded text-accent">key</span> Inteligencia Real
             </h3>
             <p class="text-sm text-gray-400 mb-4 leading-relaxed">
-                Pega aquí tu <b>API Key</b>. La app detectará automáticamente el motor:
+                Pega aquí tu <b>API Key</b> de Google. Genera <b>Texto e Imagen</b> con la misma clave:
                 <br><br>
-                🔸 <b class="text-accent">Google Gemini:</b> Empieza con <i>AIzaSy...</i><br>
-                🌐 <b class="text-[#10b981]">OpenRouter (100% Gratis, global):</b> Empieza con <i>sk-or...</i>
+                ✨ <b class="text-accent">Google Gemini (Todo-en-1):</b> Empieza con <i>AIzaSy...</i><br>
+                🌐 <b class="text-[#10b981]">OpenRouter (Backup):</b> Empieza con <i>sk-or...</i>
             </p>
-            <input type="password" id="gemini-key-input" placeholder="Pega tu clave de Texto aquí..."
-                class="w-full bg-[#0f172a] border border-[#334155] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-accent text-sm mb-3 transition-all">
+            <input type="password" id="gemini-key-input" placeholder="Pega tu clave aquí..."
+                class="w-full bg-[#0f172a] border border-[#334155] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-accent text-sm mb-6 transition-all">
 
-            <p class="text-[11px] text-gray-400 mb-2">🔸 <b class="text-secondary">SiliconFlow (Imagen China):</b>
-                Gratis.</p>
-            <input type="password" id="silicon-key-input" placeholder="Pega tu clave de Imagen aquí..."
-                class="w-full bg-[#0f172a] border border-[#334155] rounded-xl px-4 py-2 text-white focus:outline-none focus:border-secondary text-sm mb-6 transition-all">
             <div class="flex gap-3">
                 <button onclick="document.getElementById('api-modal').classList.add('hidden')"
                     class="flex-1 py-3 rounded-xl border border-[#334155] text-gray-300 font-semibold hover:bg-white/5 transition-colors">Cancelar</button>
@@ -258,10 +272,9 @@
                     class="flex-1 py-3 rounded-xl bg-gradient-to-r from-accent to-blue-500 text-white font-bold shadow-lg shadow-accent/20">Activar
                     IA</button>
             </div>
-            <p class="text-[11px] text-gray-500 mt-5 text-center leading-tight">Si agotaste tu límite en Google o tienes
-                fallo de red, te recomiendo sacar una clave súper gratuita en <a
-                    href="https://openrouter.ai/settings/keys" target="_blank"
-                    class="text-accent underline font-medium">OpenRouter Keys</a>.</p>
+            <p class="text-[11px] text-gray-500 mt-5 text-center leading-tight">Obtén tu clave gratuita en <a
+                    href="https://aistudio.google.com/app/apikey" target="_blank"
+                    class="text-accent underline font-medium">Google AI Studio</a>.</p>
         </div>
     </div>
 
@@ -270,19 +283,13 @@
         window.addEventListener('DOMContentLoaded', () => {
             const kText = localStorage.getItem('gemini_api_key');
             if (kText) document.getElementById('gemini-key-input').value = kText;
-
-            const kImg = localStorage.getItem('silicon_api_key');
-            if (kImg) document.getElementById('silicon-key-input').value = kImg;
         });
 
         // Guarda las API Keys y lanza el proceso si hay texto
         function saveApiKey() {
             const valText = document.getElementById('gemini-key-input').value.trim();
-            const valImg = document.getElementById('silicon-key-input').value.trim();
 
             if (valText) localStorage.setItem('gemini_api_key', valText);
-            if (valImg) localStorage.setItem('silicon_api_key', valImg);
-
             document.getElementById('api-modal').classList.add('hidden');
 
             const text = document.getElementById('idea-input').value.trim();
@@ -335,24 +342,12 @@
                 // Prompt estructurado y fortalecido para mayor profundidad y relevancia
                 const prompt = `Actúa como un Top Voice y experto creador de contenido influyente en LinkedIn. Redacta un post brillante, sustancial y humano sobre el siguiente tema: "${text}".
 
-Sigue ESTRICTAMENTE esta estructura y respeta el esquema de etiquetas proporcionado abajo para que tu respuesta sea procesada correctamente por nuestro sistema:
+Sigue ESTRICTAMENTE esta estructura:
+1. <POST>: El contenido del post en español. Incluye TÍTULO en negrita (Unicode), cuerpo fluido y hashtags.
+2. <IMAGE>: OBLIGATORIO: Una descripción de 15 palabras EN INGLÉS de una escena visual profesional y minimalista. NO USAR TEXTO.
+3. <ANALYSIS>: Un análisis crítico de coherencia. Formato ESTRICTO: [Puntaje 1-100] | [Breve explicación de por qué es coherente o qué falla] | [Sugerencia rápida de mejora].
 
-1. ESTRUCTURA DEL POST (IMPORTANTE: NO imprimas palabras guía como "TÍTULO:", "CUERPO:", "PUNTOS CLAVE:" ni "CIERRE:". Solo redacta el contenido real fluidamente):
-   - PRIMERA LÍNEA (TÍTULO): Escribe un título llamativo, corto, en MAYÚSCULAS y rodeado OBLIGATORIAMENTE por dobles asteriscos. Pon un emoji al final. Ejemplo exacto: **CONQUISTANDO EL FUTURO HOY 🚀**
-   - CUERPO: A continuación, escribe 2 o 3 párrafos de desarrollo. Sé conversacional, aporta valor real y no repitas ideas. Distribuye elegantemente algunos emojis relevantes.
-   - PUNTOS: Redacta directamente tus 4 viñetas. Inicia cada punto con un emoji y su tema entre dobles asteriscos. Ejemplo exacto:
-     ✅ **Prevencion Total:** Tu texto aquí...
-     🔍 **Análisis Cíclico:** Tu texto aquí...
-   - DESPEDIDA: Termina directamente con una oración contundente. MUY IMPORTANTE: NO hagas preguntas a la red.
-   - HASHTAGS: Cierra colocando exactamente 5 hashtags. (IMPORTANTE: Tu único entregable XML es <POST> e <IMAGE>, NUNCA inventes nuevas etiquetas como <HASHTAG> para rodear el final).
-
-2. REGLA DEL TONO:
-   - El texto DEBE proyectar un tono \${currentTone.toUpperCase()}. Escribe con excelente ortografía, 100% en español fluido sin palabras sueltas en inglés.
-   - MUY IMPORTANTE: NO agregues notas aclaratorias, ni "Notas del guía", ni frases explicativas sobre cómo hiciste el post. Solo redacta el texto crudo y puro.
-
-3. REGLA DE ENVASADO TÉCNICO (VITAL):
-   - Todo la estructura del post redactado (Título, Cuerpo, Puntos, Cierre y Hashtags) debe situarse ÍNTEGRAMENTE dentro de las etiquetas <POST> y </POST>.
-   - A continuación, después del post, debes idear una escena visual de 15 palabras EN INGLÉS puro que describa literalmente una bella imagen cinematográfica para ilustrar este texto (Ejemplo: "a happy golden dog resting inside a futuristic veterinary clinic without face masks"). Pon dicha idea visual dentro de <IMAGE> y </IMAGE>.`;
+REGLA DE TONO: ${currentTone.toUpperCase()}.`;
 
                 let generatedText = "";
 
@@ -365,7 +360,7 @@ Sigue ESTRICTAMENTE esta estructura y respeta el esquema de etiquetas proporcion
                     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                         method: 'POST',
                         headers: {
-                            'Authorization': `Bearer ${apiKey}`,
+                            'Authorization': `Bearer ${apiKey} `,
                             'Content-Type': 'application/json',
                             'HTTP-Referer': 'https://github.com',
                             'X-Title': 'Linkedinmatic'
@@ -406,41 +401,62 @@ Sigue ESTRICTAMENTE esta estructura y respeta el esquema de etiquetas proporcion
                 resultSec.classList.remove('hidden');
                 resultSec.classList.add('flex');
 
-                // Filtro de Seguridad Máxima (Extracción XML):
-                // Si la IA fue obediente y usó <POST>, extraemos SOLO eso y matamos el resto.
+                // 1. ANÁLISIS DE COHERENCIA MEJORADO
                 const xmlMatch = generatedText.match(/<POST>([\s\S]*?)<\/POST>/i);
-                const imageMatch = generatedText.match(/<IMAGE>([\s\S]*?)<\/IMAGE>/i);
+                const imagePromptMatch = generatedText.match(/<IMAGE>([\s\S]*?)<\/IMAGE>/i);
+                const analysisMatch = generatedText.match(/<ANALYSIS>([\s\S]*?)<\/ANALYSIS>/i);
 
-                if (imageMatch && imageMatch[1].trim() !== '') {
-                    // Guardamos la semilla visual hiper-precisa EN INGLÉS creada por la IA
-                    localStorage.setItem('linkedin_v2_visual_prompt', imageMatch[1].trim());
+                if (imagePromptMatch && imagePromptMatch[1].trim() !== '') {
+                    localStorage.setItem('linkedin_v2_visual_prompt', imagePromptMatch[1].trim());
                 } else {
-                    // Si falla, borramos cualquier rastro viejo
                     localStorage.removeItem('linkedin_v2_visual_prompt');
+                }
+
+                if (analysisMatch && analysisMatch[1].trim() !== '') {
+                    const analysisText = analysisMatch[1].trim();
+                    // Esperamos formato: [Puntaje] | [Razón] | [Sugerencia]
+                    const parts = analysisText.split('|');
+                    const score = parts[0] ? parts[0].trim() : "0";
+                    const reasoning = parts[1] ? parts[1].trim() : "Sin justificación";
+                    const suggestion = parts[2] ? parts[2].trim() : "";
+
+                    document.getElementById('analysis-section').classList.remove('hidden');
+                    document.getElementById('analysis-section').classList.add('flex');
+
+                    const scoreCircle = document.getElementById('coherence-score');
+                    scoreCircle.textContent = score;
+
+                    // Color dinámico según puntaje
+                    const numScore = parseInt(score);
+                    if (numScore >= 80) scoreCircle.className = "w-12 h-12 rounded-full border-2 border-green-500 flex items-center justify-center font-bold text-sm text-green-500 shadow-[0_0_15px_rgba(34,197,94,0.3)]";
+                    else if (numScore >= 50) scoreCircle.className = "w-12 h-12 rounded-full border-2 border-yellow-500 flex items-center justify-center font-bold text-sm text-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.3)]";
+                    else scoreCircle.className = "w-12 h-12 rounded-full border-2 border-red-500 flex items-center justify-center font-bold text-sm text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]";
+
+                    document.getElementById('coherence-feedback').innerHTML = `
+                        <div class="flex flex-col gap-1">
+                            <span class="text-white font-semibold mb-1">Análisis de Coherencia:</span>
+                            <p class="text-[11px] text-gray-300 leading-tight">${reasoning}</p>
+                            ${suggestion ? `<p class="text-[10px] text-accent mt-2 font-medium italic">💡 ${suggestion}</p>` : ''}
+                        </div>
+                    `;
                 }
 
                 if (xmlMatch && xmlMatch[1].trim() !== '') {
                     generatedText = xmlMatch[1].trim();
                 } else {
-                    // Fallback de robustez extrema: Borrado de etiquetas con soporte multilínea [\s\S]
-                    generatedText = generatedText.replace(/\*\*Imagen.*?\*\*:?[\s\S]*?\n/gi, '')
-                        .replace(/\[IMAGE[\s\S]*?\]/gi, '')
-                        .replace(/\[Imagen[\s\S]*?\]/gi, '')
-                        .replace(/<IMAGE>[\s\S]*?<\/IMAGE>/gi, '')
-                        .replace(/Imagen de encabezado[:*]*[\s\S]*?\n/gi, '')
+                    generatedText = generatedText.replace(/<IMAGE>[\s\S]*?<\/IMAGE>/gi, '')
+                        .replace(/<ANALYSIS>[\s\S]*?<\/ANALYSIS>/gi, '')
                         .trim();
                 }
 
-                // (Se ha eliminado el borrado de asteriscos iniciales para no destruir el nuevo Título Obligatorio)
-
-                // Limpieza Universal Final: Pase lo que pase, protegemos la vista de etiquetas residuales
+                // Limpieza Universal Final
                 generatedText = generatedText.replace(/<IMAGE>[\s\S]*?<\/IMAGE>/gi, '')
+                    .replace(/<ANALYSIS>[\s\S]*?<\/ANALYSIS>/gi, '')
                     .replace(/<HASHTAG>/gi, '')
                     .replace(/<\/HASHTAG>/gi, '')
                     .trim();
 
-                // OPTIMIZADOR UNICODE PREMIUM:
-                // Convierte el formato Markdown (`**Texto**`) a Letras Negritas Reales visibles en LinkedIn App/Web.
+                // OPTIMIZADOR UNICODE PREMIUM
                 const boldChars = {
                     'A': '𝗔', 'B': '𝗕', 'C': '𝗖', 'D': '𝗗', 'E': '𝗘', 'F': '𝗙', 'G': '𝗚', 'H': '𝗛', 'I': '𝗜', 'J': '𝗝', 'K': '𝗞', 'L': '𝗟', 'M': '𝗠', 'N': '𝗡', 'O': '𝗢', 'P': '𝗣', 'Q': '𝗤', 'R': '𝗥', 'S': '𝗦', 'T': '𝗧', 'U': '𝗨', 'V': '𝗩', 'W': '𝗪', 'X': '𝗫', 'Y': '𝗬', 'Z': '𝗭',
                     'a': '𝗮', 'b': '𝗯', 'c': '𝗰', 'd': '𝗱', 'e': '𝗲', 'f': '𝗳', 'g': '𝗴', 'h': '𝗵', 'i': '𝗶', 'j': '𝗷', 'k': '𝗸', 'l': '𝗹', 'm': '𝗺', 'n': '𝗻', 'o': '𝗼', 'p': '𝗽', 'q': '𝗾', 'r': '𝗿', 's': '𝘀', 't': '𝘁', 'u': '𝘂', 'v': '𝘃', 'w': '𝘄', 'x': '𝘅', 'y': '𝘆', 'z': '𝘇',
@@ -450,14 +466,10 @@ Sigue ESTRICTAMENTE esta estructura y respeta el esquema de etiquetas proporcion
                     return innerText.split('').map(c => boldChars[c] || c).join('');
                 });
 
-                // Vaciamos el texto maravilloso
                 const postBox = document.getElementById('generated-post');
                 postBox.value = generatedText;
-
-                // IMPORTANTÍSIMO: Guardamos el post REAL generado
                 localStorage.setItem('linkedin_v2_text', generatedText);
 
-                // Hacer scroll suave hacia el resultado
                 const mainArea = document.querySelector('main');
                 mainArea.scrollTo({ top: mainArea.scrollHeight, behavior: 'smooth' });
 

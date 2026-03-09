@@ -352,148 +352,60 @@
 
         async function generateImage() {
             const btn = document.getElementById('btn-generate');
-            const btnConfirm = document.getElementById('btn-confirm');
-            const btnPublish = document.getElementById('btn-publish');
             const overlay = document.getElementById('loading-overlay');
             const loadingText = document.getElementById('loading-text');
 
             if (!currentText) return alert("Falta texto base");
 
-            // UI: Bloqueo de botones
             btn.disabled = true;
-            btnConfirm.disabled = true;
-            btnConfirm.innerHTML = `<span class="material-symbols-outlined text-lg">check_circle</span> CONFIRMAR IMAGEN`;
-            btnConfirm.className = "w-full py-3 rounded-xl border border-white/10 text-white/20 font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-all mt-2 cursor-not-allowed";
-
-            btnPublish.disabled = true;
-            btnPublish.classList.add('border-white/10', 'text-white/30', 'cursor-not-allowed');
-            btnPublish.classList.remove('bg-primary', 'text-white', 'shadow-glow');
-            document.getElementById('lock-icon').textContent = "lock";
-
             overlay.classList.remove('hidden');
             overlay.classList.add('flex');
 
             try {
-                // PASO 1: Obtener Prompt Profesional de la IA del Backend (Cerebro IA)
                 loadingText.textContent = "IA: DISEÑANDO ESCENA...";
-                const resPrompt = await fetch(GAS_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: "generate_image_prompt",
-                        textBase: currentText
-                    })
-                });
 
-                // NOTA: Como GAS con no-cors no devuelve el body, usaremos un fallback inteligente
-                // o asumiremos que el backend está optimizado para procesar.
-                // En este flujo, para garantizar que el usuario vea el resultado de la IA,
-                // mantendremos la lógica de construcción local pero enriquecida con el estilo.
-
-                loadingText.textContent = "GENERANDO PIXELES...";
-
-                // --- CEREBRO DE TRADUCCIÓN RADICAL (ANTI-AUTO) ---
-
-                // Función para limpiar texto (quitar negritas unicode y acentos)
-                function cleanForMatch(str) {
-                    if (!str) return "";
-                    // Mapeo básico de negritas matemáticas a normal
-                    return str.replace(/[\u1D400-\u1D7FF]/g, char => {
-                        const cp = char.codePointAt(0);
-                        if (cp >= 0x1D400 && cp <= 0x1D419) return String.fromCodePoint(cp - 0x1D400 + 65); // A-Z Bold
-                        if (cp >= 0x1D41A && cp <= 0x1D433) return String.fromCodePoint(cp - 0x1D41A + 97); // a-z Bold
-                        if (cp >= 0x1D434 && cp <= 0x1D44D) return String.fromCodePoint(cp - 0x1D434 + 65); // A-Z Italic
-                        if (cp >= 0x1D44E && cp <= 0x1D467) return String.fromCodePoint(cp - 0x1D44E + 97); // a-z Italic
-                        return char;
-                    }).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-                }
-
-                const titleClean = cleanForMatch(currentTitle || currentText.split("\n")[0]);
-                const tagsClean = cleanForMatch(currentTags || "");
-
-                // Traductor ligero para que Pollinations entienda mejor el contexto (prefiere inglés)
-                function translateForAI(text) {
-                    let t = text.toLowerCase();
-                    const dict = {
-                        "tienda": "futuristic smart retail store",
-                        "comercio": "high-tech commerce",
-                        "phygital": "physical and digital fusion layers",
-                        "datos": "luminous data streams",
-                        "realidad": "augmented reality holograms",
-                        "vision": "computational vision tech",
-                        "digital": "cybernetic data nodes",
-                        "futuro": "visionary tomorrow",
-                        "negocios": "corporate prestige energy",
-                        "estrategia": "complex tactical structure"
-                    };
-                    for (const [key, val] of Object.entries(dict)) {
-                        t = t.replace(new RegExp(key, 'g'), val);
-                    }
-                    return t;
-                }
-
-                const aiContext = translateForAI(titleClean + " " + tagsClean);
-
-                // ESCENARIOS VISUALES FORZADOS (Para romper el patrón de pasillos)
-                const variations = [
-                    "A complex composition of floating glass prisms and holographic interfaces",
-                    "Intricate macro details of glowing fiber-optic circuitry and liquid metal",
-                    "Elegant multi-layered translucent windows with deep volumetric lighting",
-                    "A central symbolic artifact made of pure light and geometric glass",
-                    "Sophisticated data visualization explosion with bokeh and particles",
-                    "Immersive futuristic environment with glowing nodes and soft reflections"
-                ];
-                const selectedVar = variations[Math.floor(Math.random() * variations.length)];
+                // Limpieza de texto para el prompt
+                const cleanContext = (currentTitle || currentText.split("\n")[0])
+                    .replace(/[^a-zA-Z0-9 ]/g, '')
+                    .substring(0, 100);
 
                 const styleP = PROMPTS[currentStyle];
                 const intentP = INTENTIONS[currentIntention];
-                const colorP = brandColor ? `with primary ${brandColor} light accents` : "";
 
-                // REGLAS ANTI-PASILLO (Instrucciones de alta fidelidad)
-                const masterRules = `AVOID ALL generic corridors, AVOID empty blue halls, AVOID repetitive buildings. 
-                                    Target: High-end professional design, cinematic lighting, 8k resolution. 
-                                    Materials: Frosted glass, iridescent surfaces, soft glow, depth of field.`;
+                const finalPrompt = `Professional Masterpiece Digital Art. ${styleP}. Theme: ${cleanContext}. Vibe: ${intentP}. 8k resolution, cinematic lighting, highly detailed, sharp focus.`;
 
-                // CONSTRUCCIÓN DEL PROMPT FINAL
-                const finalPrompt = `Professional Masterpiece Digital Art. ${selectedVar}. 
-                                    Theme: ${aiContext}. 
-                                    Vibe: ${intentP} and ${styleP}. 
-                                    Lighting: ${colorP}. 
-                                    Details: ${masterRules}. 
-                                    Unreal Engine 5 style, octane render, trending on ArtStation, unique and expressive composition, sharp focus.`;
-
+                loadingText.textContent = "GENERANDO PIXELES...";
                 const seed = Math.floor(Math.random() * 9999999);
-                const w = 1080;
-                const h = currentFormat === 'portrait' ? 1350 : 1080;
-                const ts = Date.now();
-                const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true&enhance=true&t=${ts}`;
+                const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=1080&height=1350&seed=${seed}&nologo=true&enhance=true`;
 
                 const img = new Image();
-                img.src = url;
+                img.crossOrigin = "Anonymous";
                 img.onload = () => {
                     document.getElementById('preview-img').src = url;
                     document.getElementById('pollinations-url').value = url;
-
                     document.getElementById('preview-img').classList.remove('hidden');
                     document.getElementById('placeholder').classList.add('hidden');
                     document.getElementById('btn-download').classList.remove('hidden');
                     overlay.classList.add('hidden');
                     overlay.classList.remove('flex');
-
                     btn.disabled = false;
 
-                    // PASO 2: Activar botón confirmar
+                    const btnConfirm = document.getElementById('btn-confirm');
                     btnConfirm.disabled = false;
                     btnConfirm.className = "w-full py-3 rounded-xl border border-secondary text-secondary font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all mt-2 shadow-neon";
-
-                    document.getElementById('status-msg').textContent = "Revisa y Confirma para publicar";
                 };
+                img.onerror = () => {
+                    overlay.classList.add('hidden');
+                    btn.disabled = false;
+                    alert("Error al cargar la imagen generada.");
+                };
+                img.src = url;
+
             } catch (e) {
-                console.error("Error IA Prompt:", e);
+                console.error("Error IA:", e);
                 overlay.classList.add('hidden');
                 btn.disabled = false;
-                alert("Hubo un problema conectando con el Cerebro IA");
+                alert("Hubo un problema generando la imagen.");
             }
         }
 
