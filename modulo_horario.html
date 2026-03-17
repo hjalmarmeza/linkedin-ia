@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Linkedinmatic - Programador Pro</title>
+
+    <!-- Fuentes premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: { 'sans': ['Outfit', 'sans-serif'] },
+                    colors: {
+                        base: '#030712',
+                        surface: '#111827',
+                        surfaceLight: '#1f2937',
+                        accent: '#38bdf8',
+                        secondary: '#818cf8',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass { @apply bg-surface/40 backdrop-blur-xl border border-white/5 shadow-2xl; }
+            .glass-card { @apply bg-surfaceLight/30 backdrop-blur-md border border-white/10 rounded-3xl shadow-lg transition-all duration-300; }
+            .text-gradient { @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-secondary; }
+            .hide-scrollbar::-webkit-scrollbar { display: none; }
+        }
+        body { @apply bg-base text-gray-100 font-sans; }
+    </style>
+</head>
+
+<body class="w-full min-h-screen flex items-center justify-center relative p-4">
+
+    <!-- CONTENEDOR MÓVIL (En Desktop simula un iPhone) -->
+    <div class="relative z-10 w-full md:w-[400px] h-[800px] md:max-h-[90vh] md:rounded-[40px] md:border-[8px] md:border-gray-900 md:shadow-2xl overflow-hidden bg-base flex flex-col">
+        
+        <!-- Header -->
+        <header class="glass w-full px-6 py-5 flex justify-between items-center z-20">
+            <button onclick="window.history.back()" class="w-10 h-10 rounded-full bg-surfaceLight/50 flex items-center justify-center border border-white/5 hover:bg-white/10 transition-colors">
+                <span class="material-symbols-rounded text-gray-300 text-xl">arrow_back</span>
+            </button>
+            <div class="text-center">
+                <h1 class="text-lg font-bold tracking-wide">TASK<span class="text-gradient">MASTER</span></h1>
+                <p class="text-[10px] text-accent uppercase tracking-[0.2em] font-bold">Programador</p>
+            </div>
+            <div class="w-10 h-10"></div> <!-- Spacer -->
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="flex-1 overflow-y-auto hide-scrollbar px-5 py-6 flex flex-col gap-6">
+            
+            <!-- Nueva Programación -->
+            <section class="flex flex-col gap-3">
+                <label class="text-xs uppercase tracking-[0.15em] text-gray-400 font-bold flex items-center gap-2">
+                    <span class="material-symbols-rounded text-[18px] text-accent">add_circle</span>
+                    Programar Nuevo Post
+                </label>
+                
+                <div class="glass-card p-5 flex flex-col gap-4">
+                    <!-- Selector de Post -->
+                    <div>
+                        <label class="text-[10px] text-gray-500 uppercase font-bold mb-1 block">Post Guardado</label>
+                        <select id="post-select" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-200 outline-none focus:border-accent">
+                            <option value="">Cargando posts...</option>
+                        </select>
+                    </div>
+
+                    <!-- Horario -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[10px] text-gray-500 uppercase font-bold mb-1 block">Fecha</label>
+                            <input type="date" id="schedule-date" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-200 outline-none focus:border-accent">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-gray-500 uppercase font-bold mb-1 block">Hora</label>
+                            <input type="time" id="schedule-time" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-200 outline-none focus:border-accent">
+                        </div>
+                    </div>
+
+                    <button onclick="schedulePost()" class="w-full h-12 rounded-xl bg-gradient-to-r from-accent to-secondary text-white font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] transition-transform">
+                        <span class="material-symbols-rounded">schedule</span>
+                        Agendar Post
+                    </button>
+                </div>
+            </section>
+
+            <!-- Lista de Programados -->
+            <section class="flex flex-col gap-3">
+                <label class="text-xs uppercase tracking-[0.15em] text-gray-400 font-bold flex items-center gap-2">
+                    <span class="material-symbols-rounded text-[18px] text-secondary">event_note</span>
+                    Cola de Publicación
+                </label>
+                
+                <div id="schedule-list" class="flex flex-col gap-3">
+                    <!-- Los items se cargarán aquí -->
+                    <p class="text-center text-xs text-gray-500 py-4">No hay publicaciones programadas.</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Simulación de persistencia en LocalStorage
+        let scheduledPosts = JSON.parse(localStorage.getItem('scheduled_posts') || '[]');
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDrafts();
+            renderSchedule();
+        });
+
+        function loadDrafts() {
+            const select = document.getElementById('post-select');
+            const currentText = localStorage.getItem('linkedin_v2_text') || localStorage.getItem('linkedin_current_text');
+            
+            select.innerHTML = '';
+            if (currentText) {
+                const title = currentText.split('\n')[0].substring(0, 30) + '...';
+                const option = document.createElement('option');
+                option.value = currentText;
+                option.textContent = title;
+                select.appendChild(option);
+            } else {
+                const option = document.createElement('option');
+                option.textContent = "No hay borradores disponibles";
+                select.appendChild(option);
+            }
+        }
+
+        function schedulePost() {
+            const content = document.getElementById('post-select').value;
+            const date = document.getElementById('schedule-date').value;
+            const time = document.getElementById('schedule-time').value;
+
+            if (!content || !date || !time) {
+                alert("Por favor completa todos los campos.");
+                return;
+            }
+
+            const newPost = {
+                id: Date.now(),
+                content: content,
+                date: date,
+                time: time,
+                status: 'pending'
+            };
+
+            scheduledPosts.push(newPost);
+            localStorage.setItem('scheduled_posts', JSON.stringify(scheduledPosts));
+            renderSchedule();
+            
+            // Limpiar
+            document.getElementById('schedule-date').value = '';
+            document.getElementById('schedule-time').value = '';
+        }
+
+        function removeScheduled(id) {
+            scheduledPosts = scheduledPosts.filter(p => p.id !== id);
+            localStorage.setItem('scheduled_posts', JSON.stringify(scheduledPosts));
+            renderSchedule();
+        }
+
+        function renderSchedule() {
+            const list = document.getElementById('schedule-list');
+            list.innerHTML = '';
+
+            if (scheduledPosts.length === 0) {
+                list.innerHTML = '<p class="text-center text-xs text-gray-500 py-4">No hay publicaciones programadas.</p>';
+                return;
+            }
+
+            scheduledPosts.forEach(post => {
+                const title = post.content.split('\n')[0].substring(0, 40) + '...';
+                const item = document.createElement('div');
+                item.className = 'glass-card p-4 flex justify-between items-center border-l-4 border-accent';
+                item.innerHTML = `
+                    <div class="flex-1">
+                        <h4 class="text-sm font-bold text-gray-100 truncate">${title}</h4>
+                        <p class="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
+                            <span class="material-symbols-rounded text-xs">calendar_today</span> ${post.date} 
+                            <span class="material-symbols-rounded text-xs ml-2">schedule</span> ${post.time}
+                        </p>
+                    </div>
+                    <button onclick="removeScheduled(${post.id})" class="text-gray-500 hover:text-red-400 transition-colors">
+                        <span class="material-symbols-rounded">delete</span>
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
