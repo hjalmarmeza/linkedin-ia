@@ -322,12 +322,8 @@
                 document.getElementById('context-text').textContent = currentText;
             }
 
-            document.getElementById('vibe-badge').textContent = `INTENCIÓN: ${currentIntention.toUpperCase()}`;
-
-            const badge = document.getElementById('vibe-badge');
-            if (currentIntention === 'debate') badge.className += " text-red-400 border-red-400/30";
-            else if (currentIntention === 'inspire') badge.className += " text-yellow-400 border-yellow-400/30";
-            else if (currentIntention === 'sales') badge.className += " text-green-400 border-green-400/30";
+            const headerTitle = document.querySelector('header h1');
+            if (headerTitle) headerTitle.textContent = "Estudio Visual";
 
             loadHistory();
         };
@@ -404,7 +400,7 @@
 
                     const btnConfirm = document.getElementById('btn-confirm');
                     btnConfirm.disabled = false;
-                    btnConfirm.className = "w-full py-3 rounded-xl border border-secondary text-secondary font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all mt-2 shadow-neon";
+                    btnConfirm.className = "w-full py-3 rounded-xl border border-secondary text-secondary font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all mt-2";
                 };
                 img.onerror = () => {
                     overlay.classList.add('hidden');
@@ -432,7 +428,6 @@
             btnConfirm.innerHTML = `<span class="material-symbols-outlined text-lg">verified</span> IMAGEN CONFIRMADA`;
             btnConfirm.classList.replace('text-secondary', 'text-green-400');
             btnConfirm.classList.replace('border-secondary', 'border-green-400');
-            btnConfirm.classList.remove('shadow-neon');
             btnConfirm.disabled = true;
 
             // Guardar imagen y estilo para el Módulo C
@@ -458,9 +453,6 @@
 
         // --- AGENDAR DESDE MÓDULO DE IMAGEN ---
         function scheduleFromImage() {
-            // Guardar todos los datos del post (texto + imagen) en localStorage
-            // La imagen ya está guardada como URL en 'linkedin_confirmed_img'
-            // Solo ponemos el flag para que modulo_horario sepa el contexto
             localStorage.setItem('scheduling_complete_post', 'true');
             window.location.href = 'modulo_horario.html';
         }
