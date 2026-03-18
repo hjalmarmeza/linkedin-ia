@@ -1,5 +1,5 @@
 // ============================================================
-//   LINKEDINMATIC — Backend Seguro (Sin claves visibles)
+//   LINKEDINMATIC — Backend Seguro v3.0 (Sin claves visibles)
 // ============================================================
 
 // Recuperar claves de forma segura desde las Propiedades del Script
@@ -12,7 +12,7 @@ const QUEUE_FOLDER_NAME = 'Linkedinmatic_Queue';
 
 /**
  * FUNCIÓN DE CONFIGURACIÓN INICIAL (Ejecútala una vez y bórrala)
- * Esto guarda tus claves en el servidor de Google de forma invisible.
+ * Sustituye los valores, selecciona esta función en el menú y dale a "Ejecutar".
  */
 function setCredentials() {
   props.setProperty('LINKEDIN_CLIENT_ID', 'TU_CLIENT_ID_AQUÍ');
@@ -23,7 +23,7 @@ function setCredentials() {
 // --- PASO 1 y 2: LOGIN Y AUTORIZACIÓN ---
 function doGet(e) {
   if (!CLIENT_ID || !CLIENT_SECRET) {
-    return HtmlService.createHtmlOutput('<h3>Error: Falta configurar el CLIENT_ID o CLIENT_SECRET en las Propiedades del Script.</h3>');
+    return HtmlService.createHtmlOutput('<h3>Error: Las claves no están configuradas. Ejecuta primero la función "setCredentials".</h3>');
   }
 
   if (e.parameter.code) {
@@ -49,7 +49,7 @@ function doGet(e) {
         });
         const profileData = JSON.parse(profileResponse.getContentText());
         props.setProperty('LINKEDIN_URN', 'urn:li:person:' + profileData.sub);
-        return HtmlService.createHtmlOutput('<h3>¡Autorizado Correctamente! Ya puedes regresar a tu aplicación web HTML y publicar directamente o programar.</h3>');
+        return HtmlService.createHtmlOutput('<h3>¡Autorizado Correctamente! Regresa a la app.</h3>');
       }
     } catch (err) {
       return HtmlService.createHtmlOutput('Error obteniendo token: ' + err.toString());
@@ -59,31 +59,30 @@ function doGet(e) {
   const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(scope)}`;
   return HtmlService.createHtmlOutput(`
     <div style="font-family:sans-serif; text-align:center; padding:50px;">
-      <h3>Conexión a tu cuenta de LinkedIn</h3>
-      <a href="${authUrl}" target="_top" style="padding:15px 30px; background-color:#0077b5; color:white; text-decoration:none; border-radius:5px; font-weight:bold;">Conectar LinkedIn</a>
+      <h3>Conexión a LinkedIn v3.0</h3>
+      <a href="${authUrl}" target="_top" style="padding:15px 30px; background-color:#0077b5; color:white; text-decoration:none; border-radius:5px; font-weight:bold;">Conectar ahora</a>
     </div>
   `);
 }
 
-// --- PASO 3: GESTIÓN DE PETICIONES (Híbrido Directo + Programado) ---
+// --- PASO 3: GESTIÓN DE PETICIONES (Híbrido) ---
 function doPost(e) {
   const token = props.getProperty('LINKEDIN_TOKEN');
   const urn = props.getProperty('LINKEDIN_URN');
   
   if (!token || !urn) {
-    return jsonResponse({error: "Script no autorizado a LinkedIn. Entra a la URL de la web app."});
+    return jsonResponse({error: "No autorizado. Abre la URL de la web app en el navegador."});
   }
 
   try {
     const data = JSON.parse(e.postData.contents);
     const action = data.action;
 
-    // A. Lógica de Programador
     if (action === 'schedule') return saveToQueue(data);
     if (action === 'list') return listQueue();
     if (action === 'delete') return deleteFromQueue(data.id);
 
-    // B. Lógica de Publicación Directa
+    // Publicación Directa
     const imgBase64 = data.image_base64 || data.imageBase64;
     let imageBlob = null;
     if (imgBase64) {
@@ -92,14 +91,14 @@ function doPost(e) {
     }
 
     publishToLinkedInWithBlob(token, urn, data.text, imageBlob);
-    return jsonResponse({success: true, details: "Publicado al instante"});
+    return jsonResponse({success: true, details: "Publicado"});
 
   } catch (err) {
     return jsonResponse({error: err.toString()});
   }
 }
 
-// --- LOGICA DE PROGRAMADOR EN DRIVE ---
+// --- GESTIÓN DE COLA EN DRIVE ---
 function saveToQueue(data) {
   const folder = getOrCreateFolder();
   let imageFileId = null;
@@ -139,7 +138,7 @@ function deleteFromQueue(id) {
   return jsonResponse({success: true});
 }
 
-// --- EL "ROBOT" AUTOMÁTICO ---
+// --- ROBOT AUTOMÁTICO ---
 function automaticSchedulerTask() {
   const token = props.getProperty('LINKEDIN_TOKEN');
   const urn = props.getProperty('LINKEDIN_URN');
@@ -171,7 +170,7 @@ function automaticSchedulerTask() {
   }
 }
 
-// --- FUNCIÓN DE SUBIDA A LINKEDIN ---
+// --- HELPER LINKEDIN ---
 function publishToLinkedInWithBlob(token, urn, text, imageBlob) {
   let assetURN = null;
   if (imageBlob) {
@@ -185,7 +184,6 @@ function publishToLinkedInWithBlob(token, urn, text, imageBlob) {
   UrlFetchApp.fetch('https://api.linkedin.com/v2/ugcPosts', {method: 'post', headers: {'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', 'X-Restli-Protocol-Version': '2.0.0'}, payload: JSON.stringify(postPayload)});
 }
 
-// UTILES
 function getOrCreateFolder() {
   const folders = DriveApp.getFoldersByName(QUEUE_FOLDER_NAME);
   return folders.hasNext() ? folders.next() : DriveApp.createFolder(QUEUE_FOLDER_NAME);
@@ -193,10 +191,6 @@ function getOrCreateFolder() {
 
 function jsonResponse(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
-}
-
-function doOptions(e) {
-  return ContentService.createTextOutput("").setMimeType(ContentService.MimeType.TEXT).setHeader("Access-Control-Allow-Origin", "*").setHeader("Access-Control-Allow-Methods", "POST, OPTIONS").setHeader("Access-Control-Allow-Headers", "Content-Type");
 }
 
 function setupTrigger() {
