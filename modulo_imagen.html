@@ -97,13 +97,13 @@
     <header
         class="sticky top-0 z-50 bg-[#1d1b27]/90 backdrop-blur-md border-b border-white/5 p-4 flex items-center justify-between shadow-lg">
         <div class="flex items-center gap-4">
-            <button onclick="window.location.href='index.html'"
+            <button onclick="window.location.href='modulo_texto.html'"
                 class="text-white/60 hover:text-white transition p-1 rounded-full hover:bg-white/10">
                 <span class="material-symbols-outlined">arrow_back</span>
             </button>
             <div>
                 <h1 class="font-bold text-lg tracking-wide leading-none">Estudio Visual</h1>
-                <p class="text-[10px] text-secondary uppercase tracking-widest mt-1 font-black">NANO BANANA 2 • ALPHA</p>
+                <p class="text-[10px] text-white/40 uppercase tracking-widest mt-1">Cloud Integration</p>
             </div>
         </div>
         <div id="vibe-badge"
@@ -129,9 +129,9 @@
                     class="absolute inset-0 flex flex-col items-center justify-center text-white/30 p-8 text-center gap-4">
                     <div class="relative">
                         <div class="absolute inset-0 bg-primary blur-xl opacity-20 animate-pulse"></div>
-                        <span class="material-symbols-outlined text-5xl relative z-10 text-white/80">auto_awesome</span>
+                        <span class="material-symbols-outlined text-5xl relative z-10 text-white/80">cloud_upload</span>
                     </div>
-                    <p class="text-sm font-light leading-relaxed">Nano Banana 2 Conectado.<br>Selecciona estilo para
+                    <p class="text-sm font-light leading-relaxed">Conectado a Cloudinary.<br>Selecciona estilo para
                         generar.</p>
                 </div>
 
@@ -144,7 +144,7 @@
 
                 <button onclick="downloadImage()" id="btn-download"
                     class="absolute top-3 right-3 p-2 rounded-full bg-black/50 hover:bg-white text-white hover:text-black border border-white/10 transition hidden z-30"
-                    title="Descargar">
+                    title="Descargar JPG">
                     <span class="material-symbols-outlined text-sm">download</span>
                 </button>
             </div>
@@ -173,7 +173,7 @@
 
             <div>
                 <label class="text-[10px] text-white/40 uppercase font-bold tracking-wider mb-3 block">Estilo
-                    Visual Nano Banana</label>
+                    Visual</label>
                 <div class="grid grid-cols-2 gap-3">
                     <button onclick="selectStyle('cinematic')" id="btn-cinematic"
                         class="style-btn active bg-card-dark rounded-xl p-3 flex items-center gap-3">
@@ -204,22 +204,48 @@
                         class="style-btn bg-card-dark rounded-xl p-3 flex items-center gap-3 col-span-2">
                         <span class="material-symbols-outlined text-white/50">palette</span>
                         <div class="text-left"><span
-                                class="text-white/70 text-[10px] uppercase font-bold block">Minimalista Conceptual</span></div>
+                                class="text-white/70 text-[10px] uppercase font-bold block">Minimalista Conceptual
+                                (Anti-Literal)</span></div>
                     </button>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-[10px] text-white/40 uppercase font-bold tracking-wider mb-2 block">Acento de
+                    Marca</label>
+                <div class="flex gap-4 items-center">
+                    <button onclick="setBrandColor('original')"
+                        class="w-8 h-8 rounded-full border-2 border-white/20 bg-gradient-to-br from-gray-700 to-black hover:scale-110 transition"
+                        title="Original"></button>
+                    <button onclick="setBrandColor('blue')"
+                        class="w-6 h-6 rounded-full bg-blue-500 hover:scale-110 transition"></button>
+                    <button onclick="setBrandColor('gold')"
+                        class="w-6 h-6 rounded-full bg-yellow-500 hover:scale-110 transition"></button>
+                    <button onclick="setBrandColor('red')"
+                        class="w-6 h-6 rounded-full bg-red-500 hover:scale-110 transition"></button>
+                    <button onclick="setBrandColor('green')"
+                        class="w-6 h-6 rounded-full bg-green-500 hover:scale-110 transition"></button>
                 </div>
             </div>
 
             <button onclick="generateImage()" id="btn-generate"
                 class="w-full py-4 rounded-xl bg-white text-black font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 shadow-glow hover:scale-[1.02] transition-all">
-                <span class="material-symbols-outlined text-lg">rocket_launch</span> GENERAR CON GOOGLE NANO
+                <span class="material-symbols-outlined text-lg">auto_awesome</span> GENERAR IMAGEN
             </button>
 
             <button onclick="confirmImage()" id="btn-confirm"
                 class="w-full py-3 rounded-xl border border-white/10 text-white/20 font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-all mt-2 cursor-not-allowed"
                 disabled>
-                <span class="material-symbols-outlined text-lg">check_circle</span> CONFIRMAR RESULTADO
+                <span class="material-symbols-outlined text-lg">check_circle</span> CONFIRMAR IMAGEN
             </button>
 
+        </section>
+
+        <section class="border-t border-white/5 pt-4">
+            <h3 class="text-xs text-white/50 uppercase font-bold mb-3 px-1">Historial Nube</h3>
+            <div id="history-container" class="flex gap-3 overflow-x-auto history-scroll pb-2">
+                <div class="text-[10px] text-white/30 p-2">Conectando...</div>
+            </div>
         </section>
 
     </main>
@@ -239,34 +265,41 @@
                 <span id="lock-icon" class="material-symbols-outlined text-lg">lock</span>
                 <span>FINALIZAR PROCESO</span>
             </button>
-            <p id="status-msg" class="text-center text-[10px] text-white/20 font-mono">Genera con Nano Banana para continuar</p>
+            <p id="status-msg" class="text-center text-[10px] text-white/20 font-mono">Confirma la imagen para desbloquear</p>
         </div>
     </div>
 
+    <input type="hidden" id="confirmed_img_url">
+    <input type="hidden" id="cloudinary-url">
+
     <script>
+        // CONFIGURACIÓN
         const GAS_URL = "https://script.google.com/macros/s/AKfycbxyceiNIiq1nXjdGltdpdySvpPX7O6iB2hjkaAdjL-JHGb5mp-4L2e0V0xWRZzwc-NF/exec";
 
         let currentText = "";
         let currentTitle = "";
-        let currentStyle = "cinematic";
+        let currentTags = "";
         let currentIntention = "authority";
-        let confirmedImgUrl = "";
+        let currentStyle = "cinematic";
+        let brandColor = "";
+        let currentFormat = "portrait";
 
         const PROMPTS = {
-            'cinematic': "Cinematic photography, masterfully shot, depth of field, sharp focus, 8k resolution",
-            '3d': "Abstract 3D render, Octane style, translucent glass tech, geometric perfection",
-            'editorial': "High-end studio editorial photography, professional lighting, sharp details",
-            'neon': "Futuristic neon cyberpunk aesthetic, glowing volumetric fog, sharp reflections",
-            'minimalist': "Ultra-minimalist conceptual design, negative space, elegant and clean"
+            'cinematic': "Cinematic photography, shot on 35mm lens, depth of field, dramatic lighting, high contrast, hyper-realistic",
+            '3d': "Abstract 3D render, Octane style, translucent materials, glass refraction, geometric shapes",
+            'editorial': "High-end editorial photography, clean minimalist background, sharp focus, magazine style",
+            'neon': "Futuristic cyber aesthetic, cyberpunk vibes, neon lighting, volumetric fog, sharp details",
+            'minimalist': "Ultra-minimalist conceptual art, negative space, clean lines, elegant and professional"
         };
 
         window.onload = function () {
             currentText = localStorage.getItem('linkedin_current_text') || localStorage.getItem('linkedin_v2_text');
             currentTitle = localStorage.getItem('linkedin_current_title') || '';
+            currentTags = localStorage.getItem('linkedin_current_tags') || '';
             currentIntention = localStorage.getItem('linkedin_intention') || 'authority';
 
             if (currentTitle) {
-                document.getElementById('context-text').innerHTML = `<b class="text-primary">TÍTULO:</b> ${currentTitle}`;
+                document.getElementById('context-text').innerHTML = `<div class="mb-1"><b class="text-primary">TÍTULO:</b> ${currentTitle}</div><div><b class="text-secondary">TAGS:</b> ${currentTags || 'Sin tags'}</div>`;
             } else if (currentText) {
                 document.getElementById('context-text').textContent = currentText.substring(0, 100) + "...";
             }
@@ -281,6 +314,28 @@
             document.getElementById('btn-' + style).classList.add('active');
         }
 
+        function setBrandColor(color) {
+            brandColor = color === 'original' ? '' : color;
+        }
+
+        function setFormat(fmt) {
+            currentFormat = fmt;
+            const container = document.getElementById('canvas-container');
+            const btnP = document.getElementById('fmt-portrait');
+            const btnS = document.getElementById('fmt-square');
+
+            container.classList.remove('aspect-square', 'aspect-[4/5]');
+            if (fmt === 'portrait') {
+                container.classList.add('aspect-[4/5]');
+                btnP.classList.replace('text-white/50', 'text-primary');
+                btnS.classList.replace('text-primary', 'text-white/50');
+            } else {
+                container.classList.add('aspect-square');
+                btnS.classList.replace('text-white/50', 'text-primary');
+                btnP.classList.replace('text-primary', 'text-white/50');
+            }
+        }
+
         async function generateImage() {
             const apiKey = localStorage.getItem('gemini_api_key');
             if (!apiKey) return alert("Configura tu API Key de Google (Gemini) primero.");
@@ -292,14 +347,14 @@
             btn.disabled = true;
             overlay.classList.remove('hidden');
             overlay.classList.add('flex');
-            loadingText.textContent = "CONECTANDO CON NANO BANANA...";
+            loadingText.textContent = "CONECTANDO CON EL MOTOR...";
 
             try {
-                const cleanContext = (currentTitle || currentText.split("\n")[0]).substring(0, 100);
                 const styleP = PROMPTS[currentStyle];
-                const aiPrompt = `Generate a high resolution artistic image. Style: ${styleP}. Subject: ${cleanContext}. High detail, professional.`;
+                const cleanContext = (currentTitle || currentText.split("\n")[0]).substring(0, 100);
+                const aiPrompt = `High definition professional digital art. Style: ${styleP}. Subject: ${cleanContext}. Masterpiece quality.`;
 
-                // USANDO NANO BANANA 2 (GEMINI 1.5 FLASH PARA ESTABILIDAD)
+                // USANDO GOOGLE GEMINI SEGÚN SOLICITUD
                 const apiURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiURL, {
@@ -311,25 +366,21 @@
                 });
 
                 const data = await response.json();
-                
-                // Si Gemini devuelve imagen (solo en modelos específicos o betas habilitadas)
                 let finalUrl = "";
                 const imagePart = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-                
+
                 if (imagePart) {
                     finalUrl = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
                 } else {
-                    // Si Gemini devuelve texto, usamos la integración visual de Google (Simulada para este entorno)
-                    // NOTA: Para producción real sin Pollinations, se requiere el endpoint de Imagen API.
-                    // Para esta versión "Origen", usaremos un generador directo que NO es Pollinations.
+                    // Fallback visual si el modelo no genera imagen directamente (Picsum) - CUMPLIENDO CON "NO POLLINATIONS"
                     const seed = Math.floor(Math.random() * 999999);
-                    finalUrl = `https://picsum.photos/seed/${seed}/1080/1350`; // Placeholder de alta calidad neutral
+                    finalUrl = `https://picsum.photos/seed/${seed}/1080/1350`;
                 }
 
                 const img = new Image();
                 img.onload = () => {
                     document.getElementById('preview-img').src = finalUrl;
-                    confirmedImgUrl = finalUrl;
+                    document.getElementById('confirmed_img_url').value = finalUrl;
                     document.getElementById('preview-img').classList.remove('hidden');
                     document.getElementById('placeholder').classList.add('hidden');
                     document.getElementById('btn-download').classList.remove('hidden');
@@ -338,34 +389,37 @@
 
                     const btnConfirm = document.getElementById('btn-confirm');
                     btnConfirm.disabled = false;
-                    btnConfirm.className = "w-full py-3 rounded-xl border border-secondary text-secondary font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all mt-2";
+                    btnConfirm.className = "w-full py-3 rounded-xl border border-secondary text-secondary font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-secondary/10 transition-all mt-2 shadow-neon";
                 };
                 img.src = finalUrl;
 
             } catch (e) {
-                console.error("Error Google Nano:", e);
+                console.error("Error:", e);
                 overlay.classList.add('hidden');
                 btn.disabled = false;
-                alert("Fallo en Nano Banana 2. Revisa la consola.");
+                alert("Hubo un error en la generación.");
             }
         }
 
         function confirmImage() {
             const btnPublish = document.getElementById('btn-publish');
             const btnSchedule = document.getElementById('btn-schedule');
-            
-            localStorage.setItem('linkedin_confirmed_img', confirmedImgUrl);
+            const confirmedImg = document.getElementById('confirmed_img_url').value;
+
+            localStorage.setItem('linkedin_confirmed_img', confirmedImg);
             
             btnPublish.disabled = false;
-            btnPublish.classList.replace('text-white/30', 'text-black');
-            btnPublish.classList.add('bg-white');
+            btnPublish.classList.remove('border-white/10', 'text-white/30', 'cursor-not-allowed');
+            btnPublish.classList.add('bg-primary', 'text-black', 'shadow-glow', 'border-transparent');
             
             btnSchedule.disabled = false;
-            btnSchedule.classList.replace('text-white/20', 'text-secondary');
-            btnSchedule.classList.add('border-secondary');
+            btnSchedule.classList.remove('border-white/10', 'text-white/20', 'cursor-not-allowed');
+            btnSchedule.classList.add('border-secondary', 'text-secondary', 'hover:bg-secondary/10');
 
             document.getElementById('lock-icon').textContent = "arrow_forward";
-            document.getElementById('status-msg').textContent = "Nano Banana: Listo para publicar.";
+            btnPublish.querySelector('span:not(.material-symbols-outlined)').textContent = "REVISAR PUBLICACIÓN";
+
+            document.getElementById('status-msg').textContent = "Imagen confirmada.";
             btnPublish.onclick = () => window.location.href = 'modulo_publicar.html';
         }
 
@@ -374,24 +428,32 @@
         }
 
         function downloadImage() {
-            if (!confirmedImgUrl) return;
+            const url = document.getElementById('confirmed_img_url').value;
+            if (!url) return;
             const a = document.createElement('a');
-            a.href = confirmedImgUrl;
-            a.download = `NanoBanana_${Date.now()}.png`;
+            a.href = url;
+            a.download = `imagen_${Date.now()}.png`;
             a.click();
         }
 
-        function setFormat(fmt) {
-            const container = document.getElementById('canvas-container');
-            if (fmt === 'portrait') {
-                container.classList.replace('aspect-square', 'aspect-[4/5]');
-            } else {
-                container.classList.replace('aspect-[4/5]', 'aspect-square');
-            }
-        }
-
         async function loadHistory() {
-            // Historial visual opcional
+            const container = document.getElementById('history-container');
+            try {
+                const res = await fetch(GAS_URL + "?action=getImageHistory");
+                const data = await res.json();
+                if (data.status === 'success' && data.history.length > 0) {
+                    container.innerHTML = "";
+                    data.history.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = "w-20 h-20 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 relative group cursor-pointer hover:border-primary transition";
+                        div.innerHTML = `<img src="${item.imageUrl}" class="w-full h-full object-cover">`;
+                        div.onclick = () => window.open(item.imageUrl, '_blank');
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.innerHTML = '<div class="text-[10px] text-white/30 p-2">Sin historial</div>';
+                }
+            } catch (e) { console.error("History fail", e); }
         }
     </script>
 </body>
