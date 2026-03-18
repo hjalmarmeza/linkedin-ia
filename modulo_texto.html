@@ -251,62 +251,63 @@
             <SCORE>98</SCORE>
             <FEEDBACK>Análisis breve de coherencia profesional</FEEDBACK>`;
 
-            const modelsToTry = [
-                'gemini-1.5-flash',
-                'gemini-1.5-pro',
-                'gemini-pro'
-            ];
+            const endpoints = ['v1', 'v1beta'];
+            const models = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-pro', 'gemini-1.0-pro'];
 
             let lastError = "";
+            let success = false;
 
-            for (const modelName of modelsToTry) {
-                try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                    });
+            for (const endpoint of endpoints) {
+                if (success) break;
+                for (const modelName of models) {
+                    try {
+                        console.log(`Intentando: ${endpoint}/models/${modelName}`);
+                        const response = await fetch(`https://generativelanguage.googleapis.com/${endpoint}/models/${modelName}:generateContent?key=${apiKey}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                        });
 
-                    if (!response.ok) {
-                        const errorDetails = await response.json();
-                        lastError = errorDetails.error?.message || `Error con ${modelName}`;
-                        console.warn(`Fallo con ${modelName}:`, lastError);
-                        continue; // Intentar el siguiente modelo
-                    }
+                        const data = await response.json();
 
-                    const data = await response.json();
-                    const output = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-                    
-                    const postMatch = output.match(/<POST>([\s\S]*?)<\/POST>/i);
-                    const visualMatch = output.match(/<VISUAL>([\s\S]*?)<\/VISUAL>/i);
-                    const scoreMatch = output.match(/<SCORE>([\s\S]*?)<\/SCORE>/i);
-                    const feedbackMatch = output.match(/<FEEDBACK>([\s\S]*?)<\/FEEDBACK>/i);
+                        if (!response.ok) {
+                            lastError = data.error?.message || `Error ${response.status}`;
+                            continue;
+                        }
 
-                    if (postMatch) {
-                        const postContent = postMatch[1].trim();
-                        document.getElementById('generated-post').value = postContent;
-                        localStorage.setItem('linkedin_v2_text', postContent);
+                        const output = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                        const postMatch = output.match(/<POST>([\s\S]*?)<\/POST>/i);
                         
-                        if (visualMatch) localStorage.setItem('linkedin_v2_visual_prompt', visualMatch[1].trim());
-                        if (scoreMatch) document.getElementById('score-circle').textContent = scoreMatch[1].trim();
-                        if (feedbackMatch) document.getElementById('analysis-text').textContent = feedbackMatch[1].trim();
-                        
-                        updateUIAfterSuccess();
-                        return; // ÉXITO
-                    }
+                        if (postMatch) {
+                            const postContent = postMatch[1].trim();
+                            document.getElementById('generated-post').value = postContent;
+                            localStorage.setItem('linkedin_v2_text', postContent);
+                            
+                            const visualMatch = output.match(/<VISUAL>([\s\S]*?)<\/VISUAL>/i);
+                            const scoreMatch = output.match(/<SCORE>([\s\S]*?)<\/SCORE>/i);
+                            const feedbackMatch = output.match(/<FEEDBACK>([\s\S]*?)<\/FEEDBACK>/i);
 
-                } catch (e) {
-                    lastError = e.message;
-                    console.error(`Excepción con ${modelName}:`, e);
+                            if (visualMatch) localStorage.setItem('linkedin_v2_visual_prompt', visualMatch[1].trim());
+                            if (scoreMatch) document.getElementById('score-circle').textContent = scoreMatch[1].trim();
+                            if (feedbackMatch) document.getElementById('analysis-text').textContent = feedbackMatch[1].trim();
+                            
+                            updateUIAfterSuccess();
+                            success = true;
+                            break;
+                        }
+                    } catch (e) {
+                        lastError = e.message;
+                    }
                 }
             }
 
-            // Si llegamos aquí, todo falló
-            alert(`No se pudo conectar con el cerebro IA.\nÚltimo error: ${lastError}\n\nRecomendación: Verifica tu API Key y asegúrate de tener activada la 'Generative Language API'.`);
-            btn.disabled = false;
-            loader.classList.add('hidden');
-            icon.classList.remove('hidden');
-            text.textContent = "PROCESAR IDEA";
+            if (!success) {
+                alert(`No se detectó cerebro IA compatible.\nError final: ${lastError}\n\nPASOS RECOMENDADOS:\n1. Ve a https://aistudio.google.com/\n2. Genera una nueva API KEY.\n3. Asegúrate de que el proyecto tenga habilitado 'Generative Language API'.`);
+                btn.disabled = false;
+                loader.classList.add('hidden');
+                icon.classList.remove('hidden');
+                text.textContent = "PROCESAR IDEA";
+            }
         }
 
         function updateUIAfterSuccess() {
