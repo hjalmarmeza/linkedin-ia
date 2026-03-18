@@ -128,43 +128,62 @@
         };
 
         async function generateImage() {
+            const googleKey = localStorage.getItem('gemini_api_key');
             const overlay = document.getElementById('loading-overlay');
             const preview = document.getElementById('preview-img');
             const visualPrompt = localStorage.getItem('linkedin_v2_visual_prompt');
             const postText = localStorage.getItem('linkedin_v2_text') || "";
 
+            if (!googleKey) {
+                alert("Configura tu API Key de Google (Gemini).");
+                overlay.classList.add('hidden');
+                return;
+            }
+
             overlay.classList.remove('hidden');
             preview.classList.add('hidden');
 
-            // Limpiar y preparar el prompt para la URL
-            const cleanPrompt = (visualPrompt || postText.substring(0, 100))
-                .replace(/[^\w\s-]/gi, '')
-                .replace(/\s+/g, '%20');
+            try {
+                // Seleccionamos el modelo IMAGEN 4.0 oficial de tu propia cuenta de Google
+                const modelName = "imagen-4.0-generate-001";
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:predict?key=${googleKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        instances: [
+                            { prompt: visualPrompt || postText.substring(0, 150) }
+                        ],
+                        parameters: {
+                            sampleCount: 1,
+                            aspectRatio: "3:4"
+                        }
+                    })
+                });
 
-            // Usamos Pollinations para una generación visual real y coherente en el frontend
-            const width = 1080;
-            const height = 1350;
-            const seed = Math.floor(Math.random() * 1000000);
-            const finalUrl = `https://image.pollinations.ai/prompt/${cleanPrompt}?width=${width}&height=${height}&seed=${seed}&nologo=true&model=flux`;
+                const data = await response.json();
 
-            const img = new Image();
-            img.crossOrigin = "anonymous"; // Importante para poder procesar la imagen luego
-            img.onload = () => {
+                if (data.predictions && data.predictions[0] && data.predictions[0].bytesBase64Encoded) {
+                    const base64Data = data.predictions[0].bytesBase64Encoded;
+                    const finalUrl = `data:image/png;base64,${base64Data}`;
+                    
+                    const img = new Image();
+                    img.onload = () => {
+                        overlay.classList.add('hidden');
+                        preview.classList.remove('hidden');
+                        preview.src = finalUrl;
+                        confirmedImgUrl = finalUrl;
+                        localStorage.setItem('linkedin_confirmed_img', finalUrl);
+                    };
+                    img.src = finalUrl;
+                } else {
+                    throw new Error(data.error?.message || "Error al recibir respuesta de Imagen 4.0");
+                }
+
+            } catch (e) {
+                console.error(e);
+                alert(`Error en Generación de Imagen de Google: ${e.message}`);
                 overlay.classList.add('hidden');
-                preview.classList.remove('hidden');
-                preview.src = finalUrl;
-                confirmedImgUrl = finalUrl;
-                localStorage.setItem('linkedin_confirmed_img', finalUrl);
-            };
-            img.onerror = () => {
-                // Fallback a un color sólido con texto si falla la red
-                overlay.classList.add('hidden');
-                preview.classList.remove('hidden');
-                const fallback = `https://placehold.co/1080x1350/030712/38bdf8?text=Error+Visual+IA`;
-                preview.src = fallback;
-                confirmedImgUrl = fallback;
-            };
-            img.src = finalUrl;
+            }
         }
 
         function downloadImage() {
