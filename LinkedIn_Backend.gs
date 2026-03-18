@@ -17,7 +17,7 @@ const QUEUE_FOLDER_NAME = 'Linkedinmatic_Queue';
 function setCredentials() {
   props.setProperty('LINKEDIN_CLIENT_ID', 'TU_CLIENT_ID_AQUÍ');
   props.setProperty('LINKEDIN_CLIENT_SECRET', 'TU_CLIENT_SECRET_AQUÍ');
-  Logger.log('✅ Claves guardadas en Propiedades del Script. Ahora puedes borrar esta función.');
+  Logger.log('✅ Claves guardadas con éxito. Ya puedes borrar esta función del código.');
 }
 
 // --- PASO 1 y 2: LOGIN Y AUTORIZACIÓN ---
