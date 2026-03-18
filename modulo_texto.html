@@ -273,8 +273,14 @@
             <SCORE>98</SCORE>
             <FEEDBACK>Análisis breve de coherencia profesional</FEEDBACK>`;
 
-            const endpoints = ['v1', 'v1beta'];
-            const models = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-pro', 'gemini-1.0-pro'];
+            const endpoints = ['v1beta', 'v1'];
+            const models = [
+                'gemini-2.5-flash', 
+                'gemini-2.0-flash', 
+                'gemini-flash-latest', 
+                'gemini-1.5-flash', 
+                'gemini-pro'
+            ];
 
             let lastError = "";
             let success = false;
