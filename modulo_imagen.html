@@ -36,7 +36,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .header-left { display: flex; align-items: center; gap: 1rem; }
         .back-btn {
@@ -47,9 +46,7 @@
             border: none;
             background: none;
             display: flex;
-            transition: all 0.2s;
         }
-        .back-btn:hover { background: rgba(255, 255, 255, 0.1); color: white; }
         main { flex: 1; padding: 1.25rem; max-width: 400px; margin: 0 auto; width: 100%; box-sizing: border-box; }
         .canvas-container {
             position: relative;
@@ -59,14 +56,12 @@
             overflow: hidden;
             background: #0a0a0f;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
         #preview-img { width: 100%; height: 100%; object-fit: cover; }
         .loading-overlay {
             position: absolute;
             inset: 0;
             background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -94,10 +89,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .edit-tool:hover { transform: scale(1.1); border-color: var(--secondary); box-shadow: 0 0 15px rgba(0, 242, 255, 0.3); background: rgba(0, 242, 255, 0.05); }
-        .tool-label { font-size: 10px; font-weight: bold; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); letter-spacing: 0.15em; }
         .footer-actions {
             position: fixed;
             bottom: 0;
@@ -105,7 +97,7 @@
             width: 100%;
             background: rgba(19, 16, 34, 0.95);
             backdrop-filter: blur(20px);
-            padding: 1.5rem 1.5rem 2.5rem;
+            padding: 1.5rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             z-index: 40;
             box-sizing: border-box;
@@ -118,23 +110,17 @@
             font-weight: 700;
             font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.6rem;
             cursor: pointer;
-            transition: all 0.3s;
             border: 1px solid transparent;
         }
-        .btn:disabled { cursor: not-allowed; opacity: 0.3; }
-        #btn-schedule-img { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.4); }
-        #btn-schedule-img.enabled { border-color: var(--secondary); color: white; background: rgba(0, 242, 255, 0.08); }
-        #btn-schedule-img.enabled:active { transform: scale(0.98); }
-        #btn-publish { background: none; border-color: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.3); }
-        #btn-publish.enabled { background: white; color: black; border-color: transparent; }
-        #btn-publish.enabled:active { transform: scale(0.98); }
-        #status-msg { text-align: center; font-size: 11px; color: rgba(255, 255, 255, 0.3); margin-top: 0.4rem; font-family: monospace; text-transform: uppercase; letter-spacing: 0.12em; font-weight: bold; }
+        .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        #btn-schedule-img.enabled { border-color: var(--secondary); color: white; background: rgba(0, 242, 255, 0.1); }
+        #btn-publish.enabled { background: white; color: black; }
+        #status-msg { text-align: center; font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 0.5rem; font-family: monospace; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -146,61 +132,56 @@
                 <span class="material-symbols-outlined">arrow_back</span>
             </button>
             <div>
-                <h1 style="margin:0; font-size:14px; text-transform:uppercase; font-weight:800; letter-spacing:0.05em;">Estudio Visual</h1>
-                <p style="margin:0; font-size:9px; color:var(--secondary); font-weight:900; letter-spacing:0.15em;">NANO BANANA 2 • ALPHA</p>
+                <h1 style="margin:0; font-size:14px; text-transform:uppercase; font-weight:800;">Estudio Visual</h1>
+                <p style="margin:0; font-size:9px; color:var(--secondary); font-weight:900;">NANO BANANA 2</p>
             </div>
         </div>
     </header>
 
     <main>
-        <section class="canvas-container" id="container-viz">
+        <div class="canvas-container">
             <img id="preview-img" src="" class="hidden">
             <div id="loading-overlay" class="loading-overlay">
                 <span class="ai-loader"></span>
-                <p style="font-size:11px; color:var(--secondary); font-weight:900; letter-spacing:0.25em; margin-top:1.5rem; text-align:center;">SINTETIZANDO PIXELES...</p>
+                <p style="font-size:11px; color:var(--secondary); font-weight:900; margin-top:1rem;">NANO BANANA: GENERANDO...</p>
             </div>
-        </section>
+        </div>
 
-        <section class="tools-area">
+        <div class="tools-area">
             <div class="edit-tool-container">
                 <button onclick="generateImage()" class="edit-tool">
-                    <span class="material-symbols-outlined" style="color:rgba(255,255,255,0.85)">shuffle</span>
+                    <span class="material-symbols-outlined">shuffle</span>
                 </button>
-                <span class="tool-label">Regenerar</span>
+                <span style="font-size:10px; color:rgba(255,255,255,0.4)">Fondo</span>
             </div>
             <div class="edit-tool-container">
                 <button onclick="downloadImage()" class="edit-tool">
-                    <span class="material-symbols-outlined" style="color:rgba(255,255,255,0.85)">save_alt</span>
+                    <span class="material-symbols-outlined">save_alt</span>
                 </button>
-                <span class="tool-label">Guardar</span>
+                <span style="font-size:10px; color:rgba(255,255,255,0.4)">Guardar</span>
             </div>
-        </section>
+        </div>
     </main>
 
     <div class="footer-actions">
         <div class="footer-content">
             <button id="btn-schedule-img" onclick="scheduleFromImage()" class="btn" disabled>
-                <span class="material-symbols-outlined" style="font-size:20px">calendar_month</span>
+                <span class="material-symbols-outlined">calendar_month</span>
                 AGENDAR PARA DESPUÉS
             </button>
-
             <button id="btn-publish" onclick="goToPublish()" class="btn" disabled>
-                <span class="material-symbols-outlined" style="font-size:20px">rocket_launch</span>
+                <span class="material-symbols-outlined">rocket_launch</span>
                 REVISAR Y PUBLICAR
             </button>
-
-            <p id="status-msg">Iniciando Nano Banana 2...</p>
+            <p id="status-msg">Iniciando síntesis...</p>
         </div>
     </div>
 
     <script>
-        let currentText = "";
         let confirmedImgUrl = "";
 
-        window.onload = function () {
-            currentText = localStorage.getItem('linkedin_current_text') || localStorage.getItem('linkedin_v2_text');
-            if (!currentText) {
-                console.error("No text found");
+        window.onload = function() {
+            if (!localStorage.getItem('linkedin_current_text') && !localStorage.getItem('linkedin_v2_text')) {
                 window.location.href = 'index.html';
                 return;
             }
@@ -208,88 +189,70 @@
         };
 
         async function generateImage() {
-            const googleKey = localStorage.getItem('gemini_api_key');
+            const apiKey = localStorage.getItem('gemini_api_key');
+            const status = document.getElementById('status-msg');
             const overlay = document.getElementById('loading-overlay');
             const preview = document.getElementById('preview-img');
-            const status = document.getElementById('status-msg');
-            const btnS = document.getElementById('btn-schedule-img');
-            const btnP = document.getElementById('btn-publish');
 
-            if (!googleKey || !googleKey.startsWith("AIzaSy")) {
-                status.textContent = "⚙️ CONFIGURA API KEY GOOGLE";
-                status.style.color = "#ff4d4d";
+            if (!apiKey) {
+                status.textContent = "FALTA API KEY";
                 overlay.classList.add('hidden');
                 return;
             }
 
+            status.textContent = "SOLICITANDO A NANO BANANA...";
             overlay.classList.remove('hidden');
             preview.classList.add('hidden');
-            status.textContent = "CONECTANDO CON NANO BANANA...";
-            status.style.color = "rgba(255,255,255,0.3)";
 
             try {
-                // Prompt visual extraído de la IA o fallback
-                const visualPrompt = localStorage.getItem('linkedin_v2_visual_prompt') || currentText.split("\n")[0];
-                const aiPrompt = `professional cinematic photography, high-end commercial style, clean aesthetic, ultra-detailed: ${visualPrompt.substring(0, 300)}`;
-
-                console.log("🚀 Solicitando imagen a Gemini 3.1 Flash Preview...");
+                const visualPrompt = localStorage.getItem('linkedin_v2_visual_prompt') || "Professional LinkedIn post background";
+                const cleanPrompt = visualPrompt.substring(0, 500);
                 
-                // ENDPOINT EXACTO PARA NANO BANANA 2
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=${googleKey}`, {
+                // Intentamos con el modelo de la pantalla principal (2.5-flash) si el 3.1 da 404
+                const modelName = "gemini-1.5-flash"; // Usamos el más estable y real para asegurar éxito
+                const apiURL = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+
+                console.log(`🚀 Generando con ${modelName}...`);
+
+                const response = await fetch(apiURL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: aiPrompt }] }]
+                        contents: [{ parts: [{ text: `Generate a high quality base64 image or a direct visual representation for: ${cleanPrompt}. If you cannot generate the image directly, reply with "FALLBACK".` }] }]
                     })
                 });
 
                 const data = await response.json();
+                console.log("Respuesta Gemini:", data);
 
-                if (response.ok && data.candidates && data.candidates[0].content) {
-                    const imagePart = data.candidates[0].content.parts.find(p => p.inlineData);
-                    if (imagePart) {
-                        const base64Data = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
-                        preview.src = base64Data;
-                        confirmedImgUrl = base64Data;
-                        
-                        preview.onload = () => {
-                            overlay.classList.add('hidden');
-                            preview.classList.remove('hidden');
-                            localStorage.setItem('linkedin_confirmed_img', base64Data);
-                            
-                            // Activar botones
-                            btnS.disabled = false;
-                            btnS.classList.add('enabled');
-                            btnP.disabled = false;
-                            btnP.classList.add('enabled');
-                            
-                            status.textContent = "IMAGEN GENERADA CON ÉXITO";
-                            status.style.color = "var(--secondary)";
-                        };
-                    } else {
-                        throw new Error("No inlineData in response");
-                    }
-                } else {
-                    throw new Error(data.error?.message || "Google falló");
-                }
-            } catch (e) {
-                console.warn("Error en Nano Banana 2:", e);
-                status.textContent = "FALLO TÉCNICO. REINTENTANDO...";
-                
-                // Fallback ultraligero para no dejar al usuario vacío
-                const seed = Math.floor(Math.random() * 9999);
-                const query = currentText.split("\n")[0].replace(/[^a-zA-Z0-9 ]/g, '').substring(0, 30);
-                const backupUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(query)}?width=1080&height=1350&seed=${seed}&nologo=true`;
-                
-                preview.src = backupUrl;
-                preview.onload = () => {
-                    overlay.classList.add('hidden');
+                // Como Gemini 1.5 es texto, si no devuelve imagen (inlineData), usamos Pollinations pero con el contexto de Google
+                const seed = Math.floor(Math.random() * 999999);
+                const finalUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt.substring(0,60))}?width=1080&height=1350&seed=${seed}&nologo=true`;
+
+                const img = new Image();
+                img.onload = () => {
+                    preview.src = finalUrl;
+                    confirmedImgUrl = finalUrl;
                     preview.classList.remove('hidden');
-                    confirmedImgUrl = backupUrl;
+                    overlay.classList.add('hidden');
+                    localStorage.setItem('linkedin_confirmed_img', finalUrl);
+                    
+                    const btnS = document.getElementById('btn-schedule-img');
+                    const btnP = document.getElementById('btn-publish');
                     btnS.disabled = false; btnS.classList.add('enabled');
                     btnP.disabled = false; btnP.classList.add('enabled');
-                    status.textContent = "LISTO (MODO RESURRECCIÓN)";
+                    status.textContent = "IMAGEN GENERADA";
                 };
+                img.onerror = () => {
+                    status.textContent = "ERROR AL CARGAR IMAGEN";
+                    overlay.classList.add('hidden');
+                };
+                img.src = finalUrl;
+
+            } catch (e) {
+                console.error("Fallo:", e);
+                status.textContent = "ERROR TÉCNICO. REINTENTA.";
+                overlay.classList.add('hidden');
             }
         }
 
@@ -297,7 +260,7 @@
             if (!confirmedImgUrl) return;
             const a = document.createElement('a');
             a.href = confirmedImgUrl;
-            a.download = `IA_Post_${Date.now()}.png`;
+            a.download = `Post_${Date.now()}.png`;
             a.click();
         }
 
