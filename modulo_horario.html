@@ -118,7 +118,7 @@
             // Revisar si venimos de generar imagen de Google
             const comingFromImage = localStorage.getItem('scheduling_complete_post') === 'true';
             const rawBase64Image = localStorage.getItem('linkedin_confirmed_img'); // En tu app esta es la imagen Real de Google
-            const postText = localStorage.getItem('linkedin_current_text');
+            const postText = localStorage.getItem('linkedin_current_text') || localStorage.getItem('linkedin_v2_text');
 
             if (comingFromImage && postText) {
                 const opt = document.createElement('option');

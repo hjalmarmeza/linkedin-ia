@@ -258,10 +258,10 @@
         <div class="max-w-md mx-auto flex flex-col gap-3">
             <!-- BOTÓN AGENDAR (ARRIBA COMO SOLICITADO) -->
             <button id="btn-schedule-img" onclick="scheduleFromImage()"
-                class="w-full py-4 rounded-xl border border-white/10 text-white/20 font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 cursor-not-allowed transition-all"
+                class="w-full py-4 rounded-xl border border-white/20 text-white/40 font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 cursor-not-allowed transition-all bg-white/5"
                 disabled>
                 <span class="material-symbols-outlined text-lg">calendar_month</span>
-                AGENDAR PARA DESPUÉS
+                AGENDAR PARA DESPUÉS (CALENDARIO)
             </button>
 
             <!-- BOTÓN PUBLICAR -->
@@ -310,10 +310,10 @@
         };
 
         window.onload = function () {
-            currentText = localStorage.getItem('linkedin_current_text');
-            currentTitle = localStorage.getItem('linkedin_current_title');
-            currentTags = localStorage.getItem('linkedin_current_tags');
-            currentRow = localStorage.getItem('linkedin_current_row');
+            currentText = localStorage.getItem('linkedin_current_text') || localStorage.getItem('linkedin_v2_text');
+            currentTitle = localStorage.getItem('linkedin_current_title') || (currentText ? currentText.split('\n')[0] : "");
+            currentTags = localStorage.getItem('linkedin_current_tags') || "";
+            currentRow = localStorage.getItem('linkedin_current_row') || "0";
             currentIntention = localStorage.getItem('linkedin_intention') || 'authority';
 
             if (currentTitle) {

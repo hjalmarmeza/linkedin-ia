@@ -475,6 +475,7 @@ REGLA DE TONO: ${currentTone.toUpperCase()}.`;
                 const postBox = document.getElementById('generated-post');
                 postBox.value = generatedText;
                 localStorage.setItem('linkedin_v2_text', generatedText);
+                localStorage.setItem('linkedin_current_text', generatedText); // Sincronización para Módulo Imagen v4.0
 
                 const mainArea = document.querySelector('main');
                 mainArea.scrollTo({ top: mainArea.scrollHeight, behavior: 'smooth' });
@@ -508,13 +509,14 @@ REGLA DE TONO: ${currentTone.toUpperCase()}.`;
         function goToImageScreen() {
             const finalPost = document.getElementById('generated-post').value;
             localStorage.setItem('linkedin_v2_text', finalPost);
+            localStorage.setItem('linkedin_current_text', finalPost); // Asegurar persistencia
 
             // Animación de salida brutal
             document.body.style.transition = 'opacity 0.5s ease';
             document.body.style.opacity = '0';
 
             setTimeout(() => {
-                window.location.href = "imagen.html";
+                window.location.href = "modulo_imagen.html";
             }, 500);
         }
 
