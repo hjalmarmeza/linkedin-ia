@@ -1,512 +1,312 @@
 <!DOCTYPE html>
-<html class="dark" lang="es">
-
+<html lang="es" class="dark">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Módulo A: Gestor de Contenido Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LNKDMTC v4.0 - Cloud Sync Engine Pro</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    colors: { "primary": "#7f0df2", "obsidian": "#0B0B0E", "obsidian-card": "#16161A", "silver": "#A0A0A0" },
-                    fontFamily: { "display": ["Manrope", "sans-serif"] },
-                    animation: { 'pulse-slow': 'pulse 3s infinite' }
-                },
-            },
+                    fontFamily: { 'display': ['Outfit', 'sans-serif'] },
+                    colors: {
+                        base: '#030712',
+                        surface: '#0B0B0E',
+                        surfaceLight: '#111827',
+                        accent: '#38bdf8',
+                        secondary: '#818cf8',
+                        cardText: '#6b7280'
+                    }
+                }
+            }
         }
     </script>
-    <style>
-        .glass-button {
-            background: rgba(127, 13, 242, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 15px rgba(127, 13, 242, 0.4);
-        }
 
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid #7f0df2;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass { @apply bg-surface/40 backdrop-blur-xl border border-white/5 shadow-2xl; }
+            .glass-card { @apply bg-surfaceLight/30 backdrop-blur-md border border-white/10 rounded-[32px] shadow-lg transition-all duration-300; }
+            .text-gradient { @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-secondary; }
+            .p-card { @apply flex flex-col gap-2 p-5 rounded-[24px] border border-white/5 bg-surface/80 hover:bg-surfaceLight/50 cursor-pointer transition-all; }
+            .p-card.active { @apply border-accent bg-accent/5 ring-1 ring-accent/30; }
+            .p-card.active .material-symbols-rounded { @apply text-accent; }
         }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
-        }
-
-        /* Botones de Intención */
-        .vibe-btn.active {
-            background: #7f0df2;
-            color: white;
-            border-color: #7f0df2;
-        }
-
-        /* Scrollbar Personalizado para Historial */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #7f0df2;
-            border-radius: 4px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #9d4edd;
-        }
+        body { @apply bg-base text-gray-100 font-display; }
+        textarea::placeholder { @apply text-gray-600; }
     </style>
 </head>
 
-<body class="bg-obsidian text-white font-display min-h-screen pb-40">
+<body class="w-full min-h-screen pb-40 px-5 flex flex-col items-center">
 
-    <nav class="fixed top-0 w-full z-40 bg-obsidian/90 backdrop-blur border-b border-white/5">
-        <div class="max-w-md mx-auto px-5 h-16 flex items-center justify-between">
-            <span class="text-silver material-symbols-outlined">description</span>
-            <div>
-                <h1 class="font-bold tracking-tight leading-none text-sm uppercase">Módulo A: Contenido</h1>
-                <p class="text-[8px] text-primary font-bold tracking-widest mt-1">V4.0 CLOUD PRO</p>
-            </div>
-            <div class="flex items-center gap-3">
-                <a id="sheet-link" href="#" target="_blank" class="text-silver hover:text-green-400 transition"
-                    title="Abrir Google Sheet">
-                    <span class="material-symbols-outlined">table_view</span>
-                </a>
-                <div id="loading-indicator" class="spinner opacity-0"></div>
-            </div>
+    <header class="w-full max-w-md pt-8 pb-4 flex justify-between items-center">
+        <div class="flex flex-col">
+            <h1 class="text-2xl font-black tracking-tight leading-none">
+                LNKD<span class="text-accent">MTC</span> <span class="text-secondary/60 text-base font-medium ml-1">v4.0</span>
+            </h1>
+            <p class="text-[10px] text-accent uppercase tracking-[0.2em] font-extrabold mt-1.5 opacity-80">CLOUD SYNC ENGINE PRO</p>
         </div>
-    </nav>
+        <button class="w-12 h-12 rounded-2xl bg-surfaceLight/50 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-colors group">
+            <span class="material-symbols-rounded text-gray-400 group-hover:rotate-45 transition-transform text-2xl">settings</span>
+        </button>
+    </header>
 
-    <main class="pt-20 px-5 max-w-md mx-auto flex flex-col gap-5">
-
-        <div class="bg-obsidian-card rounded-3xl p-6 border border-white/5 shadow-lg relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[50px] pointer-events-none">
+    <main class="w-full max-w-md flex flex-col gap-8 mt-4">
+        
+        <!-- Concepción Section -->
+        <section class="flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+                <label class="text-[11px] uppercase tracking-[0.2em] text-accent/70 font-black flex items-center gap-2">
+                    <span class="material-symbols-rounded text-xl">lightbulb</span>
+                    CONCEPCIÓN
+                </label>
+                <span id="char-count" class="text-[10px] text-gray-600 font-bold tracking-widest uppercase">0/500</span>
             </div>
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <h2 class="text-xl font-bold">Progreso Global</h2>
-                    <p class="text-silver text-sm">Base de Datos</p>
-                </div>
-                <span class="material-symbols-outlined text-primary text-xl bg-white/5 p-2 rounded-xl">insights</span>
-            </div>
-            <div class="flex items-center gap-6">
-                <div class="relative w-24 h-24 flex items-center justify-center">
-                    <svg class="w-full h-full transform -rotate-90">
-                        <circle cx="48" cy="48" r="40" stroke="#2A2A30" stroke-width="8" fill="transparent"></circle>
-                        <circle id="progress-ring" cx="48" cy="48" r="40" stroke="#7f0df2" stroke-width="8"
-                            fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="251.2"
-                            stroke-linecap="round"></circle>
-                    </svg>
-                    <span id="global-percent" class="absolute text-xl font-bold">0%</span>
-                </div>
-                <div>
-                    <div class="text-sm text-silver">Publicados: <b id="stat-published" class="text-white">--</b></div>
-                    <div class="text-sm text-silver">Total BD: <b id="stat-total" class="text-white">--</b></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-obsidian-card rounded-3xl p-5 border border-white/5 shadow-lg">
-            <label class="text-xs text-silver uppercase font-bold tracking-wider mb-2 block">Categoría</label>
-            <div class="flex gap-2">
-                <div class="relative flex-1">
-                    <select id="category-select" onchange="fetchPost()"
-                        class="w-full bg-obsidian border border-white/10 rounded-xl p-3 pl-4 pr-10 text-white text-sm focus:border-primary outline-none transition-colors">
-                        <option value="">Todas las Categorías</option>
-                        <option value="" disabled>Cargando...</option>
-                    </select>
-                </div>
-                <button onclick="fetchPost()"
-                    class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 flex items-center justify-center transition"
-                    title="Buscar otro (Shuffle)">
-                    <span class="material-symbols-outlined text-silver">shuffle</span>
+            
+            <div class="relative bg-surface Light/30 rounded-[32px] border border-white/10 p-2 shadow-2xl">
+                <textarea id="idea-input" rows="8" 
+                    placeholder="Escribe o 👉 dicta una idea aquí. Ej: La IA en las mascotas..."
+                    class="w-full bg-transparent p-6 text-lg text-gray-200 font-medium outline-none resize-none leading-relaxed placeholder:text-gray-700"></textarea>
+                
+                <button class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition">
+                    <span class="material-symbols-rounded text-2xl">mic</span>
                 </button>
             </div>
-            <div class="flex justify-between items-center mt-3 px-1 border-t border-white/5 pt-2">
-                <div class="flex items-center gap-4 text-[10px]">
-                    <span class="text-green-400 font-bold" id="cat-available">Disponibles: --</span>
-                    <span class="text-silver" id="cat-published">Publicados: --</span>
+        </section>
+
+        <!-- Perspectiva Section -->
+        <section id="perspective-section" class="flex flex-col gap-4 transition-all duration-500">
+            <label class="text-[11px] uppercase tracking-[0.2em] text-accent/70 font-black flex items-center gap-2">
+                <span class="material-symbols-rounded text-xl">dashboard_customize</span>
+                PERSPECTIVA
+            </label>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-card active" onclick="setPerspective('authority', this)">
+                    <span class="material-symbols-rounded text-2xl opacity-80">verified_user</span>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Autoridad</h4>
+                        <p class="text-[9px] text-gray-500 font-medium tracking-tight">Hechos y Datos</p>
+                    </div>
                 </div>
-                <span class="text-[10px] text-primary font-bold" id="row-display">#--</span>
-            </div>
-        </div>
-
-        <div class="bg-obsidian-card rounded-3xl p-5 border border-white/5 shadow-lg">
-            <div class="flex justify-between items-center mb-3">
-                <label class="text-xs text-silver uppercase font-bold tracking-wider block">Intención del Post</label>
-                <span class="text-[10px] text-silver/60">Define la imagen</span>
-            </div>
-            <div class="grid grid-cols-4 gap-2">
-                <button onclick="setIntention('authority')" id="btn-authority"
-                    class="vibe-btn active border border-white/10 rounded-lg py-2 flex flex-col items-center gap-1 hover:bg-white/5 transition">
-                    <span class="material-symbols-outlined text-sm">verified</span>
-                    <span class="text-[9px] font-bold">Autoridad</span>
-                </button>
-                <button onclick="setIntention('debate')" id="btn-debate"
-                    class="vibe-btn border border-white/10 rounded-lg py-2 flex flex-col items-center gap-1 hover:bg-white/5 transition">
-                    <span class="material-symbols-outlined text-sm">campaign</span>
-                    <span class="text-[9px] font-bold">Debate</span>
-                </button>
-                <button onclick="setIntention('inspire')" id="btn-inspire"
-                    class="vibe-btn border border-white/10 rounded-lg py-2 flex flex-col items-center gap-1 hover:bg-white/5 transition">
-                    <span class="material-symbols-outlined text-sm">auto_awesome</span>
-                    <span class="text-[9px] font-bold">Inspirar</span>
-                </button>
-                <button onclick="setIntention('sales')" id="btn-sales"
-                    class="vibe-btn border border-white/10 rounded-lg py-2 flex flex-col items-center gap-1 hover:bg-white/5 transition">
-                    <span class="material-symbols-outlined text-sm">rocket_launch</span>
-                    <span class="text-[9px] font-bold">Venta</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="bg-obsidian-card rounded-3xl overflow-hidden border border-white/5 shadow-lg flex flex-col">
-            <div class="bg-gradient-to-r from-purple-900/50 to-indigo-900/50 p-4 border-b border-white/5">
-                <div class="flex justify-between items-center mb-3">
-                    <span
-                        class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/40 border border-white/10 text-[10px] font-medium text-yellow-400">
-                        <span class="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></span> Pendiente
-                    </span>
-                    <div class="flex gap-2">
-                        <button onclick="convertToBold()"
-                            class="w-7 h-7 rounded bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs font-serif font-bold transition"
-                            title="Convertir a Negrita Matemática">𝐁</button>
-                        <button onclick="skipPost()"
-                            class="text-xs text-white/50 hover:text-red-400 flex items-center gap-1 transition">
-                            <span class="material-symbols-outlined text-sm">delete</span>
-                        </button>
+                
+                <div class="p-card" onclick="setPerspective('polemic', this)">
+                    <span class="material-symbols-rounded text-2xl opacity-60">local_fire_department</span>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Polémico</h4>
+                        <p class="text-[9px] text-gray-500 font-medium tracking-tight">Rompe el molde</p>
                     </div>
                 </div>
 
-                <div class="relative group">
-                    <textarea id="post-title" rows="2"
-                        class="w-full bg-transparent border-none text-white font-bold text-lg placeholder-white/30 focus:ring-0 px-0 pr-8 resize-none leading-tight"
-                        placeholder="Cargando Título..."></textarea>
-
-                    <span
-                        class="material-symbols-outlined absolute right-0 top-3 text-white/30 text-sm pointer-events-none">edit</span>
-                </div>
-            </div>
-
-            <div class="p-4 pb-2 flex flex-col flex-1 relative z-10 bg-obsidian">
-                <div class="flex justify-end mb-2">
-                    <button onclick="cleanText()"
-                        class="text-silver hover:text-white flex items-center gap-1 text-[10px] bg-white/5 px-2 py-1 rounded transition"
-                        title="Limpiar formato">
-                        <span class="material-symbols-outlined text-xs">cleaning_services</span> Limpiar
-                    </button>
-                </div>
-                <textarea id="post-body"
-                    class="w-full bg-transparent border-none text-gray-300 text-sm focus:ring-0 outline-none resize-none h-48 leading-relaxed"
-                    placeholder="Cuerpo del post..."></textarea>
-            </div>
-
-            <div class="px-4 pb-4 bg-obsidian">
-                <div class="flex items-start gap-2 pt-3 border-t border-white/5">
-                    <span class="material-symbols-outlined text-primary text-sm mt-0.5">tag</span>
-                    <p id="post-tags" class="text-xs text-primary font-mono opacity-80 break-words">#Cargando...</p>
-                </div>
-            </div>
-
-            <div class="h-1 w-full bg-black">
-                <div id="char-progress" class="h-full bg-green-500 w-0 transition-all duration-300"></div>
-            </div>
-            <div class="flex justify-between px-4 py-2 bg-black/50 text-[10px] text-silver">
-                <div class="flex gap-3">
-                    <span id="char-count">0 chars</span>
-                    <span id="read-time" class="text-white/70">Lectura: 0s</span>
-                </div>
-                <span>Max: 3000</span>
-            </div>
-        </div>
-
-        <div class="flex flex-col gap-4">
-            <div class="flex items-center justify-between px-2">
-                <h3 class="text-lg font-bold text-white">Historial Reciente (10)</h3>
-            </div>
-
-            <div id="history-list" class="flex flex-col gap-2 max-h-60 overflow-y-auto custom-scrollbar pr-2">
-
-                <div
-                    class="bg-obsidian-card rounded-2xl p-4 flex items-center gap-4 border border-white/5 animate-pulse">
-                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center"></div>
-                    <div class="flex-1 space-y-2">
-                        <div class="h-3 bg-white/5 rounded w-3/4"></div>
-                        <div class="h-2 bg-white/5 rounded w-1/2"></div>
+                <div class="p-card" onclick="setPerspective('inspire', this)">
+                    <span class="material-symbols-rounded text-2xl opacity-60">star</span>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Inspiración</h4>
+                        <p class="text-[9px] text-gray-500 font-medium tracking-tight">Emocionante</p>
                     </div>
                 </div>
 
+                <div class="p-card" onclick="setPerspective('educate', this)">
+                    <span class="material-symbols-rounded text-2xl opacity-60">menu_book</span>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Educativo</h4>
+                        <p class="text-[9px] text-gray-500 font-medium tracking-tight">Guía de Valor</p>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Resultado Section (Hidden by default) -->
+        <section id="result-section" class="hidden flex-col gap-6 mt-4 pb-10 scale-95 opacity-0 transition-all duration-700">
+            <div class="flex justify-between items-center">
+                <label class="text-[11px] uppercase tracking-[0.2em] text-secondary font-black flex items-center gap-2">
+                    <span class="material-symbols-rounded text-xl">edit_note</span>
+                    BORRADOR IA
+                </label>
+                <button onclick="copyPost()" class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition">
+                    COPIAR
+                </button>
+            </div>
+            
+            <div class="glass-card p-6 bg-surface/60 min-h-[300px]">
+                <textarea id="generated-post" 
+                    class="w-full bg-transparent text-lg text-gray-100 font-medium outline-none resize-none leading-relaxed overflow-hidden" 
+                    rows="12" readonly></textarea>
+            </div>
+
+            <!-- Analysis Section -->
+            <div id="analysis-card" class="hidden p-6 rounded-[24px] border border-secondary/20 bg-secondary/5 flex items-center gap-5">
+                <div id="score-circle" class="w-14 h-14 rounded-full border-2 border-secondary flex items-center justify-center text-lg font-black text-secondary shrink-0">
+                    --
+                </div>
+                <div>
+                    <h5 class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-1">Coherencia Global</h5>
+                    <p id="analysis-text" class="text-xs text-gray-400 leading-snug"></p>
+                </div>
+            </div>
+        </section>
 
     </main>
 
-    <div class="fixed bottom-8 left-0 w-full z-50 px-5 pointer-events-none">
-        <div class="max-w-md mx-auto pointer-events-auto">
-            <button onclick="confirmAndProceed()"
-                class="w-full glass-button h-14 rounded-2xl flex items-center justify-between px-6 active:scale-95 transition-transform group">
-                <div class="flex flex-col items-start">
-                    <span class="font-bold text-lg leading-none">Confirmar</span>
-                    <span class="text-[10px] font-normal opacity-80">Guardar y generar imagen</span>
-                </div>
-                <span class="material-symbols-outlined group-hover:translate-x-1 transition">arrow_forward</span>
+    <footer id="main-footer" class="fixed bottom-10 left-0 w-full px-5 z-40">
+        <div class="max-w-md mx-auto flex flex-col gap-4">
+            <button id="btn-process" onclick="processIdea()" class="w-full py-5 rounded-[24px] bg-gradient-to-r from-accent to-secondary text-white font-black text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-[0_10px_40px_-10px_rgba(56,189,248,0.5)] active:scale-95 transition-all group">
+                <div id="loader" class="hidden animate-spin w-5 h-5 border-2 border-white/20 border-t-white rounded-full"></div>
+                <span id="btn-icon" class="material-symbols-rounded text-2xl group-hover:scale-110 transition-transform">neurology</span>
+                <span id="btn-text">PROCESAR IDEA</span>
             </button>
+
+            <button id="btn-next" onclick="window.location.href='modulo_imagen.html'" class="hidden w-full py-5 rounded-[24px] bg-white text-base font-black text-xs tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-xl active:scale-95 transition-all">
+                DISEÑAR VISUAL
+                <span class="material-symbols-rounded text-2xl">arrow_forward</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="hidden fixed inset-0 z-[100] bg-base/95 backdrop-blur-xl flex items-center justify-center p-6">
+        <div class="w-full max-w-sm glass-card p-8 flex flex-col gap-6">
+            <h3 class="text-xl font-black text-white flex items-center gap-3">
+                <span class="material-symbols-rounded text-accent">key</span>
+                SINCRO IA
+            </h3>
+            <p class="text-xs text-gray-500 leading-relaxed uppercase tracking-wider font-bold">Configura tu API Key de Google Gemini para activar el cerebro de la aplicación.</p>
+            
+            <input type="password" id="api-key-input" placeholder="AIzaSy..." 
+                class="w-full bg-surfaceLight/50 border border-white/10 rounded-2xl px-6 py-4 text-white font-medium focus:border-accent outline-none">
+            
+            <div class="flex gap-4">
+                <button onclick="closeSettings()" class="flex-1 py-4 rounded-2xl text-xs font-black uppercase text-gray-500 bg-white/5">Cerrar</button>
+                <button onclick="saveSettings()" class="flex-1 py-4 rounded-2xl bg-accent text-white font-black text-xs uppercase">Activar</button>
+            </div>
         </div>
     </div>
 
-    <input type="hidden" id="row-id">
-    <input type="hidden" id="hidden-tags-value">
-
     <script>
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbxgYPVfo1XM0Q309jIkYeDD6lSIbOnr1DNLh_9CccQdzl_xiAnKw_77-uQFRq5ghFnBBA/exec";
-        let currentIntention = 'authority';
+        let currentPerspective = 'authority';
 
-        async function loadInitialData() {
-            // Cargar URL del Sheet
-            fetch(GAS_URL + "?action=getSheetUrl")
-                .then(res => res.json())
-                .then(data => { if (data.url) document.getElementById('sheet-link').href = data.url; });
-
-            // Cargar Categorías
-            fetch(GAS_URL + "?action=getCategories")
-                .then(res => res.json())
-                .then(data => {
-                    const select = document.getElementById('category-select');
-                    select.innerHTML = '<option value="">Todas las Categorías</option>';
-                    if (data.categories) {
-                        data.categories.forEach(cat => {
-                            const option = document.createElement('option');
-                            option.value = cat;
-                            option.textContent = cat;
-                            select.appendChild(option);
-                        });
-                    }
-                });
-
-            // Cargar Stats y Historial
-            fetch(GAS_URL + "?action=getGlobalStats")
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        document.getElementById('stat-published').textContent = data.published;
-                        document.getElementById('stat-total').textContent = data.total;
-                        document.getElementById('global-percent').textContent = data.percentage + "%";
-                        const offset = 251.2 - (251.2 * data.percentage / 100);
-                        document.getElementById('progress-ring').style.strokeDashoffset = offset;
-
-                        // LÓGICA DE HISTORIAL (LISTA DE 10)
-                        const historyContainer = document.getElementById('history-list');
-                        if (data.lastPosts && data.lastPosts.length > 0) {
-                            historyContainer.innerHTML = ''; // Limpiar loader
-                            data.lastPosts.forEach(post => {
-                                const itemHtml = `
-                                    <div class="bg-obsidian-card rounded-2xl p-3 flex items-center gap-3 border border-white/5 hover:bg-white/5 transition shrink-0">
-                                        <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 shrink-0">
-                                            <span class="material-symbols-outlined text-sm">check_circle</span>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <h4 class="text-white font-medium truncate text-xs">${post.title}</h4>
-                                            <p class="text-[10px] text-silver mt-0.5">${post.date}</p>
-                                        </div>
-                                    </div>
-                                `;
-                                historyContainer.insertAdjacentHTML('beforeend', itemHtml);
-                            });
-                        } else {
-                            historyContainer.innerHTML = '<div class="p-4 text-center text-silver text-xs bg-obsidian-card rounded-2xl border border-white/5">No hay publicaciones recientes.</div>';
-                        }
-                    }
-                });
-
-            fetchPost();
+        window.onload = () => {
+            const savedKey = localStorage.getItem('gemini_api_key');
+            if (savedKey) document.getElementById('api-key-input').value = savedKey;
         }
 
-        async function fetchPost() {
-            document.getElementById('loading-indicator').classList.remove('opacity-0');
-            const category = document.getElementById('category-select').value;
-            let url = GAS_URL;
-            if (category) url += `?category=${encodeURIComponent(category)}`;
+        const settingsModal = document.getElementById('settings-modal');
+        function closeSettings() { settingsModal.classList.add('hidden'); }
+        document.querySelector('header button').onclick = () => settingsModal.classList.remove('hidden');
+
+        function saveSettings() {
+            const key = document.getElementById('api-key-input').value.trim();
+            if (key) localStorage.setItem('gemini_api_key', key);
+            closeSettings();
+        }
+
+        function setPerspective(type, el) {
+            currentPerspective = type;
+            document.querySelectorAll('.p-card').forEach(card => card.classList.remove('active'));
+            el.classList.add('active');
+            document.querySelectorAll('.p-card .material-symbols-rounded').forEach(icon => icon.style.opacity = '0.6');
+            el.querySelector('.material-symbols-rounded').style.opacity = '1';
+        }
+
+        const ideaInput = document.getElementById('idea-input');
+        const charCount = document.getElementById('char-count');
+        ideaInput.addEventListener('input', () => {
+            const len = ideaInput.value.length;
+            charCount.textContent = `${len}/500`;
+            if (len > 450) charCount.classList.add('text-red-500');
+            else charCount.classList.remove('text-red-500');
+        });
+
+        async function processIdea() {
+            const idea = ideaInput.value.trim();
+            const apiKey = localStorage.getItem('gemini_api_key');
+
+            if (!idea) return alert("Escribe tu idea antes de procesar.");
+            if (!apiKey) return settingsModal.classList.remove('hidden');
+
+            const btn = document.getElementById('btn-process');
+            const loader = document.getElementById('loader');
+            const icon = document.getElementById('btn-icon');
+            const text = document.getElementById('btn-text');
+
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+            icon.classList.add('hidden');
+            text.textContent = "CONECTANDO CEREBRO...";
 
             try {
-                const res = await fetch(url);
-                const data = await res.json();
+                const prompt = `Actúa como un experto en LinkedIn. Escribe un post brillante sobre: "${idea}". 
+                TONO: ${currentPerspective.toUpperCase()}. 
+                Formato: 
+                <POST>Contenido del post (con títulos en negrita unicode y hashtags)</POST>
+                <VISUAL>Descripción de imagen (inglés)</VISUAL>
+                <SCORE>95</SCORE>
+                <FEEDBACK>Análisis de por qué el post es bueno</FEEDBACK>`;
 
-                if (data.status === 'success') {
-                    // Cargar Datos en Inputs
-                    document.getElementById('post-title').value = data.post.title || "";
-                    document.getElementById('post-body').value = data.post.content || "";
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
 
-                    // Manejar Tags
-                    const tags = data.post.tags || "";
-                    document.getElementById('post-tags').textContent = tags;
-                    document.getElementById('hidden-tags-value').value = tags;
+                const data = await response.json();
+                const output = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-                    document.getElementById('row-id').value = data.post.rowNumber;
-                    document.getElementById('row-display').innerText = "#" + data.post.rowNumber;
+                const postMatch = output.match(/<POST>([\s\S]*?)<\/POST>/i);
+                const visualMatch = output.match(/<VISUAL>([\s\S]*?)<\/VISUAL>/i);
+                const scoreMatch = output.match(/<SCORE>([\s\S]*?)<\/SCORE>/i);
+                const feedbackMatch = output.match(/<FEEDBACK>([\s\S]*?)<\/FEEDBACK>/i);
 
-                    // Stats de categoría
-                    if (data.post.stats) {
-                        document.getElementById('cat-available').textContent = `Disponibles: ${data.post.stats.pending}`;
-                        document.getElementById('cat-published').textContent = `Publicados: ${data.post.stats.published}`;
-                    }
-
-                    updateMetrics();
-
-                } else {
-                    document.getElementById('post-title').value = "Sin contenido";
-                    document.getElementById('post-body').value = "No hay posts pendientes en esta categoría.";
-                    document.getElementById('post-tags').textContent = "";
-                    document.getElementById('cat-available').textContent = "Disponibles: 0";
+                if (postMatch) {
+                    const postContent = postMatch[1].trim();
+                    document.getElementById('generated-post').value = postContent;
+                    localStorage.setItem('linkedin_v2_text', postContent);
                 }
-            } catch (e) { console.error(e); }
-            document.getElementById('loading-indicator').classList.add('opacity-0');
+
+                if (visualMatch) localStorage.setItem('linkedin_v2_visual_prompt', visualMatch[1].trim());
+                if (scoreMatch) document.getElementById('score-circle').textContent = scoreMatch[1].trim();
+                if (feedbackMatch) document.getElementById('analysis-text').textContent = feedbackMatch[1].trim();
+
+                // UI Transition
+                document.getElementById('perspective-section').classList.add('opacity-40', 'pointer-events-none', 'grayscale-[0.5]');
+                
+                const resultSec = document.getElementById('result-section');
+                resultSec.classList.remove('hidden');
+                setTimeout(() => {
+                    resultSec.classList.remove('scale-95', 'opacity-0');
+                    resultSec.classList.add('scale-100', 'opacity-100');
+                }, 100);
+
+                document.getElementById('analysis-card').classList.remove('hidden');
+                document.getElementById('analysis-card').classList.add('flex');
+                
+                btn.classList.add('hidden');
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-next').classList.add('flex');
+
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+            } catch (e) {
+                console.error(e);
+                alert("Error de conexión. Verifica tu API Key.");
+                btn.disabled = false;
+                loader.classList.add('hidden');
+                icon.classList.remove('hidden');
+                text.textContent = "PROCESAR IDEA";
+            }
         }
 
-        // --- FUNCIONES PRO ---
-
-        // 1. Selector de Intención
-        function setIntention(vibe) {
-            currentIntention = vibe;
-            document.querySelectorAll('.vibe-btn').forEach(btn => btn.classList.remove('active', 'bg-primary', 'text-white', 'border-primary'));
-            const activeBtn = document.getElementById('btn-' + vibe);
-            activeBtn.classList.add('active');
+        function copyPost() {
+            const post = document.getElementById('generated-post');
+            post.select();
+            document.execCommand('copy');
+            alert("¡Copiado al portapapeles!");
         }
-
-        // 2. Limpieza (Escoba)
-        function cleanText() {
-            let body = document.getElementById('post-body').value;
-            body = body.replace(/  +/g, ' '); // Dobles espacios
-            body = body.replace(/^\s+|\s+$/g, ''); // Trim
-            body = body.replace(/\n\s+\n/g, '\n\n'); // Líneas vacías con espacios
-            document.getElementById('post-body').value = body;
-            alert("🧹 Texto limpiado");
-            updateMetrics();
-        }
-
-        // 3. Negritas Unicode para Título
-        function convertToBold() {
-            const input = document.getElementById('post-title');
-            const text = input.value;
-
-            // Mapa básico de caracteres a Negrita Matemática (Sans-Serif Bold)
-            const map = {
-                'A': '𝐀', 'B': '𝐁', 'C': '𝐂', 'D': '𝐃', 'E': '𝐄', 'F': '𝐅', 'G': '𝐆', 'H': '𝐇', 'I': '𝐈', 'J': '𝐉', 'K': '𝐊', 'L': '𝐋', 'M': '𝐌', 'N': '𝐍', 'O': '𝐎', 'P': '𝐏', 'Q': '𝐐', 'R': '𝐑', 'S': '𝐒', 'T': '𝐓', 'U': '𝐔', 'V': '𝐕', 'W': '𝐖', 'X': '𝐗', 'Y': '𝐘', 'Z': '𝙕',
-                'a': '𝐚', 'b': '𝐛', 'c': '𝐜', 'd': '𝐝', 'e': '𝐞', 'f': '𝐟', 'g': '𝐠', 'h': '𝐡', 'i': '𝐢', 'j': '𝐣', 'k': '𝐤', 'l': '𝐥', 'm': '𝐦', 'n': '𝐧', 'o': '𝐨', 'p': '𝐩', 'q': '𝐪', 'r': '𝐫', 's': '𝐬', 't': '𝐭', 'u': '𝐮', 'v': '𝐯', 'w': '𝐰', 'x': '𝐱', 'y': '𝐲', 'z': '𝐳',
-                '0': '𝟎', '1': '𝟏', '2': '𝟐', '3': '𝟑', '4': '𝟒', '5': '𝟓', '6': '𝟔', '7': '𝟕', '8': '𝟖', '9': '𝟗'
-            };
-
-            const newText = text.split('').map(char => map[char] || char).join('');
-            input.value = newText;
-        }
-
-        // 4. Métricas (Char count + Reading Time)
-        function updateMetrics() {
-            const title = document.getElementById('post-title').value;
-            const body = document.getElementById('post-body').value;
-            const tags = document.getElementById('hidden-tags-value').value;
-
-            const total = title.length + body.length + tags.length;
-            const percent = Math.min((total / 3000) * 100, 100);
-
-            // Update Char Bar
-            document.getElementById('char-count').innerText = `${total} chars`;
-            document.getElementById('char-progress').style.width = `${percent}%`;
-
-            const bar = document.getElementById('char-progress');
-            if (total < 200) bar.className = "h-full bg-red-500 w-0 transition-all duration-300";
-            else if (total > 2800) bar.className = "h-full bg-orange-500 w-0 transition-all duration-300";
-            else bar.className = "h-full bg-green-500 w-0 transition-all duration-300";
-
-            // Update Reading Time (aprox 200 words/min)
-            const words = (title + " " + body).split(/\s+/).length;
-            const minutes = Math.floor(words / 200);
-            const seconds = Math.floor((words % 200) / (200 / 60));
-
-            let timeString = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
-            document.getElementById('read-time').textContent = `Lectura: ${timeString}`;
-        }
-
-        // --- LÓGICA DE SALIDA ---
-
-        async function skipPost() {
-            const row = document.getElementById('row-id').value;
-            if (!row) return;
-            if (!confirm("¿Descartar post?")) return;
-
-            document.getElementById('post-body').value = "Descartando...";
-            await fetch(GAS_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ rowNumber: parseInt(row) })
-            });
-            setTimeout(fetchPost, 1000);
-        }
-
-        async function confirmAndProceed() {
-            const title = document.getElementById('post-title').value;
-            const body = document.getElementById('post-body').value;
-            const tags = document.getElementById('hidden-tags-value').value;
-            const row = document.getElementById('row-id').value;
-
-            if (body.includes("No hay posts")) return alert("No hay contenido válido.");
-
-            // Combinar todo para copiar
-            const fullText = `${title}\n\n${body}\n\n${tags}`;
-
-            document.getElementById('loading-indicator').classList.remove('opacity-0');
-
-            // 1. Backend: Marcar Publicado
-            await fetch(GAS_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ rowNumber: parseInt(row) })
-            });
-
-            // 2. Guardar datos para Módulo B
-            localStorage.setItem('linkedin_current_text', fullText);
-            localStorage.setItem('linkedin_current_title', title);
-            localStorage.setItem('linkedin_current_tags', tags);
-            localStorage.setItem('linkedin_current_row', row);
-            localStorage.setItem('linkedin_intention', currentIntention); // Nuevo
-
-            // 3. Ir a Imagen
-            window.location.href = 'modulo_imagen.html';
-        }
-
-        document.getElementById('post-title').addEventListener('input', updateMetrics);
-        document.getElementById('post-body').addEventListener('input', updateMetrics);
-
-        window.onload = loadInitialData;
     </script>
 </body>
-
 </html>
