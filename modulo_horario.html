@@ -114,21 +114,20 @@
     </div>
 
     <script>
-        // Simulación de persistencia en LocalStorage
-        let scheduledPosts = JSON.parse(localStorage.getItem('scheduled_posts') || '[]');
-        
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbxyceiNIiq1nXjdGltdpdySvpPX7O6iB2hjkaAdjL-JHGb5mp-4L2e0V0xWRZzwc-NF/exec";
+
         window.addEventListener('DOMContentLoaded', () => {
             loadDrafts();
-            renderSchedule();
+            syncFromGAS();
         });
 
+        // ───── CARGAR EL BORRADOR ACTUAL EN EL SELECTOR ─────
         function loadDrafts() {
             const select = document.getElementById('post-select');
             select.innerHTML = '';
 
-            // Caso A: Venimos de generar un post completo con imagen
             const comingFromPublish = localStorage.getItem('scheduling_complete_post') === 'true';
-            
+
             if (comingFromPublish) {
                 const text = localStorage.getItem('linkedin_current_text');
                 const img = localStorage.getItem('linkedin_confirmed_img');
@@ -139,7 +138,7 @@
                 if (text) {
                     const title = `[FOTO] ${text.split('\n')[0].substring(0, 30)}...`;
                     const option = document.createElement('option');
-                    option.value = JSON.stringify({ text, img, row, intention, style, hasImage: true });
+                    option.value = JSON.stringify({ text, img, row, intention, style, hasImage: !!img });
                     option.textContent = title;
                     select.appendChild(option);
                     select.value = option.value;
@@ -147,7 +146,6 @@
                 }
             }
 
-            // Caso B: Borrador de texto simple (comportamiento original)
             const currentText = localStorage.getItem('linkedin_v2_text') || localStorage.getItem('linkedin_current_text');
             if (currentText) {
                 const title = currentText.split('\n')[0].substring(0, 30) + '...';
@@ -162,12 +160,13 @@
             }
         }
 
-        function schedulePost() {
+        // ───── AGENDAR: GUARDAR EN GAS + LOCAL ─────
+        async function schedulePost() {
             const rawValue = document.getElementById('post-select').value;
             const date = document.getElementById('schedule-date').value;
             const time = document.getElementById('schedule-time').value;
 
-            if (!rawValue || !date || !time) {
+            if (!rawValue || rawValue.startsWith('No hay') || !date || !time) {
                 alert("Por favor completa todos los campos.");
                 return;
             }
@@ -175,65 +174,157 @@
             const postData = JSON.parse(rawValue);
             const newPost = {
                 id: Date.now(),
-                ...postData,
+                text: postData.text || '',
+                imageUrl: postData.img || '',
+                style: postData.style || '',
+                intention: postData.intention || '',
+                row: postData.row || '',
+                hasImage: postData.hasImage || false,
                 date: date,
                 time: time,
-                status: 'pending'
+                status: 'pending',
+                action: 'saveScheduled'
             };
 
-            scheduledPosts.push(newPost);
-            localStorage.setItem('scheduled_posts', JSON.stringify(scheduledPosts));
-            
-            // Limpiar flag de navegación
+            // Guardar en localStorage inmediatamente (UX rápida)
+            const local = JSON.parse(localStorage.getItem('scheduled_posts') || '[]');
+            local.push(newPost);
+            localStorage.setItem('scheduled_posts', JSON.stringify(local));
             localStorage.removeItem('scheduling_complete_post');
-            
-            renderSchedule();
-            
-            // Mensaje de éxito
-            alert("Post agendado correctamente.");
-            
-            // Limpiar inputs
+            renderSchedule(local);
+
+            // Sincronizar con GAS en background
+            try {
+                await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newPost)
+                });
+            } catch (err) {
+                console.warn('GAS sync error (no-cors ok):', err);
+            }
+
+            alert("✅ Post agendado correctamente.");
             document.getElementById('schedule-date').value = '';
             document.getElementById('schedule-time').value = '';
         }
 
-        function removeScheduled(id) {
-            scheduledPosts = scheduledPosts.filter(p => p.id !== id);
-            localStorage.setItem('scheduled_posts', JSON.stringify(scheduledPosts));
-            renderSchedule();
+        // ───── SINCRONIZAR DESDE GAS ─────
+        async function syncFromGAS() {
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'getScheduled' })
+                });
+                const data = await res.json();
+
+                if (data.success && data.posts) {
+                    // Mapear al formato local
+                    const synced = data.posts.map(p => ({
+                        id: p.id,
+                        text: p.text,
+                        imageUrl: p.imageUrl,
+                        style: p.style,
+                        hasImage: !!(p.imageUrl),
+                        date: p.date,
+                        time: p.time,
+                        status: p.status
+                    }));
+
+                    // Actualizar localStorage con los datos del servidor
+                    localStorage.setItem('scheduled_posts', JSON.stringify(synced));
+                    renderSchedule(synced);
+                }
+            } catch (err) {
+                // Si GAS falla (CORS en no-cors, red, etc.), usar localStorage como fallback
+                console.warn('GAS sync unavailable, using localStorage:', err);
+                const local = JSON.parse(localStorage.getItem('scheduled_posts') || '[]');
+                renderSchedule(local);
+            }
         }
 
-        function renderSchedule() {
+        // ───── ELIMINAR POST ─────
+        async function removeScheduled(id) {
+            // Eliminar localmente
+            let local = JSON.parse(localStorage.getItem('scheduled_posts') || '[]');
+            local = local.filter(p => String(p.id) !== String(id));
+            localStorage.setItem('scheduled_posts', JSON.stringify(local));
+            renderSchedule(local);
+
+            // Sincronizar eliminación con GAS
+            try {
+                await fetch(GAS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'deleteScheduled', id: id })
+                });
+            } catch (err) {
+                console.warn('GAS delete sync error:', err);
+            }
+        }
+
+        // ───── RENDERIZAR LA COLA ─────
+        function renderSchedule(posts) {
             const list = document.getElementById('schedule-list');
             list.innerHTML = '';
 
-            if (scheduledPosts.length === 0) {
+            // Separar pendientes y publicados
+            const pending = posts.filter(p => p.status === 'pending');
+            const published = posts.filter(p => p.status && p.status !== 'pending');
+
+            if (posts.length === 0) {
                 list.innerHTML = '<p class="text-center text-xs text-gray-500 py-4">No hay publicaciones programadas.</p>';
                 return;
             }
 
-            scheduledPosts.forEach(post => {
-                const title = post.text.split('\n')[0].substring(0, 40) + '...';
-                const hasImage = post.hasImage;
-                const item = document.createElement('div');
-                item.className = 'glass-card p-4 flex justify-between items-center border-l-4 ' + (hasImage ? 'border-primary shadow-[0_0_10px_rgba(0,242,255,0.2)]' : 'border-accent');
-                item.innerHTML = `
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2">
-                             ${hasImage ? '<span class="material-symbols-rounded text-[14px] text-primary">image</span>' : ''}
-                             <h4 class="text-sm font-bold text-gray-100 truncate">${title}</h4>
-                        </div>
-                        <p class="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
-                            <span class="material-symbols-rounded text-xs">calendar_today</span> ${post.date} 
-                            <span class="material-symbols-rounded text-xs ml-2">schedule</span> ${post.time}
-                        </p>
+            // Renderizar pendientes
+            if (pending.length > 0) {
+                const label = document.createElement('p');
+                label.className = 'text-[10px] uppercase tracking-widest text-gray-500 font-bold mt-2';
+                label.textContent = 'Pendientes';
+                list.appendChild(label);
+
+                pending.forEach(post => renderPostItem(post, list, false));
+            }
+
+            // Renderizar publicados (los que ya envió el trigger)
+            if (published.length > 0) {
+                const label = document.createElement('p');
+                label.className = 'text-[10px] uppercase tracking-widest text-green-500 font-bold mt-4';
+                label.textContent = '✅ Publicados automáticamente';
+                list.appendChild(label);
+
+                published.forEach(post => renderPostItem(post, list, true));
+            }
+        }
+
+        function renderPostItem(post, container, isPublished) {
+            const title = (post.text || '').split('\n')[0].substring(0, 40) + '...';
+            const hasImage = post.hasImage || !!(post.imageUrl);
+            const borderColor = isPublished ? 'border-green-500' : (hasImage ? 'border-secondary shadow-[0_0_10px_rgba(0,242,255,0.15)]' : 'border-accent');
+            const item = document.createElement('div');
+            item.className = `glass-card p-4 flex justify-between items-center border-l-4 ${borderColor} ${isPublished ? 'opacity-60' : ''}`;
+            item.innerHTML = `
+                <div class="flex-1">
+                    <div class="flex items-center gap-2">
+                        ${hasImage ? '<span class="material-symbols-rounded text-[14px] text-secondary">image</span>' : ''}
+                        ${isPublished ? '<span class="material-symbols-rounded text-[14px] text-green-400">check_circle</span>' : ''}
+                        <h4 class="text-sm font-bold text-gray-100 truncate">${title}</h4>
                     </div>
-                    <button onclick="removeScheduled(${post.id})" class="text-gray-500 hover:text-red-400 transition-colors">
-                        <span class="material-symbols-rounded">delete</span>
-                    </button>
-                `;
-                list.appendChild(item);
-            });
+                    <p class="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
+                        <span class="material-symbols-rounded text-xs">calendar_today</span> ${post.date}
+                        <span class="material-symbols-rounded text-xs ml-2">schedule</span> ${post.time}
+                        ${isPublished ? '<span class="ml-2 text-green-400">· Publicado</span>' : ''}
+                    </p>
+                </div>
+                <button onclick="removeScheduled(${post.id})" class="text-gray-600 hover:text-red-400 transition-colors ml-2">
+                    <span class="material-symbols-rounded">delete</span>
+                </button>
+            `;
+            container.appendChild(item);
         }
     </script>
 </body>
