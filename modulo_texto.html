@@ -257,7 +257,8 @@
                 <SCORE>Porcentaje de coherencia (ej: 98%)</SCORE>
                 <FEEDBACK>Breve análisis de coherencia y valor profesional</FEEDBACK>`;
 
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                // Intento con v1beta y 1.5-flash (el más común hoy)
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
@@ -265,7 +266,12 @@
 
                 if (!response.ok) {
                     const errorDetails = await response.json();
-                    throw new Error(errorDetails.error?.message || "Error en la comunicación con el cerebro IA.");
+                    const msg = errorDetails.error?.message || "";
+                    // Si el error es específicamente por el modelo flash, intentamos gemini-pro como fallback
+                    if (msg.includes("not found") || msg.includes("not supported")) {
+                        throw new Error("MODEL_NOT_FOUND");
+                    }
+                    throw new Error(msg || "Error en el cerebro IA.");
                 }
 
                 const data = await response.json();
@@ -306,13 +312,72 @@
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
             } catch (e) {
+                if (e.message === "MODEL_NOT_FOUND") {
+                    try {
+                        // Fallback a gemini-pro (v1) que es el más universal
+                        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                        });
+                        const data = await response.json();
+                        const output = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                        
+                        // Procesar de nuevo con el nuevo output
+                        const postMatch = output.match(/<POST>([\s\S]*?)<\/POST>/i);
+                        const visualMatch = output.match(/<VISUAL>([\s\S]*?)<\/VISUAL>/i);
+                        const scoreMatch = output.match(/<SCORE>([\s\S]*?)<\/SCORE>/i);
+                        const feedbackMatch = output.match(/<FEEDBACK>([\s\S]*?)<\/FEEDBACK>/i);
+
+                        if (postMatch) {
+                            const postContent = postMatch[1].trim();
+                            document.getElementById('generated-post').value = postContent;
+                            localStorage.setItem('linkedin_v2_text', postContent);
+                            if (visualMatch) localStorage.setItem('linkedin_v2_visual_prompt', visualMatch[1].trim());
+                            if (scoreMatch) document.getElementById('score-circle').textContent = scoreMatch[1].trim();
+                            if (feedbackMatch) document.getElementById('analysis-text').textContent = feedbackMatch[1].trim();
+                            
+                            // Mostrar resultados
+                            updateUIAfterSuccess();
+                            return;
+                        }
+                    } catch (err2) {
+                        e = err2; // Si falla el fallback, mostramos el error final
+                    }
+                }
+
                 console.error(e);
-                alert("Error de conexión. Verifica tu API Key.");
+                alert("Error: " + e.message);
                 btn.disabled = false;
                 loader.classList.add('hidden');
                 icon.classList.remove('hidden');
                 text.textContent = "PROCESAR IDEA";
             }
+        }
+
+        function updateUIAfterSuccess() {
+            const btn = document.getElementById('btn-process');
+            const loader = document.getElementById('loader');
+            const icon = document.getElementById('btn-icon');
+            const text = document.getElementById('btn-text');
+            
+            document.getElementById('perspective-section').classList.add('opacity-40', 'pointer-events-none', 'grayscale-[0.5]');
+            
+            const resultSec = document.getElementById('result-section');
+            resultSec.classList.remove('hidden');
+            setTimeout(() => {
+                resultSec.classList.remove('scale-95', 'opacity-0');
+                resultSec.classList.add('scale-100', 'opacity-100');
+            }, 100);
+
+            document.getElementById('analysis-card').classList.remove('hidden');
+            document.getElementById('analysis-card').classList.add('flex');
+            
+            btn.classList.add('hidden');
+            document.getElementById('btn-next').classList.remove('hidden');
+            document.getElementById('btn-next').classList.add('flex');
+
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
         function copyPost() {
