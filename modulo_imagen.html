@@ -271,11 +271,15 @@
                 disabled>
                 <span class="material-symbols-outlined text-base">calendar_month</span>
                 AGENDAR PARA DESPUÉS
-            </button>
-            <p id="status-msg" class="text-center text-[10px] text-white/20 mt-1 font-mono">Confirma la imagen para
-                desbloquear</p>
         </div>
     </div>
+
+    <!-- Botón Flotante de Agenda (Fijo) -->
+    <button onclick="window.location.href='modulo_horario.html'" 
+        class="fixed bottom-32 right-6 z-50 w-14 h-14 rounded-full bg-secondary text-black shadow-glow flex items-center justify-center animate-bounce transition active:scale-95 border-2 border-white/20"
+        title="Ver Agenda Cloud">
+        <span class="material-symbols-outlined text-3xl">event</span>
+    </button>
 
     <input type="hidden" id="pollinations-url">
     <input type="hidden" id="cloudinary-url">
