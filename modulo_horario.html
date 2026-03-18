@@ -30,7 +30,7 @@
     <style type="text/tailwindcss">
         @layer utilities {
             .glass { @apply bg-surface/40 backdrop-blur-xl border border-white/5 shadow-2xl; }
-            .glass-card { @apply bg-surfaceLight/30 backdrop-blur-md border border-white/10 rounded-3xl shadow-lg transition-all duration-300; }
+            .glass-card { @apply bg-surfaceLight/30 backdrop-blur-md border border-white/10 rounded-[32px] shadow-lg transition-all duration-300; }
             .text-gradient { @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-secondary; }
             .hide-scrollbar::-webkit-scrollbar { display: none; }
         }
@@ -41,65 +41,69 @@
 <body class="w-full min-h-screen flex items-center justify-center relative p-4">
     <div class="relative z-10 w-full md:w-[400px] h-[800px] md:max-h-[90vh] md:rounded-[40px] md:border-[8px] md:border-gray-900 md:shadow-2xl overflow-hidden bg-base flex flex-col">
         
-        <!-- Header -->
-        <header class="glass w-full px-6 py-5 flex justify-between items-center z-20">
-            <button onclick="window.history.back()" class="w-10 h-10 rounded-full bg-surfaceLight/50 flex items-center justify-center border border-white/5 hover:bg-white/10 transition-colors">
-                <span class="material-symbols-rounded text-gray-300 text-xl">arrow_back</span>
-            </button>
-            <div class="text-center">
-                <h1 class="text-lg font-bold tracking-wide">TASK<span class="text-gradient">MASTER</span></h1>
-                <p class="text-[10px] text-accent uppercase tracking-[0.2em] font-bold">v3.0 Cloud Sync</p>
-            </div>
-            <div class="w-10 h-10"></div>
-        </header>
+    <header class="w-full max-w-md pt-8 pb-6 px-6 flex justify-between items-center bg-base/80 backdrop-blur sticky top-0 z-50">
+        <button onclick="window.location.href='modulo_imagen.html'" class="w-12 h-12 rounded-full bg-surfaceLight/30 flex items-center justify-center border border-white/5 hover:bg-white/10 transition-colors">
+            <span class="material-symbols-rounded text-gray-300 text-2xl">arrow_back</span>
+        </button>
+        <div class="flex flex-col items-center">
+            <h1 class="text-lg font-black tracking-tight leading-none">
+                POST<span class="text-accent">READY</span> <span class="text-secondary/60 text-xs font-medium ml-1">v4.0</span>
+            </h1>
+            <p class="text-[9px] text-accent uppercase tracking-[0.2em] font-extrabold mt-1 opacity-80">CENTRO DE PUBLICACIÓN PRO</p>
+        </div>
+        <div class="w-12 h-12"></div>
+    </header>
 
-        <main class="flex-1 overflow-y-auto hide-scrollbar px-5 py-6 flex flex-col gap-6">
+    <main class="w-full max-w-md flex-1 overflow-y-auto hide-scrollbar px-6 py-8 flex flex-col gap-10">
+        
+        <!-- Programar Post -->
+        <section class="flex flex-col gap-5">
+            <label class="text-[11px] uppercase tracking-[0.2em] text-accent/70 font-black flex items-center gap-2">
+                <span class="material-symbols-rounded text-xl">add_circle</span>
+                PROGRAMAR POST IA
+            </label>
             
-            <!-- Programar Post -->
-            <section class="flex flex-col gap-3">
-                <label class="text-xs uppercase tracking-[0.15em] text-gray-400 font-bold flex items-center gap-2">
-                    <span class="material-symbols-rounded text-[18px] text-accent">add_circle</span>
-                    Programar Post de IA
-                </label>
-                
-                <div class="glass-card p-5 flex flex-col gap-4">
+            <div class="glass-card p-6 flex flex-col gap-6 bg-surface/40 border border-white/5">
+                <div>
+                    <label class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-2 block opacity-60">Borrador Detectado</label>
+                    <select id="post-select" class="w-full bg-surfaceLight/20 border border-white/10 rounded-2xl px-5 py-4 text-xs font-bold text-gray-200 outline-none focus:border-accent transition-all">
+                        <option value="">Cargando borradores...</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="text-[10px] text-gray-500 uppercase font-bold mb-1 block">Borrador Detectado</label>
-                        <select id="post-select" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-200 outline-none focus:border-accent">
-                            <option value="">Cargando borradores...</option>
-                        </select>
+                        <label class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-2 block opacity-60">Fecha</label>
+                        <input type="date" id="schedule-date" class="w-full bg-surfaceLight/20 border border-white/10 rounded-2xl px-5 py-4 text-xs font-bold text-gray-200 outline-none focus:border-accent transition-all">
                     </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="text-[10px] text-gray-500 uppercase font-bold mb-1 block">Fecha</label>
-                            <input type="date" id="schedule-date" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-200 outline-none focus:border-accent">
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-gray-500 uppercase font-bold mb-1 block">Hora</label>
-                            <input type="time" id="schedule-time" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-200 outline-none focus:border-accent">
-                        </div>
+                    <div>
+                        <label class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-2 block opacity-60">Hora</label>
+                        <input type="time" id="schedule-time" class="w-full bg-surfaceLight/20 border border-white/10 rounded-2xl px-5 py-4 text-xs font-bold text-gray-200 outline-none focus:border-accent transition-all">
                     </div>
-
-                    <button onclick="scheduleCloud()" id="btn-schedule" class="w-full h-12 rounded-xl bg-gradient-to-r from-accent to-secondary text-white font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] transition-transform">
-                        <span class="material-symbols-rounded">cloud_upload</span>
-                        Enviar a la Nube (Google)
-                    </button>
-                    <p id="size-hint" class="text-[9px] text-center text-gray-500 italic">Sincronizando imagen generada por Google...</p>
                 </div>
-            </section>
 
-            <!-- Lista Programada -->
-            <section class="flex flex-col gap-3">
-                <label class="text-xs uppercase tracking-[0.15em] text-gray-400 font-bold flex items-center gap-2">
-                    <span class="material-symbols-rounded text-[18px] text-secondary">cloud_done</span>
-                    Publicaciones Agendadas
-                </label>
-                <div id="schedule-list" class="flex flex-col gap-3 pb-8">
-                    <p class="text-center text-xs text-gray-500 py-4">Sincronizando con Drive...</p>
+                <button onclick="scheduleCloud()" id="btn-schedule" class="w-full h-14 rounded-2xl bg-gradient-to-r from-accent to-secondary text-white font-black text-[10px] tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-[0_15px_35px_-5px_rgba(56,189,248,0.4)] active:scale-95 transition-all">
+                    <span class="material-symbols-rounded text-xl">cloud_upload</span>
+                    ENVIAR A GOOGLE CLOUD
+                </button>
+                <p id="size-hint" class="text-[9px] text-center text-gray-600 font-bold uppercase tracking-widest opacity-60">Sincronizando imagen IA generada</p>
+            </div>
+        </section>
+
+        <!-- Lista Programada -->
+        <section class="flex flex-col gap-5">
+            <label class="text-[11px] uppercase tracking-[0.2em] text-secondary/70 font-black flex items-center gap-2">
+                <span class="material-symbols-rounded text-xl">cloud_done</span>
+                COLA DE PUBLICACIONES
+            </label>
+            <div id="schedule-list" class="flex flex-col gap-4 pb-12">
+                <div class="animate-pulse space-y-4">
+                    <div class="h-20 bg-surfaceLight/10 rounded-3xl border border-white/5"></div>
+                    <div class="h-20 bg-surfaceLight/5 rounded-3xl border border-white/5"></div>
                 </div>
-            </section>
-        </main>
+            </div>
+        </section>
+    </main>
     </div>
 
     <script>
