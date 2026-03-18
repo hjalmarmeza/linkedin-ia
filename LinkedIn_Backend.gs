@@ -102,15 +102,29 @@ function doPost(e) {
 function saveToQueue(data) {
   const folder = getOrCreateFolder();
   let imageFileId = null;
+  
   const imgData = data.imageBase64 || data.image_base64;
+  const imgUrl = data.imageUrl || data.image_url;
+
   if (imgData) {
     const bytes = Utilities.base64Decode(imgData.split(",")[1]);
     const blob = Utilities.newBlob(bytes, "image/jpeg", `IMG_${data.id}.jpg`);
     const file = folder.createFile(blob);
     imageFileId = file.getId();
     delete data.imageBase64; delete data.image_base64;
-    data.imageFileId = imageFileId;
+  } else if (imgUrl) {
+    try {
+      const resp = UrlFetchApp.fetch(imgUrl);
+      const blob = resp.getBlob().setName(`IMG_${data.id}.jpg`);
+      const file = folder.createFile(blob);
+      imageFileId = file.getId();
+      delete data.imageUrl; delete data.image_url;
+    } catch (e) {
+      Logger.log("Error descargando imagen: " + e.toString());
+    }
   }
+
+  if (imageFileId) data.imageFileId = imageFileId;
   folder.createFile(`POST_${data.id}.json`, JSON.stringify(data));
   return jsonResponse({success: true});
 }

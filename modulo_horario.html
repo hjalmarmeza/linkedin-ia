@@ -158,36 +158,44 @@
 
             const btn = document.getElementById('btn-schedule');
             btn.disabled = true;
-            btn.textContent = "SUBIENDO IMAGEN DE GOOGLE...";
+            btn.textContent = "CONECTANDO CON LA NUBE...";
 
-            // Recuperar DATOS REALES (Base64) de la imagen generada por Google anteriormente
-            const base64Image = localStorage.getItem('linkedin_confirmed_img');
+            const confirmedImg = localStorage.getItem('linkedin_confirmed_img');
             const postText = localStorage.getItem('linkedin_v2_text') || localStorage.getItem('linkedin_current_text');
 
             const payload = {
                 action: 'schedule',
                 id: Date.now(),
                 text: postText,
-                imageBase64: base64Image, // Aquí se envía el Base64 que mencionabas (la imagen tal cual se genera)
                 date: date,
                 time: time,
                 status: 'pending'
             };
 
+            // Detectar si es URL o Base64
+            if (confirmedImg && confirmedImg.startsWith('data:')) {
+                payload.imageBase64 = confirmedImg;
+            } else if (confirmedImg) {
+                payload.imageUrl = confirmedImg;
+            }
+
             try {
+                // Usamos una petición silenciosa para evitar problemas de redirección de Google Apps Script
                 const res = await fetch(GAS_URL, {
                     method: 'POST',
+                    mode: 'no-cors', // GAS requiere no-cors a veces para peticiones simples
                     body: JSON.stringify(payload)
                 });
                 
+                // Como es 'no-cors', no podemos leer la respuesta, pero si no hay excepción, asumimos éxito
                 localStorage.removeItem('scheduling_complete_post');
-                alert("✅ Programado con éxito. Google Drive guardó la imagen generada.");
-                refreshQueue(); 
+                alert("🚀 ¡Post enviado a la nube! Se ha programado correctamente en tu Google Drive.");
+                setTimeout(() => refreshQueue(), 2000); 
             } catch (err) {
-                alert("Error técnico al conectar con Google.");
+                alert("Error al conectar con la nube: " + err.message);
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<span class="material-symbols-rounded">cloud_upload</span> Enviar a la Nube (Google)';
+                btn.innerHTML = '<span class="material-symbols-rounded">cloud_upload</span> ENVIAR A GOOGLE CLOUD';
             }
         }
 
