@@ -124,13 +124,35 @@
 
         function loadDrafts() {
             const select = document.getElementById('post-select');
-            const currentText = localStorage.getItem('linkedin_v2_text') || localStorage.getItem('linkedin_current_text');
-            
             select.innerHTML = '';
+
+            // Caso A: Venimos de generar un post completo con imagen
+            const comingFromPublish = localStorage.getItem('scheduling_complete_post') === 'true';
+            
+            if (comingFromPublish) {
+                const text = localStorage.getItem('linkedin_current_text');
+                const img = localStorage.getItem('linkedin_confirmed_img');
+                const row = localStorage.getItem('linkedin_current_row');
+                const intention = localStorage.getItem('linkedin_intention');
+                const style = localStorage.getItem('linkedin_current_style');
+
+                if (text) {
+                    const title = `[FOTO] ${text.split('\n')[0].substring(0, 30)}...`;
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify({ text, img, row, intention, style, hasImage: true });
+                    option.textContent = title;
+                    select.appendChild(option);
+                    select.value = option.value;
+                    return;
+                }
+            }
+
+            // Caso B: Borrador de texto simple (comportamiento original)
+            const currentText = localStorage.getItem('linkedin_v2_text') || localStorage.getItem('linkedin_current_text');
             if (currentText) {
                 const title = currentText.split('\n')[0].substring(0, 30) + '...';
                 const option = document.createElement('option');
-                option.value = currentText;
+                option.value = JSON.stringify({ text: currentText, hasImage: false });
                 option.textContent = title;
                 select.appendChild(option);
             } else {
@@ -141,18 +163,19 @@
         }
 
         function schedulePost() {
-            const content = document.getElementById('post-select').value;
+            const rawValue = document.getElementById('post-select').value;
             const date = document.getElementById('schedule-date').value;
             const time = document.getElementById('schedule-time').value;
 
-            if (!content || !date || !time) {
+            if (!rawValue || !date || !time) {
                 alert("Por favor completa todos los campos.");
                 return;
             }
 
+            const postData = JSON.parse(rawValue);
             const newPost = {
                 id: Date.now(),
-                content: content,
+                ...postData,
                 date: date,
                 time: time,
                 status: 'pending'
@@ -160,9 +183,16 @@
 
             scheduledPosts.push(newPost);
             localStorage.setItem('scheduled_posts', JSON.stringify(scheduledPosts));
+            
+            // Limpiar flag de navegación
+            localStorage.removeItem('scheduling_complete_post');
+            
             renderSchedule();
             
-            // Limpiar
+            // Mensaje de éxito
+            alert("Post agendado correctamente.");
+            
+            // Limpiar inputs
             document.getElementById('schedule-date').value = '';
             document.getElementById('schedule-time').value = '';
         }
@@ -183,12 +213,16 @@
             }
 
             scheduledPosts.forEach(post => {
-                const title = post.content.split('\n')[0].substring(0, 40) + '...';
+                const title = post.text.split('\n')[0].substring(0, 40) + '...';
+                const hasImage = post.hasImage;
                 const item = document.createElement('div');
-                item.className = 'glass-card p-4 flex justify-between items-center border-l-4 border-accent';
+                item.className = 'glass-card p-4 flex justify-between items-center border-l-4 ' + (hasImage ? 'border-primary shadow-[0_0_10px_rgba(0,242,255,0.2)]' : 'border-accent');
                 item.innerHTML = `
                     <div class="flex-1">
-                        <h4 class="text-sm font-bold text-gray-100 truncate">${title}</h4>
+                        <div class="flex items-center gap-2">
+                             ${hasImage ? '<span class="material-symbols-rounded text-[14px] text-primary">image</span>' : ''}
+                             <h4 class="text-sm font-bold text-gray-100 truncate">${title}</h4>
+                        </div>
                         <p class="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
                             <span class="material-symbols-rounded text-xs">calendar_today</span> ${post.date} 
                             <span class="material-symbols-rounded text-xs ml-2">schedule</span> ${post.time}
