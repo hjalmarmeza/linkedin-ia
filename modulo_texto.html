@@ -261,17 +261,19 @@
             icon.classList.add('hidden');
             text.textContent = "CONECTANDO CEREBRO...";
 
-            const prompt = `Actúa como un experto consultor de LinkedIn profesional. 
-            Transforma esta IDEA: "${idea}" en un post viral pero COHERENTE.
+            const prompt = `Actúa como un experto consultor estratégico de LinkedIn. 
+            Transforma esta IDEA: "${idea}" en un post magistral que genere autoridad.
             TONO: ${currentPerspective.toUpperCase()}. 
-            REGLAS:
-            1. NO inventes datos que no existan.
-            2. Coherencia global del 100%.
-            IMPORTANTE: Responde ÚNICAMENTE con este formato exacto:
-            <POST>Contenido del post (usa títulos en negrita unicode y hashtags relevantes)</POST>
-            <VISUAL>Detailed English prompt for a cinematic IA image representing the post concept</VISUAL>
+            
+            REGLAS DE ORO:
+            1. COHERENCIA TOTAL: Si hablas de zapatos, el visual debe ser de zapatos.
+            2. NO inventes datos, mantente fiel a la esencia de la idea.
+            
+            RESPONDE ÚNICAMENTE CON ESTE FORMATO:
+            <POST>Contenido del post (títulos unicode negrita, estructura limpia, hashtags)</POST>
+            <VISUAL>Highly detailed English prompt (60-80 words). Realistic cinematic photography, high-end commercial style, professional lighting. Describe the scene, texture, and mood representing the post's core message. NO SPANISH.</VISUAL>
             <SCORE>98</SCORE>
-            <FEEDBACK>Análisis breve de coherencia profesional</FEEDBACK>`;
+            <FEEDBACK>Análisis de impacto y coherencia</FEEDBACK>`;
 
             const endpoints = ['v1beta', 'v1'];
             const models = [
