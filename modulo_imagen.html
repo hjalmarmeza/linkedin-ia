@@ -174,25 +174,29 @@
             status.textContent = "SINTETIZANDO PIXELES...";
 
             try {
-                // Prompt simplificado basado en el texto del post
-                const cleanContext = currentText.split("\n")[0].replace(/[^a-zA-Z0-9 ]/g, '').substring(0, 100);
+                // Título limpio o fallback
+                let title = (currentText || "").split("\n")[0].trim();
+                let cleanContext = title.replace(/[^a-zA-Z0-9 ]/g, '').substring(0, 100);
+                
+                if (!cleanContext || cleanContext.length < 3) {
+                    cleanContext = "Business success, technology, professional growth";
+                }
+
                 const seed = Math.floor(Math.random() * 9999999);
-                const finalPrompt = `Masterpiece photography, award winning. Theme: ${cleanContext}. Global illumination, cinematic lighting, 8k resolution.`;
+                const finalPrompt = `Professional cinematic photography, high quality. Theme: ${cleanContext}. Global illumination, photorealistic, 8k.`;
                 
                 const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=1080&height=1350&seed=${seed}&nologo=true&enhance=true`;
 
                 const img = new Image();
-                img.crossOrigin = "Anonymous";
+                // Eliminamos crossOrigin si no es necesario para evitar bloqueos CORS inesperados
                 img.onload = () => {
                     preview.src = url;
                     confirmedImgUrl = url;
                     preview.classList.remove('hidden');
                     overlay.classList.add('hidden');
                     
-                    // Guardar automáticamente
                     localStorage.setItem('linkedin_confirmed_img', url);
 
-                    // DESBLOQUEO AUTOMÁTICO DE BOTONES
                     btnSchedule.disabled = false;
                     btnSchedule.classList.remove('text-white/40', 'cursor-not-allowed', 'bg-white/5');
                     btnSchedule.classList.add('border-secondary', 'text-white', 'bg-secondary/10');
@@ -203,12 +207,21 @@
                     btnPublish.classList.add('bg-white', 'text-black', 'font-black');
 
                     status.textContent = "IMAGEN LISTA PARA PROGRAMAR O PUBLICAR";
-                    status.classList.replace('text-white/20', 'text-secondary');
+                    status.classList.remove('text-white/20');
+                    status.classList.add('text-secondary');
                 };
+
+                img.onerror = () => {
+                    console.error("Error cargando imagen de Pollinations");
+                    status.textContent = "ERROR DE CONEXIÓN. REINTENTANDO...";
+                    setTimeout(() => generateImage(), 3000);
+                };
+
                 img.src = url;
 
             } catch (e) {
-                status.textContent = "ERROR EN GENERACIÓN. REINTENTA.";
+                console.error("Error en generateImage:", e);
+                status.textContent = "ERROR TÉCNICO. REINTENTA.";
                 overlay.classList.add('hidden');
             }
         }
