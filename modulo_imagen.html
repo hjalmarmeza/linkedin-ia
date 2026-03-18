@@ -166,14 +166,6 @@
 
         <section class="flex flex-col gap-6">
 
-            <div class="bg-card-dark rounded-xl p-4 border border-white/5">
-                <div class="flex justify-between items-center mb-2">
-                    <label class="text-[10px] text-white/40 uppercase font-bold tracking-wider">Contexto</label>
-                    <span class="material-symbols-outlined text-white/20 text-xs">lock</span>
-                </div>
-                <p id="context-text" class="text-xs text-white/70 italic">Cargando...</p>
-            </div>
-
             <div>
                 <label class="text-[10px] text-white/40 uppercase font-bold tracking-wider mb-3 block">Estilo
                     Visual</label>
@@ -212,25 +204,6 @@
                     </button>
                 </div>
             </div>
-
-            <div>
-                <label class="text-[10px] text-white/40 uppercase font-bold tracking-wider mb-2 block">Acento de
-                    Marca</label>
-                <div class="flex gap-4 items-center">
-                    <button onclick="setBrandColor('original')"
-                        class="w-8 h-8 rounded-full border-2 border-white/20 bg-gradient-to-br from-gray-700 to-black hover:scale-110 transition"
-                        title="Original"></button>
-                    <button onclick="setBrandColor('blue')"
-                        class="w-6 h-6 rounded-full bg-blue-500 hover:scale-110 transition"></button>
-                    <button onclick="setBrandColor('gold')"
-                        class="w-6 h-6 rounded-full bg-yellow-500 hover:scale-110 transition"></button>
-                    <button onclick="setBrandColor('red')"
-                        class="w-6 h-6 rounded-full bg-red-500 hover:scale-110 transition"></button>
-                    <button onclick="setBrandColor('green')"
-                        class="w-6 h-6 rounded-full bg-green-500 hover:scale-110 transition"></button>
-                </div>
-            </div>
-
             <button onclick="generateImage()" id="btn-generate"
                 class="w-full py-4 rounded-xl bg-white text-black font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 shadow-glow hover:scale-[1.02] transition-all">
                 <span class="material-symbols-outlined text-lg">auto_awesome</span> GENERAR IMAGEN
