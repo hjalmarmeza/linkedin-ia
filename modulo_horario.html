@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Linkedinmatic - Programador Pro</title>
+    <title>Linkedinmatic - Programador en Tiempo Real</title>
 
-    <!-- Fuentes premium -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,7 +20,7 @@
                         surface: '#111827',
                         surfaceLight: '#1f2937',
                         accent: '#38bdf8',
-                        secondary: '#818cf8',
+                        secondary: '#818cf8'
                     }
                 }
             }
@@ -43,8 +39,6 @@
 </head>
 
 <body class="w-full min-h-screen flex items-center justify-center relative p-4">
-
-    <!-- CONTENEDOR MÓVIL (En Desktop simula un iPhone) -->
     <div class="relative z-10 w-full md:w-[400px] h-[800px] md:max-h-[90vh] md:rounded-[40px] md:border-[8px] md:border-gray-900 md:shadow-2xl overflow-hidden bg-base flex flex-col">
         
         <!-- Header -->
@@ -54,31 +48,28 @@
             </button>
             <div class="text-center">
                 <h1 class="text-lg font-bold tracking-wide">TASK<span class="text-gradient">MASTER</span></h1>
-                <p class="text-[10px] text-accent uppercase tracking-[0.2em] font-bold">Programador</p>
+                <p class="text-[10px] text-accent uppercase tracking-[0.2em] font-bold">v3.0 Cloud Sync</p>
             </div>
-            <div class="w-10 h-10"></div> <!-- Spacer -->
+            <div class="w-10 h-10"></div>
         </header>
 
-        <!-- Contenido principal -->
         <main class="flex-1 overflow-y-auto hide-scrollbar px-5 py-6 flex flex-col gap-6">
             
-            <!-- Nueva Programación -->
+            <!-- Programar Post -->
             <section class="flex flex-col gap-3">
                 <label class="text-xs uppercase tracking-[0.15em] text-gray-400 font-bold flex items-center gap-2">
                     <span class="material-symbols-rounded text-[18px] text-accent">add_circle</span>
-                    Programar Nuevo Post
+                    Programar Post de IA
                 </label>
                 
                 <div class="glass-card p-5 flex flex-col gap-4">
-                    <!-- Selector de Post -->
                     <div>
-                        <label class="text-[10px] text-gray-500 uppercase font-bold mb-1 block">Post Guardado</label>
+                        <label class="text-[10px] text-gray-500 uppercase font-bold mb-1 block">Borrador Detectado</label>
                         <select id="post-select" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-2 text-sm text-gray-200 outline-none focus:border-accent">
-                            <option value="">Cargando posts...</option>
+                            <option value="">Cargando borradores...</option>
                         </select>
                     </div>
 
-                    <!-- Horario -->
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="text-[10px] text-gray-500 uppercase font-bold mb-1 block">Fecha</label>
@@ -90,241 +81,166 @@
                         </div>
                     </div>
 
-                    <button onclick="schedulePost()" class="w-full h-12 rounded-xl bg-gradient-to-r from-accent to-secondary text-white font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] transition-transform">
-                        <span class="material-symbols-rounded">schedule</span>
-                        Agendar Post
+                    <button onclick="scheduleCloud()" id="btn-schedule" class="w-full h-12 rounded-xl bg-gradient-to-r from-accent to-secondary text-white font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] transition-transform">
+                        <span class="material-symbols-rounded">cloud_upload</span>
+                        Enviar a la Nube (Google)
                     </button>
+                    <p id="size-hint" class="text-[9px] text-center text-gray-500 italic">Sincronizando imagen generada por Google...</p>
                 </div>
             </section>
 
-            <!-- Lista de Programados -->
+            <!-- Lista Programada -->
             <section class="flex flex-col gap-3">
                 <label class="text-xs uppercase tracking-[0.15em] text-gray-400 font-bold flex items-center gap-2">
-                    <span class="material-symbols-rounded text-[18px] text-secondary">event_note</span>
-                    Cola de Publicación
+                    <span class="material-symbols-rounded text-[18px] text-secondary">cloud_done</span>
+                    Publicaciones Agendadas
                 </label>
-                
-                <div id="schedule-list" class="flex flex-col gap-3">
-                    <!-- Los items se cargarán aquí -->
-                    <p class="text-center text-xs text-gray-500 py-4">No hay publicaciones programadas.</p>
+                <div id="schedule-list" class="flex flex-col gap-3 pb-8">
+                    <p class="text-center text-xs text-gray-500 py-4">Sincronizando con Drive...</p>
                 </div>
             </section>
-
         </main>
     </div>
 
     <script>
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbxyceiNIiq1nXjdGltdpdySvpPX7O6iB2hjkaAdjL-JHGb5mp-4L2e0V0xWRZzwc-NF/exec";
-
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbxgYPVfo1XM0Q309jIkYeDD6lSIbOnr1DNLh_9CccQdzl_xiAnKw_77-uQFRq5ghFnBBA/exec";
+        
         window.addEventListener('DOMContentLoaded', () => {
             loadDrafts();
-            syncFromGAS();
+            refreshQueue(); 
         });
 
-        // ───── CARGAR EL BORRADOR ACTUAL EN EL SELECTOR ─────
+        // 1. CARGAR BORRADORES (Saca la imagen Base64 del LocalStorage si ya la tienes de la pantalla anterior)
         function loadDrafts() {
             const select = document.getElementById('post-select');
             select.innerHTML = '';
 
-            const comingFromPublish = localStorage.getItem('scheduling_complete_post') === 'true';
+            // Revisar si venimos de generar imagen de Google
+            const comingFromImage = localStorage.getItem('scheduling_complete_post') === 'true';
+            const rawBase64Image = localStorage.getItem('linkedin_confirmed_img'); // En tu app esta es la imagen Real de Google
+            const postText = localStorage.getItem('linkedin_current_text');
 
-            if (comingFromPublish) {
-                const text = localStorage.getItem('linkedin_current_text');
-                const img = localStorage.getItem('linkedin_confirmed_img');
-                const row = localStorage.getItem('linkedin_current_row');
-                const intention = localStorage.getItem('linkedin_intention');
-                const style = localStorage.getItem('linkedin_current_style');
-
-                if (text) {
-                    const title = `[FOTO] ${text.split('\n')[0].substring(0, 30)}...`;
-                    const option = document.createElement('option');
-                    option.value = JSON.stringify({ text, img, row, intention, style, hasImage: !!img });
-                    option.textContent = title;
-                    select.appendChild(option);
-                    select.value = option.value;
-                    return;
-                }
+            if (comingFromImage && postText) {
+                const opt = document.createElement('option');
+                opt.value = "current_draft"; // Referencia interna
+                opt.textContent = `[FOTO GOOGLE] ${postText.split('\n')[0].substring(0, 35)}...`;
+                select.appendChild(opt);
+                return;
             }
 
-            const currentText = localStorage.getItem('linkedin_v2_text') || localStorage.getItem('linkedin_current_text');
-            if (currentText) {
-                const title = currentText.split('\n')[0].substring(0, 30) + '...';
-                const option = document.createElement('option');
-                option.value = JSON.stringify({ text: currentText, hasImage: false });
-                option.textContent = title;
-                select.appendChild(option);
+            // Fallback: Borrador de texto simple v2
+            const current = localStorage.getItem('linkedin_v2_text') || localStorage.getItem('linkedin_current_text');
+            if (current) {
+                const opt = document.createElement('option');
+                opt.value = "text_only";
+                opt.textContent = current.split('\n')[0].substring(0, 40) + '...';
+                select.appendChild(opt);
             } else {
-                const option = document.createElement('option');
-                option.textContent = "No hay borradores disponibles";
-                select.appendChild(option);
+                const opt = document.createElement('option');
+                opt.textContent = "Sin borradores";
+                select.appendChild(opt);
             }
         }
 
-        // ───── AGENDAR: GUARDAR EN GAS + LOCAL ─────
-        async function schedulePost() {
-            const rawValue = document.getElementById('post-select').value;
+        // 2. ENVIAR A GOOGLE DRIVE (LA COLA REAL)
+        async function scheduleCloud() {
             const date = document.getElementById('schedule-date').value;
             const time = document.getElementById('schedule-time').value;
 
-            if (!rawValue || rawValue.startsWith('No hay') || !date || !time) {
-                alert("Por favor completa todos los campos.");
+            if (!date || !time) {
+                alert("Completa la fecha y hora.");
                 return;
             }
 
-            const postData = JSON.parse(rawValue);
-            const newPost = {
+            const btn = document.getElementById('btn-schedule');
+            btn.disabled = true;
+            btn.textContent = "SUBIENDO IMAGEN DE GOOGLE...";
+
+            // Recuperar DATOS REALES (Base64) de la imagen generada por Google anteriormente
+            const base64Image = localStorage.getItem('linkedin_confirmed_img');
+            const postText = localStorage.getItem('linkedin_v2_text') || localStorage.getItem('linkedin_current_text');
+
+            const payload = {
+                action: 'schedule',
                 id: Date.now(),
-                text: postData.text || '',
-                imageUrl: postData.img || '',
-                style: postData.style || '',
-                intention: postData.intention || '',
-                row: postData.row || '',
-                hasImage: postData.hasImage || false,
+                text: postText,
+                imageBase64: base64Image, // Aquí se envía el Base64 que mencionabas (la imagen tal cual se genera)
                 date: date,
                 time: time,
-                status: 'pending',
-                action: 'saveScheduled'
+                status: 'pending'
             };
 
-            // Guardar en localStorage inmediatamente (UX rápida)
-            const local = JSON.parse(localStorage.getItem('scheduled_posts') || '[]');
-            local.push(newPost);
-            localStorage.setItem('scheduled_posts', JSON.stringify(local));
-            localStorage.removeItem('scheduling_complete_post');
-            renderSchedule(local);
-
-            // Sincronizar con GAS en background
-            try {
-                await fetch(GAS_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newPost)
-                });
-            } catch (err) {
-                console.warn('GAS sync error (no-cors ok):', err);
-            }
-
-            alert("✅ Post agendado correctamente.");
-            document.getElementById('schedule-date').value = '';
-            document.getElementById('schedule-time').value = '';
-        }
-
-        // ───── SINCRONIZAR DESDE GAS ─────
-        async function syncFromGAS() {
             try {
                 const res = await fetch(GAS_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'getScheduled' })
+                    body: JSON.stringify(payload)
                 });
-                const data = await res.json();
-
-                if (data.success && data.posts) {
-                    // Mapear al formato local
-                    const synced = data.posts.map(p => ({
-                        id: p.id,
-                        text: p.text,
-                        imageUrl: p.imageUrl,
-                        style: p.style,
-                        hasImage: !!(p.imageUrl),
-                        date: p.date,
-                        time: p.time,
-                        status: p.status
-                    }));
-
-                    // Actualizar localStorage con los datos del servidor
-                    localStorage.setItem('scheduled_posts', JSON.stringify(synced));
-                    renderSchedule(synced);
-                }
+                
+                localStorage.removeItem('scheduling_complete_post');
+                alert("✅ Programado con éxito. Google Drive guardó la imagen generada.");
+                refreshQueue(); 
             } catch (err) {
-                // Si GAS falla (CORS en no-cors, red, etc.), usar localStorage como fallback
-                console.warn('GAS sync unavailable, using localStorage:', err);
-                const local = JSON.parse(localStorage.getItem('scheduled_posts') || '[]');
-                renderSchedule(local);
+                alert("Error técnico al conectar con Google.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="material-symbols-rounded">cloud_upload</span> Enviar a la Nube (Google)';
             }
         }
 
-        // ───── ELIMINAR POST ─────
-        async function removeScheduled(id) {
-            // Eliminar localmente
-            let local = JSON.parse(localStorage.getItem('scheduled_posts') || '[]');
-            local = local.filter(p => String(p.id) !== String(id));
-            localStorage.setItem('scheduled_posts', JSON.stringify(local));
-            renderSchedule(local);
+        async function refreshQueue() {
+            const list = document.getElementById('schedule-list');
+            try {
+                const res = await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'list' })
+                });
+                const data = await res.json();
+                
+                list.innerHTML = '';
+                if (!data.posts || data.posts.length === 0) {
+                    list.innerHTML = '<p class="text-center text-xs text-gray-500 py-4">No hay pendientes en la nube de Google.</p>';
+                    return;
+                }
 
-            // Sincronizar eliminación con GAS
+                // Ordenar por hora
+                data.posts.sort((a,b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
+
+                data.posts.forEach(post => {
+                    const hasImage = !!post.imageFileId;
+                    const div = document.createElement('div');
+                    div.className = `glass-card p-4 flex justify-between items-center border-l-4 ${hasImage ? 'border-secondary' : 'border-accent'}`;
+                    div.innerHTML = `
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                ${hasImage ? '<span class="material-symbols-rounded text-[14px] text-secondary">image</span>' : ''}
+                                <h4 class="text-sm font-bold text-gray-100 truncate">${post.text.substring(0, 35)}...</h4>
+                            </div>
+                            <p class="text-[10px] text-gray-400 flex items-center gap-1">
+                                <span class="material-symbols-rounded text-xs">event</span> ${post.date}
+                                <span class="material-symbols-rounded text-xs ml-2 text-accent">schedule</span> ${post.time}
+                            </p>
+                        </div>
+                        <button onclick="removeCloud(${post.id})" class="ml-3 text-gray-600 hover:text-red-400 transition-colors">
+                            <span class="material-symbols-rounded">delete</span>
+                        </button>
+                    `;
+                    list.appendChild(div);
+                });
+
+            } catch (err) {
+                list.innerHTML = '<p class="text-center text-xs text-red-400 py-4">Error conectando con la nube.</p>';
+            }
+        }
+
+        async function removeCloud(id) {
+            if (!confirm("¿Eliminar post programado de la nube?")) return;
             try {
                 await fetch(GAS_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'deleteScheduled', id: id })
+                    body: JSON.stringify({ action: 'delete', id: id })
                 });
-            } catch (err) {
-                console.warn('GAS delete sync error:', err);
-            }
-        }
-
-        // ───── RENDERIZAR LA COLA ─────
-        function renderSchedule(posts) {
-            const list = document.getElementById('schedule-list');
-            list.innerHTML = '';
-
-            // Separar pendientes y publicados
-            const pending = posts.filter(p => p.status === 'pending');
-            const published = posts.filter(p => p.status && p.status !== 'pending');
-
-            if (posts.length === 0) {
-                list.innerHTML = '<p class="text-center text-xs text-gray-500 py-4">No hay publicaciones programadas.</p>';
-                return;
-            }
-
-            // Renderizar pendientes
-            if (pending.length > 0) {
-                const label = document.createElement('p');
-                label.className = 'text-[10px] uppercase tracking-widest text-gray-500 font-bold mt-2';
-                label.textContent = 'Pendientes';
-                list.appendChild(label);
-
-                pending.forEach(post => renderPostItem(post, list, false));
-            }
-
-            // Renderizar publicados (los que ya envió el trigger)
-            if (published.length > 0) {
-                const label = document.createElement('p');
-                label.className = 'text-[10px] uppercase tracking-widest text-green-500 font-bold mt-4';
-                label.textContent = '✅ Publicados automáticamente';
-                list.appendChild(label);
-
-                published.forEach(post => renderPostItem(post, list, true));
-            }
-        }
-
-        function renderPostItem(post, container, isPublished) {
-            const title = (post.text || '').split('\n')[0].substring(0, 40) + '...';
-            const hasImage = post.hasImage || !!(post.imageUrl);
-            const borderColor = isPublished ? 'border-green-500' : (hasImage ? 'border-secondary shadow-[0_0_10px_rgba(0,242,255,0.15)]' : 'border-accent');
-            const item = document.createElement('div');
-            item.className = `glass-card p-4 flex justify-between items-center border-l-4 ${borderColor} ${isPublished ? 'opacity-60' : ''}`;
-            item.innerHTML = `
-                <div class="flex-1">
-                    <div class="flex items-center gap-2">
-                        ${hasImage ? '<span class="material-symbols-rounded text-[14px] text-secondary">image</span>' : ''}
-                        ${isPublished ? '<span class="material-symbols-rounded text-[14px] text-green-400">check_circle</span>' : ''}
-                        <h4 class="text-sm font-bold text-gray-100 truncate">${title}</h4>
-                    </div>
-                    <p class="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
-                        <span class="material-symbols-rounded text-xs">calendar_today</span> ${post.date}
-                        <span class="material-symbols-rounded text-xs ml-2">schedule</span> ${post.time}
-                        ${isPublished ? '<span class="ml-2 text-green-400">· Publicado</span>' : ''}
-                    </p>
-                </div>
-                <button onclick="removeScheduled(${post.id})" class="text-gray-600 hover:text-red-400 transition-colors ml-2">
-                    <span class="material-symbols-rounded">delete</span>
-                </button>
-            `;
-            container.appendChild(item);
+                refreshQueue();
+            } catch (e) { alert("Error al eliminar."); }
         }
     </script>
 </body>
