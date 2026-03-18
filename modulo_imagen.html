@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Módulo B: Estudio Visual</title>
+    <title>Módulo B: Estudio Visual Pro</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
@@ -23,6 +23,10 @@
                         "card-dark": "#1d1b27"
                     },
                     fontFamily: { "display": ["Space Grotesk", "sans-serif"] },
+                    boxShadow: {
+                        "glow": "0 0 30px -5px rgba(51, 13, 242, 0.6)",
+                        "neon": "0 0 15px rgba(0, 242, 255, 0.4)"
+                    }
                 },
             },
         }
@@ -43,6 +47,26 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .edit-tool {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .edit-tool:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00f2ff;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+        }
     </style>
 </head>
 
@@ -57,62 +81,60 @@
             </button>
             <div>
                 <h1 class="font-bold text-lg tracking-wide leading-none uppercase text-sm">Estudio Visual</h1>
-                <p class="text-[8px] text-secondary font-bold tracking-widest mt-1">V4.0</p>
+                <p class="text-[8px] text-secondary font-bold tracking-widest mt-1">V4.0 AUTO-GEN</p>
             </div>
         </div>
     </header>
 
-    <main class="flex-1 p-5 max-w-md mx-auto w-full flex flex-col gap-8">
+    <main class="flex-1 p-5 max-w-md mx-auto w-full flex flex-col gap-6">
         
         <!-- Preview Area -->
         <section class="relative group">
             <div id="canvas-container"
-                class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-[#0a0a0f] border border-white/10 shadow-2xl transition-all duration-500">
+                class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-[#0a0a0f] border border-white/10 shadow-2xl">
 
-                <img id="preview-img" src=""
-                    class="w-full h-full object-cover hidden">
-
-                <div id="placeholder"
-                    class="absolute inset-0 flex flex-col items-center justify-center text-white/30 p-8 text-center gap-4">
-                    <span class="material-symbols-outlined text-5xl">cloud_upload</span>
-                    <p class="text-sm font-light">Pulsa generar para crear la imagen de tu post.</p>
-                </div>
+                <img id="preview-img" src="" class="w-full h-full object-cover hidden">
 
                 <div id="loading-overlay"
-                    class="absolute inset-0 bg-black/80 backdrop-blur-sm hidden flex-col items-center justify-center z-20">
+                    class="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center z-20">
                     <span class="ai-loader mb-4"></span>
-                    <p class="text-secondary text-xs font-bold tracking-[0.2em] animate-pulse">GENERANDO...</p>
+                    <p class="text-secondary text-xs font-bold tracking-[0.2em] animate-pulse">SINTETIZANDO...</p>
                 </div>
             </div>
         </section>
 
-        <!-- Main Buttons -->
-        <section class="flex flex-col gap-4">
-            <button onclick="generateImage()" id="btn-generate"
-                class="w-full py-4 rounded-xl bg-white text-black font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-all">
-                <span class="material-symbols-outlined text-lg">auto_awesome</span> GENERAR IMAGEN
+        <!-- Herramientas Circulares (Pequeñas) -->
+        <section class="flex justify-center gap-8 py-2">
+            <button onclick="generateImage()" class="flex flex-col items-center gap-2 group">
+                <div class="edit-tool">
+                    <span class="material-symbols-outlined text-white/70 group-hover:text-secondary">shuffle</span>
+                </div>
+                <span class="text-[9px] uppercase font-bold text-white/40 tracking-widest">Fondo</span>
             </button>
 
-            <button onclick="confirmImage()" id="btn-confirm"
-                class="w-full py-3 rounded-xl border border-white/10 text-white/20 font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-all cursor-not-allowed"
-                disabled>
-                <span class="material-symbols-outlined text-lg">check_circle</span> CONFIRMAR IMAGEN
+            <button onclick="downloadImage()" class="flex flex-col items-center gap-2 group">
+                <div class="edit-tool">
+                    <span class="material-symbols-outlined text-white/70 group-hover:text-secondary">save_alt</span>
+                </div>
+                <span class="text-[9px] uppercase font-bold text-white/40 tracking-widest">Guardar</span>
             </button>
         </section>
 
     </main>
 
-    <!-- Essential Footer as requested -->
+    <!-- Footer de Acción fija -->
     <div class="fixed bottom-0 left-0 w-full bg-[#131022]/95 backdrop-blur-xl pt-4 pb-8 px-6 z-40 border-t border-white/5">
         <div class="max-w-md mx-auto flex flex-col gap-3">
             
+            <!-- PRIORIDAD: AGENDAR ARRIBA -->
             <button id="btn-schedule-img" onclick="scheduleFromImage()"
                 class="w-full py-4 rounded-xl border border-white/20 text-white/40 font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 cursor-not-allowed transition-all bg-white/5"
                 disabled>
-                <span class="material-symbols-outlined text-lg">calendar_month</span>
+                <span class="material-symbols-outlined text-lg text-secondary/50" id="cal-icon">calendar_month</span>
                 AGENDAR PARA DESPUÉS (CALENDARIO)
             </button>
 
+            <!-- PUBLICAR ABAJO -->
             <button id="btn-publish" onclick="goToPublish()"
                 class="w-full py-4 rounded-xl border border-white/10 text-white/30 font-bold text-sm tracking-wide flex items-center justify-center gap-3 cursor-not-allowed transition-all"
                 disabled>
@@ -120,95 +142,84 @@
                 <span>REVISAR Y PUBLICAR</span>
             </button>
 
-            <p id="status-msg" class="text-center text-[10px] text-white/20 mt-1 font-mono uppercase tracking-widest font-bold">Confirma la imagen para desbloquear</p>
+            <p id="status-msg" class="text-center text-[10px] text-white/20 mt-1 font-mono uppercase tracking-[0.2em] font-bold">Generando Imagen de IA...</p>
         </div>
     </div>
 
     <script>
-        const CLOUD_NAME = "dmvkaq9zc";
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbxyceiNIiq1nXjdGltdpdySvpPX7O6iB2hjkaAdjL-JHGb5mp-4L2e0V0xWRZzwc-NF/exec";
-
         let currentText = "";
         let confirmedImgUrl = "";
 
         window.onload = function () {
-            currentText = localStorage.getItem('linkedin_current_text') || localStorage.getItem('linkedin_v2_text') || "";
+            currentText = localStorage.getItem('linkedin_current_text') || localStorage.getItem('linkedin_v2_text');
+            if (!currentText) {
+                alert("No se detectó texto del post. Volviendo atrás.");
+                window.location.href = 'index.html';
+                return;
+            }
+            // GENERACIÓN AUTOMÁTICA AL CARGAR
+            generateImage();
         };
 
         async function generateImage() {
-            const btn = document.getElementById('btn-generate');
             const overlay = document.getElementById('loading-overlay');
-            
-            if (!currentText) return alert("Falta texto base para generar.");
+            const preview = document.getElementById('preview-img');
+            const btnSchedule = document.getElementById('btn-schedule-img');
+            const btnPublish = document.getElementById('btn-publish');
+            const status = document.getElementById('status-msg');
+            const calIcon = document.getElementById('cal-icon');
 
-            btn.disabled = true;
             overlay.classList.remove('hidden');
             overlay.classList.add('flex');
+            status.textContent = "SINTETIZANDO PIXELES...";
 
             try {
-                // Generación minimalista usando el primer fragmento de texto
+                // Prompt simplificado basado en el texto del post
                 const cleanContext = currentText.split("\n")[0].replace(/[^a-zA-Z0-9 ]/g, '').substring(0, 100);
                 const seed = Math.floor(Math.random() * 9999999);
-                const finalPrompt = `Professional Masterpiece. ${cleanContext}. High quality, cinematic lighting, ultra-detailed.`;
+                const finalPrompt = `Masterpiece photography, award winning. Theme: ${cleanContext}. Global illumination, cinematic lighting, 8k resolution.`;
                 
                 const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=1080&height=1350&seed=${seed}&nologo=true&enhance=true`;
 
                 const img = new Image();
                 img.crossOrigin = "Anonymous";
                 img.onload = () => {
-                    document.getElementById('preview-img').src = url;
+                    preview.src = url;
                     confirmedImgUrl = url;
-                    document.getElementById('preview-img').classList.remove('hidden');
-                    document.getElementById('placeholder').classList.add('hidden');
+                    preview.classList.remove('hidden');
                     overlay.classList.add('hidden');
-                    btn.disabled = false;
+                    
+                    // Guardar automáticamente
+                    localStorage.setItem('linkedin_confirmed_img', url);
 
-                    const btnConfirm = document.getElementById('btn-confirm');
-                    btnConfirm.disabled = false;
-                    btnConfirm.classList.replace('text-white/20', 'text-secondary');
-                    btnConfirm.classList.replace('border-white/10', 'border-secondary');
-                    btnConfirm.classList.remove('cursor-not-allowed');
-                };
-                img.onerror = () => {
-                    overlay.classList.add('hidden');
-                    btn.disabled = false;
-                    alert("Error generando imagen. Prueba de nuevo.");
+                    // DESBLOQUEO AUTOMÁTICO DE BOTONES
+                    btnSchedule.disabled = false;
+                    btnSchedule.classList.remove('text-white/40', 'cursor-not-allowed', 'bg-white/5');
+                    btnSchedule.classList.add('border-secondary', 'text-white', 'bg-secondary/10');
+                    calIcon.classList.replace('text-secondary/50', 'text-secondary');
+
+                    btnPublish.disabled = false;
+                    btnPublish.classList.remove('border-white/10', 'text-white/30', 'cursor-not-allowed');
+                    btnPublish.classList.add('bg-white', 'text-black', 'font-black');
+
+                    status.textContent = "IMAGEN LISTA PARA PROGRAMAR O PUBLICAR";
+                    status.classList.replace('text-white/20', 'text-secondary');
                 };
                 img.src = url;
 
             } catch (e) {
+                status.textContent = "ERROR EN GENERACIÓN. REINTENTA.";
                 overlay.classList.add('hidden');
-                btn.disabled = false;
-                alert("Problema con la conexión de IA.");
             }
         }
 
-        function confirmImage() {
-            const btnCheck = document.getElementById('btn-confirm');
-            const btnPublish = document.getElementById('btn-publish');
-            const btnSchedule = document.getElementById('btn-schedule-img');
-            const status = document.getElementById('status-msg');
-
-            // Visual confirm
-            btnCheck.innerHTML = `<span class="material-symbols-outlined text-lg">verified</span> IMAGEN LISTA`;
-            btnCheck.classList.replace('text-secondary', 'text-green-400');
-            btnCheck.classList.replace('border-secondary', 'border-green-400');
-            btnCheck.disabled = true;
-
-            // Persistence
-            localStorage.setItem('linkedin_confirmed_img', confirmedImgUrl);
-
-            // Unlock actions
-            btnPublish.disabled = false;
-            btnPublish.classList.remove('border-white/10', 'text-white/30', 'cursor-not-allowed');
-            btnPublish.classList.add('bg-primary', 'text-black', 'border-transparent');
-
-            btnSchedule.disabled = false;
-            btnSchedule.classList.remove('border-white/10', 'text-white/40', 'cursor-not-allowed');
-            btnSchedule.classList.add('border-secondary', 'text-secondary');
-
-            status.textContent = "LISTO PARA PROCEDER";
-            status.className = "text-center text-[10px] text-green-400 mt-1 font-bold font-mono tracking-widest";
+        function downloadImage() {
+            if (!confirmedImgUrl) return;
+            const a = document.createElement('a');
+            a.href = confirmedImgUrl;
+            a.download = `LinkedIn_Post_${Date.now()}.jpg`;
+            a.target = '_blank';
+            a.click();
         }
 
         function scheduleFromImage() {
